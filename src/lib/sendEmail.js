@@ -1,24 +1,16 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendNotificationEmail(subject, text) {
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE, NOTIFY_EMAIL, SMTP_FROM } = process.env;
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !NOTIFY_EMAIL) {
+  const { RESEND_API_KEY, NOTIFY_EMAIL, SMTP_FROM } = process.env;
+  if (!RESEND_API_KEY || !NOTIFY_EMAIL || !SMTP_FROM) {
     console.error('Missing email environment variables.');
     return;
   }
   try {
-    const transporter = nodemailer.createTransport({
-      host: SMTP_HOST,
-      port: SMTP_PORT ? parseInt(SMTP_PORT, 10) : 587,
-      secure: SMTP_SECURE === 'true',
-      auth: {
-        user: SMTP_USER,
-        pass: SMTP_PASS,
-      },
-    });
-
-    await transporter.sendMail({
-      from: SMTP_FROM || SMTP_USER,
+    await resend.emails.send({
+      from: SMTP_FROM,
       to: NOTIFY_EMAIL,
       subject,
       text,
@@ -27,3 +19,4 @@ export async function sendNotificationEmail(subject, text) {
     console.error('Failed to send email', err);
   }
 }
+
