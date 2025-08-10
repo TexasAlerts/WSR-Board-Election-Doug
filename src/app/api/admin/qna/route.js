@@ -1,12 +1,8 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { requireAdmin } from '../../../../lib/admin-session';
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE);
-
-function requireAdmin(req) {
-  const cookie = req.cookies.get('admin_session');
-  return cookie && cookie.value === '1';
-}
 
 export async function GET(req) {
   if (!requireAdmin(req)) {
