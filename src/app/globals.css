@@ -2,28 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base styles */
-html, body {
-  height: 100%;
+@layer base {
+  /* Base styles */
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    background-color: theme('colors.sand.DEFAULT');
+    color: theme('colors.charcoal.DEFAULT');
+    font-family: sans-serif;
+    overflow-x: hidden;
+  }
+
+  a {
+    @apply text-lagoon-light underline;
+  }
 }
 
-body {
-  background-color: theme('colors.sand.DEFAULT');
-  color: theme('colors.charcoal.DEFAULT');
-  font-family: sans-serif;
-  overflow-x: hidden;
+@layer components {
+  /* Quotes styling */
+  .quote {
+    @apply italic text-lg text-lagoon-light;
+  }
+
+  /* Utility for cards */
+  .card {
+    @apply bg-white rounded-xl shadow-md p-6;
+  }
 }
 
-a {
-  @apply text-lagoon-light underline;
-}
-
-/* Quotes styling */
-.quote {
-  @apply italic text-lg text-lagoon-light;
-}
-
-/* Utility for cards */
-.card {
-  @apply bg-white rounded-xl shadow-md p-6;
-}
