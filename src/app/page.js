@@ -3,14 +3,12 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import EndorsementsCarousel from '../components/EndorsementsCarousel';
 
 export default function Home() {
   // Q&A list and endorsements fetched from backend
   const [questions, setQuestions] = useState([]);
   const [endorsements, setEndorsements] = useState([]);
-  const searchParams = useSearchParams();
   // Form state for question submission
   const [qForm, setQForm] = useState({ name: '', email: '', question: '' });
   const [qThanks, setQThanks] = useState(false);
@@ -41,9 +39,10 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const ft = searchParams.get('form');
+    const params = new URLSearchParams(window.location.search);
+    const ft = params.get('form');
     if (ft) setFormType(ft);
-  }, [searchParams]);
+  }, []);
 
   async function submitQuestion(e) {
     e.preventDefault();
