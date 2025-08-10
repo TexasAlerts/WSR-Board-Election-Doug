@@ -1,0 +1,51 @@
+import { NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE);
+
+function requireAdmin(req) {
+  const cookie = req.cookies.get('admin_session');
+  return cookie && cookie.value === '1';
+}
+
+export async function GET(req) {
+  if (!requireAdmin(req)) {
+    return NextResponse.json({ ok: false }, { status: 401 });
+  }
+  const { data, error } = await supabase
+    .from('endorsements')
+    .select('*')
+    .eq('status', 'pending')
+    .order('created_at', { ascending: false });
+  if (error) {
+    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+  }
+  return NextResponse.json({ ok: true, data });
+}
+
+export async function POST(req) {
+  if (!requireAdmin(req)) {
+    return NextResponse.json({ ok: false }, { status: 401 });
+  }
+  const body = await req.json();
+  const { id, action } = body;
+  if (!id || !action) {
+    return NextResponse.json({ ok: false, error: 'Missing parameters' }, { status: 400 });
+  }
+  if (action === 'approve') {
+    const { error } = await supabase
+      .from('endorsements')
+      .update({ status: 'approved' })
+      .eq('id', id);
+    if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+  } else if (action === 'reject') {
+    const { error } = await supabase
+      .from('endorsements')
+      .update({ status: 'rejected' })
+      .eq('id', id);
+    if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+  } else {
+    return NextResponse.json({ ok: false, error: 'Invalid action' }, { status: 400 });
+  }
+  return NextResponse.json({ ok: true });
+}
