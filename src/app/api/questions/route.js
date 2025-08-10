@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { z } from 'zod';
+import { rateLimit } from '../../../lib/rateLimit';
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
@@ -18,11 +20,23 @@ export async function GET() {
 }
 
 export async function POST(req) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+  if (!rateLimit(ip)) {
+    return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });
+  }
   try {
+    const schema = z.object({
+      name: z.string().min(1, 'Name is required').max(200),
+      email: z.string().email('Invalid email').max(200),
+      question: z.string().min(1, 'Question is required').max(4000),
+    });
     const body = await req.json();
-    const name = String(body.name || '').slice(0, 200);
-    const email = String(body.email || '').slice(0, 200);
-    const question = String(body.question || '').slice(0, 4000);
+    const parsed = schema.safeParse(body);
+    if (!parsed.success) {
+      const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
+      return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
+    }
+    const { name, email, question } = parsed.data;
     const { error } = await supabase
       .from('questions')
       .insert({ name, email, question, status: 'pending' });
