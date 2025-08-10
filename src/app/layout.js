@@ -1,5 +1,5 @@
 import './globals.css';
-import Link from 'next/link';
+import StickyNav from '../components/StickyNav';
 
 export const metadata = {
   title: 'Doug Charles for Windsong Ranch HOA',
@@ -64,18 +64,7 @@ export default function RootLayout({ children }) {
           </div>
         </header>
         {/* Navigation */}
-        <nav className="bg-white shadow-sm py-3 px-4 sticky top-[4rem] sm:top-[3rem] z-40">
-          <div className="max-w-6xl mx-auto flex justify-between items-center">
-            <Link href="/" className="text-xl font-bold text-lagoon">Home</Link>
-            <div className="flex gap-4 text-sm sm:text-base">
-              <Link href="/voting" className="hover:underline">Voting Info</Link>
-              <Link href="/endorsements" className="hover:underline">Endorsements</Link>
-              <Link href="/qna" className="hover:underline">Q&A</Link>
-              {/* Use object with hash to ensure internal anchor works in Next.js */}
-              <Link href={{ pathname: '/', hash: 'get-involved' }} className="hover:underline">Get Involved</Link>
-            </div>
-          </div>
-        </nav>
+        <StickyNav />
         <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {children}
         </main>
