@@ -156,6 +156,23 @@ export default function Home() {
         <div className="quote">“Leadership isn’t about titles—it’s about service, stewardship, and listening to every voice.”</div>
       </section>
 
+      {/* Endorsements display */}
+      {endorsements.length > 0 && (
+        <section>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">Endorsements</h2>
+          {/* Use auto-rotating carousel */}
+          <EndorsementsCarousel endorsements={endorsements} />
+        </section>
+      )}
+
+      {/* Lifestyle section */}
+      <section>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-4">We Live in a Community Worth Protecting</h2>
+        <p>
+          From <strong>The Lagoon</strong> and miles of trails to parks, amphitheater events, and shared green spaces—Windsong is built for connection. Good governance keeps it thriving today and strong for tomorrow.
+        </p>
+      </section>
+
       {/* Neighborhood unity */}
       <section>
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">One Windsong, Every Voice</h2>
@@ -173,14 +190,6 @@ export default function Home() {
             );
           })}
         </div>
-      </section>
-
-      {/* Lifestyle section */}
-      <section>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4">We Live in a Community Worth Protecting</h2>
-        <p>
-          From <strong>The Lagoon</strong> and miles of trails to parks, amphitheater events, and shared green spaces—Windsong is built for connection. Good governance keeps it thriving today and strong for tomorrow.
-        </p>
       </section>
 
       {/* Submit a question */}
@@ -220,15 +229,6 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </section>
-      )}
-
-      {/* Endorsements display */}
-      {endorsements.length > 0 && (
-        <section>
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4">What Your Neighbors Are Saying</h2>
-          {/* Use auto‑rotating carousel */}
-          <EndorsementsCarousel endorsements={endorsements} />
         </section>
       )}
 
