@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
+import { sendNotificationEmail } from '../../../lib/sendEmail';
 
 // Use anon key for public endpoints; this allows RLS to restrict selecting only approved
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
@@ -41,6 +42,10 @@ export async function POST(req) {
     if (error) {
       return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
     }
+    sendNotificationEmail(
+      'New endorsement submitted',
+      `Name: ${name}\nMessage: ${message}`
+    ).catch((err) => console.error('Email failed', err));
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
     return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
