@@ -13,7 +13,7 @@
 ## Resend email
 
 1. In the [Resend dashboard](https://resend.com) add the domain `dougcharles.com`.
-2. At your DNS provider, create the following records and wait for Resend to verify:
+2. Add the DKIM and SPF TXT records provided by Resend to your DNS host and wait for verification. For `dougcharles.com`, Resend supplied these records:
 
    | Type | Name | Value | TTL | Notes |
    | ---- | ---- | ----- | --- | ----- |
