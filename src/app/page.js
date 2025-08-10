@@ -101,6 +101,15 @@ export default function Home() {
     <div className="space-y-16">
       {/* Hero Section */}
       <section className="text-center space-y-6">
+        <Image
+          src="/headshot.jpg"
+          alt="Doug Charles headshot"
+          width={200}
+          height={200}
+          sizes="(max-width: 640px) 150px, 200px"
+          className="mx-auto rounded-full w-[150px] sm:w-[200px]"
+          priority
+        />
         <h1 className="text-4xl sm:text-5xl font-extrabold text-lagoon">Your Voice. Your Vote. Our Windsong.</h1>
         <p className="max-w-3xl mx-auto text-lg sm:text-xl leading-relaxed">
           For the first time, homeowners will elect two representatives to our HOA Board—joining three developer-appointed members. These seats will set the tone for the transition to a fully homeowner-led board in the near future.
