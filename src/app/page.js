@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import EndorsementsCarousel from '../components/EndorsementsCarousel';
 
 export default function Home() {
@@ -35,6 +36,12 @@ export default function Home() {
       }
     }
     loadData();
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ft = params.get('form');
+    if (ft) setFormType(ft);
   }, []);
 
   async function submitQuestion(e) {
@@ -97,6 +104,14 @@ export default function Home() {
     'bg-lagoon-light'
   ];
 
+  const formOptions = [
+    { value: 'updates', label: 'Get Updates' },
+    { value: 'volunteer', label: 'Volunteer' },
+    { value: 'host', label: 'Host a Home Meeting' },
+    { value: 'meeting', label: 'Request a Meeting' },
+    { value: 'endorsement', label: 'Endorse Doug' },
+  ];
+
   return (
     <div className="space-y-16">
       {/* Hero Section */}
@@ -118,7 +133,12 @@ export default function Home() {
           I’m <strong>Doug Charles</strong>, and I’m running for <strong>purpose</strong>—to listen, advocate, and represent every neighborhood in Windsong Ranch with transparency, fiscal responsibility, and an open door for every neighbor.
         </p>
         <div className="flex flex-wrap justify-center gap-4 mt-4">
-          <a href="#get-involved" className="px-6 py-3 bg-coral text-white rounded-full hover:bg-coral/90">Endorse Doug</a>
+          <Link
+            href={{ pathname: '/', query: { form: 'endorsement' }, hash: 'get-involved' }}
+            className="px-6 py-3 bg-coral text-white rounded-full hover:bg-coral/90"
+          >
+            Endorse Doug
+          </Link>
           <a href="#get-involved" className="px-6 py-3 bg-lagoon-light text-lagoon rounded-full hover:bg-lagoon-light/90">Get Involved</a>
         </div>
       </section>
@@ -238,14 +258,24 @@ export default function Home() {
         <p className="mb-4">Select how you'd like to participate—Get Updates, Volunteer, Host a Home Meeting, Request a Meeting, or Endorse Doug.</p>
         <form onSubmit={submitGetInvolved} className="space-y-3 max-w-xl">
           <div className="flex flex-col">
-            <label htmlFor="ftype" className="font-medium mb-1">I'm interested in*</label>
-            <select id="ftype" value={formType} onChange={(e) => setFormType(e.target.value)} className="border p-2 rounded">
-              <option value="updates">Get Updates</option>
-              <option value="volunteer">Volunteer</option>
-              <option value="host">Host a Home Meeting</option>
-              <option value="meeting">Request a Meeting</option>
-              <option value="endorsement">Endorse Doug</option>
-            </select>
+            <span className="font-medium mb-1">I'm interested in*</span>
+            <div className="flex flex-wrap gap-2">
+              {formOptions.map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => setFormType(opt.value)}
+                  className={`px-4 py-2 rounded-full border ${
+                    formType === opt.value
+                      ? 'bg-lagoon text-white border-lagoon'
+                      : 'bg-white text-lagoon border-lagoon hover:bg-lagoon/10'
+                  }`}
+                  aria-pressed={formType === opt.value}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
           </div>
           <div className="flex flex-col">
             <label htmlFor="fname" className="font-medium mb-1">Name*</label>
