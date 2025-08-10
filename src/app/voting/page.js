@@ -31,7 +31,7 @@ export default function Voting() {
       <section>
         <h2 className="text-2xl font-bold mb-2">Role of a Board Member</h2>
         <p>Board members are stewards of our shared home. They oversee budgets and reserves, set policy, guide maintenance and vendor performance, communicate decisions, and listen—truly listen—to homeowners. It’s collaborative work that balances today’s needs with tomorrow’s plans. When board members do it well, homeowners feel informed, heard, and confident about where we’re headed. That’s the Windsong we all want to live in.</p>
-        <p className="mt-2"><Link href="/docs/board-member-101.pdf" target="_blank" className="text-lagoon underline">Download the official HOA Board Member overview (PDF)</Link></p>
+        <p className="mt-2"><Link href="/docs/board-member-101.pdf" target="_blank" rel="noopener noreferrer" className="text-lagoon underline">Download the official HOA Board Member overview (PDF)</Link></p>
       </section>
     </div>
   );
