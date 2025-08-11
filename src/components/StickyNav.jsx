@@ -1,81 +1,84 @@
-diff --git a/src/components/StickyNav.jsx b/src/components/StickyNav.jsx
-index 96d419307e929762c99d15bfd46ba56d4a521ecc..2dadc518c5db6b20cb610cddcb846a7af8d5f797 100644
---- a/src/components/StickyNav.jsx
-+++ b/src/components/StickyNav.jsx
-@@ -1,74 +1,66 @@
- "use client";
- 
- import { useRef, useEffect, useState } from 'react';
- import Link from 'next/link';
--import Image from 'next/image';
- import {
-   FileText,
-   ThumbsUp,
-   HelpCircle,
-   User,
-   Menu,
-   X,
- } from 'lucide-react';
- 
- export default function StickyNav() {
-   const navRef = useRef(null);
-   const [open, setOpen] = useState(false);
- 
-   useEffect(() => {
-     const navEl = navRef.current;
-     if (!navEl) return;
-     const banner = navEl.previousElementSibling;
-     if (!banner) return;
- 
-     const updateOffset = () => {
-       navEl.style.setProperty('--banner-offset', `${banner.offsetHeight}px`);
-     };
-     updateOffset();
-     window.addEventListener('resize', updateOffset);
-     return () => window.removeEventListener('resize', updateOffset);
-   }, []);
- 
-   const toggle = () => setOpen((o) => !o);
- 
-   return (
-     <nav
-       ref={navRef}
-       className="bg-white shadow-sm py-3 px-4 sticky [top:var(--banner-offset)] z-40"
-     >
-       <div className="max-w-6xl mx-auto flex justify-between items-center">
--        <Link href="/" className="flex items-center gap-2 text-xl font-bold text-lagoon">
--          <Image
--            src="/wsr-logo.png"
--            alt="Windsong Ranch logo"
--            width={32}
--            height={32}
--            className="h-8 w-8"
--          />
--          <span className="hidden sm:inline">Home</span>
-+        <Link href="/" className="text-xl font-bold text-lagoon">
-+          Home
-         </Link>
-         <button
-           className="sm:hidden p-2 text-lagoon"
-           onClick={toggle}
-           aria-label="Toggle navigation menu"
-         >
-           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-         </button>
-         <div
-           className={`${open ? 'flex' : 'hidden'} flex-col sm:flex sm:flex-row sm:items-center gap-4 text-sm sm:text-base`}
-         >
-           <Link href="/voting" className="flex items-center gap-1 hover:underline">
-             <FileText className="h-4 w-4" />
-             Voting Info
-           </Link>
-           <Link href="/endorsements" className="flex items-center gap-1 hover:underline">
-             <ThumbsUp className="h-4 w-4" />
-             Endorsements
-           </Link>
-           <Link href="/qna" className="flex items-center gap-1 hover:underline">
-             <HelpCircle className="h-4 w-4" />
-             Q&amp;A
-           </Link>
-           <Link
-             href={{ pathname: '/', hash: 'about' }}
+"use client";
+
+import { useRef, useEffect, useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import {
+  FileText,
+  ThumbsUp,
+  HelpCircle,
+  User,
+  Menu,
+  X,
+} from 'lucide-react';
+
+export default function StickyNav() {
+  const navRef = useRef(null);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const navEl = navRef.current;
+    if (!navEl) return;
+    const banner = navEl.previousElementSibling;
+    if (!banner) return;
+
+    const updateOffset = () => {
+      navEl.style.setProperty('--banner-offset', `${banner.offsetHeight}px`);
+    };
+    updateOffset();
+    window.addEventListener('resize', updateOffset);
+    return () => window.removeEventListener('resize', updateOffset);
+  }, []);
+
+  const toggle = () => setOpen((o) => !o);
+
+  return (
+    <nav
+      ref={navRef}
+      className="bg-white shadow-sm py-3 px-4 sticky [top:var(--banner-offset)] z-40"
+    >
+      <div className="max-w-6xl mx-auto flex justify-between items-center">
+        <Link href="/" className="flex items-center gap-2 text-xl font-bold text-lagoon">
+          <Image
+            src="/wsr-logo.png"
+            alt="Windsong Ranch logo"
+            width={32}
+            height={32}
+            className="h-8 w-8"
+          />
+          <span className="hidden sm:inline">Home</span>
+        </Link>
+        <button
+          className="sm:hidden p-2 text-lagoon"
+          onClick={toggle}
+          aria-label="Toggle navigation menu"
+        >
+          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
+        <div
+          className={`${open ? 'flex' : 'hidden'} flex-col sm:flex sm:flex-row sm:items-center gap-4 text-sm sm:text-base`}
+        >
+          <Link href="/voting" className="flex items-center gap-1 hover:underline">
+            <FileText className="h-4 w-4" />
+            Voting Info
+          </Link>
+          <Link href="/endorsements" className="flex items-center gap-1 hover:underline">
+            <ThumbsUp className="h-4 w-4" />
+            Endorsements
+          </Link>
+          <Link href="/qna" className="flex items-center gap-1 hover:underline">
+            <HelpCircle className="h-4 w-4" />
+            Q&amp;A
+          </Link>
+          <Link
+            href={{ pathname: '/', hash: 'about' }}
+            className="flex items-center gap-1 hover:underline"
+          >
+            <User className="h-4 w-4" />
+            About Doug
+          </Link>
+        </div>
+      </div>
+    </nav>
+  );
+}
