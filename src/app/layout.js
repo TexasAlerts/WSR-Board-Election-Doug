@@ -1,7 +1,7 @@
 import './globals.css';
+import Link from 'next/link';
 import StickyNav from '../components/StickyNav';
 import Countdown from '../components/Countdown';
-import Link from 'next/link';
 
 export const metadata = {
   title: 'Doug Charles for Windsong Ranch HOA',
@@ -13,10 +13,10 @@ export const metadata = {
 };
 
 const KEY_DATES = [
-  { label: 'Meet the Candidates', date: 'Aug 14 @ 6 PM', description: 'Ask your questions, hear real answers, hold us accountable.' },
-  { label: 'Voting Opens', date: 'Aug 20', description: 'Your chance to shape our future.' },
-  { label: 'Voting Closes', date: 'Sept 2', description: 'Make sure your voice is counted.' },
-  { label: 'Results Announced', date: 'Sept 3', description: 'Special meeting with results.' },
+  { label: 'Meet the Candidates', date: 'Aug 14 @ 6 PM' },
+  { label: 'Voting Opens', date: 'Aug 20' },
+  { label: 'Voting Closes', date: 'Sept 2' },
+  { label: 'Results Announced', date: 'Sept 3' },
 ];
 
 export default function RootLayout({ children }) {
@@ -26,9 +26,9 @@ export default function RootLayout({ children }) {
         {/* Sticky key dates banner */}
         <header className="bg-lagoon text-white text-sm sm:text-base py-2 px-4 sticky top-0 z-50 shadow-md">
           <div className="flex flex-col sm:flex-row flex-wrap items-center gap-x-4 gap-y-1">
-            {KEY_DATES.map((item, idx) => (
+            {KEY_DATES.map(({ label, date }, idx) => (
               <div key={idx} className="whitespace-nowrap">
-                <strong>{item.label}</strong> – {item.date}
+                <strong>{label}</strong> – {date}
               </div>
             ))}
             <div className="whitespace-nowrap">
@@ -42,16 +42,20 @@ export default function RootLayout({ children }) {
             </div>
           </div>
         </header>
+
         {/* Navigation */}
         <StickyNav />
+
         <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 sm:pb-8">
           {children}
         </main>
+
         <footer className="bg-white py-6 mt-16 border-t pb-24 sm:pb-6">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-center">
             Self‑funded by Doug Charles. | © {new Date().getFullYear()} Windsong Ranch HOA Election
           </div>
         </footer>
+
         {/* Mobile call to action */}
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t py-2 px-4 flex justify-around sm:hidden z-50">
           <Link href="/#get-involved" className="bg-lagoon text-white px-4 py-2 rounded-full text-sm">
