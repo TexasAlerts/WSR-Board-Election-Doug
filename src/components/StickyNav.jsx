@@ -33,17 +33,11 @@ export default function StickyNav() {
           <Link href="/voting" className="hover:underline">
             Voting Info
           </Link>
-          <Link href="/endorsements" className="hover:underline">
-            Endorsements
-          </Link>
-          <Link href="/qna" className="hover:underline">
-            Q&A
-          </Link>
           <Link
-            href={{ pathname: '/', hash: 'get-involved' }}
+            href={{ pathname: '/', hash: 'about' }}
             className="hover:underline"
           >
-            Get Involved
+            About Doug
           </Link>
         </div>
       </div>
