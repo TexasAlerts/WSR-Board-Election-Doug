@@ -1,5 +1,6 @@
 import './globals.css';
 import StickyNav from '../components/StickyNav';
+import Countdown from '../components/Countdown';
 
 export const metadata = {
   title: 'Doug Charles for Windsong Ranch HOA',
@@ -17,28 +18,7 @@ const KEY_DATES = [
   { label: 'Results Announced', date: 'Sept 3', description: 'Special meeting with results.' },
 ];
 
-// Helper to compute days to next key date for the countdown.
-function getCountdown(now) {
-  const open = new Date('2025-08-20T00:00:00-05:00');
-  const close = new Date('2025-09-02T23:59:59-05:00');
-  const nowTs = new Date(now);
-  if (nowTs < open) {
-    const days = Math.ceil((open - nowTs) / (1000 * 60 * 60 * 24));
-    return { phase: 'pre', days };
-  }
-  if (nowTs >= open && nowTs <= close) {
-    const days = Math.ceil((close - nowTs) / (1000 * 60 * 60 * 24));
-    return { phase: 'open', days };
-  }
-  return { phase: 'post', days: 0 };
-}
-
 export default function RootLayout({ children }) {
-  const now = new Date().toISOString();
-  const { phase, days } = getCountdown(now);
-  const countdownLabel = phase === 'pre' ? 'Voting opens in' : phase === 'open' ? 'Voting closes in' : '';
-  const countdownText = `${countdownLabel} ${days} day${days === 1 ? '' : 's'}`;
-
   return (
     <html lang="en">
       <body>
@@ -55,14 +35,10 @@ export default function RootLayout({ children }) {
                 <strong>One vote per home address by a Title Owner</strong>
               </div>
             </div>
-            {phase !== 'post' && (
-              <div className="ml-auto text-right">
-                {/* Highlight the countdown label and number so it stands out */}
-                <span className="font-semibold text-coral whitespace-nowrap uppercase">
-                  {countdownText}
-                </span>
-              </div>
-            )}
+              <Countdown
+                open="2025-08-20T00:00:00-05:00"
+                close="2025-09-02T23:59:59-05:00"
+              />
             </div>
           </header>
         {/* Navigation */}
