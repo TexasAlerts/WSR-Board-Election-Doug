@@ -35,7 +35,7 @@ export default function EndorsementsPage() {
       <div className="mt-6">
         {/* Use Next.js Link with hash to ensure smooth internal navigation */}
         <Link
-          href={{ pathname: '/', hash: 'get-involved' }}
+          href={{ pathname: '/', query: { form: 'endorsement' }, hash: 'get-involved' }}
           className="text-coral hover:underline font-medium"
         >
           Endorse Doug
