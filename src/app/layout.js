@@ -13,10 +13,10 @@ export const metadata = {
 };
 
 const KEY_DATES = [
-  { label: 'Meet the Candidates', date: 'Aug 14 @ 6 PM', description: 'Ask your questions, hear real answers, hold us accountable.' },
-  { label: 'Voting Opens', date: 'Aug 20', description: 'Your chance to shape our future.', },
-  { label: 'Voting Closes', date: 'Sept 2', description: 'Make sure your voice is counted.', },
-  { label: 'Results Announced', date: 'Sept 3', description: 'Special meeting with results.' },
+  { label: 'Meet the Candidates', date: 'Aug 14 @ 6 PM', description: 'Ask your questions. Hear real answers. Hold us accountable.' },
+  { label: 'Voting Opens', date: 'Aug 20', description: 'Your chance to shape our future.' },
+  { label: 'Voting Closes', date: 'Sept 2', description: 'Make sure your voice is counted.' },
+  { label: 'Results Announced', date: 'Sept 3', description: 'Special meeting with results.' },
 ];
 
 export default function RootLayout({ children }) {
@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
                 </div>
               ))}
               <div className="whitespace-nowrap min-w-0 truncate">
-                <strong>One vote per home address by a Title Owner</strong>
+                <strong>One vote per home address, by a title owner.</strong>
               </div>
             </div>
             <div className="w-full lg:w-auto mt-1 lg:mt-0">

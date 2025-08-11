@@ -137,11 +137,11 @@ function HomeContent() {
     { name: 'Northview', icon: Compass },
     { name: 'The Crossing', icon: LinkIcon },
   ];
-  // Colour palette for bespoke neighbourhood icons; cycles through these values
-  const neighbourhoodColours = [
+  // Color palette for bespoke neighborhood icons; cycles through these values
+  const neighborhoodColors = [
     'bg-coral',
     'bg-lagoon',
-    'bg-lagoon-light'
+    'bg-lagoon-light',
   ];
 
   const formOptions = [
@@ -203,9 +203,9 @@ function HomeContent() {
         </div>
         <div className="card flex flex-col items-center text-center">
           <Users className="w-12 h-12 text-lagoon mb-4" aria-hidden="true" />
-          <h3 className="text-xl font-semibold mb-2">Unite Windsong</h3>
-          <p>Townhomes, Villas, Peninsula, Crosswater, and every street—no neighborhood left behind. Our diversity is our strength, and we are stronger together.</p>
-          <p className="quote mt-2 text-base sm:text-lg">“Diverse in character, united in purpose—one Windsong, one voice.”</p>
+        <h3 className="text-xl font-semibold mb-2">Unite Windsong</h3>
+          <p>Townhomes, Villas, Peninsula, Crosswater, and every street—No neighborhood left behind. Our diversity is our strength. We are stronger together.</p>
+          <p className="quote mt-2 text-base sm:text-lg">“Diverse in character, united in purpose—One Windsong, one voice.”</p>
         </div>
         <div className="card flex flex-col items-center text-center">
           <PiggyBank className="w-12 h-12 text-lagoon mb-4" aria-hidden="true" />
@@ -244,14 +244,14 @@ function HomeContent() {
       {/* Neighborhood unity */}
       <section>
         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 text-center">One Windsong, Every Voice</h2>
-        <p className="mb-4 text-center">From Anthem to the Villas and every street in between—each neighborhood has its own character, but together we’re One Windsong.</p>
+        <p className="mb-4 text-center">From Anthem to the Villas, and every street in between—each neighborhood has its own character, but together, we are One Windsong.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {neighborhoods.map((item, idx) => {
-            const colour = neighbourhoodColours[idx % neighbourhoodColours.length];
+            const color = neighborhoodColors[idx % neighborhoodColors.length];
             const IconComp = item.icon;
             return (
               <div key={item.name} className="flex flex-col items-center p-2 bg-white rounded shadow">
-                <div className={`w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center rounded-full mb-2 ${colour}`}>
+                <div className={`w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center rounded-full mb-2 ${color}`}>
                   <IconComp className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
                 </div>
                 <span className="text-xs sm:text-sm font-medium text-center text-charcoal">{item.name}</span>
@@ -264,7 +264,7 @@ function HomeContent() {
       {/* Submit a question */}
       <section id="qna">
         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4">Ask Doug a Question</h2>
-        <p className="mb-4">Have a question for the Candidate Forum—or anytime? Send it here. I’ll answer and post them on this page, so check back soon.</p>
+        <p className="mb-4">Have a question for the Candidate Forum—or anytime? Send it here. I’ll answer and post them here, so check back soon.</p>
         {qThanks ? (
           <p className="text-lagoon font-semibold">Thank you for your question! I’ll post an answer here soon.</p>
         ) : (
