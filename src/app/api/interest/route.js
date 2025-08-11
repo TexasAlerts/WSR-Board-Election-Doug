@@ -13,7 +13,7 @@ export async function POST(req) {
   }
   try {
     const schema = z.object({
-      type: z.string().max(200).optional().default('updates'),
+      types: z.array(z.string()).min(1, 'Select at least one option'),
       name: z.string().min(1, 'Name is required').max(200),
       email: z.string().email('Invalid email').max(200),
       phone: z.string().max(200).optional().nullable(),
@@ -25,7 +25,8 @@ export async function POST(req) {
       const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
-    const { type, name, email, phone, message } = parsed.data;
+    const { types, name, email, phone, message } = parsed.data;
+    const type = types.join(', ');
     const { error } = await supabase
       .from('interest')
       .insert({ type, name, email, phone: phone ?? null, message: message ?? null });
@@ -34,7 +35,7 @@ export async function POST(req) {
     }
     sendNotificationEmail(
       'New interest submission',
-      `Type: ${type}\nName: ${name}\nEmail: ${email}\nPhone: ${phone || ''}\nMessage: ${message || ''}`
+      `Types: ${type}\nName: ${name}\nEmail: ${email}\nPhone: ${phone || ''}\nMessage: ${message || ''}`
     ).catch((err) => console.error('Email failed', err));
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {

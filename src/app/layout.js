@@ -1,11 +1,13 @@
 import './globals.css';
 import StickyNav from '../components/StickyNav';
+import MobileCTA from '../components/MobileCTA';
 
 export const metadata = {
   title: 'Doug Charles for Windsong Ranch HOA',
   description: 'Campaign site for Windsong Ranch HOA board election',
-  viewport: { width: 'device-width', initialScale: 1 },
 };
+
+export const viewport = { width: 'device-width', initialScale: 1 };
 
 const KEY_DATES = [
   { label: 'Meet the Candidates', date: 'Aug 14 @ 6 PM', description: 'Ask your questions, hear real answers, hold us accountable.' },
@@ -34,38 +36,40 @@ export default function RootLayout({ children }) {
   const now = new Date().toISOString();
   const { phase, days } = getCountdown(now);
   const countdownLabel = phase === 'pre' ? 'Voting opens in' : phase === 'open' ? 'Voting closes in' : '';
+  const countdownText = `${countdownLabel} ${days} day${days === 1 ? '' : 's'}`;
 
   return (
     <html lang="en">
       <body>
         {/* Sticky key dates banner */}
-        <header className="bg-lagoon text-white text-sm sm:text-base py-2 px-4 sticky top-0 z-50 shadow-md">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-y-1">
-            <div className="flex flex-col sm:flex-row flex-wrap gap-x-4 gap-y-1">
-              {KEY_DATES.map((item, idx) => (
-                <div key={idx} className="whitespace-nowrap">
-                  <strong>{item.label}</strong> – {item.date}
-                </div>
-              ))}
-              <div className="whitespace-nowrap">
-                <strong>One vote per home address by a Title Owner</strong>
+        <header className="bg-lagoon text-white text-xs sm:text-sm py-2 px-4 sticky top-0 z-50 shadow-md space-y-2">
+          <div className="flex flex-wrap justify-center gap-2">
+            {KEY_DATES.map((item, idx) => (
+              <div
+                key={idx}
+                className="bg-lagoon-light text-lagoon px-3 py-1 rounded-full font-semibold uppercase"
+              >
+                {item.date} – {item.label}
               </div>
+            ))}
+            <div className="bg-lagoon-light text-lagoon px-3 py-1 rounded-full font-semibold uppercase">
+              1 VOTE PER ADDRESS (TITLE OWNER)
             </div>
-            {phase !== 'post' && (
-                <div className="ml-auto text-right">
-                  {/* Highlight the countdown label and number so it stands out */}
-                  <span className="font-semibold text-coral whitespace-nowrap">
-                    <span className="uppercase">{countdownLabel}</span> {days} day{days === 1 ? '' : 's'}
-                  </span>
-                </div>
-              )}
+          </div>
+          {phase !== 'post' && (
+            <div className="text-center">
+              <span className="font-semibold text-coral uppercase whitespace-nowrap">
+                {countdownText}
+              </span>
             </div>
-          </header>
+          )}
+        </header>
         {/* Navigation */}
         <StickyNav />
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-24">
           {children}
         </main>
+        <MobileCTA />
         <footer className="bg-white py-6 mt-16 border-t">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-center">
             Self‑funded by Doug Charles. | © {new Date().getFullYear()} Windsong Ranch HOA Election
