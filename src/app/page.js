@@ -21,6 +21,9 @@ import {
   Home as HomeIcon,
   Compass,
   Link as LinkIcon,
+  FileText,
+  Megaphone,
+  Users,
 } from 'lucide-react';
 
 function HomeContent() {
@@ -187,21 +190,25 @@ function HomeContent() {
       {/* Promises */}
       <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <div className="card">
+          <FileText className="h-10 w-10 text-lagoon mb-2" />
           <h3 className="text-xl font-semibold mb-2">Ensure Transparency & Accountability</h3>
           <p>I will ensure every assessment, contract, and decision is clear and accessible to you. I’ll fight for open budgets, public explanations, and genuine two‑way dialogue.</p>
           <p className="quote mt-2">“Transparent governance isn’t optional—it’s a promise I make to you.”</p>
         </div>
         <div className="card">
+          <Megaphone className="h-10 w-10 text-lagoon mb-2" />
           <h3 className="text-xl font-semibold mb-2">Empower Homeowners & Amplify Your Voice</h3>
           <p>Homeowners—not developers—should drive our policies. We’ll staff committees with Windsong’s talented, passionate, and expert residents—and I’ll always be available to listen and advocate for your concerns.</p>
           <p className="quote mt-2">“Boards don’t own communities—homeowners do. Together we will build a board that serves you, not itself.”</p>
         </div>
         <div className="card">
+          <Users className="h-10 w-10 text-lagoon mb-2" />
           <h3 className="text-xl font-semibold mb-2">Unite Windsong</h3>
           <p>Townhomes, Villas, Peninsula, Crosswater, and every street—no neighborhood left behind. Our diversity is our strength, and we are stronger together.</p>
           <p className="quote mt-2">“Diverse in character, united in purpose—one Windsong, one voice.”</p>
         </div>
         <div className="card">
+          <Shield className="h-10 w-10 text-lagoon mb-2" />
           <h3 className="text-xl font-semibold mb-2">Protect Our Lifestyle & Practice Fiscal Stewardship</h3>
           <p>I’ll safeguard our reserve fund, minimize unnecessary assessment increases, and ensure our contracts deliver real value. We’ll protect and enhance our amenities—The Lagoon, trails, parks, and green spaces—so Windsong stays vibrant and thriving.</p>
           <p className="quote mt-2">“Our lifestyle is our legacy. I’ll ensure it’s preserved for all of us, today and tomorrow.”</p>
@@ -282,13 +289,18 @@ function HomeContent() {
       {/* Q&A published answers */}
       {questions.length > 0 && (
         <section>
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4">Questions & Answers</h2>
-          <p className="mb-4">See recent questions answered, updated weekly.</p>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">Recent Questions</h2>
+          <p className="mb-4">
+            See what neighbors are asking. Answers are on the{' '}
+            <Link href="/qna" className="underline">
+              Q&amp;A page
+            </Link>
+            .
+          </p>
           <div className="space-y-6">
             {questions.map((q) => (
               <div key={q.id} className="border-l-4 border-lagoon pl-4 py-2">
                 <p className="font-medium">Q: {q.question}</p>
-                <p className="mt-1">A: {q.answer}</p>
               </div>
             ))}
           </div>

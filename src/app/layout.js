@@ -1,10 +1,14 @@
 import './globals.css';
 import StickyNav from '../components/StickyNav';
+import MobileCTABar from '../components/MobileCTABar';
 
 export const metadata = {
   title: 'Doug Charles for Windsong Ranch HOA',
   description: 'Campaign site for Windsong Ranch HOA board election',
   viewport: { width: 'device-width', initialScale: 1 },
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 const KEY_DATES = [
@@ -41,7 +45,7 @@ export default function RootLayout({ children }) {
       <body>
         {/* Sticky key dates banner */}
         <header className="bg-lagoon text-white text-sm sm:text-base py-2 px-4 sticky top-0 z-50 shadow-md">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-y-1">
+          <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-y-1 text-center sm:text-left">
             <div className="flex flex-col sm:flex-row flex-wrap gap-x-4 gap-y-1">
               {KEY_DATES.map((item, idx) => (
                 <div key={idx} className="whitespace-nowrap">
@@ -53,26 +57,27 @@ export default function RootLayout({ children }) {
               </div>
             </div>
             {phase !== 'post' && (
-              <div className="ml-auto text-right">
+              <div className="sm:ml-auto sm:text-right">
                 {/* Highlight the countdown label and number so it stands out */}
                 <span className="font-semibold text-coral whitespace-nowrap uppercase">
                   {countdownText}
                 </span>
               </div>
             )}
-            </div>
-          </header>
+          </div>
+        </header>
         {/* Navigation */}
         <StickyNav />
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 sm:pb-8">
           {children}
         </main>
-        <footer className="bg-white py-6 mt-16 border-t">
+        <footer className="bg-white py-6 mt-16 border-t pb-24 sm:pb-6">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-center">
             Self‑funded by Doug Charles. | © {new Date().getFullYear()} Windsong Ranch HOA Election
           </div>
         </footer>
-      </body>
-    </html>
+        <MobileCTABar />
+        </body>
+      </html>
   );
 }
