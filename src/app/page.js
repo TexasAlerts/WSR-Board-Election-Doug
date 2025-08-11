@@ -204,8 +204,8 @@ function HomeContent() {
         <div className="card flex flex-col items-center text-center">
           <Users className="w-12 h-12 text-lagoon mb-4" aria-hidden="true" />
         <h3 className="text-xl font-semibold mb-2">Unite Windsong</h3>
-          <p>Townhomes, Villas, Peninsula, Crosswater, and every street—No neighborhood left behind. Our diversity is our strength. We are stronger together.</p>
-          <p className="quote mt-2 text-base sm:text-lg">“Diverse in character, united in purpose—One Windsong, one voice.”</p>
+          <p>Townhomes, Villas, Peninsula, Crosswater, and every street in between—No neighborhood left behind. From young families to empty nesters, from every background and every walk of life, we share one community and one future. Windsong Ranch is more than a place—it’s where our stories, dreams, and journeys come together as home.</p>
+          <p className="quote mt-2 text-base sm:text-lg">“Together, we turn houses into homes, neighbors into friends, and Windsong Ranch into a place where everyone belongs.”</p>
         </div>
         <div className="card flex flex-col items-center text-center">
           <PiggyBank className="w-12 h-12 text-lagoon mb-4" aria-hidden="true" />
