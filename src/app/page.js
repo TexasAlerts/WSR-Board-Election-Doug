@@ -20,6 +20,9 @@ import {
   Home as HomeIcon,
   Compass,
   Link as LinkIcon,
+  Megaphone,
+  Users,
+  ClipboardList,
 } from 'lucide-react';
 
 export default function Home() {
@@ -31,7 +34,7 @@ export default function Home() {
   const [qThanks, setQThanks] = useState(false);
   // Form state for get involved / endorsement
   const [mode, setMode] = useState('involved');
-  const [formType, setFormType] = useState('updates');
+  const [selected, setSelected] = useState([]);
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
   const [submitMsg, setSubmitMsg] = useState('');
 
@@ -61,8 +64,6 @@ export default function Home() {
     const ft = params.get('form');
     if (ft === 'endorsement') {
       setMode('endorsement');
-    } else if (ft) {
-      setFormType(ft);
     }
   }, []);
 
@@ -101,16 +102,23 @@ export default function Home() {
         const res = await fetch('/api/interest', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: formType, name: form.name, email: form.email, phone: form.phone, message: form.message }),
+          body: JSON.stringify({ types: selected, name: form.name, email: form.email, phone: form.phone, message: form.message }),
         });
         if (res.ok) {
           setSubmitMsg('Thank you! We will be in touch.');
           setForm({ name: '', email: '', phone: '', message: '' });
+          setSelected([]);
         }
       }
     } catch (err) {
       console.error(err);
     }
+  }
+
+  function toggleSelection(value) {
+    setSelected((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+    );
   }
 
   // Neighborhood list to display as cards
@@ -119,9 +127,11 @@ export default function Home() {
     { name: 'Cadence', icon: AudioWaveform },
     { name: 'Creekside', icon: Waves },
     { name: 'Crosswater', icon: Cross },
+    { name: 'The Crossing', icon: LinkIcon },
     { name: 'The Enclave', icon: Shield },
     { name: 'Lakeside', icon: Waves },
     { name: 'The Landing', icon: PlaneLanding },
+    { name: 'Northview', icon: Compass },
     { name: 'The Overlook', icon: Eye },
     { name: 'The Peninsula', icon: MapPinned },
     { name: 'The Pinnacle', icon: Mountain },
@@ -129,8 +139,6 @@ export default function Home() {
     { name: 'The Summit', icon: MountainSnow },
     { name: 'The Townhomes', icon: Building2 },
     { name: 'The Villas', icon: HomeIcon },
-    { name: 'Northview', icon: Compass },
-    { name: 'The Crossing', icon: LinkIcon },
   ];
   // Colour palette for bespoke neighbourhood icons; cycles through these values
   const neighbourhoodColours = [
@@ -140,10 +148,10 @@ export default function Home() {
   ];
 
   const formOptions = [
-    { value: 'updates', label: 'Get Updates' },
-    { value: 'volunteer', label: 'Volunteer' },
-    { value: 'host', label: 'Host a Home Meeting' },
-    { value: 'meeting', label: 'Request a Meeting' },
+    { value: 'updates', label: 'Get Updates', desc: 'Receive campaign news and reminders' },
+    { value: 'volunteer', label: 'Volunteer', desc: 'Help distribute materials' },
+    { value: 'host', label: 'Host a Home Meeting', desc: 'Invite neighbours for a discussion' },
+    { value: 'meeting', label: 'Request a Meeting', desc: 'Chat with Doug one-on-one' },
   ];
 
   return (
@@ -160,11 +168,12 @@ export default function Home() {
           priority
         />
         <h1 className="text-4xl sm:text-5xl font-extrabold text-lagoon">Your Voice. Your Vote. Our Windsong.</h1>
+        <h2 className="text-xl sm:text-2xl font-semibold text-lagoon">For the first time, our voices can shape Windsong’s future.</h2>
         <p className="max-w-3xl mx-auto text-lg sm:text-xl leading-relaxed">
-          For the first time, homeowners will elect two representatives to our HOA Board—joining three developer-appointed members. These seats will set the tone for the transition to a fully homeowner-led board in the near future.
+          Homeowners will elect two representatives to our HOA Board—joining three developer-appointed members. These seats will set the tone for the transition to a fully homeowner-led board in the near future.
         </p>
         <p className="max-w-3xl mx-auto text-lg sm:text-xl">
-          I’m <strong>Doug Charles</strong>—and I’m running to listen, advocate, and represent every neighborhood in Windsong Ranch with transparency, fiscal responsibility, and an open door for every neighbor.
+          I’m <strong>Doug Charles.</strong> I’m running to <strong>listen</strong>, <strong>advocate</strong> and <strong>represent</strong> every neighbourhood in Windsong Ranch – with transparency, fiscal responsibility and an open door for every neighbour.
         </p>
         <div className="flex flex-wrap justify-center gap-4 mt-4">
           <Link
@@ -179,33 +188,37 @@ export default function Home() {
 
       {/* Promises */}
       <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="card">
-          <h3 className="text-xl font-semibold mb-2">Ensure Transparency & Accountability</h3>
-          <p>I will ensure every assessment, contract, and decision is clear and accessible to you. I’ll fight for open budgets, public explanations, and genuine two‑way dialogue.</p>
+        <div className="card text-center">
+          <Shield className="w-8 h-8 text-lagoon mb-3 mx-auto" aria-hidden="true" />
+          <h3 className="text-xl font-semibold mb-2">Deliver Transparency &amp; Accountability</h3>
+          <p>Every assessment, contract and decision will be clear and accessible. I’ll publish plain-language budget summaries and post-meeting Q&amp;As.</p>
           <p className="quote mt-2">“Transparent governance isn’t optional—it’s a promise I make to you.”</p>
         </div>
-        <div className="card">
-          <h3 className="text-xl font-semibold mb-2">Empower Homeowners & Amplify Your Voice</h3>
-          <p>Homeowners—not developers—should drive our policies. We’ll staff committees with Windsong’s talented, passionate, and expert residents—and I’ll always be available to listen and advocate for your concerns.</p>
+        <div className="card text-center">
+          <Megaphone className="w-8 h-8 text-lagoon mb-3 mx-auto" aria-hidden="true" />
+          <h3 className="text-xl font-semibold mb-2">Amplify Your Voice with Homeowner‑Led Committees</h3>
+          <p>Stand up homeowner-led committees – Finance, Landscape, Amenities – and publish applications quarterly. I’ll listen and advocate for your concerns.</p>
           <p className="quote mt-2">“Boards don’t own communities—homeowners do. Together we will build a board that serves you, not itself.”</p>
         </div>
-        <div className="card">
-          <h3 className="text-xl font-semibold mb-2">Unite Windsong</h3>
-          <p>Townhomes, Villas, Peninsula, Crosswater, and every street—no neighborhood left behind. Our diversity is our strength, and we are stronger together.</p>
+        <div className="card text-center">
+          <Users className="w-8 h-8 text-lagoon mb-3 mx-auto" aria-hidden="true" />
+          <h3 className="text-xl font-semibold mb-2">Unite as One Windsong</h3>
+          <p>No neighbourhood left behind – Townhomes, Villas, Peninsula, Crosswater and every street.</p>
           <p className="quote mt-2">“Diverse in character, united in purpose—one Windsong, one voice.”</p>
         </div>
-        <div className="card">
-          <h3 className="text-xl font-semibold mb-2">Protect Our Lifestyle & Practice Fiscal Stewardship</h3>
-          <p>I’ll safeguard our reserve fund, minimize unnecessary assessment increases, and ensure our contracts deliver real value. We’ll protect and enhance our amenities—The Lagoon, trails, parks, and green spaces—so Windsong stays vibrant and thriving.</p>
+        <div className="card text-center">
+          <ClipboardList className="w-8 h-8 text-lagoon mb-3 mx-auto" aria-hidden="true" />
+          <h3 className="text-xl font-semibold mb-2">Protect Our Lifestyle with Fiscal Stewardship</h3>
+          <p>Safeguard reserves, pressure‑test vendor contracts and minimise fee increases. Publish an annual value‑for‑dues report so homeowners see where every dollar goes.</p>
           <p className="quote mt-2">“Our lifestyle is our legacy. I’ll ensure it’s preserved for all of us, today and tomorrow.”</p>
         </div>
       </section>
 
       {/* Meet Doug */}
-      <section>
+      <section id="about">
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">Meet Doug</h2>
         <p className="mb-4">
-          <strong>Doug Charles</strong> has proudly called Windsong Ranch home since 2015, living in both Crosswater and the Peninsula. As a long‑time resident, husband, and father, he believes leadership is an act of service—not a pursuit of status. With more than 25&nbsp;years of executive leadership in financial services, Doug currently serves as a Senior Vice President overseeing multi‑million‑dollar budgets, complex vendor contracts, and national compliance operations. Doug’s civic service runs deep: two terms on Prosper’s Planning &amp; Zoning Commission, membership on the Town Bond Committee, and previous roles on HOA boards. In every position, he has championed fair representation, strategic growth, and fiscal stewardship. Doug listens first, leads collaboratively, and believes every assessment, contract, and resource should reflect homeowners’ interests—not just a select few. As Windsong Ranch transitions toward full homeowner governance, he is committed to guiding the community with transparency, integrity, and a deep love for his neighbors.
+          <strong>Doug Charles</strong> has proudly called Windsong Ranch home since 2015, living in both Crosswater and the Peninsula. As a long‑time resident, husband, and father, he believes leadership is an act of service—not a pursuit of status. With more than 25&nbsp;years of executive leadership in financial services, Doug currently serves as a Senior Vice President overseeing multi‑million‑dollar budgets, complex vendor contracts, and national compliance operations. He’s managed those budgets to reduce risks, improve services and prevent surprise fee increases. Doug’s civic service runs deep: two terms on Prosper’s Planning &amp; Zoning Commission, membership on the Town Bond Committee, and previous roles on HOA boards. In every position, he has championed fair representation, strategic growth, and fiscal stewardship. When he isn’t working, you’ll find him with his family at the Lagoon—one of many reasons he loves Windsong. Doug listens first, leads collaboratively, and believes every assessment, contract, and resource should reflect homeowners’ interests—not just a select few. As Windsong Ranch transitions toward full homeowner governance, he is committed to guiding the community with transparency, integrity, and a deep love for his neighbors.
         </p>
         <div className="quote">“Leadership isn’t about titles—it’s about service, stewardship, and listening to every voice.”</div>
       </section>
@@ -222,9 +235,7 @@ export default function Home() {
       {/* Lifestyle section */}
       <section>
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">Protect Our Community</h2>
-        <p>
-          From <strong>The Lagoon</strong> and miles of trails to parks, amphitheater events, and shared green spaces—Windsong is built for connection. Good governance keeps it thriving today and strong for tomorrow.
-        </p>
+        <p>Protect and enhance our amenities – <strong>The Lagoon</strong>, trails, parks and amphitheatre – through transparent budgeting and effective vendor management.</p>
       </section>
 
       {/* Neighborhood unity */}
@@ -250,22 +261,22 @@ export default function Home() {
       {/* Submit a question */}
       <section id="qna">
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">Ask Doug a Question</h2>
-        <p className="mb-4">Have a question for the Candidate Forum—or anytime? Send it here. I’ll answer and post them on this page, so check back soon.</p>
+        <p className="mb-4">Submit your question for the Candidate Forum; answered questions will be posted here within 48 hours.</p>
         {qThanks ? (
           <p className="text-lagoon font-semibold">Thank you for your question! I’ll post an answer here soon.</p>
         ) : (
           <form onSubmit={submitQuestion} className="space-y-3 max-w-xl">
             <div className="flex flex-col">
               <label htmlFor="qname" className="font-medium mb-1">Name*</label>
-              <input id="qname" required type="text" value={qForm.name} onChange={(e) => setQForm({ ...qForm, name: e.target.value })} className="border p-2 rounded" />
+              <input id="qname" name="name" autoComplete="name" required type="text" value={qForm.name} onChange={(e) => setQForm({ ...qForm, name: e.target.value })} className="border p-2 rounded" />
             </div>
             <div className="flex flex-col">
               <label htmlFor="qemail" className="font-medium mb-1">Email*</label>
-              <input id="qemail" required type="email" value={qForm.email} onChange={(e) => setQForm({ ...qForm, email: e.target.value })} className="border p-2 rounded" />
+              <input id="qemail" name="email" autoComplete="email" required type="email" value={qForm.email} onChange={(e) => setQForm({ ...qForm, email: e.target.value })} className="border p-2 rounded" />
             </div>
             <div className="flex flex-col">
               <label htmlFor="question" className="font-medium mb-1">Your Question*</label>
-              <textarea id="question" required rows={4} value={qForm.question} onChange={(e) => setQForm({ ...qForm, question: e.target.value })} className="border p-2 rounded"></textarea>
+              <textarea id="question" name="question" required rows={5} value={qForm.question} onChange={(e) => setQForm({ ...qForm, question: e.target.value })} className="border p-2 rounded"></textarea>
             </div>
             <button type="submit" className="bg-coral text-white px-5 py-2 rounded hover:bg-coral/90">Submit Question</button>
           </form>
@@ -323,53 +334,53 @@ export default function Home() {
             <>
               <div className="flex flex-col">
                 <span className="font-medium mb-1">I'm interested in*</span>
-                <div className="flex flex-wrap gap-2">
+                <div className="space-y-2">
                   {formOptions.map((opt) => (
-                    <button
-                      key={opt.value}
-                      type="button"
-                      onClick={() => setFormType(opt.value)}
-                      className={`px-4 py-2 rounded-full border ${
-                        formType === opt.value
-                          ? 'bg-lagoon text-white border-lagoon'
-                          : 'bg-white text-lagoon border-lagoon hover:bg-lagoon/10'
-                      }`}
-                      aria-pressed={formType === opt.value}
-                    >
-                      {opt.label}
-                    </button>
+                    <label key={opt.value} className="flex items-start space-x-2">
+                      <input
+                        type="checkbox"
+                        value={opt.value}
+                        checked={selected.includes(opt.value)}
+                        onChange={() => toggleSelection(opt.value)}
+                        className="mt-1"
+                      />
+                      <span>
+                        <span className="font-medium">{opt.label}</span> – {opt.desc}
+                      </span>
+                    </label>
                   ))}
                 </div>
               </div>
-              <div className="flex flex-col">
-                <label htmlFor="fname" className="font-medium mb-1">Name*</label>
-                <input id="fname" required type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="border p-2 rounded" />
-              </div>
-              <div className="flex flex-col">
-                <label htmlFor="femail" className="font-medium mb-1">Email*</label>
-                <input id="femail" required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="border p-2 rounded" />
-              </div>
-              {(formType === 'updates' || formType === 'volunteer') && (
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="flex flex-col">
+                  <label htmlFor="fname" className="font-medium mb-1">Name*</label>
+                  <input id="fname" name="name" autoComplete="name" required type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="border p-2 rounded" />
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="femail" className="font-medium mb-1">Email*</label>
+                  <input id="femail" name="email" autoComplete="email" required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="border p-2 rounded" />
+                </div>
                 <div className="flex flex-col">
                   <label htmlFor="fphone" className="font-medium mb-1">Mobile (optional)</label>
-                  <input id="fphone" type="text" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="border p-2 rounded" />
+                  <input id="fphone" name="phone" type="tel" inputMode="tel" autoComplete="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="border p-2 rounded" />
                 </div>
-              )}
+              </div>
               <div className="flex flex-col">
                 <label htmlFor="fmessage" className="font-medium mb-1">Message (optional)</label>
-                <textarea id="fmessage" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="border p-2 rounded" />
+                <textarea id="fmessage" name="message" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="border p-2 rounded" />
               </div>
+              <p className="text-xs text-charcoal/70">We’ll use your information only for campaign purposes.</p>
             </>
           )}
           {mode === 'endorsement' && (
             <>
               <div className="flex flex-col">
                 <label htmlFor="ename" className="font-medium mb-1">Name*</label>
-                <input id="ename" required type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="border p-2 rounded" />
+                <input id="ename" name="name" autoComplete="name" required type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="border p-2 rounded" />
               </div>
               <div className="flex flex-col">
                 <label htmlFor="emessage" className="font-medium mb-1">Message (optional)</label>
-                <textarea id="emessage" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="border p-2 rounded" />
+                <textarea id="emessage" name="message" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="border p-2 rounded" />
               </div>
             </>
           )}
