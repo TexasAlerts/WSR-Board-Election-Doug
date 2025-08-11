@@ -51,7 +51,7 @@ export default function StickyNav() {
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
         <div
-          className={`${open ? 'flex' : 'hidden'} absolute left-0 top-full w-full bg-white border-t mt-2 p-4 flex-col sm:static sm:p-0 sm:flex sm:flex-row sm:items-center gap-4 text-sm sm:text-base`}
+          className={`${open ? 'flex' : 'hidden'} absolute left-0 top-full w-full bg-white border-t mt-2 p-4 flex-col sm:static sm:w-auto sm:bg-transparent sm:border-0 sm:mt-0 sm:p-0 sm:flex sm:flex-row sm:items-center gap-4 text-sm sm:text-base`}
         >
           <Link href="/voting" className="flex items-center gap-1 hover:underline">
             <FileText className="h-4 w-4" />
