@@ -20,7 +20,7 @@ export default function EndorsementsPage() {
     <div className="space-y-8">
       <h1 className="text-3xl sm:text-4xl font-bold">Endorsements</h1>
       {endorsements.length === 0 ? (
-        <p>No endorsements yet. Submit yours on the home page!</p>
+        <p>No endorsements yet—submit yours on the home page.</p>
       ) : (
         <div className="space-y-4">
           {endorsements.map((e) => (

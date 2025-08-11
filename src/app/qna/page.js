@@ -20,7 +20,7 @@ export default function QnaPage() {
     <div className="space-y-8">
       <h1 className="text-3xl sm:text-4xl font-bold">Questions & Answers</h1>
       {questions.length === 0 ? (
-        <p>No answered questions yet. Submit one on the home page!</p>
+        <p>No questions have been answered yet. Submit yours on the home page.</p>
       ) : (
         <div className="space-y-6">
           {questions.map((q) => (
@@ -35,7 +35,7 @@ export default function QnaPage() {
       <div className="mt-6">
         {/* Use Link with hash to scroll to question form on home */}
         <Link href={{ pathname: '/', hash: 'qna' }} className="text-coral hover:underline font-medium">
-          Ask a question
+          Ask a Question
         </Link>
       </div>
     </div>

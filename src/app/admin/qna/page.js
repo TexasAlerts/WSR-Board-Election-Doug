@@ -20,7 +20,7 @@ export default function AdminQna() {
         const data = await res.json();
         setPending(data.data || []);
       } catch (err) {
-        setError('Error loading questions');
+        setError('Error loading questions.');
       }
       setLoading(false);
     }

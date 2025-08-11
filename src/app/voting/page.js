@@ -14,9 +14,9 @@ export default function Voting() {
       <section>
         <h2 className="text-2xl font-bold mb-2">Key Dates</h2>
         <ul className="list-disc list-inside space-y-1">
-          <li><strong>Meet the Candidates – Aug 14 @ 6 PM:</strong> Ask your questions, hear real answers, hold us accountable.</li>
-          <li><strong>Voting Opens – Aug 20:</strong> Vote online via Vote HOA Now — your chance to shape our future.</li>
-          <li><strong>Voting Closes – Sept 2:</strong> Don’t wait — make sure your voice is counted.</li>
+          <li><strong>Meet the Candidates – Aug 14 at 6 PM:</strong> Ask your questions, hear real answers, hold us accountable.</li>
+          <li><strong>Voting Opens – Aug 20:</strong> Vote online via Vote HOA Now—your chance to shape our future.</li>
+          <li><strong>Voting Closes – Sept 2:</strong> Don’t wait—make sure your voice is counted.</li>
           <li><strong>Results Announced – Sept 3 Special Meeting:</strong> Attend to hear who will represent us.</li>
         </ul>
       </section>

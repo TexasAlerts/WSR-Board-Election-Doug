@@ -8,21 +8,21 @@ index 8df7b90e82f66ebdce0ec283bb143e73c478f883..d5c7055516267ac190a031b0ce5ae463
  import Countdown from '../components/Countdown';
 +import Link from 'next/link';
  
- export const metadata = {
-   title: 'Doug Charles for Windsong Ranch HOA',
-   description: 'Campaign site for Windsong Ranch HOA board election',
-   viewport: { width: 'device-width', initialScale: 1 },
-   icons: {
-     icon: '/favicon.svg',
-   },
- };
+export const metadata = {
+  title: 'Doug Charles for Windsong Ranch HOA',
+  description: 'Campaign site for the Windsong Ranch HOA board election',
+  viewport: { width: 'device-width', initialScale: 1 },
+  icons: {
+    icon: '/favicon.svg',
+  },
+};
  
  const KEY_DATES = [
-   { label: 'Meet the Candidates', date: 'Aug 14 @ 6 PM', description: 'Ask your questions, hear real answers, hold us accountable.' },
-   { label: 'Voting Opens', date: 'Aug 20', description: 'Your chance to shape our future.', },
-   { label: 'Voting Closes', date: 'Sept 2', description: 'Make sure your voice is counted.', },
-   { label: 'Results Announced', date: 'Sept 3', description: 'Special meeting with results.' },
- ];
+  { label: 'Meet the Candidates', date: 'Aug 14 at 6 PM', description: 'Ask your questions, hear real answers, hold us accountable.' },
+  { label: 'Voting Opens', date: 'Aug 20', description: 'Your chance to shape our future.', },
+  { label: 'Voting Closes', date: 'Sept 2', description: 'Make sure your voice is counted.', },
+  { label: 'Results Announced', date: 'Sept 3', description: 'Special meeting to announce results.' },
+];
  
  export default function RootLayout({ children }) {
    return (
