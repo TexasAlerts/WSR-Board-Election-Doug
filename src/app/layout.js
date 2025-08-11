@@ -1,6 +1,7 @@
 import './globals.css';
 import StickyNav from '../components/StickyNav';
 import Countdown from '../components/Countdown';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Doug Charles for Windsong Ranch HOA',
@@ -43,14 +44,26 @@ export default function RootLayout({ children }) {
           </header>
         {/* Navigation */}
         <StickyNav />
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 sm:pb-8">
           {children}
         </main>
-        <footer className="bg-white py-6 mt-16 border-t">
+        <footer className="bg-white py-6 mt-16 border-t pb-24 sm:pb-6">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-center">
             Self‑funded by Doug Charles. | © {new Date().getFullYear()} Windsong Ranch HOA Election
           </div>
         </footer>
+        {/* Mobile call to action */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t py-2 px-4 flex justify-around sm:hidden z-50">
+          <Link href="/#get-involved" className="bg-lagoon text-white px-4 py-2 rounded-full text-sm">
+            Get Involved
+          </Link>
+          <Link
+            href="/?form=endorsement#get-involved"
+            className="bg-coral text-white px-4 py-2 rounded-full text-sm"
+          >
+            Endorse Doug
+          </Link>
+        </div>
       </body>
     </html>
   );

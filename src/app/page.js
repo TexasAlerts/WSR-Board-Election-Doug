@@ -21,6 +21,9 @@ import {
   Home as HomeIcon,
   Compass,
   Link as LinkIcon,
+  Megaphone,
+  Users,
+  PiggyBank,
 } from 'lucide-react';
 
 function HomeContent() {
@@ -185,23 +188,27 @@ function HomeContent() {
       </section>
 
       {/* Promises */}
-      <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="card">
+      <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="card flex flex-col items-center text-center">
+          <Eye className="w-12 h-12 text-lagoon mb-4" aria-hidden="true" />
           <h3 className="text-xl font-semibold mb-2">Ensure Transparency & Accountability</h3>
           <p>I will ensure every assessment, contract, and decision is clear and accessible to you. I’ll fight for open budgets, public explanations, and genuine two‑way dialogue.</p>
           <p className="quote mt-2">“Transparent governance isn’t optional—it’s a promise I make to you.”</p>
         </div>
-        <div className="card">
+        <div className="card flex flex-col items-center text-center">
+          <Megaphone className="w-12 h-12 text-lagoon mb-4" aria-hidden="true" />
           <h3 className="text-xl font-semibold mb-2">Empower Homeowners & Amplify Your Voice</h3>
           <p>Homeowners—not developers—should drive our policies. We’ll staff committees with Windsong’s talented, passionate, and expert residents—and I’ll always be available to listen and advocate for your concerns.</p>
           <p className="quote mt-2">“Boards don’t own communities—homeowners do. Together we will build a board that serves you, not itself.”</p>
         </div>
-        <div className="card">
+        <div className="card flex flex-col items-center text-center">
+          <Users className="w-12 h-12 text-lagoon mb-4" aria-hidden="true" />
           <h3 className="text-xl font-semibold mb-2">Unite Windsong</h3>
           <p>Townhomes, Villas, Peninsula, Crosswater, and every street—no neighborhood left behind. Our diversity is our strength, and we are stronger together.</p>
           <p className="quote mt-2">“Diverse in character, united in purpose—one Windsong, one voice.”</p>
         </div>
-        <div className="card">
+        <div className="card flex flex-col items-center text-center">
+          <PiggyBank className="w-12 h-12 text-lagoon mb-4" aria-hidden="true" />
           <h3 className="text-xl font-semibold mb-2">Protect Our Lifestyle & Practice Fiscal Stewardship</h3>
           <p>I’ll safeguard our reserve fund, minimize unnecessary assessment increases, and ensure our contracts deliver real value. We’ll protect and enhance our amenities—The Lagoon, trails, parks, and green spaces—so Windsong stays vibrant and thriving.</p>
           <p className="quote mt-2">“Our lifestyle is our legacy. I’ll ensure it’s preserved for all of us, today and tomorrow.”</p>
