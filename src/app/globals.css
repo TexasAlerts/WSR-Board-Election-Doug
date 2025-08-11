@@ -24,7 +24,7 @@
 @layer components {
   /* Quotes styling */
   .quote {
-    @apply italic text-base xs:text-lg text-lagoon-light;
+    @apply italic text-base sm:text-lg text-lagoon-light;
   }
 
   /* Utility for cards */
