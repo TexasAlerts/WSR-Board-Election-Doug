@@ -204,9 +204,8 @@ function HomeContent() {
         <div className="card flex flex-col items-center text-center">
           <Users className="w-12 h-12 text-lagoon mb-4" aria-hidden="true" />
           <h3 className="text-xl font-semibold mb-2">Unite Windsong</h3>
-          <p>Townhomes, Villas, Peninsula, Crosswater, and every street—no neighborhood left behind. Our diversity is our strength, and we are stronger together.</p>
           <p>“From the Townhomes to the Villas, Crosswater to the Peninsula, Windsong Ranch is many neighborhoods but one community. Our diversity—of people, homes, and life stories—is our strength. United, we protect our lifestyle, strengthen our bonds, and ensure no neighbor or neighborhood is left behind.”</p>
-          <p className="quote mt-2">“Diverse in character, united in purpose—one Windsong, one voice.”</p>
+          <p className="quote mt-2">“Our diversity is our strength—united, we keep Windsong a community for all.”</p>
         </div>
         <div className="card flex flex-col items-center text-center">
           <PiggyBank className="w-12 h-12 text-lagoon mb-4" aria-hidden="true" />
@@ -238,14 +237,15 @@ function HomeContent() {
       <section>
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">Protect Our Community</h2>
         <p>
-          From <strong>The Lagoon</strong> and miles of trails to parks, amphitheater events, and shared green spaces—Windsong is built for connection. Good governance keeps it thriving today and strong for tomorrow.
+            From <strong>The Lagoon</strong> and miles of trails to parks, sports courts, amphitheater events, and our picturesque open spaces—Windsong is built for connection. Good governance keeps it thriving today and strong for tomorrow.
+        </p>
         </p>
       </section>
 
       {/* Neighborhood unity */}
       <section>
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">One Windsong, Every Voice</h2>
-        <p className="mb-4">From Anthem to the Villas and every street in between—each neighborhood has its own character, but together we’re One Windsong.</p>
+        <p className="mb-4">From Crosswater to the Villas and each street in between—each neighborhood has its own character, but together we’re One Windsong.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {neighborhoods.map((item, idx) => {
             const colour = neighbourhoodColours[idx % neighbourhoodColours.length];
