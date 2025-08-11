@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import EndorsementsCarousel from '../components/EndorsementsCarousel';
 import {
   Music,
@@ -22,7 +23,7 @@ import {
   Link as LinkIcon,
 } from 'lucide-react';
 
-export default function Home() {
+function HomeContent() {
   // Q&A list and endorsements fetched from backend
   const [questions, setQuestions] = useState([]);
   const [endorsements, setEndorsements] = useState([]);
@@ -56,15 +57,16 @@ export default function Home() {
     loadData();
   }, []);
 
+  const searchParams = useSearchParams();
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const ft = params.get('form');
+    const ft = searchParams.get('form');
     if (ft === 'endorsement') {
       setMode('endorsement');
-    } else if (ft) {
-      setFormType(ft);
+    } else {
+      setMode('involved');
+      if (ft) setFormType(ft);
     }
-  }, []);
+  }, [searchParams]);
 
   async function submitQuestion(e) {
     e.preventDefault();
@@ -87,17 +89,17 @@ export default function Home() {
     e.preventDefault();
     setSubmitMsg('');
     try {
-      if (mode === 'endorsement') {
-        const res = await fetch('/api/endorsements', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: form.name, message: form.message }),
-        });
-        if (res.ok) {
-          setSubmitMsg('Thank you! Your endorsement has been received.');
-          setForm({ name: '', email: '', phone: '', message: '' });
-        }
-      } else {
+        if (mode === 'endorsement') {
+          const res = await fetch('/api/endorsements', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: form.name, email: form.email, message: form.message }),
+          });
+          if (res.ok) {
+            setSubmitMsg('Thank you! Your endorsement has been received.');
+            setForm({ name: '', email: '', phone: '', message: '' });
+          }
+        } else {
         const res = await fetch('/api/interest', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -173,7 +175,12 @@ export default function Home() {
           >
             Endorse Doug
           </Link>
-          <a href="#get-involved" className="px-6 py-3 bg-lagoon-light text-lagoon rounded-full hover:bg-lagoon-light/90">Get Involved</a>
+          <Link
+            href={{ pathname: '/', query: { form: 'updates' }, hash: 'get-involved' }}
+            className="px-6 py-3 bg-lagoon-light text-lagoon rounded-full hover:bg-lagoon-light/90"
+          >
+            Get Involved
+          </Link>
         </div>
       </section>
 
@@ -361,22 +368,54 @@ export default function Home() {
               </div>
             </>
           )}
-          {mode === 'endorsement' && (
-            <>
-              <div className="flex flex-col">
-                <label htmlFor="ename" className="font-medium mb-1">Name*</label>
-                <input id="ename" required type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="border p-2 rounded" />
-              </div>
-              <div className="flex flex-col">
-                <label htmlFor="emessage" className="font-medium mb-1">Message (optional)</label>
-                <textarea id="emessage" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="border p-2 rounded" />
-              </div>
-            </>
-          )}
+            {mode === 'endorsement' && (
+              <>
+                <div className="flex flex-col">
+                  <label htmlFor="ename" className="font-medium mb-1">Name*</label>
+                  <input
+                    id="ename"
+                    required
+                    type="text"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="border p-2 rounded"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="eemail" className="font-medium mb-1">Email*</label>
+                  <input
+                    id="eemail"
+                    required
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    className="border p-2 rounded"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="emessage" className="font-medium mb-1">Message (optional)</label>
+                  <textarea
+                    id="emessage"
+                    rows={4}
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    className="border p-2 rounded"
+                  />
+                </div>
+              </>
+            )}
           <button type="submit" className="bg-lagoon text-white px-5 py-2 rounded hover:bg-lagoon/90">Submit</button>
           {submitMsg && <p className="mt-2 text-lagoon font-semibold">{submitMsg}</p>}
         </form>
       </section>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={null}>
+      <HomeContent />
+    </Suspense>
   );
 }

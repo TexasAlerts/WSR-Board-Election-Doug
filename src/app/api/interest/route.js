@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
-import { sendNotificationEmail } from '../../../lib/sendEmail';
+import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
@@ -25,18 +25,23 @@ export async function POST(req) {
       const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
-    const { type, name, email, phone, message } = parsed.data;
-    const { error } = await supabase
-      .from('interest')
-      .insert({ type, name, email, phone: phone ?? null, message: message ?? null });
-    if (error) {
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
-    }
-    sendNotificationEmail(
-      'New interest submission',
-      `Type: ${type}\nName: ${name}\nEmail: ${email}\nPhone: ${phone || ''}\nMessage: ${message || ''}`
-    ).catch((err) => console.error('Email failed', err));
-    return NextResponse.json({ ok: true }, { status: 201 });
+      const { type, name, email, phone, message } = parsed.data;
+      const { error } = await supabase
+        .from('interest')
+        .insert({ type, name, email, phone: phone ?? null, message: message ?? null });
+      if (error) {
+        return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      }
+      sendEmail(
+        email,
+        'Thanks for getting involved',
+        `Hi ${name},\n\nThanks for your interest in ${type}.\n${message ? `Message: ${message}\n\n` : ''}We will be in touch and you can check back for updates.\n\n--\nDoug Charles`
+      ).catch((err) => console.error('User email failed', err));
+      sendNotificationEmail(
+        'New interest submission',
+        `Type: ${type}\nName: ${name}\nEmail: ${email}\nPhone: ${phone || ''}\nMessage: ${message || ''}`
+      ).catch((err) => console.error('Admin email failed', err));
+      return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
     return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
   }

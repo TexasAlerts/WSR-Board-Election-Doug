@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { requireAdmin } from '../../../../lib/admin-session';
+import { sendEmail } from '../../../../lib/sendEmail';
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE);
 
@@ -28,17 +29,27 @@ export async function POST(req) {
   if (!id || !action) {
     return NextResponse.json({ ok: false, error: 'Missing parameters' }, { status: 400 });
   }
-  if (action === 'approve') {
-    const { error } = await supabase
-      .from('questions')
-      .update({ status: 'approved', answer: answer || null })
-      .eq('id', id);
-    if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
-  } else if (action === 'reject') {
-    const { error } = await supabase
-      .from('questions')
-      .update({ status: 'rejected' })
-      .eq('id', id);
+    if (action === 'approve') {
+      const { data, error } = await supabase
+        .from('questions')
+        .update({ status: 'approved', answer: answer || null })
+        .eq('id', id)
+        .select('email,name')
+        .single();
+      if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      const site = process.env.SITE_URL || '';
+      if (data?.email) {
+        sendEmail(
+          data.email,
+          'Your question has been answered',
+          `Hi ${data.name || ''},\n\nYour question has been published: ${site}/qna\n\nThanks for reaching out!\n\n--\nDoug Charles`
+        ).catch((err) => console.error('User email failed', err));
+      }
+    } else if (action === 'reject') {
+      const { error } = await supabase
+        .from('questions')
+        .update({ status: 'rejected' })
+        .eq('id', id);
     if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
   } else {
     return NextResponse.json({ ok: false, error: 'Invalid action' }, { status: 400 });
