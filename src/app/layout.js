@@ -52,18 +52,15 @@ export default function RootLayout({ children }) {
               </div>
             </div>
             {phase !== 'post' && (
-              <div className="ml-auto text-right">
-                {/* Highlight the countdown label and number so it stands out */}
-                <span className="font-semibold uppercase text-coral">
-                  {countdownLabel}
-                </span>{' '}
-                <span className="font-semibold text-coral">
-                  {days} day{days === 1 ? '' : 's'}
-                </span>
-              </div>
-            )}
-          </div>
-        </header>
+                <div className="ml-auto text-right">
+                  {/* Highlight the countdown label and number so it stands out */}
+                  <span className="font-semibold text-coral whitespace-nowrap">
+                    <span className="uppercase">{countdownLabel}</span> {days} day{days === 1 ? '' : 's'}
+                  </span>
+                </div>
+              )}
+            </div>
+          </header>
         {/* Navigation */}
         <StickyNav />
         <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

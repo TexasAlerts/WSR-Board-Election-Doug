@@ -4,6 +4,23 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import EndorsementsCarousel from '../components/EndorsementsCarousel';
+import {
+  Music,
+  AudioWaveform,
+  Waves,
+  Cross,
+  Shield,
+  PlaneLanding,
+  Eye,
+  MapPinned,
+  Mountain,
+  MountainSnow,
+  Navigation,
+  Building2,
+  Home as HomeIcon,
+  Compass,
+  Link as LinkIcon,
+} from 'lucide-react';
 
 export default function Home() {
   // Q&A list and endorsements fetched from backend
@@ -13,6 +30,7 @@ export default function Home() {
   const [qForm, setQForm] = useState({ name: '', email: '', question: '' });
   const [qThanks, setQThanks] = useState(false);
   // Form state for get involved / endorsement
+  const [mode, setMode] = useState('involved');
   const [formType, setFormType] = useState('updates');
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
   const [submitMsg, setSubmitMsg] = useState('');
@@ -41,7 +59,11 @@ export default function Home() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const ft = params.get('form');
-    if (ft) setFormType(ft);
+    if (ft === 'endorsement') {
+      setMode('endorsement');
+    } else if (ft) {
+      setFormType(ft);
+    }
   }, []);
 
   async function submitQuestion(e) {
@@ -65,7 +87,7 @@ export default function Home() {
     e.preventDefault();
     setSubmitMsg('');
     try {
-      if (formType === 'endorsement') {
+      if (mode === 'endorsement') {
         const res = await fetch('/api/endorsements', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -93,9 +115,22 @@ export default function Home() {
 
   // Neighborhood list to display as cards
   const neighborhoods = [
-    'Anthem', 'Cadence', 'Creekside', 'Crosswater', 'The Enclave', 'Lakeside',
-    'The Landing', 'The Overlook', 'The Peninsula', 'The Pinnacle', 'The Point',
-    'The Summit', 'The Townhomes', 'The Villas', 'Northview', 'The Crossing'
+    { name: 'Anthem', icon: Music },
+    { name: 'Cadence', icon: AudioWaveform },
+    { name: 'Creekside', icon: Waves },
+    { name: 'Crosswater', icon: Cross },
+    { name: 'The Enclave', icon: Shield },
+    { name: 'Lakeside', icon: Waves },
+    { name: 'The Landing', icon: PlaneLanding },
+    { name: 'The Overlook', icon: Eye },
+    { name: 'The Peninsula', icon: MapPinned },
+    { name: 'The Pinnacle', icon: Mountain },
+    { name: 'The Point', icon: Navigation },
+    { name: 'The Summit', icon: MountainSnow },
+    { name: 'The Townhomes', icon: Building2 },
+    { name: 'The Villas', icon: HomeIcon },
+    { name: 'Northview', icon: Compass },
+    { name: 'The Crossing', icon: LinkIcon },
   ];
   // Colour palette for bespoke neighbourhood icons; cycles through these values
   const neighbourhoodColours = [
@@ -109,7 +144,6 @@ export default function Home() {
     { value: 'volunteer', label: 'Volunteer' },
     { value: 'host', label: 'Host a Home Meeting' },
     { value: 'meeting', label: 'Request a Meeting' },
-    { value: 'endorsement', label: 'Endorse Doug' },
   ];
 
   return (
@@ -130,7 +164,7 @@ export default function Home() {
           For the first time, homeowners will elect two representatives to our HOA Board—joining three developer-appointed members. These seats will set the tone for the transition to a fully homeowner-led board in the near future.
         </p>
         <p className="max-w-3xl mx-auto text-lg sm:text-xl">
-          I’m <strong>Doug Charles</strong>, and I’m running for <strong>purpose</strong>—to listen, advocate, and represent every neighborhood in Windsong Ranch with transparency, fiscal responsibility, and an open door for every neighbor.
+          I’m <strong>Doug Charles</strong>—and I’m running to listen, advocate, and represent every neighborhood in Windsong Ranch with transparency, fiscal responsibility, and an open door for every neighbor.
         </p>
         <div className="flex flex-wrap justify-center gap-4 mt-4">
           <Link
@@ -146,22 +180,22 @@ export default function Home() {
       {/* Promises */}
       <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <div className="card">
-          <h3 className="text-xl font-semibold mb-2">Transparency & Accountability</h3>
-          <p>Every assessment, contract, and decision should be clear and accessible to you. I’ll fight for open budgets, public explanations, and genuine two‑way dialogue.</p>
+          <h3 className="text-xl font-semibold mb-2">Ensure Transparency & Accountability</h3>
+          <p>I will ensure every assessment, contract, and decision is clear and accessible to you. I’ll fight for open budgets, public explanations, and genuine two‑way dialogue.</p>
           <p className="quote mt-2">“Transparent governance isn’t optional—it’s a promise I make to you.”</p>
         </div>
         <div className="card">
-          <h3 className="text-xl font-semibold mb-2">Empowered Homeowners & Active Voice</h3>
+          <h3 className="text-xl font-semibold mb-2">Empower Homeowners & Amplify Your Voice</h3>
           <p>Homeowners—not developers—should drive our policies. We’ll staff committees with Windsong’s talented, passionate, and expert residents—and I’ll always be available to listen and advocate for your concerns.</p>
           <p className="quote mt-2">“Boards don’t own communities—homeowners do. Together we will build a board that serves you, not itself.”</p>
         </div>
         <div className="card">
-          <h3 className="text-xl font-semibold mb-2">One Windsong</h3>
+          <h3 className="text-xl font-semibold mb-2">Unite Windsong</h3>
           <p>Townhomes, Villas, Peninsula, Crosswater, and every street—no neighborhood left behind. Our diversity is our strength, and we are stronger together.</p>
           <p className="quote mt-2">“Diverse in character, united in purpose—one Windsong, one voice.”</p>
         </div>
         <div className="card">
-          <h3 className="text-xl font-semibold mb-2">Fiscal Stewardship & Lifestyle Preservation</h3>
+          <h3 className="text-xl font-semibold mb-2">Protect Our Lifestyle & Practice Fiscal Stewardship</h3>
           <p>I’ll safeguard our reserve fund, minimize unnecessary assessment increases, and ensure our contracts deliver real value. We’ll protect and enhance our amenities—The Lagoon, trails, parks, and green spaces—so Windsong stays vibrant and thriving.</p>
           <p className="quote mt-2">“Our lifestyle is our legacy. I’ll ensure it’s preserved for all of us, today and tomorrow.”</p>
         </div>
@@ -187,7 +221,7 @@ export default function Home() {
 
       {/* Lifestyle section */}
       <section>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4">We Live in a Community Worth Protecting</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-4">Protect Our Community</h2>
         <p>
           From <strong>The Lagoon</strong> and miles of trails to parks, amphitheater events, and shared green spaces—Windsong is built for connection. Good governance keeps it thriving today and strong for tomorrow.
         </p>
@@ -198,14 +232,15 @@ export default function Home() {
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">One Windsong, Every Voice</h2>
         <p className="mb-4">From Anthem to the Villas and every street in between—each neighborhood has its own character, but together we’re One Windsong.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {neighborhoods.map((name, idx) => {
+          {neighborhoods.map((item, idx) => {
             const colour = neighbourhoodColours[idx % neighbourhoodColours.length];
+            const IconComp = item.icon;
             return (
-              <div key={name} className="flex items-center space-x-3 bg-white rounded-lg p-3 shadow-sm">
-                <div className={`w-9 h-9 flex items-center justify-center rounded-full text-white font-bold text-sm ${colour}`}>
-                  {name.charAt(0)}
+              <div key={item.name} className="flex items-center space-x-3 bg-white rounded-lg p-3 shadow-sm">
+                <div className={`w-9 h-9 flex items-center justify-center rounded-full ${colour}`}>
+                  <IconComp className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-sm sm:text-base font-medium text-charcoal">{name}</span>
+                <span className="text-sm sm:text-base font-medium text-charcoal">{item.name}</span>
               </div>
             );
           })}
@@ -241,6 +276,7 @@ export default function Home() {
       {questions.length > 0 && (
         <section>
           <h2 className="text-2xl sm:text-3xl font-bold mb-4">Questions & Answers</h2>
+          <p className="mb-4">See recent questions answered, updated weekly.</p>
           <div className="space-y-6">
             {questions.map((q) => (
               <div key={q.id} className="border-l-4 border-lagoon pl-4 py-2">
@@ -255,48 +291,88 @@ export default function Home() {
       {/* Get involved section */}
       <section id="get-involved">
         <h2 className="text-2xl sm:text-3xl font-bold mb-4">Join the Effort</h2>
-        <p className="mb-4">Select how you'd like to participate—Get Updates, Volunteer, Host a Home Meeting, Request a Meeting, or Endorse Doug.</p>
+        <p className="mb-4">Choose how you'd like to participate or submit an endorsement.</p>
+        <div className="flex flex-wrap gap-2 mb-4">
+          <button
+            type="button"
+            onClick={() => setMode('involved')}
+            className={`px-4 py-2 rounded-full border ${
+              mode === 'involved'
+                ? 'bg-lagoon text-white border-lagoon'
+                : 'bg-white text-lagoon border-lagoon hover:bg-lagoon/10'
+            }`}
+            aria-pressed={mode === 'involved'}
+          >
+            Get Involved
+          </button>
+          <button
+            type="button"
+            onClick={() => setMode('endorsement')}
+            className={`px-4 py-2 rounded-full border ${
+              mode === 'endorsement'
+                ? 'bg-coral text-white border-coral'
+                : 'bg-white text-coral border-coral hover:bg-coral/10'
+            }`}
+            aria-pressed={mode === 'endorsement'}
+          >
+            Endorse Doug
+          </button>
+        </div>
         <form onSubmit={submitGetInvolved} className="space-y-3 max-w-xl">
-          <div className="flex flex-col">
-            <span className="font-medium mb-1">I'm interested in*</span>
-            <div className="flex flex-wrap gap-2">
-              {formOptions.map((opt) => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => setFormType(opt.value)}
-                  className={`px-4 py-2 rounded-full border ${
-                    formType === opt.value
-                      ? 'bg-lagoon text-white border-lagoon'
-                      : 'bg-white text-lagoon border-lagoon hover:bg-lagoon/10'
-                  }`}
-                  aria-pressed={formType === opt.value}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="fname" className="font-medium mb-1">Name*</label>
-            <input id="fname" required type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="border p-2 rounded" />
-          </div>
-          {(formType !== 'endorsement') && (
-            <div className="flex flex-col">
-              <label htmlFor="femail" className="font-medium mb-1">Email*</label>
-              <input id="femail" required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="border p-2 rounded" />
-            </div>
+          {mode === 'involved' && (
+            <>
+              <div className="flex flex-col">
+                <span className="font-medium mb-1">I'm interested in*</span>
+                <div className="flex flex-wrap gap-2">
+                  {formOptions.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => setFormType(opt.value)}
+                      className={`px-4 py-2 rounded-full border ${
+                        formType === opt.value
+                          ? 'bg-lagoon text-white border-lagoon'
+                          : 'bg-white text-lagoon border-lagoon hover:bg-lagoon/10'
+                      }`}
+                      aria-pressed={formType === opt.value}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="fname" className="font-medium mb-1">Name*</label>
+                <input id="fname" required type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="border p-2 rounded" />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="femail" className="font-medium mb-1">Email*</label>
+                <input id="femail" required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="border p-2 rounded" />
+              </div>
+              {(formType === 'updates' || formType === 'volunteer') && (
+                <div className="flex flex-col">
+                  <label htmlFor="fphone" className="font-medium mb-1">Mobile (optional)</label>
+                  <input id="fphone" type="text" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="border p-2 rounded" />
+                </div>
+              )}
+              <div className="flex flex-col">
+                <label htmlFor="fmessage" className="font-medium mb-1">Message (optional)</label>
+                <textarea id="fmessage" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="border p-2 rounded" />
+              </div>
+            </>
           )}
-          {(formType === 'updates' || formType === 'volunteer') && (
-            <div className="flex flex-col">
-              <label htmlFor="fphone" className="font-medium mb-1">Mobile (optional)</label>
-              <input id="fphone" type="text" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="border p-2 rounded" />
-            </div>
+          {mode === 'endorsement' && (
+            <>
+              <div className="flex flex-col">
+                <label htmlFor="ename" className="font-medium mb-1">Name*</label>
+                <input id="ename" required type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="border p-2 rounded" />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="emessage" className="font-medium mb-1">Message (optional)</label>
+                <textarea id="emessage" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="border p-2 rounded" />
+              </div>
+            </>
           )}
-          <div className="flex flex-col">
-            <label htmlFor="fmessage" className="font-medium mb-1">Message (optional)</label>
-            <textarea id="fmessage" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="border p-2 rounded" />
-          </div>
           <button type="submit" className="bg-lagoon text-white px-5 py-2 rounded hover:bg-lagoon/90">Submit</button>
           {submitMsg && <p className="mt-2 text-lagoon font-semibold">{submitMsg}</p>}
         </form>
