@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
-import { sendNotificationEmail } from '../../../lib/sendEmail';
+import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
@@ -37,18 +37,23 @@ export async function POST(req) {
       const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
-    const { name, email, question } = parsed.data;
-    const { error } = await supabase
-      .from('questions')
-      .insert({ name, email, question, status: 'pending' });
-    if (error) {
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
-    }
-    sendNotificationEmail(
-      'New question submitted',
-      `Name: ${name}\nEmail: ${email}\nQuestion: ${question}`
-    ).catch((err) => console.error('Email failed', err));
-    return NextResponse.json({ ok: true }, { status: 201 });
+      const { name, email, question } = parsed.data;
+      const { error } = await supabase
+        .from('questions')
+        .insert({ name, email, question, status: 'pending' });
+      if (error) {
+        return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      }
+      sendEmail(
+        email,
+        'Thanks for your question',
+        `Hi ${name},\n\nThanks for your question:\n${question}\n\nWe will follow up once it has been answered.\n\n--\nDoug Charles`
+      ).catch((err) => console.error('User email failed', err));
+      sendNotificationEmail(
+        'New question submitted',
+        `Name: ${name}\nEmail: ${email}\nQuestion: ${question}`
+      ).catch((err) => console.error('Admin email failed', err));
+      return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
     return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
   }

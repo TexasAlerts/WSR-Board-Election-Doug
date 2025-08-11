@@ -28,6 +28,10 @@
 RESEND_API_KEY=<your Resend API key>
 NOTIFY_EMAIL=dbcharles@me.com
 SMTP_FROM=no-reply@dougcharles.com
+SUPABASE_URL=<your Supabase project URL>
+SUPABASE_ANON_KEY=<public anon key>
+SUPABASE_SERVICE_ROLE=<service role key>
+SITE_URL=https://www.dougcharles.com
 ```
 
    The Vercel Resend integration automatically populates `RESEND_API_KEY`.
