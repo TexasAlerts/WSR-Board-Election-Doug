@@ -39,7 +39,7 @@ export async function POST(req) {
       if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
       const site = process.env.SITE_URL || '';
       if (data?.email) {
-        sendEmail(
+        await sendEmail(
           data.email,
           'Your question has been answered',
           `Hi ${data.name || ''},\n\nYour question has been published: ${site}/qna\n\nThanks for reaching out!\n\n--\nDoug Charles`
