@@ -2,7 +2,6 @@
 
 import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   FileText,
   ThumbsUp,
@@ -38,15 +37,8 @@ export default function StickyNav() {
       className="bg-white shadow-sm py-3 px-4 sticky [top:var(--banner-offset)] z-40"
     >
       <div className="max-w-6xl mx-auto flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2 text-xl font-bold text-lagoon">
-          <Image
-            src="/wsr-logo.png"
-            alt="Windsong Ranch logo"
-            width={32}
-            height={32}
-            className="h-8 w-8"
-          />
-          <span className="hidden sm:inline">Home</span>
+        <Link href="/" className="text-xl font-bold text-lagoon">
+          Home
         </Link>
         <button
           className="sm:hidden p-2 text-lagoon"
