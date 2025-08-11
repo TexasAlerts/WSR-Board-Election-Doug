@@ -25,8 +25,8 @@ export default function RootLayout({ children }) {
       <body>
         {/* Sticky key dates banner */}
         <header className="bg-lagoon text-white text-sm sm:text-base py-2 px-4 sticky top-0 z-50 shadow-md">
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-y-1 md:gap-y-0">
-            <div className="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-1 w-full min-w-0 text-center md:text-left">
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-y-1 lg:gap-y-0">
+            <div className="flex flex-wrap justify-center lg:justify-start gap-x-4 gap-y-1 w-full min-w-0 text-center lg:text-left">
               {KEY_DATES.map((item, idx) => (
                 <div key={idx} className="whitespace-nowrap min-w-0 truncate">
                   <strong>{item.label}</strong> – {item.date}
@@ -36,7 +36,7 @@ export default function RootLayout({ children }) {
                 <strong>One vote per home address by a Title Owner</strong>
               </div>
             </div>
-            <div className="w-full md:w-auto mt-1 md:mt-0 text-center md:text-right">
+            <div className="w-full lg:w-auto mt-1 lg:mt-0">
               <Countdown open="2025-08-20T00:00:00-05:00" close="2025-09-02T23:59:59-05:00" />
             </div>
           </div>
