@@ -40,10 +40,10 @@ export default function StickyNav() {
             Q&A
           </Link>
           <Link
-            href={{ pathname: '/', hash: 'get-involved' }}
+            href={{ pathname: '/', hash: 'about' }}
             className="hover:underline"
           >
-            Get Involved
+            About Doug
           </Link>
         </div>
       </div>

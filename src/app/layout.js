@@ -34,6 +34,7 @@ export default function RootLayout({ children }) {
   const now = new Date().toISOString();
   const { phase, days } = getCountdown(now);
   const countdownLabel = phase === 'pre' ? 'Voting opens in' : phase === 'open' ? 'Voting closes in' : '';
+  const countdownText = `${countdownLabel} ${days} day${days === 1 ? '' : 's'}`;
 
   return (
     <html lang="en">
@@ -52,13 +53,13 @@ export default function RootLayout({ children }) {
               </div>
             </div>
             {phase !== 'post' && (
-                <div className="ml-auto text-right">
-                  {/* Highlight the countdown label and number so it stands out */}
-                  <span className="font-semibold text-coral whitespace-nowrap">
-                    <span className="uppercase">{countdownLabel}</span> {days} day{days === 1 ? '' : 's'}
-                  </span>
-                </div>
-              )}
+              <div className="ml-auto text-right">
+                {/* Highlight the countdown label and number so it stands out */}
+                <span className="font-semibold text-coral whitespace-nowrap uppercase">
+                  {countdownText}
+                </span>
+              </div>
+            )}
             </div>
           </header>
         {/* Navigation */}
