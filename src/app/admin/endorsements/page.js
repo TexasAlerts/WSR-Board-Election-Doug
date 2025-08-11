@@ -19,7 +19,7 @@ export default function AdminEndorsements() {
         const data = await res.json();
         setPending(data.data || []);
       } catch (err) {
-        setError('Error loading endorsements');
+        setError('Error loading endorsements.');
       }
       setLoading(false);
     }

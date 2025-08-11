@@ -9,9 +9,9 @@
   }
 
   body {
+    @apply font-sans text-base;
     background-color: theme('colors.sand.DEFAULT');
     color: theme('colors.charcoal.DEFAULT');
-    font-family: sans-serif;
     overflow-x: hidden;
   }
 

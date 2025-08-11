@@ -19,10 +19,10 @@ export default function AdminLogin() {
       if (res.ok) {
         router.push('/admin/qna');
       } else {
-        setError('Invalid password');
+        setError('Invalid password.');
       }
     } catch (err) {
-      setError('Error logging in');
+      setError('Error logging in.');
     }
   }
 
@@ -30,7 +30,7 @@ export default function AdminLogin() {
     <div className="max-w-md mx-auto mt-12 space-y-4">
       <h1 className="text-2xl font-bold">Admin Login</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Enter admin password" className="border p-2 rounded w-full" />
+        <input type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Enter the admin password" className="border p-2 rounded w-full" />
         <button type="submit" className="bg-lagoon text-white px-4 py-2 rounded">Login</button>
         {error && <p className="text-red-600">{error}</p>}
       </form>
