@@ -243,18 +243,18 @@ function HomeContent() {
 
       {/* Neighborhood unity */}
       <section>
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4">One Windsong, Every Voice</h2>
-        <p className="mb-4">From Anthem to the Villas and every street in between—each neighborhood has its own character, but together we’re One Windsong.</p>
-        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 text-center">One Windsong, Every Voice</h2>
+        <p className="mb-4 text-center">From Anthem to the Villas and every street in between—each neighborhood has its own character, but together we’re One Windsong.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {neighborhoods.map((item, idx) => {
             const colour = neighbourhoodColours[idx % neighbourhoodColours.length];
             const IconComp = item.icon;
             return (
-              <div key={item.name} className="flex items-center space-x-3 bg-white rounded-lg p-3 shadow-sm">
-                <div className={`w-9 h-9 flex items-center justify-center rounded-full ${colour}`}>
-                  <IconComp className="w-5 h-5 text-white" />
+              <div key={item.name} className="flex flex-col items-center p-2 bg-white rounded shadow">
+                <div className={`w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center rounded-full mb-2 ${colour}`}>
+                  <IconComp className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
                 </div>
-                <span className="text-sm sm:text-base font-medium text-charcoal">{item.name}</span>
+                <span className="text-xs sm:text-sm font-medium text-center text-charcoal">{item.name}</span>
               </div>
             );
           })}
