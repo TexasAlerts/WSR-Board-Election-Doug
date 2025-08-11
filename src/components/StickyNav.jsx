@@ -9,6 +9,7 @@ import {
   User,
   Menu,
   X,
+  Home as HomeIcon,
 } from 'lucide-react';
 
 export default function StickyNav() {
