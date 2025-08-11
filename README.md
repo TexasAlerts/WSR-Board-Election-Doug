@@ -37,3 +37,4 @@ SITE_URL=https://www.dougcharles.com
    The Vercel Resend integration automatically populates `RESEND_API_KEY`.
 
 4. Redeploy and test any feature that calls `sendNotificationEmail`.
+Preview test: Aug 11
