@@ -32,15 +32,17 @@ export async function POST(req) {
       if (error) {
         return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
       }
-      sendEmail(
-        email,
-        'Thanks for getting involved',
-        `Hi ${name},\n\nThanks for your interest in ${type}.\n${message ? `Message: ${message}\n\n` : ''}We will be in touch and you can check back for updates.\n\n--\nDoug Charles`
-      ).catch((err) => console.error('User email failed', err));
-      sendNotificationEmail(
-        'New interest submission',
-        `Type: ${type}\nName: ${name}\nEmail: ${email}\nPhone: ${phone || ''}\nMessage: ${message || ''}`
-      ).catch((err) => console.error('Admin email failed', err));
+      await Promise.all([
+        sendEmail(
+          email,
+          'Thanks for getting involved',
+          `Hi ${name},\n\nThanks for your interest in ${type}.\n${message ? `Message: ${message}\n\n` : ''}We will be in touch and you can check back for updates.\n\n--\nDoug Charles`
+        ).catch((err) => console.error('User email failed', err)),
+        sendNotificationEmail(
+          'New interest submission',
+          `Type: ${type}\nName: ${name}\nEmail: ${email}\nPhone: ${phone || ''}\nMessage: ${message || ''}`
+        ).catch((err) => console.error('Admin email failed', err))
+      ]);
       return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
     return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
