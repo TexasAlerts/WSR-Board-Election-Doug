@@ -17,16 +17,16 @@ export default function QnaPage() {
     load();
   }, []);
   return (
-    <div className="space-y-8">
-      <h1 className="text-3xl sm:text-4xl font-bold">Questions & Answers</h1>
+    <div className="space-y-8 px-2 w-full">
+      <h1 className="text-xl sm:text-3xl font-bold">Questions & Answers</h1>
       {questions.length === 0 ? (
         <p>No answered questions yet. Submit one on the home page!</p>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {questions.map((q) => (
-            <div key={q.id} className="border-l-4 border-lagoon pl-4 py-2">
-              <p className="font-medium">Q: {q.question}</p>
-              <p className="mt-1">A: {q.answer}</p>
+            <div key={q.id} className="border-l-4 border-lagoon pl-3 sm:pl-4 py-2 bg-white rounded">
+              <p className="font-medium text-base sm:text-lg">Q: {q.question}</p>
+              <p className="mt-1 text-sm sm:text-base">A: {q.answer}</p>
             </div>
           ))}
         </div>

@@ -60,20 +60,20 @@ export default function AdminQna() {
       ) : (
         <div className="space-y-6">
           {pending.map((q) => (
-            <div key={q.id} className="border p-4 rounded">
+            <div key={q.id} className="border p-4 rounded w-full">
               <p className="font-medium mb-2">{q.question}</p>
               <textarea
-                className="border p-2 rounded w-full mb-2"
+                className="border p-2 rounded w-full mb-2 min-h-[44px]"
                 placeholder="Write your answer here…"
                 value={answers[q.id] || ''}
                 onChange={(e) => handleAnswerChange(q.id, e.target.value)}
                 rows={3}
               ></textarea>
-              <div className="flex gap-2">
-                <button onClick={() => handleAction(q.id, 'approve')} className="bg-lagoon text-white px-3 py-1 rounded">
+              <div className="flex flex-col xs:flex-row gap-2 w-full">
+                <button onClick={() => handleAction(q.id, 'approve')} className="bg-lagoon text-white px-3 py-2 rounded w-full min-h-[44px]">
                   Approve
                 </button>
-                <button onClick={() => handleAction(q.id, 'reject')} className="bg-red-600 text-white px-3 py-1 rounded">
+                <button onClick={() => handleAction(q.id, 'reject')} className="bg-red-600 text-white px-3 py-2 rounded w-full min-h-[44px]">
                   Reject
                 </button>
               </div>

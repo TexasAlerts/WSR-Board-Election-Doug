@@ -17,16 +17,16 @@ export default function EndorsementsPage() {
     load();
   }, []);
   return (
-    <div className="space-y-8">
-      <h1 className="text-3xl sm:text-4xl font-bold">Endorsements</h1>
+    <div className="space-y-8 px-2 w-full">
+      <h1 className="text-xl sm:text-3xl font-bold">Endorsements</h1>
       {endorsements.length === 0 ? (
         <p>No endorsements yet. Submit yours on the home page!</p>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4 sm:space-y-6">
           {endorsements.map((e) => (
-            <div key={e.id} className="bg-white p-4 rounded shadow-sm">
-              <p className="font-medium">{e.name}</p>
-              {e.message && <p className="mt-1 italic">“{e.message}”</p>}
+            <div key={e.id} className="bg-white p-3 sm:p-4 rounded shadow-sm">
+              <p className="font-medium text-base sm:text-lg">{e.name}</p>
+              {e.message && <p className="mt-1 italic text-sm sm:text-base">“{e.message}”</p>}
             </div>
           ))}
         </div>
