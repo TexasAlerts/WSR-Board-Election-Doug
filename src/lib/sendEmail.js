@@ -1,6 +1,17 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resend;
+
+function getResend() {
+  if (!resend) {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      throw new Error('RESEND_API_KEY must be configured');
+    }
+    resend = new Resend(apiKey);
+  }
+  return resend;
+}
 
 /**
  * Send a notification email using the Resend API.
@@ -15,7 +26,7 @@ export async function sendNotificationEmail(subject, text) {
   if (!from || !to) {
     throw new Error('SMTP_FROM and NOTIFY_EMAIL must be configured');
   }
-  await resend.emails.send({
+  await getResend().emails.send({
     from,
     to,
     subject,
