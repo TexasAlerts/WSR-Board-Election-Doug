@@ -32,12 +32,14 @@ export default function StickyNav() {
     return () => window.removeEventListener('resize', updateOffset);
   }, []);
 
+  const close = () => setOpen(false);
+
   useEffect(() => {
-    setOpen(false);
+    close();
   }, [pathname]);
 
   const toggle = () => setOpen((o) => !o);
-  const linkProps = open ? { onClick: () => setOpen(false) } : {};
+  const linkProps = open ? { onClick: close } : {};
 
   return (
     <nav
