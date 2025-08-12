@@ -28,11 +28,7 @@ export default function Voting() {
         <h2 className="text-2xl font-bold mb-2">Why This Election Matters</h2>
         <p>These two homeowner‑elected seats join three developer‑appointed members. While a developer majority remains today, <strong>your vote sets the tone</strong> for full homeowner governance in the near future. Accountability, transparency, and unity start with who you elect now.</p>
       </section>
-      <section>
-        <h2 className="text-2xl font-bold mb-2">Role of a Board Member</h2>
-        <p>Board members are stewards of our shared home. They oversee budgets and reserves, set policy, guide maintenance and vendor performance, communicate decisions, and listen—truly listen—to homeowners. It’s collaborative work that balances today’s needs with tomorrow’s plans. When board members do it well, homeowners feel informed, heard, and confident about where we’re headed. That’s the Windsong we all want to live in.</p>
-        <p className="mt-2"><Link href="/docs/board-member-101.pdf" target="_blank" rel="noopener noreferrer" className="text-lagoon underline">Download the official HOA Board Member overview (PDF)</Link></p>
-      </section>
+      {/* Role of a Board Member section moved to homepage for unique emphasis */}
     </div>
   );
 }
