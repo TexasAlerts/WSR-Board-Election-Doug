@@ -237,7 +237,7 @@ function HomeContent() {
       <section>
         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4">Protect Our Community</h2>
         <p>
-          From <strong>The Lagoon</strong> and miles of trails to parks, amphitheater events, and shared green spaces—Windsong is built for connection. Good governance keeps it thriving today and strong for tomorrow.
+          From the tranquil Lagoon to vibrant sports courts, lush parks, and scenic trails, Windsong Ranch thrives with lively clubs, warm gatherings, and unforgettable events. Good governance protects this cherished community, ensuring it flourishes for generations.
         </p>
       </section>
 
