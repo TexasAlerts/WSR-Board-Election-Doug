@@ -27,6 +27,13 @@ const KEY_DATES = [
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <meta property="og:image" content="/wsr-logo.png" />
+        <meta property="og:image:alt" content="Windsong Ranch HOA Logo" />
+        <meta name="twitter:image" content="/wsr-logo.png" />
+        <meta name="twitter:image:alt" content="Windsong Ranch HOA Logo" />
+      </head>
       <body>
         {/* Sticky key dates banner */}
         <header className="bg-lagoon text-white text-sm sm:text-base py-2 px-4 sticky top-0 z-50 shadow-md">
