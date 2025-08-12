@@ -7,10 +7,14 @@ import Script from 'next/script';
 export const metadata = {
   title: 'Doug Charles for Windsong Ranch HOA',
   description: 'Campaign site for Windsong Ranch HOA board election',
-  viewport: { width: 'device-width', initialScale: 1 },
   icons: {
     icon: '/favicon.svg',
   },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 const KEY_DATES = [

@@ -4,6 +4,11 @@ export const metadata = {
   title: 'Voting Info | Windsong HOA Election',
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export default function Voting() {
   return (
     <div className="space-y-8">
@@ -28,7 +33,14 @@ export default function Voting() {
         <h2 className="text-2xl font-bold mb-2">Why This Election Matters</h2>
         <p>These two homeowner‑elected seats join three developer‑appointed members. While a developer majority remains today, <strong>your vote sets the tone</strong> for full homeowner governance in the near future. Accountability, transparency, and unity start with who you elect now.</p>
       </section>
-      {/* Role of a Board Member section moved to homepage for unique emphasis */}
+      <section>
+        <h2 className="text-2xl font-bold mb-2">Role of a Board Member</h2>
+        <p>
+          <Link href="/board-role" className="text-lagoon underline hover:text-coral font-semibold">
+            Learn about the Role of a Board Member, why it matters, and why Doug is the right choice
+          </Link>
+        </p>
+      </section>
     </div>
   );
 }
