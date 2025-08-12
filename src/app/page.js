@@ -222,10 +222,10 @@ function HomeContent() {
           <strong>Doug Charles</strong> has proudly called <span className="text-lagoon font-semibold">Windsong Ranch</span> home since 2015, living in both <strong>Crosswater</strong> and <strong>the Peninsula</strong>. As a <em>long‑time resident, husband, and father</em>, he believes <span className="text-coral font-semibold">leadership is an act of service—not a pursuit of status</span>.<br/>
           With more than <strong>25 years of executive leadership</strong> in financial services, Doug currently serves as a <strong>Senior Vice President</strong> overseeing <span className="text-lagoon font-semibold">multi‑million‑dollar budgets</span>, complex vendor contracts, and national compliance operations.<br/>
           Doug’s civic service runs deep: <strong>two terms on Prosper’s Planning &amp; Zoning Commission</strong>, membership on the <strong>Town Bond Committee</strong>, and previous roles on HOA boards.<br/>
-          In every position, he has championed <span className="text-coral font-semibold">fair representation, strategic growth, and fiscal stewardship</span>. Doug <em>listens first, leads collaboratively</em>, and believes every assessment, contract, and resource should reflect homeowners’ interests—not just a select few.<br/>
+          In every position, he has championed <strong>fair representation, strategic growth, and fiscal stewardship</strong>. Doug <em>listens first, leads collaboratively</em>, and believes every assessment, contract, and resource should reflect homeowners’ interests—not just a select few.<br/>
           As Windsong Ranch transitions toward full homeowner governance, he is committed to guiding the community with <span className="text-lagoon font-semibold">transparency, integrity, and a deep love for his neighbors</span>.
         </p>
-        <div className="quote text-base sm:text-lg">“<span className="text-coral font-semibold">Leadership isn’t about titles—it’s about service, stewardship, and listening to every voice.</span>”</div>
+        <div className="quote text-base sm:text-lg">“<span className="text-lagoon font-semibold">Leadership isn’t about titles—it’s about service, stewardship, and listening to every voice.</span>”</div>
       </section>
 
       {/* Endorsements display */}
