@@ -1,8 +1,4 @@
 "use client";
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-};
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
