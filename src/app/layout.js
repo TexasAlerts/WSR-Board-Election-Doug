@@ -2,6 +2,7 @@ import './globals.css';
 import StickyNav from '../components/StickyNav';
 import Countdown from '../components/Countdown';
 import Link from 'next/link';
+import Script from 'next/script';
 
 export const metadata = {
   title: 'Doug Charles for Windsong Ranch HOA',
@@ -43,6 +44,44 @@ export default function RootLayout({ children }) {
         </header>
         {/* Navigation */}
         <StickyNav />
+        {/* SEO: JSON-LD structured data for homepage and key subpages */}
+        <Script id="structured-data" type="application/ld+json" strategy="afterInteractive">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Doug Charles for Windsong Ranch HOA",
+              "url": "https://www.dougcharles.com",
+              "description": "Official campaign site for Doug Charles, candidate for Windsong Ranch HOA Board. Learn about Doug, voting info, endorsements, Q&A, and the role of a board member.",
+              "publisher": {
+                "@type": "Person",
+                "name": "Doug Charles"
+              },
+              "mainEntity": [
+                {
+                  "@type": "WebPage",
+                  "name": "Voting Info",
+                  "url": "https://www.dougcharles.com/voting"
+                },
+                {
+                  "@type": "WebPage",
+                  "name": "Endorsements",
+                  "url": "https://www.dougcharles.com/endorsements"
+                },
+                {
+                  "@type": "WebPage",
+                  "name": "Q&A",
+                  "url": "https://www.dougcharles.com/qna"
+                },
+                {
+                  "@type": "WebPage",
+                  "name": "Role of a Board Member",
+                  "url": "https://www.dougcharles.com/board-role"
+                }
+              ]
+            }
+          `}
+        </Script>
         <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 sm:pb-8">
           {children}
         </main>
