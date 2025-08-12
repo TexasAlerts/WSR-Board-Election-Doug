@@ -48,7 +48,7 @@ export default function RootLayout({ children }) {
         </main>
         <footer className="bg-white py-6 mt-16 border-t pb-24 sm:pb-6">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-center">
-            Self‑funded by Doug Charles. | © {new Date().getFullYear()} Windsong Ranch HOA Election
+            Programmed and owned by Doug Charles. | © {new Date().getFullYear()} Windsong Ranch HOA Election
           </div>
         </footer>
         {/* Mobile call to action */}
