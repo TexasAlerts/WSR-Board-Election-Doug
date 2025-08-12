@@ -29,10 +29,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <meta property="og:image" content="/wsr-logo.png" />
-        <meta property="og:image:alt" content="Windsong Ranch HOA Logo" />
-        <meta name="twitter:image" content="/wsr-logo.png" />
-        <meta name="twitter:image:alt" content="Windsong Ranch HOA Logo" />
+        <meta property="og:image" content="/campaign-preview.png" />
+        <meta property="og:image:alt" content="Doug Charles for Windsong Ranch HOA Board Election - One Windsong, Every Voice" />
+        <meta name="twitter:image" content="/campaign-preview.png" />
+        <meta name="twitter:image:alt" content="Doug Charles for Windsong Ranch HOA Board Election - One Windsong, Every Voice" />
       </head>
       <body>
         {/* Sticky key dates banner */}
