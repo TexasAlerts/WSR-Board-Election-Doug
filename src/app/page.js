@@ -219,9 +219,13 @@ function HomeContent() {
       <section id="about">
         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4">Meet Doug</h2>
         <p className="mb-4">
-          <strong>Doug Charles</strong> has proudly called Windsong Ranch home since 2015, living in both Crosswater and the Peninsula. As a long‑time resident, husband, and father, he believes leadership is an act of service—not a pursuit of status. With more than 25&nbsp;years of executive leadership in financial services, Doug currently serves as a Senior Vice President overseeing multi‑million‑dollar budgets, complex vendor contracts, and national compliance operations. Doug’s civic service runs deep: two terms on Prosper’s Planning &amp; Zoning Commission, membership on the Town Bond Committee, and previous roles on HOA boards. In every position, he has championed fair representation, strategic growth, and fiscal stewardship. Doug listens first, leads collaboratively, and believes every assessment, contract, and resource should reflect homeowners’ interests—not just a select few. As Windsong Ranch transitions toward full homeowner governance, he is committed to guiding the community with transparency, integrity, and a deep love for his neighbors.
+          <strong>Doug Charles</strong> has proudly called <span className="text-lagoon font-semibold">Windsong Ranch</span> home since 2015, living in both <strong>Crosswater</strong> and <strong>the Peninsula</strong>. As a <em>long‑time resident, husband, and father</em>, he believes <span className="text-coral font-semibold">leadership is an act of service—not a pursuit of status</span>.<br/>
+          With more than <strong>25 years of executive leadership</strong> in financial services, Doug currently serves as a <strong>Senior Vice President</strong> overseeing <span className="text-lagoon font-semibold">multi‑million‑dollar budgets</span>, complex vendor contracts, and national compliance operations.<br/>
+          Doug’s civic service runs deep: <strong>two terms on Prosper’s Planning &amp; Zoning Commission</strong>, membership on the <strong>Town Bond Committee</strong>, and previous roles on HOA boards.<br/>
+          In every position, he has championed <span className="text-coral font-semibold">fair representation, strategic growth, and fiscal stewardship</span>. Doug <em>listens first, leads collaboratively</em>, and believes every assessment, contract, and resource should reflect homeowners’ interests—not just a select few.<br/>
+          As Windsong Ranch transitions toward full homeowner governance, he is committed to guiding the community with <span className="text-lagoon font-semibold">transparency, integrity, and a deep love for his neighbors</span>.
         </p>
-        <div className="quote text-base sm:text-lg">“Leadership isn’t about titles—it’s about service, stewardship, and listening to every voice.”</div>
+        <div className="quote text-base sm:text-lg">“<span className="text-coral font-semibold">Leadership isn’t about titles—it’s about service, stewardship, and listening to every voice.</span>”</div>
       </section>
 
       {/* Endorsements display */}
@@ -237,7 +241,7 @@ function HomeContent() {
       <section>
         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4">Protect Our Community</h2>
         <p>
-          From the tranquil Lagoon to vibrant sports courts, lush parks, and scenic trails, Windsong Ranch thrives with lively clubs, warm gatherings, and unforgettable events. Good governance protects this cherished community, ensuring it flourishes for generations.
+          From the <strong>tranquil Lagoon</strong> to <strong>vibrant sports courts</strong>, <strong>lush parks</strong>, and <strong>scenic trails</strong>, Windsong Ranch thrives with <strong>lively clubs</strong>, <strong>warm gatherings</strong>, and <strong>unforgettable events</strong>. <span className="text-lagoon font-semibold">Good governance protects this cherished community, ensuring it flourishes for generations.</span>
         </p>
       </section>
 
