@@ -10,6 +10,7 @@ import {
   Menu,
   X,
   Home as HomeIcon,
+  Briefcase,
 } from 'lucide-react';
 
 export default function StickyNav() {
@@ -70,6 +71,11 @@ export default function StickyNav() {
           <Link href="/qna" className="flex items-center gap-1 hover:underline">
             <HelpCircle className="h-4 w-4" /> Q&amp;A
           </Link>
+          <Link href={{ pathname: '/', hash: 'board-role' }} className="flex items-center gap-1 font-semibold text-lagoon hover:text-coral transition-colors" title="Role of a Board Member">
+            <Briefcase className="h-4 w-4" />
+            <span className="hidden md:inline">Role of a Board Member</span>
+            <span className="inline md:hidden">Board Role</span>
+          </Link>
           <Link href={{ pathname: '/', hash: 'about' }} className="flex items-center gap-1 hover:underline">
             <User className="h-4 w-4" /> About Doug
           </Link>
@@ -86,6 +92,10 @@ export default function StickyNav() {
           </Link>
           <Link href="/qna" className="flex items-center gap-2 py-2 hover:underline" onClick={() => setOpen(false)}>
             <HelpCircle className="h-5 w-5" /> Q&amp;A
+          </Link>
+          <Link href={{ pathname: '/', hash: 'board-role' }} className="flex items-center gap-2 py-2 font-semibold text-lagoon hover:text-coral transition-colors" title="Role of a Board Member" onClick={() => setOpen(false)}>
+            <Briefcase className="h-5 w-5" />
+            <span>Board Role</span>
           </Link>
           <Link href={{ pathname: '/', hash: 'about' }} className="flex items-center gap-2 py-2 hover:underline" onClick={() => setOpen(false)}>
             <User className="h-5 w-5" /> About Doug
