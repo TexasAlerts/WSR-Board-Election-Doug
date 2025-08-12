@@ -218,42 +218,17 @@ function HomeContent() {
       {/* Meet Doug */}
       <section id="about">
         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4">Meet Doug</h2>
-        <p className="mb-4">
-          <strong>Doug Charles</strong> has proudly called <span className="text-lagoon font-semibold">Windsong Ranch</span> home since 2015, living in both <strong>Crosswater</strong> and <strong>the Peninsula</strong>. As a <em>long‑time resident, husband, and father</em>, he believes <span className="text-coral font-semibold">leadership is an act of service—not a pursuit of status</span>.<br/>
-          With more than <strong>25 years of executive leadership</strong> in financial services, Doug currently serves as a <strong>Senior Vice President</strong> overseeing <span className="text-lagoon font-semibold">multi‑million‑dollar budgets</span>, complex vendor contracts, and national compliance operations.<br/>
-          Doug’s civic service runs deep: <strong>two terms on Prosper’s Planning &amp; Zoning Commission</strong>, membership on the <strong>Town Bond Committee</strong>, and previous roles on HOA boards.<br/>
-          In every position, he has championed <strong>fair representation, strategic growth, and fiscal stewardship</strong>. Doug <em>listens first, leads collaboratively</em>, and believes every assessment, contract, and resource should reflect homeowners’ interests—not just a select few.<br/>
-          As Windsong Ranch transitions toward full homeowner governance, he is committed to guiding the community with <span className="text-lagoon font-semibold">transparency, integrity, and a deep love for his neighbors</span>.
-        </p>
-        <div className="quote text-base sm:text-lg">“<span className="text-lagoon font-semibold">Leadership isn’t about titles—it’s about service, stewardship, and listening to every voice.</span>”</div>
+        <div className="space-y-4 text-base sm:text-lg md:text-xl">
+          <p><strong>Doug Charles</strong> has proudly called <span className="text-lagoon font-semibold">Windsong Ranch</span> home since 2015, living in both <strong>Crosswater</strong> and <strong>the Peninsula</strong>. As a <em>long‑time resident, husband, and father</em>, he believes <span className="text-coral font-semibold">leadership is an act of service—not a pursuit of status</span>.</p>
+          <p>With more than <strong>25 years of executive leadership</strong> in financial services, Doug currently serves as a <strong>Senior Vice President</strong> overseeing <span className="text-lagoon font-semibold">multi‑million‑dollar budgets</span>, complex vendor contracts, and national compliance operations.</p>
+          <p>Doug’s civic service runs deep: <strong>two terms on Prosper’s Planning &amp; Zoning Commission</strong>, membership on the <strong>Town Bond Committee</strong>, and previous roles on HOA boards.</p>
+          <p>In every position, he has championed <strong>fair representation, strategic growth, and fiscal stewardship</strong>. Doug <em>listens first, leads collaboratively</em>, and believes every assessment, contract, and resource should reflect homeowners’ interests—not just a select few.</p>
+          <p>As Windsong Ranch transitions toward full homeowner governance, he is committed to guiding the community with <span className="text-lagoon font-semibold">transparency, integrity, and a deep love for his neighbors</span>.</p>
+        </div>
+        <div className="quote text-base sm:text-lg mt-4">“<span className="text-lagoon font-semibold">Leadership isn’t about titles—it’s about service, stewardship, and listening to every voice.</span>”</div>
       </section>
 
-      {/* Unique Role of a Board Member section */}
-      <section id="board-role" className="my-12 max-w-3xl mx-auto bg-lagoon/5 border-l-4 border-lagoon rounded-lg p-6 shadow-md">
-        <div className="flex items-center gap-3 mb-2">
-          <span className="inline-flex items-center justify-center bg-lagoon text-white rounded-full w-10 h-10"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 3v4M8 3v4"/></svg></span>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-lagoon">Role of a Board Member</h2>
-        </div>
-        <details className="group" open>
-          <summary className="cursor-pointer font-semibold text-base sm:text-lg text-lagoon hover:text-coral transition-colors mb-2">What does a Board Member really do?</summary>
-          <div className="pl-2 sm:pl-4 text-base sm:text-lg space-y-3">
-            <p><strong>Board members are stewards of our shared home.</strong> They oversee budgets and reserves, set policy, guide maintenance and vendor performance, communicate decisions, and listen—truly listen—to homeowners. It’s collaborative work that balances today’s needs with tomorrow’s plans. When board members do it well, homeowners feel informed, heard, and confident about where we’re headed. That’s the Windsong we all want to live in.</p>
-            <p>For more, <a href="/docs/board-member-101.pdf" target="_blank" rel="noopener noreferrer" className="text-lagoon underline">download the official HOA Board Member overview (PDF)</a>.</p>
-          </div>
-        </details>
-        <div className="mt-4 text-base sm:text-lg">
-          <span className="font-bold text-coral">Why Doug?</span> <span className="font-semibold">Experience, service, and commitment.</span> <br/>
-          <span className="block mt-2">With <span className="font-bold">25+ years of executive leadership</span> and deep civic service—including Prosper’s Planning &amp; Zoning Commission and prior HOA boards—Doug brings <span className="text-lagoon font-semibold">fiscal discipline, transparency, and a collaborative spirit</span> to every role. He believes <span className="italic">leadership is about listening, stewardship, and putting homeowners first</span>.</span>
-          <span className="block mt-2">Doug’s commitments as your board member:</span>
-          <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
-            <li><span className="font-semibold">Transparency</span> in every decision and contract</li>
-            <li><span className="font-semibold">Fiscal responsibility</span>—protecting our reserves and investments</li>
-            <li><span className="font-semibold">Open communication</span> and regular updates</li>
-            <li><span className="font-semibold">Listening first</span> to all homeowners, not just a select few</li>
-            <li><span className="font-semibold">A vision for unity</span> as Windsong transitions to full homeowner governance</li>
-          </ul>
-        </div>
-      </section>
+      {/* Board Role section now lives on its own subpage */}
 
       {/* Endorsements display */}
       {endorsements.length > 0 && (
