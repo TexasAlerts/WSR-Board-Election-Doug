@@ -14,22 +14,13 @@ export const metadata = {
     description: 'A Common Sense Leader for All of Prosper. Doug Charles is running for Town Council Place 5 in the May 2026 election.',
     url: 'https://www.dougcharles.com',
     siteName: 'Doug Charles for Prosper',
-    images: [
-      {
-        url: '/campaign-logo.png',
-        width: 1200,
-        height: 630,
-        alt: 'Doug Charles for Town Council Place 5 - A Common Sense Leader for All of Prosper',
-      },
-    ],
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     title: 'Doug Charles for Prosper Town Council - Place 5',
     description: 'A Common Sense Leader for All of Prosper',
-    images: ['/campaign-logo.png'],
   },
 };
 
