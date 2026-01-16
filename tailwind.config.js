@@ -8,18 +8,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        lagoon: {
-          DEFAULT: '#005A7A', // deep lagoon blue for trust and stability
-          light: '#4FB0C6',   // sky blue accent for optimism
+        navy: {
+          DEFAULT: '#1E3A5F', // campaign navy blue
+          light: '#2D5A8A',   // lighter navy for hover states
+          dark: '#152C47',    // darker navy for emphasis
         },
-        coral: {
-          DEFAULT: '#E04F39', // warm coral red for energy and advocacy
+        prosper: {
+          red: '#C41E3A',     // campaign red
+          'red-light': '#D94A5E', // lighter red for hover
+          'red-dark': '#A01830',  // darker red for emphasis
         },
-        sand: {
-          DEFAULT: '#F5F2EB'  // soft sand neutral for backgrounds
+        cream: {
+          DEFAULT: '#F8F6F3'  // soft neutral background
         },
         charcoal: {
-          DEFAULT: '#333333'  // dark text colour for accessibility
+          DEFAULT: '#333333'  // dark text for accessibility
         }
       }
     },

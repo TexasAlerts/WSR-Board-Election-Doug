@@ -18,7 +18,7 @@ export default function EndorsementsPage() {
   }, []);
   return (
     <div className="space-y-8 px-2 w-full">
-      <h1 className="text-xl sm:text-3xl font-bold">Endorsements</h1>
+      <h1 className="text-xl sm:text-3xl font-bold text-navy">Endorsements</h1>
       {endorsements.length === 0 ? (
         <p>No endorsements yet. Submit yours on the home page!</p>
       ) : (
@@ -36,7 +36,7 @@ export default function EndorsementsPage() {
         {/* Use Next.js Link with hash to ensure smooth internal navigation */}
         <Link
           href={{ pathname: '/', query: { form: 'endorsement' }, hash: 'get-involved' }}
-          className="text-coral hover:underline font-medium"
+          className="text-prosper-red hover:underline font-medium"
         >
           Endorse Doug
         </Link>
