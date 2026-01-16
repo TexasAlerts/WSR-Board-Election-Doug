@@ -110,19 +110,19 @@ function HomeContent() {
     <div className="space-y-16">
       {/* Hero Section */}
       <section className="text-center space-y-6">
-        <Image
+        {/* Campaign logo - use img tag for external/missing image fallback */}
+        <img
           src="/campaign-logo.png"
           alt="Doug Charles for Town Council Place 5 - A Common Sense Leader for All of Prosper"
-          width={600}
-          height={400}
-          sizes="(max-width: 640px) 300px, (max-width: 1024px) 450px, 600px"
           className="mx-auto w-[300px] sm:w-[450px] md:w-[600px]"
-          priority
+          onError={(e) => { e.target.style.display = 'none'; }}
         />
         <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
-          <span className="text-navy">Common Sense</span>
+          <span className="text-navy">Doug Charles</span>
           <br />
-          <span className="text-prosper-red">for Prosper</span>
+          <span className="text-prosper-red">for Town Council</span>
+          <br />
+          <span className="text-navy text-xl sm:text-2xl md:text-3xl">Place 5</span>
         </h1>
         <p className="text-xl sm:text-2xl font-semibold text-navy">Listen. Plan. Protect.</p>
         <p className="max-w-3xl mx-auto text-base sm:text-lg md:text-xl leading-relaxed">
