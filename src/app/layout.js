@@ -2,6 +2,7 @@ import './globals.css';
 import StickyNav from '../components/StickyNav';
 import Link from 'next/link';
 import Script from 'next/script';
+import { AuthProvider } from '../context/AuthContext';
 
 export const metadata = {
   title: 'Doug Charles for Prosper Town Council - Place 5',
@@ -45,6 +46,7 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
       </head>
       <body>
+        <AuthProvider>
         {/* Key dates banner */}
         <header className="bg-navy text-white text-sm sm:text-base py-2 px-4 sticky top-0 z-50 shadow-md">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-y-1 lg:gap-y-0 max-w-6xl mx-auto">
@@ -127,6 +129,7 @@ export default function RootLayout({ children }) {
             Endorse Doug
           </Link>
         </div>
+        </AuthProvider>
       </body>
     </html>
   );

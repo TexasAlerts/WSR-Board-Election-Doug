@@ -1,6 +1,13 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resendClient = null;
+
+function getResend() {
+  if (!resendClient && process.env.RESEND_API_KEY) {
+    resendClient = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resendClient;
+}
 
 /**
  * Send an email to an arbitrary recipient using the Resend API.
@@ -10,6 +17,11 @@ const resend = new Resend(process.env.RESEND_API_KEY);
  * @param {string} text - Plain text body of the message.
  */
 export async function sendEmail(to, subject, text) {
+  const resend = getResend();
+  if (!resend) {
+    console.error('Resend not configured');
+    return;
+  }
   const from = process.env.SMTP_FROM;
   if (!from || !to) {
     throw new Error('SMTP_FROM and recipient email must be configured');

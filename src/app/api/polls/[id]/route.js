@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+import { getSupabase } from '../../../../lib/supabase';
+import { getCurrentSupporter } from '../../../../lib/auth';
 
 export async function GET(request, { params }) {
+  const supabase = getSupabase();
   const { id } = await params;
+  const supporter = await getCurrentSupporter();
+  const isAuthenticated = !!supporter;
 
   // Get poll with choices
   const { data: poll, error } = await supabase
@@ -15,6 +17,7 @@ export async function GET(request, { params }) {
       description,
       poll_type,
       status,
+      visibility,
       show_results_before_vote,
       allow_comments,
       closes_at,
@@ -32,6 +35,14 @@ export async function GET(request, { params }) {
 
   if (error || !poll) {
     return NextResponse.json({ ok: false, error: 'Poll not found' }, { status: 404 });
+  }
+
+  // Check visibility permissions
+  if (poll.visibility === 'authenticated' && !isAuthenticated) {
+    return NextResponse.json(
+      { ok: false, error: 'Please sign in to view this poll' },
+      { status: 401 }
+    );
   }
 
   // Get vote data for results
@@ -61,10 +72,22 @@ export async function GET(request, { params }) {
     });
   }
 
+  // Check if current user has voted
+  let userVoted = false;
+  if (supporter) {
+    const { data: userVote } = await supabase
+      .from('poll_votes')
+      .select('id')
+      .eq('poll_id', id)
+      .eq('supporter_id', supporter.id)
+      .single();
+    userVoted = !!userVote;
+  }
+
   // Get approved comments
   const { data: comments, error: commentsError } = await supabase
     .from('comments')
-    .select('id, name, content, created_at')
+    .select('id, name, content, created_at, upvotes, downvotes')
     .eq('poll_id', id)
     .eq('status', 'approved')
     .order('created_at', { ascending: false });
@@ -90,6 +113,10 @@ export async function GET(request, { params }) {
       choices,
       total_votes: totalVotes,
       comments: comments || [],
+      user_voted: userVoted,
+      can_vote: poll.visibility === 'public' || (poll.visibility === 'authenticated' && isAuthenticated),
+      view_only: poll.visibility === 'public_view' && !isAuthenticated,
     },
+    isAuthenticated,
   });
 }

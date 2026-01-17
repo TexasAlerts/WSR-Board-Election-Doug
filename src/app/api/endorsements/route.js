@@ -1,18 +1,16 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAnon } from '../../../lib/supabase';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 
-// Use anon key for public endpoints; this allows RLS to restrict selecting only approved
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-
 export async function GET() {
-    const { data, error } = await supabase
-      .from('endorsements')
-      .select('id,name,message,created_at')
-      .eq('status', 'approved')
-      .order('created_at', { ascending: false });
+  const supabase = getSupabaseAnon();
+  const { data, error } = await supabase
+    .from('endorsements')
+    .select('id,name,message,created_at')
+    .eq('status', 'approved')
+    .order('created_at', { ascending: false });
   if (error) {
     return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
   }
@@ -20,6 +18,7 @@ export async function GET() {
 }
 
 export async function POST(req) {
+  const supabase = getSupabaseAnon();
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
   if (!rateLimit(ip)) {
     return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });

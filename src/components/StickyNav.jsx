@@ -2,15 +2,21 @@
 
 import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useAuth } from '../context/AuthContext';
 import {
   Menu,
   X,
   Home as HomeIcon,
+  User,
+  LogOut,
+  Settings,
 } from 'lucide-react';
 
 export default function StickyNav() {
   const navRef = useRef(null);
   const [open, setOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const { supporter, isAuthenticated, isAdmin, logout, loading } = useAuth();
 
   useEffect(() => {
     const navEl = navRef.current;
@@ -30,13 +36,22 @@ export default function StickyNav() {
 
   // Close menu on outside click (mobile)
   useEffect(() => {
-    if (!open) return;
+    if (!open && !userMenuOpen) return;
     function handle(e) {
-      if (navRef.current && !navRef.current.contains(e.target)) setOpen(false);
+      if (navRef.current && !navRef.current.contains(e.target)) {
+        setOpen(false);
+        setUserMenuOpen(false);
+      }
     }
     document.addEventListener('mousedown', handle);
     return () => document.removeEventListener('mousedown', handle);
-  }, [open]);
+  }, [open, userMenuOpen]);
+
+  const handleLogout = async () => {
+    await logout();
+    setUserMenuOpen(false);
+    setOpen(false);
+  };
 
   return (
     <nav
@@ -63,9 +78,6 @@ export default function StickyNav() {
           <Link href="/about" className="text-gray-600 hover:text-navy transition-colors">
             About
           </Link>
-          <Link href="/why" className="text-gray-600 hover:text-navy transition-colors">
-            Why I'm Running
-          </Link>
           <Link href="/polls" className="text-gray-600 hover:text-navy transition-colors">
             Polls
           </Link>
@@ -78,6 +90,47 @@ export default function StickyNav() {
           <Link href="/get-involved" className="text-gray-600 hover:text-navy transition-colors">
             Get Involved
           </Link>
+
+          {/* Auth section */}
+          {!loading && (
+            isAuthenticated ? (
+              <div className="relative">
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center gap-2 text-gray-600 hover:text-navy transition-colors"
+                >
+                  <User className="w-5 h-5" />
+                  <span>{supporter?.firstName}</span>
+                </button>
+                {userMenuOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
+                    {isAdmin && (
+                      <Link
+                        href="/admin"
+                        className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
+                        onClick={() => setUserMenuOpen(false)}
+                      >
+                        <Settings className="w-4 h-4" />
+                        Admin Panel
+                      </Link>
+                    )}
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50 w-full text-left"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Sign Out
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link href="/auth/login" className="text-gray-600 hover:text-navy transition-colors">
+                Sign In
+              </Link>
+            )
+          )}
+
           <Link href="/donate" className="bg-prosper-red text-white px-5 py-2 rounded-lg font-semibold hover:bg-red-dark transition-colors">
             Donate
           </Link>
@@ -92,9 +145,6 @@ export default function StickyNav() {
           <Link href="/about" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             About Doug
           </Link>
-          <Link href="/why" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
-            Why I'm Running
-          </Link>
           <Link href="/polls" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             Polls
           </Link>
@@ -107,7 +157,50 @@ export default function StickyNav() {
           <Link href="/get-involved" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             Get Involved
           </Link>
-          <div className="pt-4 mt-2 border-t border-gray-100">
+
+          {/* Auth section - Mobile */}
+          <div className="pt-4 mt-2 border-t border-gray-100 space-y-2">
+            {!loading && (
+              isAuthenticated ? (
+                <>
+                  <div className="px-4 py-2 text-sm text-gray-500">
+                    Signed in as {supporter?.firstName} {supporter?.lastName}
+                  </div>
+                  {isAdmin && (
+                    <Link
+                      href="/admin"
+                      className="block py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium"
+                      onClick={() => setOpen(false)}
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full py-3 px-4 text-left text-gray-700 hover:bg-gray-50 rounded-lg font-medium"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <div className="flex gap-2">
+                  <Link
+                    href="/auth/login"
+                    className="flex-1 py-3 bg-navy text-white text-center rounded-lg font-semibold"
+                    onClick={() => setOpen(false)}
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/auth/register"
+                    className="flex-1 py-3 border border-navy text-navy text-center rounded-lg font-semibold"
+                    onClick={() => setOpen(false)}
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )
+            )}
             <Link href="/donate" className="block py-3 bg-prosper-red text-white text-center rounded-lg font-semibold" onClick={() => setOpen(false)}>
               Donate
             </Link>

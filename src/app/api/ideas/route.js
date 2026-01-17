@@ -1,18 +1,19 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabase, getSupabaseAnon } from '../../../lib/supabase';
+import { getCurrentSupporter } from '../../../lib/auth';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-
 export async function GET(request) {
+  const supabase = getSupabase();
+  const supporter = await getCurrentSupporter();
   const { searchParams } = new URL(request.url);
   const category = searchParams.get('category');
 
   let query = supabase
     .from('ideas')
-    .select('id, name, category, title, content, status, support_count, admin_response, created_at')
+    .select('id, name, category, title, content, status, support_count, upvotes, downvotes, admin_response, created_at')
     .in('status', ['published', 'under_review', 'planned', 'completed', 'declined'])
     .eq('is_public', true)
     .order('created_at', { ascending: false });
@@ -27,10 +28,34 @@ export async function GET(request) {
     return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ ok: true, data });
+  // Get user's votes if authenticated
+  let userVotes = {};
+  if (supporter && data.length > 0) {
+    const ideaIds = data.map(i => i.id);
+    const { data: votes } = await supabase
+      .from('idea_votes')
+      .select('idea_id, vote_type')
+      .eq('supporter_id', supporter.id)
+      .in('idea_id', ideaIds);
+
+    if (votes) {
+      votes.forEach(v => {
+        userVotes[v.idea_id] = v.vote_type;
+      });
+    }
+  }
+
+  // Add user vote info to ideas
+  const ideasWithVotes = data.map(idea => ({
+    ...idea,
+    user_vote: userVotes[idea.id] || null,
+  }));
+
+  return NextResponse.json({ ok: true, data: ideasWithVotes, isAuthenticated: !!supporter });
 }
 
 export async function POST(request) {
+  const supabase = getSupabaseAnon();
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   if (!rateLimit(ip)) {

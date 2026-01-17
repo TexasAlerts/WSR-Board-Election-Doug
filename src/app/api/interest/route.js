@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAnon } from '../../../lib/supabase';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-
 export async function POST(req) {
+  const supabase = getSupabaseAnon();
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
   if (!rateLimit(ip)) {
     return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });

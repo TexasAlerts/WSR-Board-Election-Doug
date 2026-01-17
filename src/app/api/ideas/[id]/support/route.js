@@ -1,13 +1,10 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabase } from '../../../../../lib/supabase';
 import { z } from 'zod';
 import { rateLimit } from '../../../../../lib/rateLimit';
 
-// Use service role key if available, otherwise fall back to anon key
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
-const supabase = createClient(process.env.SUPABASE_URL, supabaseKey);
-
 export async function POST(request, { params }) {
+  const supabase = getSupabase();
   const { id } = await params;
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
@@ -88,6 +85,7 @@ export async function POST(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
+  const supabase = getSupabase();
   const { id } = await params;
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 

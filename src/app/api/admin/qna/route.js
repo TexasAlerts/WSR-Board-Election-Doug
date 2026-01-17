@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getSupabase } from '../../../../lib/supabase';
 import { requireAdmin } from '../../../../lib/admin-session';
 import { sendEmail } from '../../../../lib/sendEmail';
-
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE);
 
 export async function GET(req) {
   if (!requireAdmin(req)) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('questions')
     .select('*')
@@ -24,6 +23,7 @@ export async function POST(req) {
   if (!requireAdmin(req)) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
+  const supabase = getSupabase();
   const body = await req.json();
   const { id, action, answer } = body;
   if (!id || !action) {
