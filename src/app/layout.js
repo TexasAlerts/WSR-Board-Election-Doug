@@ -31,7 +31,6 @@ export const viewport = {
 };
 
 const KEY_DATES = [
-  { label: 'Filing Deadline', date: 'Feb 14, 2026' },
   { label: 'Early Voting', date: 'Apr 20-28, 2026' },
   { label: 'Election Day', date: 'May 2, 2026' },
 ];
