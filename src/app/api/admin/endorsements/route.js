@@ -11,13 +11,20 @@ export async function GET(request) {
   }
 
   const supabase = getSupabase();
+  const { searchParams } = new URL(request.url);
+  const status = searchParams.get('status') || 'pending';
 
   try {
-    const { data, error } = await supabase
+    let query = supabase
       .from('endorsements')
       .select('*')
-      .eq('status', 'pending')
       .order('created_at', { ascending: false });
+
+    if (status !== 'all') {
+      query = query.eq('status', status);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
       await logError({

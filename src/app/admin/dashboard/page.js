@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Users, MessageSquare, Send, CheckCircle, XCircle, Clock, Mail, Phone, Loader2, FileText, AlertTriangle, Eye, RefreshCw } from 'lucide-react';
+import { Users, MessageSquare, Send, CheckCircle, XCircle, Clock, Mail, Phone, Loader2, FileText, AlertTriangle, Eye, RefreshCw, ThumbsUp } from 'lucide-react';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -13,7 +13,9 @@ export default function AdminDashboard() {
   const [broadcasts, setBroadcasts] = useState([]);
   const [auditLogs, setAuditLogs] = useState([]);
   const [errorLogs, setErrorLogs] = useState([]);
+  const [endorsements, setEndorsements] = useState([]);
   const [supporterFilter, setSupporterFilter] = useState('all');
+  const [endorsementFilter, setEndorsementFilter] = useState('pending');
   const [commentFilter, setCommentFilter] = useState('pending');
   const [auditFilter, setAuditFilter] = useState('all');
   const [errorFilter, setErrorFilter] = useState('new');
@@ -27,7 +29,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     loadData();
-  }, [activeTab, supporterFilter, commentFilter, auditFilter, errorFilter]);
+  }, [activeTab, supporterFilter, commentFilter, auditFilter, errorFilter, endorsementFilter]);
 
   const loadData = async () => {
     setLoading(true);
@@ -95,6 +97,20 @@ export default function AdminDashboard() {
           throw new Error(data.error);
         }
         setErrorLogs(data.data);
+      } else if (activeTab === 'endorsements') {
+        const url = endorsementFilter === 'all'
+          ? '/api/admin/endorsements?status=all'
+          : `/api/admin/endorsements?status=${endorsementFilter}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!res.ok) {
+          if (res.status === 401) {
+            router.push('/auth/login?return=/admin/dashboard');
+            return;
+          }
+          throw new Error(data.error);
+        }
+        setEndorsements(data.data || []);
       }
     } catch (err) {
       setError(err.message);
@@ -166,6 +182,21 @@ export default function AdminDashboard() {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, status, resolution_notes }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      loadData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleEndorsementAction = async (id, action) => {
+    try {
+      const res = await fetch('/api/admin/endorsements', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, action }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
@@ -255,6 +286,17 @@ export default function AdminDashboard() {
         >
           <AlertTriangle className="w-5 h-5" />
           Errors
+        </button>
+        <button
+          onClick={() => setActiveTab('endorsements')}
+          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
+            activeTab === 'endorsements'
+              ? 'border-navy text-navy'
+              : 'border-transparent text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <ThumbsUp className="w-5 h-5" />
+          Endorsements
         </button>
       </div>
 
@@ -769,6 +811,78 @@ export default function AdminDashboard() {
               {errorLogs.length === 0 && (
                 <div className="text-center py-12 text-gray-500">
                   No errors found
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Endorsements Tab */}
+      {activeTab === 'endorsements' && (
+        <div>
+          <div className="flex gap-2 mb-4">
+            {['pending', 'approved', 'rejected', 'all'].map((s) => (
+              <button
+                key={s}
+                onClick={() => setEndorsementFilter(s)}
+                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  endorsementFilter === s
+                    ? 'bg-navy text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-navy" />
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {endorsements.map((e) => (
+                <div key={e.id} className="bg-white rounded-xl shadow p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <span className="font-medium">{e.name}</span>
+                      <span className="text-gray-500 text-sm ml-2">{e.email}</span>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[e.status]}`}>
+                      {e.status}
+                    </span>
+                  </div>
+                  {e.message && (
+                    <p className="text-gray-800 mb-3 whitespace-pre-wrap italic">"{e.message}"</p>
+                  )}
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-500">{formatDate(e.created_at)}</span>
+                    {e.status === 'pending' && (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleEndorsementAction(e.id, 'approve')}
+                          className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
+                        >
+                          <CheckCircle className="w-4 h-4" />
+                          Approve
+                        </button>
+                        <button
+                          onClick={() => handleEndorsementAction(e.id, 'reject')}
+                          className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
+                        >
+                          <XCircle className="w-4 h-4" />
+                          Reject
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+              {endorsements.length === 0 && (
+                <div className="text-center py-12 text-gray-500">
+                  No endorsements found
                 </div>
               )}
             </div>
