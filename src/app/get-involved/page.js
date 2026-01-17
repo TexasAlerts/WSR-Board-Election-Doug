@@ -3,8 +3,12 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { Mail, MessageCircle } from 'lucide-react';
 import Reveal from '../../components/Reveal';
 import { validatePhoneNumber } from '../../lib/phoneValidation';
+
+const SHARE_MESSAGE = "I'm supporting Doug Charles for Town of Prosper Town Council Place 5! Learn more about his Common Sense leadership at www.dougcharles.com";
+const SHARE_SUBJECT = "Check out Doug Charles for Prosper Town Council";
 
 const actionCards = [
   {
@@ -230,6 +234,56 @@ function GetInvolvedContent() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Spread the Word Section */}
+      <section className="pb-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <div className="card bg-gradient-to-br from-navy/5 to-prosper-red/5">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-navy mb-2">Spread the Word</h2>
+                <p className="text-gray-600">
+                  Help us reach more Prosper residents by sharing with friends and neighbors
+                </p>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-6">
+                {/* Email Share */}
+                <div className="text-center">
+                  <a
+                    href={`mailto:?subject=${encodeURIComponent(SHARE_SUBJECT)}&body=${encodeURIComponent(SHARE_MESSAGE)}`}
+                    className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-navy text-white font-semibold rounded-lg hover:bg-navy/90 transition-all hover:scale-[1.02]"
+                  >
+                    <Mail className="w-5 h-5" />
+                    Share via Email
+                  </a>
+                  <p className="text-sm text-gray-500 mt-3">
+                    Opens your email app with a pre-written message. Choose who to send it to.
+                  </p>
+                </div>
+
+                {/* Text Share */}
+                <div className="text-center">
+                  <a
+                    href={`sms:?&body=${encodeURIComponent(SHARE_MESSAGE)}`}
+                    className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-prosper-red text-white font-semibold rounded-lg hover:bg-prosper-red/90 transition-all hover:scale-[1.02]"
+                  >
+                    <MessageCircle className="w-5 h-5" />
+                    Share via Text
+                  </a>
+                  <p className="text-sm text-gray-500 mt-3">
+                    Opens your messaging app with a pre-written text. Select your contacts.
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-center text-xs text-gray-400 mt-6">
+                Personal recommendations are the most powerful way to reach voters!
+              </p>
+            </div>
+          </Reveal>
         </div>
       </section>
 
