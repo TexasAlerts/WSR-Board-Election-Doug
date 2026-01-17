@@ -52,12 +52,12 @@ export default function AdminEndorsements() {
       ) : (
         <div className="space-y-4">
           {pending.map((e) => (
-            <div key={e.id} className="border p-4 rounded">
+            <div key={e.id} className="border p-4 rounded w-full">
               <p className="font-medium">{e.name}</p>
               {e.message && <p className="mt-1 italic">“{e.message}”</p>}
-              <div className="flex gap-2 mt-2">
-                <button onClick={() => handleAction(e.id, 'approve')} className="bg-lagoon text-white px-3 py-1 rounded">Approve</button>
-                <button onClick={() => handleAction(e.id, 'reject')} className="bg-red-600 text-white px-3 py-1 rounded">Reject</button>
+              <div className="flex flex-col xs:flex-row gap-2 mt-2 w-full">
+                <button onClick={() => handleAction(e.id, 'approve')} className="bg-lagoon text-white px-3 py-2 rounded w-full min-h-[44px]">Approve</button>
+                <button onClick={() => handleAction(e.id, 'reject')} className="bg-red-600 text-white px-3 py-2 rounded w-full min-h-[44px]">Reject</button>
               </div>
             </div>
           ))}

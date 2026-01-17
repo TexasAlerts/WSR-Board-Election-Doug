@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Commit and deploy navigation update",
+			"command": "git add src/components/StickyNav.jsx && git commit -m \"Add unique 'Role of a Board Member' nav item with icon and campaign emphasis\" && git push && npx vercel --prod",
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false
+		}
+	]
+}

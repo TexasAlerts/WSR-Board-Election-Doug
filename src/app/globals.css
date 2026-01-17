@@ -9,26 +9,367 @@
   }
 
   body {
-    background-color: theme('colors.sand.DEFAULT');
-    color: theme('colors.charcoal.DEFAULT');
-    font-family: sans-serif;
+    background-color: #FFFFFF;
+    color: #333333;
+    font-family: 'Open Sans', sans-serif;
     overflow-x: hidden;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.02em;
   }
 
   a {
-    @apply text-lagoon-light underline;
+    @apply text-navy hover:text-navy-light transition-colors;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+/* ============================================
+   ANIMATION UTILITIES
+   ============================================ */
+
+@layer utilities {
+  /* Staggered animation delays */
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-400 { animation-delay: 400ms; }
+  .animate-delay-500 { animation-delay: 500ms; }
+  .animate-delay-600 { animation-delay: 600ms; }
+
+  /* Animation initial state */
+  .animate-on-load {
+    opacity: 0;
+  }
+
+  /* Gradient text utility */
+  .text-gradient-navy {
+    background: linear-gradient(135deg, #1B3A5D 0%, #2B4A6D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-red {
+    background: linear-gradient(135deg, #BF1E2E 0%, #CF3040 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }
 
 @layer components {
-  /* Quotes styling */
-  .quote {
-    @apply italic text-lg text-lagoon-light;
+  /* ============================================
+     ENHANCED CARD STYLING
+     ============================================ */
+
+  .card {
+    @apply bg-white rounded-xl p-6 sm:p-8;
+    @apply transition-all duration-300 ease-out;
+    border: 1px solid rgba(27, 58, 93, 0.08);
+    box-shadow: 0 2px 8px rgba(27, 58, 93, 0.06);
   }
 
-  /* Utility for cards */
-  .card {
-    @apply bg-white rounded-xl shadow-md p-6;
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(27, 58, 93, 0.12);
+    border-color: rgba(27, 58, 93, 0.12);
+  }
+
+  /* ============================================
+     SECTION STYLING
+     ============================================ */
+
+  .section-title {
+    @apply text-2xl sm:text-3xl md:text-4xl font-bold text-navy mb-2;
+    position: relative;
+  }
+
+  .section-subtitle {
+    @apply text-gray-600 text-lg mb-8;
+  }
+
+  /* Section with top accent line */
+  .section-decorated {
+    position: relative;
+    padding-top: 2rem;
+  }
+
+  .section-decorated::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #1B3A5D 0%, #BF1E2E 100%);
+    border-radius: 2px;
+  }
+
+  /* ============================================
+     ENHANCED BUTTONS
+     ============================================ */
+
+  .btn-primary {
+    @apply relative bg-navy text-white px-8 py-3.5 rounded-lg font-semibold;
+    @apply transition-all duration-300 ease-out;
+    @apply shadow-navy-md hover:shadow-navy-lg;
+    @apply hover:scale-[1.02] active:scale-[0.98];
+    @apply focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2;
+    background: linear-gradient(135deg, #1B3A5D 0%, #0F2840 100%);
+    overflow: hidden;
+    min-height: 44px; /* WCAG 2.1 touch target minimum */
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .btn-primary:hover::before {
+    left: 100%;
+  }
+
+  .btn-secondary {
+    @apply relative bg-prosper-red text-white px-8 py-3.5 rounded-lg font-semibold;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:scale-[1.02] active:scale-[0.98];
+    @apply focus:outline-none focus:ring-2 focus:ring-prosper-red focus:ring-offset-2;
+    background: linear-gradient(135deg, #BF1E2E 0%, #9F1020 100%);
+    box-shadow: 0 4px 14px rgba(191, 30, 46, 0.25);
+    min-height: 44px; /* WCAG 2.1 touch target minimum */
+  }
+
+  .btn-secondary:hover {
+    box-shadow: 0 6px 20px rgba(191, 30, 46, 0.35);
+  }
+
+  .btn-outline {
+    @apply relative bg-white text-navy px-6 py-3.5 rounded-lg font-semibold;
+    @apply border-2 border-navy;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:bg-navy hover:text-white hover:shadow-navy-md;
+    @apply hover:scale-[1.02] active:scale-[0.98];
+    @apply focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2;
+    min-height: 44px; /* WCAG 2.1 touch target minimum */
+  }
+
+  /* White button variant for dark backgrounds */
+  .btn-white {
+    @apply bg-white text-navy px-8 py-3.5 rounded-lg font-semibold;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:bg-gray-50 hover:scale-[1.02] active:scale-[0.98];
+    @apply shadow-lg hover:shadow-xl;
+    @apply focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-navy;
+    min-height: 44px; /* WCAG 2.1 touch target minimum */
+  }
+
+  /* ============================================
+     FORM INPUTS
+     ============================================ */
+
+  .form-input {
+    @apply w-full px-4 py-3.5 rounded-lg bg-white;
+    @apply border-2 border-gray-200;
+    @apply transition-all duration-300 ease-out;
+    @apply focus:outline-none focus:border-navy focus:shadow-navy-sm;
+    min-height: 44px; /* WCAG 2.1 touch target minimum */
+  }
+
+  .form-input:hover {
+    @apply border-gray-300;
+  }
+
+  .form-input:focus {
+    transform: translateY(-1px);
+  }
+
+  .form-label {
+    @apply block text-sm font-semibold text-gray-700 mb-2;
+  }
+
+  /* ============================================
+     ICON CONTAINERS
+     ============================================ */
+
+  .icon-container {
+    @apply w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6;
+    @apply transition-all duration-300 ease-out;
+    background: linear-gradient(135deg, rgba(27, 58, 93, 0.08) 0%, rgba(27, 58, 93, 0.15) 100%);
+  }
+
+  .card:hover .icon-container {
+    transform: scale(1.1);
+    background: linear-gradient(135deg, rgba(27, 58, 93, 0.12) 0%, rgba(27, 58, 93, 0.2) 100%);
+  }
+
+  /* Large icon container for page heroes */
+  .icon-container-lg {
+    @apply w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6;
+    @apply transition-all duration-300 ease-out;
+    background: linear-gradient(135deg, rgba(27, 58, 93, 0.08) 0%, rgba(27, 58, 93, 0.15) 100%);
+  }
+
+  /* ============================================
+     STATISTICS
+     ============================================ */
+
+  .stat-card {
+    @apply text-center p-6 rounded-xl;
+    @apply transition-all duration-300 ease-out;
+    background: linear-gradient(135deg, rgba(27, 58, 93, 0.04) 0%, rgba(27, 58, 93, 0.08) 100%);
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, rgba(27, 58, 93, 0.06) 0%, rgba(27, 58, 93, 0.12) 100%);
+  }
+
+  .stat-number {
+    @apply text-4xl md:text-5xl font-bold text-navy mb-2;
+    font-family: 'Oswald', sans-serif;
+  }
+
+  .stat-label {
+    @apply text-sm text-gray-600 uppercase tracking-wider font-medium;
+  }
+
+  /* ============================================
+     QUOTE STYLING
+     ============================================ */
+
+  .quote {
+    @apply text-lg italic text-gray-600 border-l-4 border-navy pl-6 py-2;
+  }
+
+  .quote-enhanced {
+    @apply text-lg italic text-gray-700 py-4 px-6;
+    @apply relative rounded-r-lg;
+    border-left: 4px solid;
+    border-image: linear-gradient(180deg, #1B3A5D 0%, #BF1E2E 100%) 1;
+    background: linear-gradient(90deg, rgba(27, 58, 93, 0.03) 0%, transparent 100%);
+  }
+
+  /* ============================================
+     BADGE/PILL STYLING
+     ============================================ */
+
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .badge-navy {
+    @apply bg-navy/10 text-navy;
+  }
+
+  .badge-red {
+    @apply bg-prosper-red/10 text-prosper-red;
+  }
+
+  /* ============================================
+     DIVIDERS
+     ============================================ */
+
+  .section-divider {
+    @apply border-t border-gray-200 my-16;
+  }
+
+  .section-divider-gradient {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(27, 58, 93, 0.2), transparent);
+    @apply my-16;
+  }
+
+  /* ============================================
+     ACCENT LINES
+     ============================================ */
+
+  .accent-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #1B3A5D, transparent);
+  }
+
+  .accent-line-full {
+    height: 4px;
+    background: linear-gradient(90deg, #1B3A5D 0%, #BF1E2E 100%);
+    border-radius: 2px;
   }
 }
 
+/* ============================================
+   HERO BACKGROUNDS
+   ============================================ */
+
+.hero-gradient {
+  background: #f8f8f5;
+}
+
+.hero-pattern {
+  position: relative;
+}
+
+.hero-pattern::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(27, 58, 93, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(191, 30, 46, 0.02) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+/* ============================================
+   CTA SECTION BACKGROUND
+   ============================================ */
+
+.cta-gradient {
+  background: linear-gradient(135deg, #1B3A5D 0%, #0F2840 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-gradient::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-gradient::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(191, 30, 46, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ============================================
+   PRIORITY SECTION GRADIENT
+   ============================================ */
+
+.priorities-gradient {
+  background: linear-gradient(180deg, #F8F8F5 0%, #FFFFFF 50%, #F8F8F5 100%);
+}

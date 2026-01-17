@@ -1,0 +1,149 @@
+import { NextResponse } from 'next/server';
+import { getSupabase } from '../../../../../lib/supabase';
+import { z } from 'zod';
+import { rateLimit } from '../../../../../lib/rateLimit';
+
+export async function POST(request, { params }) {
+  const supabase = getSupabase();
+  const { id } = await params;
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+
+  if (!rateLimit(ip)) {
+    return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });
+  }
+
+  try {
+    const body = await request.json();
+
+    const schema = z.object({
+      email: z.string().email('Valid email required'),
+    });
+
+    const parsed = schema.safeParse(body);
+    if (!parsed.success) {
+      const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
+      return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
+    }
+
+    const { email } = parsed.data;
+
+    // Check if idea exists and is public
+    const { data: idea, error: ideaError } = await supabase
+      .from('ideas')
+      .select('id, support_count')
+      .eq('id', id)
+      .in('status', ['published', 'under_review', 'planned', 'completed', 'declined'])
+      .eq('is_public', true)
+      .single();
+
+    if (ideaError || !idea) {
+      return NextResponse.json({ ok: false, error: 'Idea not found' }, { status: 404 });
+    }
+
+    // Check if already supported
+    const { data: existingSupport } = await supabase
+      .from('idea_supports')
+      .select('id')
+      .eq('idea_id', id)
+      .eq('supporter_email', email)
+      .single();
+
+    if (existingSupport) {
+      return NextResponse.json({ ok: false, error: 'Already supported' }, { status: 400 });
+    }
+
+    // Add support
+    const { error: supportError } = await supabase
+      .from('idea_supports')
+      .insert({
+        idea_id: id,
+        supporter_email: email,
+      });
+
+    if (supportError) {
+      if (supportError.code === '23505') {
+        return NextResponse.json({ ok: false, error: 'Already supported' }, { status: 400 });
+      }
+      return NextResponse.json({ ok: false, error: supportError.message }, { status: 500 });
+    }
+
+    // Increment support count
+    const { error: updateError } = await supabase
+      .from('ideas')
+      .update({ support_count: idea.support_count + 1 })
+      .eq('id', id);
+
+    if (updateError) {
+      console.error('Error updating support count:', updateError);
+    }
+
+    return NextResponse.json({ ok: true, support_count: idea.support_count + 1 }, { status: 201 });
+  } catch (err) {
+    console.error('Support error:', err);
+    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request, { params }) {
+  const supabase = getSupabase();
+  const { id } = await params;
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+
+  if (!rateLimit(ip)) {
+    return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });
+  }
+
+  try {
+    const body = await request.json();
+
+    const schema = z.object({
+      email: z.string().email('Valid email required'),
+    });
+
+    const parsed = schema.safeParse(body);
+    if (!parsed.success) {
+      const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
+      return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
+    }
+
+    const { email } = parsed.data;
+
+    // Get current support count
+    const { data: idea, error: ideaError } = await supabase
+      .from('ideas')
+      .select('id, support_count')
+      .eq('id', id)
+      .single();
+
+    if (ideaError || !idea) {
+      return NextResponse.json({ ok: false, error: 'Idea not found' }, { status: 404 });
+    }
+
+    // Remove support
+    const { error: deleteError } = await supabase
+      .from('idea_supports')
+      .delete()
+      .eq('idea_id', id)
+      .eq('supporter_email', email);
+
+    if (deleteError) {
+      return NextResponse.json({ ok: false, error: deleteError.message }, { status: 500 });
+    }
+
+    // Decrement support count
+    const newCount = Math.max(0, idea.support_count - 1);
+    const { error: updateError } = await supabase
+      .from('ideas')
+      .update({ support_count: newCount })
+      .eq('id', id);
+
+    if (updateError) {
+      console.error('Error updating support count:', updateError);
+    }
+
+    return NextResponse.json({ ok: true, support_count: newCount });
+  } catch (err) {
+    console.error('Unsupport error:', err);
+    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+  }
+}
