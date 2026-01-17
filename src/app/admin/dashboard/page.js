@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Users, MessageSquare, Send, CheckCircle, XCircle, Clock, Mail, Phone, Loader2, FileText, AlertTriangle, Eye, RefreshCw, ThumbsUp, Lightbulb, HelpCircle, UserPlus } from 'lucide-react';
+import Link from 'next/link';
+import { Users, MessageSquare, Send, CheckCircle, XCircle, Clock, Mail, Phone, Loader2, FileText, AlertTriangle, Eye, RefreshCw, ThumbsUp, Lightbulb, HelpCircle, UserPlus, BarChart3 } from 'lucide-react';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -429,6 +430,13 @@ export default function AdminDashboard() {
             <span className="hidden sm:inline">Volunteers</span>
             <span className="sm:hidden">Vol</span>
           </button>
+          <Link
+            href="/admin/polls"
+            className="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 font-medium border-b-2 transition-colors whitespace-nowrap text-sm md:text-base border-transparent text-gray-500 hover:text-gray-700"
+          >
+            <BarChart3 className="w-4 h-4 md:w-5 md:h-5" />
+            Polls
+          </Link>
         </div>
       </div>
 
