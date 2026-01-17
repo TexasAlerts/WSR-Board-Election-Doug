@@ -220,7 +220,7 @@ export default function PollsPage() {
       {/* Voting Modal */}
       {selectedPoll && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelectedPoll(null)}>
-          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto pb-safe" onClick={e => e.stopPropagation()}>
             <div className="p-6">
               <div className="flex justify-between items-start mb-6">
                 <h2 className="text-2xl font-bold text-navy">{selectedPoll.title}</h2>
@@ -329,7 +329,7 @@ export default function PollsPage() {
                             >
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                  <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold ${
+                                  <div className={`w-11 h-11 rounded-full border-2 flex items-center justify-center font-bold text-lg ${
                                     rank !== null
                                       ? 'border-navy bg-navy text-white'
                                       : 'border-gray-300 text-gray-400'
@@ -344,10 +344,10 @@ export default function PollsPage() {
                                       type="button"
                                       onClick={(e) => { e.stopPropagation(); moveRanking(choice.id, 'up'); }}
                                       disabled={rank === 1}
-                                      className="p-1 text-gray-400 hover:text-navy disabled:opacity-30"
+                                      className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg disabled:opacity-30"
                                       title="Move up"
                                     >
-                                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
                                       </svg>
                                     </button>
@@ -355,10 +355,10 @@ export default function PollsPage() {
                                       type="button"
                                       onClick={(e) => { e.stopPropagation(); moveRanking(choice.id, 'down'); }}
                                       disabled={rank === voteForm.rankings.length}
-                                      className="p-1 text-gray-400 hover:text-navy disabled:opacity-30"
+                                      className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg disabled:opacity-30"
                                       title="Move down"
                                     >
-                                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                       </svg>
                                     </button>

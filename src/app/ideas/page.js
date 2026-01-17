@@ -195,7 +195,7 @@ export default function IdeasPage() {
               <button
                 key={cat.value}
                 onClick={() => setCategory(cat.value)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                className={`px-4 py-2 min-h-[44px] rounded-full text-sm font-medium transition-all ${
                   category === cat.value
                     ? 'bg-navy text-white shadow-lg'
                     : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
@@ -259,7 +259,7 @@ export default function IdeasPage() {
                       <div className="flex items-center gap-4">
                         <button
                           onClick={() => handleSupport(idea.id)}
-                          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                          className={`flex items-center gap-2 px-4 py-3 min-h-[44px] rounded-lg font-medium transition-all ${
                             supportedIdeas[idea.id]
                               ? 'bg-prosper-red text-white'
                               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'

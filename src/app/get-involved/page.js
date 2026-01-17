@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Mail, MessageCircle } from 'lucide-react';
@@ -53,6 +53,7 @@ const actionCards = [
 
 function GetInvolvedContent() {
   const [selectedAction, setSelectedAction] = useState(null);
+  const formRef = useRef(null);
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -75,8 +76,16 @@ function GetInvolvedContent() {
 
   function handleCardClick(card) {
     if (card.isLink) return;
-    setSelectedAction(selectedAction === card.id ? null : card.id);
+    const isSelecting = selectedAction !== card.id;
+    setSelectedAction(isSelecting ? card.id : null);
     setSubmitMsg('');
+
+    // Scroll to form on mobile when selecting an action
+    if (isSelecting) {
+      setTimeout(() => {
+        formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
   }
 
   async function handleSubmit(e) {
@@ -289,7 +298,7 @@ function GetInvolvedContent() {
 
       {/* Form Section */}
       {selectedAction && (
-        <section className="pb-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <section ref={formRef} className="pb-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 scroll-mt-4">
           <div className="max-w-2xl mx-auto">
             <Reveal>
               <div className="card">
