@@ -67,7 +67,7 @@ export default function EndorsementsCarousel({ endorsements }) {
           >
             <div className="bg-white p-4 rounded shadow-sm h-full flex flex-col justify-between min-h-[120px]">
               <div>
-                <p className="font-medium text-base sm:text-lg text-navy break-words">{e.name}</p>
+                <p className="font-medium text-base sm:text-lg text-lagoon break-words">{e.name}</p>
                 {e.message && <p className="mt-2 italic text-gray-700 break-words text-sm sm:text-base">“{e.message}”</p>}
               </div>
             </div>
