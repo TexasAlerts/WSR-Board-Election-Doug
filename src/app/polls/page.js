@@ -8,7 +8,7 @@ export default function PollsPage() {
   const [polls, setPolls] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedPoll, setSelectedPoll] = useState(null);
-  const [voteForm, setVoteForm] = useState({ email: '', name: '', selectedChoice: null, selectedChoices: [], comment: '' });
+  const [voteForm, setVoteForm] = useState({ email: '', name: '', selectedChoice: null, selectedChoices: [], rankings: [], comment: '' });
   const [hasVoted, setHasVoted] = useState({});
   const [submitMsg, setSubmitMsg] = useState('');
 
@@ -50,12 +50,18 @@ export default function PollsPage() {
         return;
       }
       voteData.choice_id = voteForm.selectedChoice;
-    } else {
+    } else if (selectedPoll.poll_type === 'multiple_choice') {
       if (voteForm.selectedChoices.length === 0) {
         setSubmitMsg('Please select at least one option');
         return;
       }
       voteData.choice_ids = voteForm.selectedChoices;
+    } else if (selectedPoll.poll_type === 'ranked_choice') {
+      if (voteForm.rankings.length !== selectedPoll.choices?.length) {
+        setSubmitMsg('Please rank all options');
+        return;
+      }
+      voteData.rankings = voteForm.rankings;
     }
 
     try {
@@ -71,7 +77,7 @@ export default function PollsPage() {
         setHasVoted({ ...hasVoted, [selectedPoll.id]: voteForm.email });
         localStorage.setItem('votedPolls', JSON.stringify({ ...hasVoted, [selectedPoll.id]: voteForm.email }));
         setSelectedPoll(null);
-        setVoteForm({ email: '', name: '', selectedChoice: null, selectedChoices: [], comment: '' });
+        setVoteForm({ email: '', name: '', selectedChoice: null, selectedChoices: [], rankings: [], comment: '' });
         // Reload polls to get updated counts
         const pollsRes = await fetch('/api/polls');
         const pollsData = await pollsRes.json();
@@ -90,6 +96,37 @@ export default function PollsPage() {
     } else {
       setVoteForm({ ...voteForm, selectedChoices: [...voteForm.selectedChoices, choiceId] });
     }
+  }
+
+  function handleRankingClick(choiceId) {
+    const currentRankings = [...voteForm.rankings];
+    const existingIndex = currentRankings.indexOf(choiceId);
+
+    if (existingIndex !== -1) {
+      // Remove this choice and all after it
+      currentRankings.splice(existingIndex);
+    } else {
+      // Add to rankings
+      currentRankings.push(choiceId);
+    }
+    setVoteForm({ ...voteForm, rankings: currentRankings });
+  }
+
+  function getRankForChoice(choiceId) {
+    const index = voteForm.rankings.indexOf(choiceId);
+    return index === -1 ? null : index + 1;
+  }
+
+  function moveRanking(choiceId, direction) {
+    const currentRankings = [...voteForm.rankings];
+    const index = currentRankings.indexOf(choiceId);
+    if (index === -1) return;
+
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    if (newIndex < 0 || newIndex >= currentRankings.length) return;
+
+    [currentRankings[index], currentRankings[newIndex]] = [currentRankings[newIndex], currentRankings[index]];
+    setVoteForm({ ...voteForm, rankings: currentRankings });
   }
 
   return (
@@ -138,7 +175,7 @@ export default function PollsPage() {
                       <h2 className="text-xl font-bold text-navy">{poll.title}</h2>
                       <div className="flex gap-2">
                         <span className="px-3 py-1 bg-navy/10 text-navy text-sm rounded-full font-medium">
-                          {poll.poll_type === 'single_choice' ? 'Single Choice' : 'Multiple Choice'}
+                          {poll.poll_type === 'single_choice' ? 'Single Choice' : poll.poll_type === 'multiple_choice' ? 'Multiple Choice' : 'Ranked Choice'}
                         </span>
                         {hasVoted[poll.id] && (
                           <span className="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full font-medium">
@@ -221,46 +258,124 @@ export default function PollsPage() {
 
                 <div>
                   <label className="form-label">
-                    {selectedPoll.poll_type === 'single_choice' ? 'Select one option *' : 'Select all that apply *'}
+                    {selectedPoll.poll_type === 'single_choice'
+                      ? 'Select one option *'
+                      : selectedPoll.poll_type === 'multiple_choice'
+                        ? 'Select all that apply *'
+                        : 'Rank your choices (click to add, click again to remove) *'}
                   </label>
-                  <div className="space-y-2 mt-2">
-                    {selectedPoll.choices?.map(choice => (
-                      <button
-                        key={choice.id}
-                        type="button"
-                        onClick={() => {
-                          if (selectedPoll.poll_type === 'single_choice') {
-                            setVoteForm({ ...voteForm, selectedChoice: choice.id });
-                          } else {
-                            toggleChoice(choice.id);
-                          }
-                        }}
-                        className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${
-                          (selectedPoll.poll_type === 'single_choice' && voteForm.selectedChoice === choice.id) ||
-                          (selectedPoll.poll_type === 'multiple_choice' && voteForm.selectedChoices.includes(choice.id))
-                            ? 'border-navy bg-navy/5 text-navy'
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className={`w-5 h-5 rounded-${selectedPoll.poll_type === 'single_choice' ? 'full' : 'md'} border-2 flex items-center justify-center ${
+
+                  {/* Single and Multiple Choice UI */}
+                  {(selectedPoll.poll_type === 'single_choice' || selectedPoll.poll_type === 'multiple_choice') && (
+                    <div className="space-y-2 mt-2">
+                      {selectedPoll.choices?.map(choice => (
+                        <button
+                          key={choice.id}
+                          type="button"
+                          onClick={() => {
+                            if (selectedPoll.poll_type === 'single_choice') {
+                              setVoteForm({ ...voteForm, selectedChoice: choice.id });
+                            } else {
+                              toggleChoice(choice.id);
+                            }
+                          }}
+                          className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${
                             (selectedPoll.poll_type === 'single_choice' && voteForm.selectedChoice === choice.id) ||
                             (selectedPoll.poll_type === 'multiple_choice' && voteForm.selectedChoices.includes(choice.id))
-                              ? 'border-navy bg-navy text-white'
-                              : 'border-gray-300'
-                          }`}>
-                            {((selectedPoll.poll_type === 'single_choice' && voteForm.selectedChoice === choice.id) ||
-                              (selectedPoll.poll_type === 'multiple_choice' && voteForm.selectedChoices.includes(choice.id))) && (
-                              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
-                            )}
+                              ? 'border-navy bg-navy/5 text-navy'
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`w-5 h-5 rounded-${selectedPoll.poll_type === 'single_choice' ? 'full' : 'md'} border-2 flex items-center justify-center ${
+                              (selectedPoll.poll_type === 'single_choice' && voteForm.selectedChoice === choice.id) ||
+                              (selectedPoll.poll_type === 'multiple_choice' && voteForm.selectedChoices.includes(choice.id))
+                                ? 'border-navy bg-navy text-white'
+                                : 'border-gray-300'
+                            }`}>
+                              {((selectedPoll.poll_type === 'single_choice' && voteForm.selectedChoice === choice.id) ||
+                                (selectedPoll.poll_type === 'multiple_choice' && voteForm.selectedChoices.includes(choice.id))) && (
+                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                              )}
+                            </div>
+                            <span>{choice.text || choice.choice_text}</span>
                           </div>
-                          <span>{choice.text || choice.choice_text}</span>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Ranked Choice UI */}
+                  {selectedPoll.poll_type === 'ranked_choice' && (
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500 mb-3">
+                        Click choices in order of preference. Your first click is your top choice.
+                      </p>
+                      <div className="space-y-2">
+                        {selectedPoll.choices?.map(choice => {
+                          const rank = getRankForChoice(choice.id);
+                          return (
+                            <button
+                              key={choice.id}
+                              type="button"
+                              onClick={() => handleRankingClick(choice.id)}
+                              className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${
+                                rank !== null
+                                  ? 'border-navy bg-navy/5 text-navy'
+                                  : 'border-gray-200 hover:border-gray-300'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                  <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold ${
+                                    rank !== null
+                                      ? 'border-navy bg-navy text-white'
+                                      : 'border-gray-300 text-gray-400'
+                                  }`}>
+                                    {rank !== null ? rank : '-'}
+                                  </div>
+                                  <span>{choice.text || choice.choice_text}</span>
+                                </div>
+                                {rank !== null && (
+                                  <div className="flex gap-1">
+                                    <button
+                                      type="button"
+                                      onClick={(e) => { e.stopPropagation(); moveRanking(choice.id, 'up'); }}
+                                      disabled={rank === 1}
+                                      className="p-1 text-gray-400 hover:text-navy disabled:opacity-30"
+                                      title="Move up"
+                                    >
+                                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                      </svg>
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={(e) => { e.stopPropagation(); moveRanking(choice.id, 'down'); }}
+                                      disabled={rank === voteForm.rankings.length}
+                                      className="p-1 text-gray-400 hover:text-navy disabled:opacity-30"
+                                      title="Move down"
+                                    >
+                                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                      </svg>
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                      {voteForm.rankings.length > 0 && voteForm.rankings.length < (selectedPoll.choices?.length || 0) && (
+                        <p className="text-sm text-amber-600 mt-2">
+                          {(selectedPoll.choices?.length || 0) - voteForm.rankings.length} more choice(s) to rank
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {selectedPoll.allow_comments && (

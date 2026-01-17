@@ -35,8 +35,10 @@ export async function GET(request, { params }) {
 
     // Calculate vote counts per choice
     const choiceCounts = {};
+    const rankingScores = {};
     poll.poll_choices.forEach((choice) => {
       choiceCounts[choice.id] = 0;
+      rankingScores[choice.id] = { firstPlace: 0, totalPoints: 0 };
     });
 
     poll.poll_votes.forEach((vote) => {
@@ -48,12 +50,30 @@ export async function GET(request, { params }) {
           choiceCounts[choiceId] = (choiceCounts[choiceId] || 0) + 1;
         });
       }
+      if (vote.vote_data?.rankings) {
+        const numChoices = vote.vote_data.rankings.length;
+        vote.vote_data.rankings.forEach((choiceId, index) => {
+          // First choice gets most points (n points for 1st, n-1 for 2nd, etc.)
+          const points = numChoices - index;
+          if (rankingScores[choiceId]) {
+            rankingScores[choiceId].totalPoints += points;
+            if (index === 0) {
+              rankingScores[choiceId].firstPlace += 1;
+            }
+          }
+          // Also count in choiceCounts for first place votes
+          if (index === 0) {
+            choiceCounts[choiceId] = (choiceCounts[choiceId] || 0) + 1;
+          }
+        });
+      }
     });
 
     const enrichedPoll = {
       ...poll,
       vote_count: poll.poll_votes.length,
       choice_counts: choiceCounts,
+      ranking_scores: rankingScores,
       poll_choices: poll.poll_choices.sort((a, b) => a.display_order - b.display_order),
     };
 
@@ -86,7 +106,7 @@ export async function PUT(request, { params }) {
     const schema = z.object({
       title: z.string().min(1).max(500).optional(),
       description: z.string().max(2000).optional().nullable(),
-      poll_type: z.enum(['single_choice', 'multiple_choice']).optional(),
+      poll_type: z.enum(['single_choice', 'multiple_choice', 'ranked_choice']).optional(),
       visibility: z.enum(['public', 'public_view', 'authenticated']).optional(),
       status: z.enum(['draft', 'active', 'closed']).optional(),
       allow_comments: z.boolean().optional(),
