@@ -82,27 +82,27 @@ export default function Home() {
       {/* Statistics Section */}
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            <Reveal delay={0}>
-              <div className="stat-card">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 items-stretch">
+            <Reveal delay={0} className="h-full">
+              <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">20</div>
                 <div className="stat-label">Years in Prosper</div>
               </div>
             </Reveal>
-            <Reveal delay={100}>
-              <div className="stat-card">
+            <Reveal delay={100} className="h-full">
+              <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">3</div>
                 <div className="stat-label">Years P&Z Service</div>
               </div>
             </Reveal>
-            <Reveal delay={200}>
-              <div className="stat-card">
+            <Reveal delay={200} className="h-full">
+              <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">$210M</div>
                 <div className="stat-label">2020 Bond Committee</div>
               </div>
             </Reveal>
-            <Reveal delay={300}>
-              <div className="stat-card">
+            <Reveal delay={300} className="h-full">
+              <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">$6.5M+</div>
                 <div className="stat-label">PISD WSR Annexation</div>
                 <div className="text-xs text-gray-500 mt-1">Lead Petitioner · Awaiting State Approval</div>
