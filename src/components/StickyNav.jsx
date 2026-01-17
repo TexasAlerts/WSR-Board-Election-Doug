@@ -47,7 +47,7 @@ export default function StickyNav() {
   return (
     <nav
       ref={navRef}
-      className="bg-white shadow-sm py-3 px-4 sticky [top:var(--banner-offset)] z-40"
+      className="bg-white border-b border-gray-100 py-4 px-4 sticky [top:var(--banner-offset)] z-40"
     >
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         <Link href="/" className="text-xl font-bold text-navy flex items-center">
@@ -62,48 +62,50 @@ export default function StickyNav() {
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
         {/* Desktop nav */}
-        <div className="hidden sm:flex flex-row items-center gap-4 text-base">
-          <Link href={{ pathname: '/', hash: 'issues' }} className="flex items-center gap-1 hover:underline">
-            <FileCheck className="h-4 w-4" /> Issues
+        <div className="hidden sm:flex flex-row items-center gap-6 text-sm font-medium">
+          <Link href={{ pathname: '/', hash: 'issues' }} className="text-gray-600 hover:text-navy transition-colors">
+            Priorities
           </Link>
-          <Link href="/endorsements" className="flex items-center gap-1 hover:underline">
-            <ThumbsUp className="h-4 w-4" /> Endorsements
+          <Link href={{ pathname: '/', hash: 'about' }} className="text-gray-600 hover:text-navy transition-colors">
+            About
           </Link>
-          <Link href="/qna" className="flex items-center gap-1 hover:underline">
-            <HelpCircle className="h-4 w-4" /> Q&amp;A
+          <Link href="/endorsements" className="text-gray-600 hover:text-navy transition-colors">
+            Endorsements
           </Link>
-          <Link href={{ pathname: '/', hash: 'about' }} className="flex items-center gap-1 hover:underline">
-            <User className="h-4 w-4" /> About Doug
+          <Link href="/qna" className="text-gray-600 hover:text-navy transition-colors">
+            Q&A
           </Link>
-          <Link href={{ pathname: '/', hash: 'get-involved' }} className="flex items-center gap-1 hover:underline">
-            <Megaphone className="h-4 w-4" /> Get Involved
+          <Link href={{ pathname: '/', hash: 'get-involved' }} className="text-gray-600 hover:text-navy transition-colors">
+            Get Involved
           </Link>
-          <Link href={{ pathname: '/', hash: 'donate' }} className="flex items-center gap-1 bg-prosper-red text-white px-4 py-2 rounded-full hover:bg-prosper-red-light transition-colors">
-            <Heart className="h-4 w-4" /> Donate
+          <Link href={{ pathname: '/', hash: 'donate' }} className="bg-prosper-red text-white px-5 py-2 rounded-lg font-semibold hover:bg-red-dark transition-colors">
+            Donate
           </Link>
         </div>
         {/* Mobile nav dropdown */}
         <div
-          className={`sm:hidden absolute left-0 top-full w-full bg-white border-t mt-2 p-4 flex-col gap-4 text-base shadow-lg transition-all duration-200 z-50 ${open ? 'flex' : 'hidden'}`}
+          className={`sm:hidden absolute left-0 top-full w-full bg-white border-t border-gray-100 p-6 flex-col gap-1 text-base shadow-lg transition-all duration-200 z-50 ${open ? 'flex' : 'hidden'}`}
         >
-          <Link href={{ pathname: '/', hash: 'issues' }} className="flex items-center gap-2 py-2 hover:underline" onClick={() => setOpen(false)}>
-            <FileCheck className="h-5 w-5" /> Issues
+          <Link href={{ pathname: '/', hash: 'issues' }} className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+            Priorities
           </Link>
-          <Link href="/endorsements" className="flex items-center gap-2 py-2 hover:underline" onClick={() => setOpen(false)}>
-            <ThumbsUp className="h-5 w-5" /> Endorsements
+          <Link href={{ pathname: '/', hash: 'about' }} className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+            About Doug
           </Link>
-          <Link href="/qna" className="flex items-center gap-2 py-2 hover:underline" onClick={() => setOpen(false)}>
-            <HelpCircle className="h-5 w-5" /> Q&amp;A
+          <Link href="/endorsements" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+            Endorsements
           </Link>
-          <Link href={{ pathname: '/', hash: 'about' }} className="flex items-center gap-2 py-2 hover:underline" onClick={() => setOpen(false)}>
-            <User className="h-5 w-5" /> About Doug
+          <Link href="/qna" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+            Q&A
           </Link>
-          <Link href={{ pathname: '/', hash: 'get-involved' }} className="flex items-center gap-2 py-2 hover:underline" onClick={() => setOpen(false)}>
-            <Megaphone className="h-5 w-5" /> Get Involved
+          <Link href={{ pathname: '/', hash: 'get-involved' }} className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+            Get Involved
           </Link>
-          <Link href={{ pathname: '/', hash: 'donate' }} className="flex items-center gap-2 py-2 bg-prosper-red text-white px-4 rounded-full justify-center" onClick={() => setOpen(false)}>
-            <Heart className="h-5 w-5" /> Donate
-          </Link>
+          <div className="pt-4 mt-2 border-t border-gray-100">
+            <Link href={{ pathname: '/', hash: 'donate' }} className="block py-3 bg-prosper-red text-white text-center rounded-lg font-semibold" onClick={() => setOpen(false)}>
+              Donate
+            </Link>
+          </div>
         </div>
       </div>
     </nav>
