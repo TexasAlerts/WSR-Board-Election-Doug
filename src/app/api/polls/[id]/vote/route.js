@@ -4,6 +4,7 @@ import { getCurrentSupporter } from '../../../../../lib/auth';
 import { z } from 'zod';
 import { rateLimit } from '../../../../../lib/rateLimit';
 import { sendNotificationEmail } from '../../../../../lib/sendEmail';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../../lib/logging';
 
 export async function POST(request, { params }) {
   const supabase = getSupabase();
@@ -186,6 +187,22 @@ export async function POST(request, { params }) {
       if (commentError) {
         console.error('Error saving comment:', commentError);
       } else {
+        // Log comment creation
+        await logAudit({
+          eventType: AuditEvents.COMMENT_CREATED,
+          supporterId: isAuthenticated ? voterId : null,
+          targetId: id,
+          targetType: 'poll',
+          details: {
+            pollTitle: poll.title,
+            voterName,
+            voterEmail,
+            contentPreview: comment.trim().substring(0, 100),
+          },
+          request,
+          responseStatus: 201,
+        });
+
         sendNotificationEmail(
           'New poll comment submitted',
           `Poll: ${poll.title}\nName: ${voterName}\nEmail: ${voterEmail}\nComment: ${comment.trim()}`
@@ -193,9 +210,34 @@ export async function POST(request, { params }) {
       }
     }
 
+    // Log poll vote
+    await logAudit({
+      eventType: AuditEvents.POLL_VOTE,
+      supporterId: isAuthenticated ? voterId : null,
+      targetId: id,
+      targetType: 'poll',
+      details: {
+        pollTitle: poll.title,
+        pollType: poll.poll_type,
+        voterName,
+        voterEmail,
+        isAuthenticated,
+      },
+      request,
+      responseStatus: 201,
+    });
+
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
     console.error('Vote error:', err);
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: `/api/polls/${id}/vote`,
+      method: 'POST',
+      request,
+    });
     return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
   }
 }

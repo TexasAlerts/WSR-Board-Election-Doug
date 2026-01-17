@@ -3,6 +3,7 @@ import { getSupabase } from '../../../../../lib/supabase';
 import { getCurrentSupporter } from '../../../../../lib/auth';
 import { z } from 'zod';
 import { rateLimit } from '../../../../../lib/rateLimit';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../../lib/logging';
 
 // POST: Vote on a comment (up or down)
 export async function POST(request, { params }) {
@@ -132,6 +133,25 @@ export async function POST(request, { params }) {
       .eq('supporter_id', supporter.id)
       .single();
 
+    // Log comment vote
+    await logAudit({
+      eventType: AuditEvents.COMMENT_VOTE,
+      supporterId: supporter.id,
+      targetId: commentId,
+      targetType: 'comment',
+      details: {
+        voteType: vote_type,
+        previousVote: existingVote?.vote_type || null,
+        action: existingVote
+          ? existingVote.vote_type === vote_type
+            ? 'removed'
+            : 'changed'
+          : 'added',
+      },
+      request,
+      responseStatus: 200,
+    });
+
     return NextResponse.json({
       ok: true,
       upvotes: newUpvotes,
@@ -140,6 +160,16 @@ export async function POST(request, { params }) {
     });
   } catch (err) {
     console.error('Vote error:', err);
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: `/api/comments/${commentId}/vote`,
+      method: 'POST',
+      userId: supporter?.id,
+      userEmail: supporter?.email,
+      request,
+    });
     return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
   }
 }

@@ -549,7 +549,25 @@ export default function AdminDashboard() {
       {activeTab === 'audit' && (
         <div>
           <div className="flex gap-2 mb-4 flex-wrap">
-            {['all', 'LOGIN_SUCCESS', 'LOGIN_FAILED', 'LOGOUT', 'REGISTER', 'SUPPORTER_APPROVED', 'SUPPORTER_SUSPENDED', 'BROADCAST_SENT'].map((s) => (
+            {[
+              'all',
+              'LOGIN_SUCCESS',
+              'LOGIN_FAILED',
+              'LOGOUT',
+              'REGISTER',
+              'SUPPORTER_APPROVED',
+              'SUPPORTER_SUSPENDED',
+              'COMMENT_APPROVED',
+              'COMMENT_REJECTED',
+              'COMMENT_CREATED',
+              'POLL_VOTE',
+              'IDEA_VOTE',
+              'IDEA_CREATED',
+              'ENDORSEMENT_SUBMITTED',
+              'ENDORSEMENT_APPROVED',
+              'ENDORSEMENT_REJECTED',
+              'BROADCAST_SENT',
+            ].map((s) => (
               <button
                 key={s}
                 onClick={() => setAuditFilter(s)}

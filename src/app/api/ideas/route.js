@@ -4,6 +4,7 @@ import { getCurrentSupporter } from '../../../lib/auth';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
 
 export async function GET(request) {
   const supabase = getSupabase();
@@ -82,7 +83,7 @@ export async function POST(request) {
 
     const { name, email, category, title, content, is_public } = parsed.data;
 
-    const { error } = await supabase
+    const { data: newIdea, error } = await supabase
       .from('ideas')
       .insert({
         name,
@@ -93,11 +94,37 @@ export async function POST(request) {
         is_public,
         status: 'pending',
         support_count: 0,
-      });
+      })
+      .select('id')
+      .single();
 
     if (error) {
+      await logError({
+        errorType: ErrorTypes.DATABASE_ERROR,
+        errorMessage: error.message,
+        endpoint: '/api/ideas',
+        method: 'POST',
+        userEmail: email,
+        request,
+      });
       return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
     }
+
+    // Log idea creation
+    await logAudit({
+      eventType: AuditEvents.IDEA_CREATED,
+      targetId: newIdea?.id,
+      targetType: 'idea',
+      details: {
+        name,
+        email,
+        category,
+        title,
+        isPublic: is_public,
+      },
+      request,
+      responseStatus: 201,
+    });
 
     // Send emails
     await Promise.all([
@@ -114,6 +141,14 @@ export async function POST(request) {
 
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/ideas',
+      method: 'POST',
+      request,
+    });
     return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
   }
 }

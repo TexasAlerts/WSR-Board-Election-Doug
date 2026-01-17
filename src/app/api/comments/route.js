@@ -4,6 +4,7 @@ import { getCurrentSupporter } from '../../../lib/auth';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail } from '../../../lib/sendEmail';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
 
 // GET: Fetch comments for a poll or idea
 export async function GET(request) {
@@ -174,11 +175,36 @@ export async function POST(request) {
 
     if (error) {
       console.error('Comment insert error:', error);
+      await logError({
+        errorType: ErrorTypes.DATABASE_ERROR,
+        errorMessage: error.message,
+        endpoint: '/api/comments',
+        method: 'POST',
+        userId: supporter.id,
+        userEmail: supporter.email,
+        request,
+      });
       return NextResponse.json({ ok: false, error: 'Failed to post comment' }, { status: 500 });
     }
 
-    // Notify admin
+    // Log comment creation
     const targetType = poll_id ? 'poll' : 'idea';
+    await logAudit({
+      eventType: AuditEvents.COMMENT_CREATED,
+      supporterId: supporter.id,
+      targetId: comment.id,
+      targetType: 'comment',
+      details: {
+        onType: targetType,
+        onId: poll_id || idea_id,
+        isReply: !!parent_id,
+        contentPreview: content.trim().substring(0, 100),
+      },
+      request,
+      responseStatus: 201,
+    });
+
+    // Notify admin
     sendNotificationEmail(
       `New ${parent_id ? 'reply' : 'comment'} pending approval`,
       `From: ${supporter.first_name} ${supporter.last_name} (${supporter.email})\nOn: ${targetType}\nContent: ${content.trim()}`
@@ -191,6 +217,16 @@ export async function POST(request) {
     }, { status: 201 });
   } catch (err) {
     console.error('Comment error:', err);
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/comments',
+      method: 'POST',
+      userId: supporter?.id,
+      userEmail: supporter?.email,
+      request,
+    });
     return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
   }
 }
