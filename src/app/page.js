@@ -8,6 +8,7 @@ import {
   ClipboardList,
   ShieldCheck,
 } from 'lucide-react';
+import Reveal from '../components/Reveal';
 
 export default function Home() {
   const [endorsements, setEndorsements] = useState([]);
@@ -26,154 +27,253 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="space-y-20">
-      {/* Hero Section */}
-      <section className="text-center py-8 md:py-12">
-        <img
-          src="/wsr-logo.png"
-          alt="Doug Charles for Town Council Place 5"
-          className="mx-auto w-[180px] sm:w-[240px] md:w-[320px] mb-8"
-          onError={(e) => { e.target.style.display = 'none'; }}
-        />
-
-        <div className="space-y-6 max-w-4xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
-            <span className="text-navy">DOUG</span>{' '}
-            <span className="text-prosper-red">CHARLES</span>
-          </h1>
-
-          <p className="text-lg sm:text-xl text-gray-600 font-medium">
-            For Prosper Town Council · Place 5
-          </p>
-
-          <div className="flex items-center justify-center gap-4 py-4">
-            <span className="h-px w-12 bg-gray-300"></span>
-            <p className="text-xl sm:text-2xl md:text-3xl font-bold text-navy tracking-wide">
-              Listen. Plan. Protect.
-            </p>
-            <span className="h-px w-12 bg-gray-300"></span>
-          </div>
-
-          <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
-            A common sense leader committed to thoughtful growth, fiscal responsibility,
-            and preserving what makes Prosper special.
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-4 pt-6">
-            <Link href="/get-involved" className="btn-primary">
-              Get Involved
-            </Link>
-            <Link href="/about" className="btn-outline">
-              Learn More
-            </Link>
-          </div>
+    <div className="space-y-0">
+      {/* Hero Section - Enhanced */}
+      <section className="hero-pattern hero-gradient text-center py-16 md:py-24 relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        {/* Decorative background blurs */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-20 left-10 w-64 h-64 bg-navy/5 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-prosper-red/5 rounded-full blur-3xl"></div>
         </div>
-      </section>
 
-      {/* Three Pillars Preview */}
-      <section className="bg-gray-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="section-title">My Priorities</h2>
-            <p className="section-subtitle">Common sense leadership for Prosper</p>
-          </div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <div className="card text-center">
-              <div className="w-16 h-16 bg-navy/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Ear className="w-8 h-8 text-navy" aria-hidden="true" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-navy">Listen</h3>
-              <p className="text-gray-600">Good decisions start with hearing from residents—not as an afterthought, but from the beginning.</p>
-            </div>
-            <div className="card text-center">
-              <div className="w-16 h-16 bg-navy/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <ClipboardList className="w-8 h-8 text-navy" aria-hidden="true" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-navy">Plan</h3>
-              <p className="text-gray-600">Build it right the first time. Right-size projects before we break ground.</p>
-            </div>
-            <div className="card text-center">
-              <div className="w-16 h-16 bg-navy/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <ShieldCheck className="w-8 h-8 text-navy" aria-hidden="true" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-navy">Protect</h3>
-              <p className="text-gray-600">Growth isn't the enemy—losing our community character is.</p>
-            </div>
-          </div>
-          <div className="text-center mt-10">
-            <Link href="/priorities" className="btn-outline">
-              Learn More About My Priorities
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* About Preview */}
-      <section>
-        <div className="grid md:grid-cols-3 gap-8 items-center">
-          <div className="md:col-span-1">
-            <Image
-              src="/headshot.jpg"
-              alt="Doug Charles"
-              width={300}
-              height={375}
-              className="rounded-lg shadow-lg mx-auto w-full max-w-[280px]"
+        <div className="relative z-10 max-w-4xl mx-auto">
+          {/* Logo with entrance animation */}
+          <div className="animate-fade-in-down">
+            <img
+              src="/wsr-logo.png"
+              alt="Doug Charles for Town Council Place 5"
+              className="mx-auto w-[200px] sm:w-[280px] md:w-[360px] mb-10 drop-shadow-lg"
+              onError={(e) => { e.target.style.display = 'none'; }}
             />
           </div>
-          <div className="md:col-span-2 space-y-5">
-            <h2 className="section-title">About Doug</h2>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              I've called <strong className="text-navy">Prosper</strong> home for <strong>20 years</strong>. I've served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and volunteered in my neighborhood.
+
+          <div className="space-y-6">
+            {/* Name with staggered animation */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
+              <span className="inline-block text-navy animate-fade-in-up animate-on-load animate-delay-100">DOUG</span>{' '}
+              <span className="inline-block text-prosper-red animate-fade-in-up animate-on-load animate-delay-200">CHARLES</span>
+            </h1>
+
+            <p className="text-lg sm:text-xl text-gray-600 font-medium animate-fade-in animate-on-load animate-delay-300">
+              For Prosper Town Council · Place 5
             </p>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              I'm running because <strong className="text-prosper-red">Prosper is at a crossroads</strong>. The decisions we make now will shape our community for decades.
+
+            {/* Tagline with gradient accent lines */}
+            <div className="flex items-center justify-center gap-4 py-6 animate-fade-in animate-on-load animate-delay-400">
+              <span className="h-0.5 w-12 md:w-20 bg-gradient-to-r from-transparent to-navy/50"></span>
+              <p className="text-xl sm:text-2xl md:text-3xl font-bold tracking-wide">
+                <span className="text-navy">Listen.</span>{' '}
+                <span className="text-navy">Plan.</span>{' '}
+                <span className="text-prosper-red">Protect.</span>
+              </p>
+              <span className="h-0.5 w-12 md:w-20 bg-gradient-to-l from-transparent to-prosper-red/50"></span>
+            </div>
+
+            <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto animate-fade-in animate-on-load animate-delay-500">
+              A common sense leader committed to thoughtful growth, fiscal responsibility,
+              and preserving what makes Prosper special.
             </p>
-            <Link href="/about" className="btn-outline inline-block">
-              Read More
-            </Link>
+
+            {/* Enhanced CTAs */}
+            <div className="flex flex-wrap justify-center gap-4 pt-8 animate-fade-in-up animate-on-load animate-delay-600">
+              <Link href="/get-involved" className="btn-primary text-lg px-10 py-4">
+                Get Involved
+              </Link>
+              <Link href="/about" className="btn-outline text-lg px-10 py-4">
+                Learn More
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Endorsements Preview */}
-      {endorsements.length > 0 && (
-        <section className="bg-gray-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="section-title text-center mb-8">Community Support</h2>
-            <div className="grid gap-4 md:grid-cols-2">
-              {endorsements.slice(0, 4).map((e) => (
-                <div key={e.id} className="card">
-                  <p className="text-gray-600 italic mb-3">"{e.message}"</p>
-                  <p className="font-semibold text-navy">— {e.name}</p>
-                </div>
-              ))}
+      {/* Statistics Section */}
+      <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            <Reveal delay={0}>
+              <div className="stat-card">
+                <div className="stat-number">20</div>
+                <div className="stat-label">Years in Prosper</div>
+              </div>
+            </Reveal>
+            <Reveal delay={100}>
+              <div className="stat-card">
+                <div className="stat-number">3</div>
+                <div className="stat-label">Years P&Z Service</div>
+              </div>
+            </Reveal>
+            <Reveal delay={200}>
+              <div className="stat-card">
+                <div className="stat-number">$210M</div>
+                <div className="stat-label">Bond Committee</div>
+              </div>
+            </Reveal>
+            <Reveal delay={300}>
+              <div className="stat-card">
+                <div className="stat-number">79%</div>
+                <div className="stat-label">Bond Executed</div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Three Pillars Section - Enhanced */}
+      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative">
+        {/* Top accent line */}
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
+
+        <div className="max-w-6xl mx-auto">
+          <Reveal>
+            <div className="text-center mb-16">
+              <h2 className="section-title">My Priorities</h2>
+              <p className="section-subtitle">Common sense leadership for Prosper</p>
             </div>
-            <div className="text-center mt-8">
-              <Link href="/endorsements" className="btn-outline">
-                View All Endorsements
+          </Reveal>
+
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            <Reveal delay={0}>
+              <div className="card text-center h-full">
+                <div className="icon-container">
+                  <Ear className="w-8 h-8 text-navy" aria-hidden="true" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-navy">Listen</h3>
+                <p className="text-gray-600">Good decisions start with hearing from residents—not as an afterthought, but from the beginning.</p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={150}>
+              <div className="card text-center h-full">
+                <div className="icon-container">
+                  <ClipboardList className="w-8 h-8 text-navy" aria-hidden="true" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-navy">Plan</h3>
+                <p className="text-gray-600">Build it right the first time. Right-size projects before we break ground.</p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={300}>
+              <div className="card text-center h-full">
+                <div className="icon-container">
+                  <ShieldCheck className="w-8 h-8 text-navy" aria-hidden="true" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-navy">Protect</h3>
+                <p className="text-gray-600">Growth isn't the enemy—losing our community character is.</p>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={400}>
+            <div className="text-center mt-12">
+              <Link href="/priorities" className="btn-outline">
+                Learn More About My Priorities
               </Link>
             </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* About Preview - Enhanced */}
+      <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-5 gap-10 items-center">
+            <Reveal direction="left" className="md:col-span-2">
+              <div className="relative">
+                <div className="absolute -inset-4 bg-gradient-to-br from-navy/10 to-prosper-red/10 rounded-2xl blur-xl"></div>
+                <Image
+                  src="/headshot.jpg"
+                  alt="Doug Charles"
+                  width={400}
+                  height={500}
+                  className="relative rounded-xl shadow-navy-lg mx-auto w-full max-w-[320px]"
+                />
+              </div>
+            </Reveal>
+
+            <Reveal direction="right" className="md:col-span-3 space-y-6">
+              <h2 className="section-title">About Doug</h2>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                I've called <strong className="text-navy">Prosper</strong> home for <strong>20 years</strong>. I've served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and volunteered in my neighborhood.
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                I'm running because <strong className="text-prosper-red">Prosper is at a crossroads</strong>. The decisions we make now will shape our community for decades.
+              </p>
+              <div className="pt-2">
+                <Link href="/about" className="btn-outline">
+                  Read More About Doug
+                </Link>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Endorsements Preview - Enhanced */}
+      {endorsements.length > 0 && (
+        <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
+
+          <div className="max-w-4xl mx-auto">
+            <Reveal>
+              <h2 className="section-title text-center mb-4">Community Support</h2>
+              <p className="section-subtitle text-center">Hear from your neighbors</p>
+            </Reveal>
+
+            <div className="grid gap-6 md:grid-cols-2 mt-8">
+              {endorsements.slice(0, 4).map((e, idx) => (
+                <Reveal key={e.id} delay={idx * 100}>
+                  <div className="card h-full">
+                    <div className="quote-enhanced mb-4">
+                      <p className="text-gray-700 not-italic">"{e.message}"</p>
+                    </div>
+                    <p className="font-semibold text-navy flex items-center gap-3">
+                      <span className="w-10 h-10 bg-gradient-to-br from-navy to-navy-light rounded-full flex items-center justify-center text-sm text-white font-bold shadow-sm">
+                        {e.name.charAt(0)}
+                      </span>
+                      {e.name}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+
+            <Reveal delay={400}>
+              <div className="text-center mt-12">
+                <Link href="/endorsements" className="btn-outline">
+                  View All Endorsements
+                </Link>
+              </div>
+            </Reveal>
           </div>
         </section>
       )}
 
-      {/* CTA Section */}
-      <section className="bg-navy text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6">
-            Join the Campaign
-          </h2>
-          <p className="text-xl text-white/90 mb-8">
-            Together, we can ensure Prosper's growth is managed wisely and every resident's voice is heard.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/get-involved" className="bg-white text-navy px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all">
-              Get Involved
-            </Link>
-            <Link href="/donate" className="bg-prosper-red text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-dark transition-all">
-              Donate
-            </Link>
-          </div>
+      {/* CTA Section - Enhanced */}
+      <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20">
+        <div className="max-w-3xl mx-auto text-center relative z-10">
+          <Reveal>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+              Join the Campaign
+            </h2>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <p className="text-xl text-white/90 mb-10 leading-relaxed">
+              Together, we can ensure Prosper's growth is managed wisely and every resident's voice is heard.
+            </p>
+          </Reveal>
+
+          <Reveal delay={200}>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/get-involved" className="btn-white text-lg px-10 py-4">
+                Get Involved
+              </Link>
+              <Link href="/donate" className="btn-secondary text-lg px-10 py-4">
+                Donate
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
     </div>

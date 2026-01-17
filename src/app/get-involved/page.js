@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Reveal from '../../components/Reveal';
 
 function GetInvolvedContent() {
   const [mode, setMode] = useState('volunteer');
@@ -59,53 +60,63 @@ function GetInvolvedContent() {
   ];
 
   return (
-    <div className="space-y-16">
+    <div className="space-y-0">
       {/* Hero */}
-      <section className="text-center py-8">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy mb-4">
-          Get Involved
-        </h1>
-        <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-          Join the movement for common sense leadership in Prosper
-        </p>
+      <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
+        </div>
+        <div className="max-w-3xl mx-auto text-center relative z-10">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 animate-fade-in-down">
+            Get Involved
+          </h1>
+          <p className="text-xl text-white/90 animate-fade-in animate-delay-200">
+            Join the movement for common sense leadership in Prosper
+          </p>
+        </div>
       </section>
 
       {/* Mode Toggle */}
-      <section className="max-w-2xl mx-auto">
-        <div className="flex justify-center gap-4 mb-8">
-          <button
-            type="button"
-            onClick={() => setMode('volunteer')}
-            className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all ${
-              mode === 'volunteer'
-                ? 'bg-navy text-white shadow-lg'
-                : 'bg-gray-100 text-navy hover:bg-gray-200'
-            }`}
-          >
-            Volunteer
-          </button>
-          <button
-            type="button"
-            onClick={() => setMode('endorsement')}
-            className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all ${
-              mode === 'endorsement'
-                ? 'bg-prosper-red text-white shadow-lg'
-                : 'bg-gray-100 text-prosper-red hover:bg-gray-200'
-            }`}
-          >
-            Endorse Doug
-          </button>
-        </div>
+      <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto">
+          <Reveal>
+            <div className="flex justify-center gap-4 mb-8">
+              <button
+                type="button"
+                onClick={() => setMode('volunteer')}
+                className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ${
+                  mode === 'volunteer'
+                    ? 'bg-gradient-navy text-white shadow-navy-lg scale-105'
+                    : 'bg-gray-100 text-navy hover:bg-gray-200 hover:scale-[1.02]'
+                }`}
+              >
+                Volunteer
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode('endorsement')}
+                className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ${
+                  mode === 'endorsement'
+                    ? 'bg-gradient-red text-white shadow-lg scale-105'
+                    : 'bg-gray-100 text-prosper-red hover:bg-gray-200 hover:scale-[1.02]'
+                }`}
+              >
+                Endorse Doug
+              </button>
+            </div>
+          </Reveal>
 
-        {/* Form */}
-        <div className="card">
-          <h2 className="text-xl font-bold text-navy mb-6">
-            {mode === 'endorsement' ? 'Submit Your Endorsement' : 'How Can You Help?'}
-          </h2>
+          {/* Form */}
+          <Reveal delay={100}>
+            <div className="card">
+              <h2 className="text-xl font-bold text-navy mb-6">
+                {mode === 'endorsement' ? 'Submit Your Endorsement' : 'How Can You Help?'}
+              </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {mode === 'volunteer' && (
-              <>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {mode === 'volunteer' && (
+                  <>
                 <div>
                   <label className="form-label">I'm interested in *</label>
                   <div className="flex flex-wrap gap-2 mt-2">
@@ -241,67 +252,94 @@ function GetInvolvedContent() {
               <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
                 <p className="text-green-800 font-medium">{submitMsg}</p>
               </div>
-            )}
-          </form>
+                )}
+              </form>
+            </div>
+          </Reveal>
         </div>
       </section>
 
       {/* Ways to Help */}
-      <section className="bg-gray-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16">
+      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
+
         <div className="max-w-4xl mx-auto">
-          <h2 className="section-title text-center mb-12">Ways to Support the Campaign</h2>
+          <Reveal>
+            <h2 className="section-title text-center mb-4">Ways to Support the Campaign</h2>
+            <p className="section-subtitle text-center">Every action makes a difference</p>
+          </Reveal>
 
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="card">
-              <h3 className="text-xl font-bold text-navy mb-3">Display a Yard Sign</h3>
-              <p className="text-gray-600 mb-4">
-                Show your support and help spread the word in your neighborhood.
-              </p>
-              <button
-                onClick={() => {
-                  setMode('volunteer');
-                  setFormType('yardsign');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="text-navy font-semibold hover:underline"
-              >
-                Request a sign →
-              </button>
-            </div>
+          <div className="grid gap-6 md:grid-cols-2 mt-12">
+            <Reveal delay={0}>
+              <div className="card h-full">
+                <div className="icon-container">
+                  <span className="text-2xl">🏠</span>
+                </div>
+                <h3 className="text-xl font-bold text-navy mb-3">Display a Yard Sign</h3>
+                <p className="text-gray-600 mb-4">
+                  Show your support and help spread the word in your neighborhood.
+                </p>
+                <button
+                  onClick={() => {
+                    setMode('volunteer');
+                    setFormType('yardsign');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="text-navy font-semibold hover:underline inline-flex items-center gap-1 transition-transform hover:translate-x-1"
+                >
+                  Request a sign →
+                </button>
+              </div>
+            </Reveal>
 
-            <div className="card">
-              <h3 className="text-xl font-bold text-navy mb-3">Volunteer Your Time</h3>
-              <p className="text-gray-600 mb-4">
-                Help with door-knocking, phone calls, events, or other campaign activities.
-              </p>
-              <button
-                onClick={() => {
-                  setMode('volunteer');
-                  setFormType('volunteer');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="text-navy font-semibold hover:underline"
-              >
-                Sign up to volunteer →
-              </button>
-            </div>
+            <Reveal delay={100}>
+              <div className="card h-full">
+                <div className="icon-container">
+                  <span className="text-2xl">🤝</span>
+                </div>
+                <h3 className="text-xl font-bold text-navy mb-3">Volunteer Your Time</h3>
+                <p className="text-gray-600 mb-4">
+                  Help with door-knocking, phone calls, events, or other campaign activities.
+                </p>
+                <button
+                  onClick={() => {
+                    setMode('volunteer');
+                    setFormType('volunteer');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="text-navy font-semibold hover:underline inline-flex items-center gap-1 transition-transform hover:translate-x-1"
+                >
+                  Sign up to volunteer →
+                </button>
+              </div>
+            </Reveal>
 
-            <div className="card">
-              <h3 className="text-xl font-bold text-navy mb-3">Spread the Word</h3>
-              <p className="text-gray-600 mb-4">
-                Share this website with friends and neighbors. Personal recommendations matter.
-              </p>
-            </div>
+            <Reveal delay={200}>
+              <div className="card h-full">
+                <div className="icon-container">
+                  <span className="text-2xl">📢</span>
+                </div>
+                <h3 className="text-xl font-bold text-navy mb-3">Spread the Word</h3>
+                <p className="text-gray-600 mb-4">
+                  Share this website with friends and neighbors. Personal recommendations matter.
+                </p>
+              </div>
+            </Reveal>
 
-            <div className="card">
-              <h3 className="text-xl font-bold text-navy mb-3">Make a Donation</h3>
-              <p className="text-gray-600 mb-4">
-                Every contribution helps us reach more voters across Prosper.
-              </p>
-              <Link href="/donate" className="text-prosper-red font-semibold hover:underline">
-                Donate now →
-              </Link>
-            </div>
+            <Reveal delay={300}>
+              <div className="card h-full">
+                <div className="icon-container">
+                  <span className="text-2xl">💪</span>
+                </div>
+                <h3 className="text-xl font-bold text-navy mb-3">Make a Donation</h3>
+                <p className="text-gray-600 mb-4">
+                  Every contribution helps us reach more voters across Prosper.
+                </p>
+                <Link href="/donate" className="text-prosper-red font-semibold hover:underline inline-flex items-center gap-1 transition-transform hover:translate-x-1">
+                  Donate now →
+                </Link>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
