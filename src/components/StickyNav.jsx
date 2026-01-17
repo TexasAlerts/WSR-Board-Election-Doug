@@ -106,7 +106,7 @@ export default function StickyNav() {
                   <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
                     {isAdmin && (
                       <Link
-                        href="/admin"
+                        href="/admin/dashboard"
                         className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
                         onClick={() => setUserMenuOpen(false)}
                       >
@@ -168,7 +168,7 @@ export default function StickyNav() {
                   </div>
                   {isAdmin && (
                     <Link
-                      href="/admin"
+                      href="/admin/dashboard"
                       className="block py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium"
                       onClick={() => setOpen(false)}
                     >
