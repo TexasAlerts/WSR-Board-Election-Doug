@@ -47,7 +47,7 @@ export default function AboutPage() {
 
           <Reveal direction="right" className="md:col-span-3 space-y-6">
             <p className="text-lg text-gray-700 leading-relaxed">
-              I've called <strong className="text-navy">Prosper</strong> home for <strong>20 years</strong>. I've raised my family here, served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and volunteered in my neighborhood.
+              I've called <strong className="text-navy">Prosper</strong> home for <strong>20 years</strong>. I've raised my family here, served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and was elected to the Windsong Ranch HOA Board in October 2025.
             </p>
             <p className="text-lg text-gray-700 leading-relaxed">
               I'm running for Town Council because <strong className="text-prosper-red">Prosper is at a crossroads</strong>. The decisions we make over the next few years will shape our community for decades. We need leaders who will listen to all residents, plan thoughtfully, and protect what makes this town special.
