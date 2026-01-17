@@ -19,6 +19,7 @@ export default function EndorsementsPage() {
   return (
     <div className="space-y-8 px-2 w-full">
       <h1 className="text-xl sm:text-3xl font-bold text-navy">Endorsements</h1>
+      <p className="text-gray-600">Neighbors supporting common sense leadership for Prosper</p>
       {endorsements.length === 0 ? (
         <p>No endorsements yet. Submit yours on the home page!</p>
       ) : (

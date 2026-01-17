@@ -13,7 +13,7 @@ export default function WhyPage() {
             Why I'm Running
           </h1>
           <p className="text-xl text-white/90 animate-fade-in animate-delay-200">
-            Prosper needs leaders who will listen, plan, and protect our community.
+            Prosper needs common sense leaders who will listen, plan, and protect our community.
           </p>
         </div>
       </section>
@@ -66,7 +66,7 @@ export default function WhyPage() {
         <div className="max-w-4xl mx-auto">
           <Reveal>
             <h2 className="section-title text-center mb-4">What I'll Do Differently</h2>
-            <p className="section-subtitle text-center">Leadership that puts residents first</p>
+            <p className="section-subtitle text-center">Common sense leadership that puts residents first</p>
           </Reveal>
 
           <div className="grid gap-6 md:grid-cols-2 mt-12">
