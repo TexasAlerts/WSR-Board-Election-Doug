@@ -111,8 +111,8 @@ export default function AboutPage() {
                 <div className="flex items-start gap-4">
                   <div className="w-4 h-4 bg-gradient-to-br from-prosper-red to-red-dark rounded-full mt-1 flex-shrink-0 shadow-sm"></div>
                   <div>
-                    <h3 className="text-xl font-bold text-navy mb-2">HOA Board Member</h3>
-                    <p className="text-gray-600">Current · Hands-on neighborhood leadership. I understand the issues residents face every day.</p>
+                    <h3 className="text-xl font-bold text-navy mb-2">Windsong Ranch Board Member</h3>
+                    <p className="text-gray-600">Elected · Serving on the board of one of Prosper's largest communities. I understand the issues residents face every day.</p>
                   </div>
                 </div>
               </div>
