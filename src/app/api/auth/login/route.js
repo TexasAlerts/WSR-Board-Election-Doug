@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { rateLimit } from '../../../../lib/rateLimit';
-import { getSupporterByEmail, verifyPassword, createSession, logAuditEvent } from '../../../../lib/auth';
+import { getSupporterByEmail, verifyPassword, createSession } from '../../../../lib/auth';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 const loginSchema = z.object({
   email: z.string().email('Valid email is required'),
@@ -34,7 +35,13 @@ export async function POST(request) {
     const supporter = await getSupporterByEmail(email);
 
     if (!supporter) {
-      // Use generic error to prevent email enumeration
+      // Log failed attempt
+      await logAudit({
+        eventType: AuditEvents.LOGIN_FAILED,
+        details: { email, reason: 'User not found' },
+        request,
+        responseStatus: 401,
+      });
       return NextResponse.json(
         { ok: false, error: 'Invalid email or password' },
         { status: 401 }
@@ -43,6 +50,13 @@ export async function POST(request) {
 
     // Check account status
     if (supporter.status === 'suspended') {
+      await logAudit({
+        eventType: AuditEvents.LOGIN_FAILED,
+        supporterId: supporter.id,
+        details: { email, reason: 'Account suspended' },
+        request,
+        responseStatus: 403,
+      });
       return NextResponse.json(
         { ok: false, error: 'This account has been suspended.' },
         { status: 403 }
@@ -74,6 +88,13 @@ export async function POST(request) {
     const passwordValid = await verifyPassword(password, supporter.password_hash);
 
     if (!passwordValid) {
+      await logAudit({
+        eventType: AuditEvents.LOGIN_FAILED,
+        supporterId: supporter.id,
+        details: { email, reason: 'Invalid password' },
+        request,
+        responseStatus: 401,
+      });
       return NextResponse.json(
         { ok: false, error: 'Invalid email or password' },
         { status: 401 }
@@ -83,14 +104,33 @@ export async function POST(request) {
     // Create session
     const session = await createSession(supporter.id, request);
     if (!session) {
+      await logError({
+        errorType: ErrorTypes.SERVER_ERROR,
+        errorMessage: 'Failed to create session',
+        endpoint: '/api/auth/login',
+        method: 'POST',
+        userId: supporter.id,
+        userEmail: supporter.email,
+        request,
+      });
       return NextResponse.json(
         { ok: false, error: 'Failed to create session' },
         { status: 500 }
       );
     }
 
-    // Log event
-    await logAuditEvent(supporter.id, 'LOGIN', { email: supporter.email }, request);
+    // Log successful login
+    await logAudit({
+      eventType: AuditEvents.LOGIN_SUCCESS,
+      supporterId: supporter.id,
+      details: {
+        email: supporter.email,
+        role: supporter.role,
+      },
+      request,
+      sessionId: session.id,
+      responseStatus: 200,
+    });
 
     // Set session cookie
     const response = NextResponse.json({
@@ -116,6 +156,14 @@ export async function POST(request) {
     return response;
   } catch (err) {
     console.error('Login error:', err);
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/auth/login',
+      method: 'POST',
+      request,
+    });
     return NextResponse.json(
       { ok: false, error: 'An unexpected error occurred' },
       { status: 500 }

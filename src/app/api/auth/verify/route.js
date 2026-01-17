@@ -6,9 +6,9 @@ import {
   markEmailVerificationUsed,
   hashPassword,
   createSMSVerification,
-  logAuditEvent,
 } from '../../../../lib/auth';
 import { sendVerificationSMS } from '../../../../lib/smsService';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 // GET: Check if token is valid
 export async function GET(request) {
@@ -116,7 +116,21 @@ export async function POST(request) {
     }
 
     // Log event
-    await logAuditEvent(supporter.id, 'EMAIL_VERIFIED', { email: supporter.email }, request);
+    await logAudit({
+      eventType: AuditEvents.EMAIL_VERIFIED,
+      supporterId: supporter.id,
+      details: { email: supporter.email },
+      request,
+      responseStatus: 200,
+    });
+
+    await logAudit({
+      eventType: AuditEvents.PASSWORD_CREATED,
+      supporterId: supporter.id,
+      details: { email: supporter.email },
+      request,
+      responseStatus: 200,
+    });
 
     return NextResponse.json({
       ok: true,
@@ -126,6 +140,14 @@ export async function POST(request) {
     });
   } catch (err) {
     console.error('Verify error:', err);
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/auth/verify',
+      method: 'POST',
+      request,
+    });
     return NextResponse.json(
       { ok: false, error: 'An unexpected error occurred' },
       { status: 500 }

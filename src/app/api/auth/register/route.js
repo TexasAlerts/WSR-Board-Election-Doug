@@ -6,6 +6,7 @@ import { validatePhoneNumber } from '../../../../lib/phoneValidation';
 import { validateAddress } from '../../../../lib/uspsValidation';
 import { createEmailVerification } from '../../../../lib/auth';
 import { sendVerificationEmail } from '../../../../lib/emailService';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 const registerSchema = z.object({
   firstName: z.string().min(1, 'First name is required').max(50),
@@ -155,6 +156,22 @@ export async function POST(request) {
       // Don't fail registration, just log the error
     }
 
+    // Log successful registration
+    await logAudit({
+      eventType: AuditEvents.REGISTER,
+      supporterId: supporter.id,
+      details: {
+        email: supporter.email,
+        firstName: supporter.first_name,
+        lastName: supporter.last_name,
+        city: supporter.city,
+        emailConsent,
+        smsConsent,
+      },
+      request,
+      responseStatus: 200,
+    });
+
     return NextResponse.json({
       ok: true,
       message: 'Registration successful! Please check your email to verify your account.',
@@ -162,6 +179,14 @@ export async function POST(request) {
     });
   } catch (err) {
     console.error('Registration error:', err);
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/auth/register',
+      method: 'POST',
+      request,
+    });
     return NextResponse.json(
       { ok: false, error: 'An unexpected error occurred. Please try again.' },
       { status: 500 }

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { deleteSession, validateSession, logAuditEvent } from '../../../../lib/auth';
+import { deleteSession, validateSession } from '../../../../lib/auth';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 export async function POST(request) {
   try {
@@ -16,7 +17,13 @@ export async function POST(request) {
 
       // Log event
       if (supporter) {
-        await logAuditEvent(supporter.id, 'LOGOUT', {}, request);
+        await logAudit({
+          eventType: AuditEvents.LOGOUT,
+          supporterId: supporter.id,
+          details: { email: supporter.email },
+          request,
+          responseStatus: 200,
+        });
       }
     }
 
@@ -34,6 +41,14 @@ export async function POST(request) {
     return response;
   } catch (err) {
     console.error('Logout error:', err);
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/auth/logout',
+      method: 'POST',
+      request,
+    });
     return NextResponse.json(
       { ok: false, error: 'An unexpected error occurred' },
       { status: 500 }

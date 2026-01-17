@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { z } from 'zod';
-import { validateSMSCode, incrementSMSAttempt, createSession, logAuditEvent } from '../../../../lib/auth';
+import { validateSMSCode, incrementSMSAttempt, createSession } from '../../../../lib/auth';
 import { sendWelcomeEmail, sendAdminNewRegistrationEmail } from '../../../../lib/emailService';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 const verifySchema = z.object({
   supporterId: z.string().uuid('Invalid supporter ID'),
@@ -71,9 +72,31 @@ export async function POST(request) {
       return NextResponse.json({ ok: false, error: 'Failed to create session' }, { status: 500 });
     }
 
-    // Log event
-    await logAuditEvent(supporterId, 'PHONE_VERIFIED', { phone: supporter.phone }, request);
-    await logAuditEvent(supporterId, 'ACCOUNT_APPROVED', {}, request);
+    // Log events
+    await logAudit({
+      eventType: AuditEvents.PHONE_VERIFIED,
+      supporterId,
+      details: { phone: supporter.phone },
+      request,
+      responseStatus: 200,
+    });
+
+    // Note: Account is auto-approved after phone verification
+    await logAudit({
+      eventType: AuditEvents.SUPPORTER_APPROVED,
+      supporterId,
+      targetId: supporterId,
+      targetType: 'supporter',
+      oldValues: { status: 'pending_phone' },
+      newValues: { status: 'approved' },
+      details: {
+        method: 'auto-approval after phone verification',
+        email: supporter.email,
+      },
+      request,
+      sessionId: session.id,
+      responseStatus: 200,
+    });
 
     // Send welcome email
     await sendWelcomeEmail(supporter.email, supporter.first_name);
@@ -99,6 +122,14 @@ export async function POST(request) {
     return response;
   } catch (err) {
     console.error('SMS verify error:', err);
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/auth/verify-sms',
+      method: 'POST',
+      request,
+    });
     return NextResponse.json(
       { ok: false, error: 'An unexpected error occurred' },
       { status: 500 }
