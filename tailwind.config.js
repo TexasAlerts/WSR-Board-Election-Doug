@@ -12,28 +12,31 @@ module.exports = {
         body: ['Open Sans', 'sans-serif'],
       },
       colors: {
+        // From yard sign - deep navy blue (DOUG, FOR TOWN COUNCIL)
         navy: {
-          DEFAULT: '#1A3A5C', // campaign navy blue (from design doc)
-          light: '#2A4A6C',   // lighter navy for hover states
-          dark: '#142D47',    // darker navy for emphasis
+          DEFAULT: '#1B3A5D',
+          light: '#2B4A6D',
+          dark: '#0F2840',
         },
+        // From yard sign - bold red (CHARLES, bottom banner)
         'prosper-red': {
-          DEFAULT: '#C41E3A',     // campaign red
-          light: '#D43250',       // lighter red for hover
-          dark: '#A3182F',        // darker red for emphasis
+          DEFAULT: '#BF1E2E',
+          light: '#CF3040',
+          dark: '#9F1020',
         },
         red: {
-          DEFAULT: '#C41E3A',     // alias for prosper-red
-          dark: '#A3182F',
-          light: '#D43250',
+          DEFAULT: '#BF1E2E',
+          light: '#CF3040',
+          dark: '#9F1020',
         },
+        // Light cream/white background from sign
         cream: {
-          DEFAULT: '#F8F6F3'  // soft neutral background
+          DEFAULT: '#F5F5F0'
         },
         charcoal: {
-          DEFAULT: '#333333'  // dark text for accessibility
+          DEFAULT: '#333333'
         },
-        'off-white': '#F8F9FA',
+        'off-white': '#FAFAFA',
         'gray-100': '#F5F5F5',
         'gray-600': '#666666',
       }
