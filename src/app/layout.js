@@ -113,6 +113,10 @@ export default function RootLayout({ children }) {
               <Link href="/privacy" className="underline hover:text-gray-300">
                 Privacy Policy
               </Link>
+              {' | '}
+              <Link href="/terms" className="underline hover:text-gray-300">
+                Terms of Use
+              </Link>
             </p>
           </div>
         </footer>
