@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
-import { requireAdmin } from '../../../../lib/admin-session';
-import { getCurrentSupporter } from '../../../../lib/auth';
+import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 
 export async function GET(request) {
-  if (!requireAdmin(request)) {
+  const supporter = await getCurrentSupporter();
+  if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -79,12 +79,12 @@ export async function GET(request) {
 }
 
 export async function PUT(request) {
-  if (!requireAdmin(request)) {
+  const supporter = await getCurrentSupporter();
+  if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
   const supabase = getSupabase();
-  const supporter = await getCurrentSupporter();
 
   try {
     const body = await request.json();
@@ -101,7 +101,7 @@ export async function PUT(request) {
     const updates = {
       status,
       moderated_at: new Date().toISOString(),
-      moderated_by: supporter?.id || null,
+      moderated_by: supporter.id,
     };
 
     if (status === 'rejected' && rejection_reason) {

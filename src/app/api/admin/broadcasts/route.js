@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
-import { requireAdmin } from '../../../../lib/admin-session';
-import { getCurrentSupporter } from '../../../../lib/auth';
+import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { sendEmail } from '../../../../lib/sendEmail';
 
 export async function GET(request) {
-  if (!requireAdmin(request)) {
+  const supporter = await getCurrentSupporter();
+  if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -25,12 +25,12 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  if (!requireAdmin(request)) {
+  const supporter = await getCurrentSupporter();
+  if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
   const supabase = getSupabase();
-  const supporter = await getCurrentSupporter();
 
   try {
     const body = await request.json();
@@ -104,7 +104,7 @@ export async function POST(request) {
         broadcast_type,
         subject: subject || null,
         body: message,
-        sent_by: supporter?.id || null,
+        sent_by: supporter.id,
         email_recipient_count: emailsSent,
         sms_recipient_count: smsSent,
       });

@@ -35,7 +35,7 @@ export default function AdminDashboard() {
         const data = await res.json();
         if (!res.ok) {
           if (res.status === 401) {
-            router.push('/admin/login');
+            router.push('/auth/login?return=/admin/dashboard');
             return;
           }
           throw new Error(data.error);
@@ -46,7 +46,7 @@ export default function AdminDashboard() {
         const data = await res.json();
         if (!res.ok) {
           if (res.status === 401) {
-            router.push('/admin/login');
+            router.push('/auth/login?return=/admin/dashboard');
             return;
           }
           throw new Error(data.error);
@@ -57,7 +57,7 @@ export default function AdminDashboard() {
         const data = await res.json();
         if (!res.ok) {
           if (res.status === 401) {
-            router.push('/admin/login');
+            router.push('/auth/login?return=/admin/dashboard');
             return;
           }
           throw new Error(data.error);

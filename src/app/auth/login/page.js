@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Mail, Lock, AlertCircle, Loader2 } from 'lucide-react';
+import { useAuth } from '../../../context/AuthContext';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { refreshAuth } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -34,6 +36,9 @@ export default function LoginPage() {
         }
         throw new Error(data.error || 'Login failed');
       }
+
+      // Refresh auth context to update nav
+      await refreshAuth();
 
       // Redirect to polls or previous page
       const returnUrl = new URLSearchParams(window.location.search).get('return') || '/polls';

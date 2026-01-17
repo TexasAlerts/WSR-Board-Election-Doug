@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
-import { requireAdmin } from '../../../../lib/admin-session';
+import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 
 export async function GET(request) {
-  if (!requireAdmin(request)) {
+  const supporter = await getCurrentSupporter();
+  if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -30,7 +31,8 @@ export async function GET(request) {
 }
 
 export async function PUT(request) {
-  if (!requireAdmin(request)) {
+  const supporter = await getCurrentSupporter();
+  if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
