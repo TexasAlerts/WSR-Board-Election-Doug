@@ -179,7 +179,7 @@ export default function Home() {
             <Reveal direction="right" className="md:col-span-3 space-y-6">
               <h2 className="section-title">About Doug</h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                I've called <strong className="text-navy">Prosper</strong> home for <strong>20 years</strong>. I've served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and volunteered in my neighborhood.
+                I've called <strong className="text-navy">Prosper</strong> home for <strong>20 years</strong>. I've served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and was elected to the WSR HOA Board in Oct 2025.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
                 I'm running because <strong className="text-prosper-red">Prosper is at a crossroads</strong>. The decisions we make now will shape our community for decades.
