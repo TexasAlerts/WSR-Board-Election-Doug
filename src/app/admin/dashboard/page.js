@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Users, MessageSquare, Send, CheckCircle, XCircle, Clock, Mail, Phone, Loader2 } from 'lucide-react';
+import { Users, MessageSquare, Send, CheckCircle, XCircle, Clock, Mail, Phone, Loader2, FileText, AlertTriangle, Eye, RefreshCw } from 'lucide-react';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -11,8 +11,12 @@ export default function AdminDashboard() {
   const [supporters, setSupporters] = useState([]);
   const [comments, setComments] = useState([]);
   const [broadcasts, setBroadcasts] = useState([]);
+  const [auditLogs, setAuditLogs] = useState([]);
+  const [errorLogs, setErrorLogs] = useState([]);
   const [supporterFilter, setSupporterFilter] = useState('all');
   const [commentFilter, setCommentFilter] = useState('pending');
+  const [auditFilter, setAuditFilter] = useState('all');
+  const [errorFilter, setErrorFilter] = useState('new');
   const [error, setError] = useState('');
 
   // Broadcast form state
@@ -23,7 +27,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     loadData();
-  }, [activeTab, supporterFilter, commentFilter]);
+  }, [activeTab, supporterFilter, commentFilter, auditFilter, errorFilter]);
 
   const loadData = async () => {
     setLoading(true);
@@ -63,6 +67,34 @@ export default function AdminDashboard() {
           throw new Error(data.error);
         }
         setBroadcasts(data.data);
+      } else if (activeTab === 'audit') {
+        const url = auditFilter === 'all'
+          ? '/api/admin/audit-logs?limit=100'
+          : `/api/admin/audit-logs?event_type=${auditFilter}&limit=100`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!res.ok) {
+          if (res.status === 401) {
+            router.push('/auth/login?return=/admin/dashboard');
+            return;
+          }
+          throw new Error(data.error);
+        }
+        setAuditLogs(data.data);
+      } else if (activeTab === 'errors') {
+        const url = errorFilter === 'all'
+          ? '/api/admin/errors?limit=100'
+          : `/api/admin/errors?status=${errorFilter}&limit=100`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!res.ok) {
+          if (res.status === 401) {
+            router.push('/auth/login?return=/admin/dashboard');
+            return;
+          }
+          throw new Error(data.error);
+        }
+        setErrorLogs(data.data);
       }
     } catch (err) {
       setError(err.message);
@@ -128,6 +160,21 @@ export default function AdminDashboard() {
     }
   };
 
+  const updateErrorStatus = async (id, status, resolution_notes = null) => {
+    try {
+      const res = await fetch('/api/admin/errors', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status, resolution_notes }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      loadData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   const formatDate = (dateStr) => {
     if (!dateStr) return '-';
     return new Date(dateStr).toLocaleDateString('en-US', {
@@ -186,6 +233,28 @@ export default function AdminDashboard() {
         >
           <Send className="w-5 h-5" />
           Broadcasts
+        </button>
+        <button
+          onClick={() => setActiveTab('audit')}
+          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
+            activeTab === 'audit'
+              ? 'border-navy text-navy'
+              : 'border-transparent text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <FileText className="w-5 h-5" />
+          Audit Logs
+        </button>
+        <button
+          onClick={() => setActiveTab('errors')}
+          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
+            activeTab === 'errors'
+              ? 'border-navy text-navy'
+              : 'border-transparent text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <AlertTriangle className="w-5 h-5" />
+          Errors
         </button>
       </div>
 
@@ -473,6 +542,219 @@ export default function AdminDashboard() {
               </div>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Audit Logs Tab */}
+      {activeTab === 'audit' && (
+        <div>
+          <div className="flex gap-2 mb-4 flex-wrap">
+            {['all', 'LOGIN_SUCCESS', 'LOGIN_FAILED', 'LOGOUT', 'REGISTER', 'SUPPORTER_APPROVED', 'SUPPORTER_SUSPENDED', 'BROADCAST_SENT'].map((s) => (
+              <button
+                key={s}
+                onClick={() => setAuditFilter(s)}
+                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  auditFilter === s
+                    ? 'bg-navy text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {s.replace(/_/g, ' ').toLowerCase()}
+              </button>
+            ))}
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-navy" />
+            </div>
+          ) : (
+            <div className="bg-white rounded-xl shadow overflow-hidden">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Event</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">IP Address</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Details</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {auditLogs.map((log) => (
+                    <tr key={log.id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3 text-sm text-gray-500">
+                        {formatDate(log.created_at)}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          log.event_type.includes('SUCCESS') || log.event_type.includes('APPROVED')
+                            ? 'bg-green-100 text-green-800'
+                            : log.event_type.includes('FAILED') || log.event_type.includes('SUSPENDED') || log.event_type.includes('REJECTED')
+                            ? 'bg-red-100 text-red-800'
+                            : 'bg-blue-100 text-blue-800'
+                        }`}>
+                          {log.event_type.replace(/_/g, ' ')}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="text-sm font-medium">{log.supporter_name || '-'}</div>
+                        <div className="text-xs text-gray-500">{log.supporter_email || '-'}</div>
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-600 font-mono">
+                        {log.ip_address || '-'}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-600 max-w-xs truncate">
+                        {log.details ? (
+                          <button
+                            onClick={() => alert(JSON.stringify(JSON.parse(log.details), null, 2))}
+                            className="text-navy hover:underline flex items-center gap-1"
+                          >
+                            <Eye className="w-4 h-4" />
+                            View
+                          </button>
+                        ) : '-'}
+                      </td>
+                    </tr>
+                  ))}
+                  {auditLogs.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                        No audit logs found
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Error Logs Tab */}
+      {activeTab === 'errors' && (
+        <div>
+          <div className="flex gap-2 mb-4">
+            {['new', 'investigating', 'resolved', 'wont_fix', 'all'].map((s) => (
+              <button
+                key={s}
+                onClick={() => setErrorFilter(s)}
+                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  errorFilter === s
+                    ? 'bg-navy text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {s.replace('_', ' ')}
+              </button>
+            ))}
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-navy" />
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {errorLogs.map((err) => (
+                <div key={err.id} className={`bg-white rounded-xl shadow p-4 border-l-4 ${
+                  err.status === 'new' ? 'border-red-500' :
+                  err.status === 'investigating' ? 'border-yellow-500' :
+                  err.status === 'resolved' ? 'border-green-500' : 'border-gray-400'
+                }`}>
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        err.status === 'new' ? 'bg-red-100 text-red-800' :
+                        err.status === 'investigating' ? 'bg-yellow-100 text-yellow-800' :
+                        err.status === 'resolved' ? 'bg-green-100 text-green-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {err.status.replace('_', ' ')}
+                      </span>
+                      <span className="ml-2 text-xs text-gray-500">
+                        {err.occurrence_count > 1 && `${err.occurrence_count}x`}
+                      </span>
+                    </div>
+                    <span className="text-xs text-gray-500">{formatDate(err.last_occurred_at || err.created_at)}</span>
+                  </div>
+
+                  <div className="mb-2">
+                    <span className="px-2 py-0.5 rounded bg-gray-100 text-xs font-mono text-gray-700">
+                      {err.error_type}
+                    </span>
+                    <span className="ml-2 text-sm text-gray-600">{err.endpoint} ({err.method})</span>
+                  </div>
+
+                  <p className="text-red-700 font-medium mb-2">{err.error_message}</p>
+
+                  {err.user_email && (
+                    <p className="text-sm text-gray-600 mb-2">User: {err.user_email}</p>
+                  )}
+
+                  <div className="text-xs text-gray-500 mb-3 font-mono">
+                    IP: {err.ip_address || '-'}
+                  </div>
+
+                  {err.error_stack && (
+                    <details className="mb-3">
+                      <summary className="text-sm text-navy cursor-pointer hover:underline">Stack Trace</summary>
+                      <pre className="mt-2 p-2 bg-gray-100 rounded text-xs overflow-x-auto">{err.error_stack}</pre>
+                    </details>
+                  )}
+
+                  {err.resolution_notes && (
+                    <div className="bg-green-50 p-2 rounded text-sm text-green-800 mb-3">
+                      Resolution: {err.resolution_notes}
+                    </div>
+                  )}
+
+                  {err.status !== 'resolved' && err.status !== 'wont_fix' && (
+                    <div className="flex gap-2 mt-3">
+                      {err.status === 'new' && (
+                        <button
+                          onClick={() => updateErrorStatus(err.id, 'investigating')}
+                          className="flex items-center gap-1 px-3 py-1 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200"
+                        >
+                          <RefreshCw className="w-4 h-4" />
+                          Investigating
+                        </button>
+                      )}
+                      <button
+                        onClick={() => {
+                          const notes = prompt('Resolution notes:');
+                          if (notes !== null) {
+                            updateErrorStatus(err.id, 'resolved', notes);
+                          }
+                        }}
+                        className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
+                      >
+                        <CheckCircle className="w-4 h-4" />
+                        Resolve
+                      </button>
+                      <button
+                        onClick={() => {
+                          const notes = prompt('Reason for not fixing:');
+                          if (notes !== null) {
+                            updateErrorStatus(err.id, 'wont_fix', notes);
+                          }
+                        }}
+                        className="flex items-center gap-1 px-3 py-1 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+                      >
+                        <XCircle className="w-4 h-4" />
+                        Won't Fix
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+              {errorLogs.length === 0 && (
+                <div className="text-center py-12 text-gray-500">
+                  No errors found
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
