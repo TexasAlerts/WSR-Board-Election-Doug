@@ -96,8 +96,8 @@ export default function Home() {
             </Reveal>
             <Reveal delay={300}>
               <div className="stat-card">
-                <div className="stat-number">$6.5M</div>
-                <div className="stat-label">WSR Annexation Co-Petitioner</div>
+                <div className="stat-number">$6.5M+</div>
+                <div className="stat-label">Annual PISD WSR Annexation</div>
               </div>
             </Reveal>
           </div>
