@@ -5,7 +5,7 @@ import { AlertCircle, CheckCircle, Mail, MessageCircle } from 'lucide-react';
 import Reveal from '../../components/Reveal';
 
 const DONATION_AMOUNTS = [25, 50, 100, 250, 500, 1000];
-const SHARE_MESSAGE = "I'm supporting Doug Charles for Town of Prosper Town Council Place 5! Learn more about his Common Sense leadership at www.dougcharles.com";
+const SHARE_MESSAGE = "I'm supporting Doug Charles for Town of Prosper Town Council Place 5! Learn more about his Common Sense leadership for ALL of Prosper at www.dougcharles.com";
 const SHARE_SUBJECT = "Check out Doug Charles for Prosper Town Council";
 
 export default function DonatePage() {
@@ -49,7 +49,7 @@ export default function DonatePage() {
             Support the Campaign
           </h1>
           <p className="text-xl text-white/90 animate-fade-in animate-delay-200">
-            Your contribution helps us reach every voter in Prosper with a message of <strong>Common Sense</strong> leadership.
+            Your contribution helps us reach every voter in Prosper with a message of <strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper.
           </p>
           {!DONATIONS_ENABLED && (
             <div className="mt-6 bg-white/20 backdrop-blur-sm rounded-lg px-6 py-4 inline-block animate-fade-in animate-delay-300">
