@@ -2,17 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.dougcharles.com/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.dougcharles.com/about</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.dougcharles.com/why</loc>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.dougcharles.com/voting</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.dougcharles.com/get-involved</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.dougcharles.com/donate</loc>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.dougcharles.com/endorsements</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.dougcharles.com/ideas</loc>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.dougcharles.com/qna</loc>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.dougcharles.com/board-role</loc>
+    <loc>https://www.dougcharles.com/council-role</loc>
+    <priority>0.6</priority>
   </url>
 </urlset>

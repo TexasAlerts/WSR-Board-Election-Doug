@@ -125,6 +125,7 @@
     @apply transition-all duration-300 ease-out;
     @apply shadow-navy-md hover:shadow-navy-lg;
     @apply hover:scale-[1.02] active:scale-[0.98];
+    @apply focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2;
     background: linear-gradient(135deg, #1B3A5D 0%, #0F2840 100%);
     overflow: hidden;
     min-height: 44px; /* WCAG 2.1 touch target minimum */
@@ -149,6 +150,7 @@
     @apply relative bg-prosper-red text-white px-8 py-3.5 rounded-lg font-semibold;
     @apply transition-all duration-300 ease-out;
     @apply hover:scale-[1.02] active:scale-[0.98];
+    @apply focus:outline-none focus:ring-2 focus:ring-prosper-red focus:ring-offset-2;
     background: linear-gradient(135deg, #BF1E2E 0%, #9F1020 100%);
     box-shadow: 0 4px 14px rgba(191, 30, 46, 0.25);
     min-height: 44px; /* WCAG 2.1 touch target minimum */
@@ -164,6 +166,7 @@
     @apply transition-all duration-300 ease-out;
     @apply hover:bg-navy hover:text-white hover:shadow-navy-md;
     @apply hover:scale-[1.02] active:scale-[0.98];
+    @apply focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2;
     min-height: 44px; /* WCAG 2.1 touch target minimum */
   }
 
@@ -173,6 +176,7 @@
     @apply transition-all duration-300 ease-out;
     @apply hover:bg-gray-50 hover:scale-[1.02] active:scale-[0.98];
     @apply shadow-lg hover:shadow-xl;
+    @apply focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-navy;
     min-height: 44px; /* WCAG 2.1 touch target minimum */
   }
 

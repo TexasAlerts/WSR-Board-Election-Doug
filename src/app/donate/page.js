@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import { AlertCircle, CheckCircle } from 'lucide-react';
 import Reveal from '../../components/Reveal';
 
 const DONATION_AMOUNTS = [25, 50, 100, 250, 500, 1000];
@@ -8,15 +9,19 @@ const DONATION_AMOUNTS = [25, 50, 100, 250, 500, 1000];
 export default function DonatePage() {
   const [selectedAmount, setSelectedAmount] = useState(null);
   const [customAmount, setCustomAmount] = useState('');
+  const [message, setMessage] = useState({ type: '', text: '' });
 
   const handleDonate = () => {
     const amount = selectedAmount || parseInt(customAmount, 10);
     if (!amount || amount < 1) {
-      alert('Please select or enter a donation amount.');
+      setMessage({ type: 'error', text: 'Please select or enter a donation amount.' });
       return;
     }
     // TODO: Replace with actual Anedot or payment processor URL
-    alert(`Thank you for your interest in donating $${amount}! Online donations will be available soon. Please contact doug@dougcharles.com for now.`);
+    setMessage({
+      type: 'success',
+      text: `Thank you for your interest in donating $${amount}! Online donations will be available soon. Please contact doug@dougcharles.com for now.`
+    });
   };
 
   return (
@@ -101,6 +106,24 @@ export default function DonatePage() {
               >
                 Contribute Now
               </button>
+
+              {/* Message Display */}
+              {message.text && (
+                <div className={`mt-6 p-4 rounded-lg flex items-start gap-3 ${
+                  message.type === 'error'
+                    ? 'bg-red-50 border border-red-200'
+                    : 'bg-green-50 border border-green-200'
+                }`}>
+                  {message.type === 'error' ? (
+                    <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                  ) : (
+                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                  )}
+                  <p className={`text-sm ${message.type === 'error' ? 'text-red-700' : 'text-green-700'}`}>
+                    {message.text}
+                  </p>
+                </div>
+              )}
 
               {/* Selected Amount Display */}
               {(selectedAmount || customAmount) && (

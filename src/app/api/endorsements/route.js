@@ -28,7 +28,10 @@ export async function POST(req) {
     const schema = z.object({
       name: z.string().min(1, 'Name is required').max(200),
       email: z.string().email('Invalid email').max(200),
+      phone: z.string().max(50).optional().nullable(),
       message: z.string().max(4000).optional().nullable(),
+      consentEmail: z.boolean().optional().default(false),
+      consentSms: z.boolean().optional().default(false),
     });
     const body = await req.json();
     const parsed = schema.safeParse(body);
@@ -36,10 +39,18 @@ export async function POST(req) {
       const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
-    const { name, email, message } = parsed.data;
+    const { name, email, phone, message, consentEmail, consentSms } = parsed.data;
     const { data: endorsement, error } = await supabase
       .from('endorsements')
-      .insert({ name, email, message: message ?? null, status: 'pending' })
+      .insert({
+        name,
+        email,
+        phone: phone ?? null,
+        message: message ?? null,
+        status: 'pending',
+        consent_email: consentEmail,
+        consent_sms: consentSms,
+      })
       .select('id')
       .single();
 
@@ -63,7 +74,10 @@ export async function POST(req) {
       details: {
         name,
         email,
+        hasPhone: !!phone,
         hasMessage: !!message,
+        consentEmail,
+        consentSms,
       },
       request: req,
       responseStatus: 201,

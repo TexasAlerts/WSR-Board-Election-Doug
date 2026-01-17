@@ -37,6 +37,11 @@ export default function IdeasPage() {
     is_public: true,
   });
   const [submitMsg, setSubmitMsg] = useState('');
+  // Support modal state
+  const [showSupportModal, setShowSupportModal] = useState(false);
+  const [supportIdeaId, setSupportIdeaId] = useState(null);
+  const [supportEmail, setSupportEmail] = useState('');
+  const [supportMsg, setSupportMsg] = useState('');
 
   useEffect(() => {
     loadIdeas();
@@ -115,28 +120,40 @@ export default function IdeasPage() {
         console.error('Error removing support:', err);
       }
     } else {
-      // Prompt for email
-      const userEmail = prompt('Enter your email to support this idea:');
-      if (!userEmail) return;
+      // Show support modal instead of prompt
+      setSupportIdeaId(ideaId);
+      setSupportEmail('');
+      setSupportMsg('');
+      setShowSupportModal(true);
+    }
+  }
 
-      try {
-        const res = await fetch(`/api/ideas/${ideaId}/support`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: userEmail }),
-        });
-        const result = await res.json();
-        if (result.ok) {
-          const newSupported = { ...supportedIdeas, [ideaId]: userEmail };
-          setSupportedIdeas(newSupported);
-          localStorage.setItem('supportedIdeas', JSON.stringify(newSupported));
-          loadIdeas();
-        } else {
-          alert(result.error || 'Error supporting idea');
-        }
-      } catch (err) {
-        console.error('Error supporting idea:', err);
+  async function submitSupport(e) {
+    e.preventDefault();
+    if (!supportEmail || !supportIdeaId) return;
+
+    setSupportMsg('');
+    try {
+      const res = await fetch(`/api/ideas/${supportIdeaId}/support`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: supportEmail }),
+      });
+      const result = await res.json();
+      if (result.ok) {
+        const newSupported = { ...supportedIdeas, [supportIdeaId]: supportEmail };
+        setSupportedIdeas(newSupported);
+        localStorage.setItem('supportedIdeas', JSON.stringify(newSupported));
+        loadIdeas();
+        setShowSupportModal(false);
+        setSupportIdeaId(null);
+        setSupportEmail('');
+      } else {
+        setSupportMsg(result.error || 'Error supporting idea');
       }
+    } catch (err) {
+      console.error('Error supporting idea:', err);
+      setSupportMsg('Error supporting idea. Please try again.');
     }
   }
 
@@ -274,12 +291,22 @@ export default function IdeasPage() {
 
       {/* Submit Form Modal */}
       {showSubmitForm && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setShowSubmitForm(false)}>
+        <div
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowSubmitForm(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
+        >
           <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <div className="p-6">
               <div className="flex justify-between items-start mb-6">
-                <h2 className="text-2xl font-bold text-navy">Submit Your Idea</h2>
-                <button onClick={() => setShowSubmitForm(false)} className="text-gray-400 hover:text-gray-600 text-2xl">×</button>
+                <h2 id="modal-title" className="text-2xl font-bold text-navy">Submit Your Idea</h2>
+                <button
+                  onClick={() => setShowSubmitForm(false)}
+                  className="text-gray-400 hover:text-gray-600 text-2xl"
+                  aria-label="Close form"
+                >×</button>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
@@ -367,6 +394,52 @@ export default function IdeasPage() {
 
                 <button type="submit" className="btn-primary w-full">
                   Submit Idea
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Support Modal */}
+      {showSupportModal && (
+        <div
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowSupportModal(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="support-modal-title"
+        >
+          <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full" onClick={e => e.stopPropagation()}>
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-4">
+                <h2 id="support-modal-title" className="text-xl font-bold text-navy">Support This Idea</h2>
+                <button
+                  onClick={() => setShowSupportModal(false)}
+                  className="text-gray-400 hover:text-gray-600 text-2xl"
+                  aria-label="Close"
+                >×</button>
+              </div>
+              <p className="text-gray-600 text-sm mb-4">Enter your email to show your support for this idea.</p>
+              <form onSubmit={submitSupport} className="space-y-4">
+                <div>
+                  <label className="form-label">Email *</label>
+                  <input
+                    type="email"
+                    required
+                    value={supportEmail}
+                    onChange={e => setSupportEmail(e.target.value)}
+                    className="form-input"
+                    placeholder="you@example.com"
+                  />
+                </div>
+                {supportMsg && (
+                  <div className="p-3 bg-red-50 text-red-700 rounded-lg text-sm">
+                    {supportMsg}
+                  </div>
+                )}
+                <button type="submit" className="btn-primary w-full">
+                  Support Idea
                 </button>
               </form>
             </div>

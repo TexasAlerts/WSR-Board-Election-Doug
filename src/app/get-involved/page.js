@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Reveal from '../../components/Reveal';
+import { validatePhoneNumber } from '../../lib/phoneValidation';
 
 const actionCards = [
   {
@@ -79,6 +80,18 @@ function GetInvolvedContent() {
     setSubmitMsg('');
     setIsSubmitting(true);
 
+    // Validate phone if provided
+    let validatedPhone = form.phone;
+    if (form.phone && form.phone.trim()) {
+      const { valid, formatted, error } = validatePhoneNumber(form.phone);
+      if (!valid) {
+        setSubmitMsg(error || 'Please enter a valid US phone number.');
+        setIsSubmitting(false);
+        return;
+      }
+      validatedPhone = formatted;
+    }
+
     try {
       if (selectedAction === 'endorsement') {
         const res = await fetch('/api/endorsements', {
@@ -87,7 +100,7 @@ function GetInvolvedContent() {
           body: JSON.stringify({
             name: form.name,
             email: form.email,
-            phone: form.phone,
+            phone: validatedPhone || null,
             message: form.message,
             consentEmail: form.consentEmail,
             consentSms: form.consentSms,
@@ -108,7 +121,7 @@ function GetInvolvedContent() {
             type: selectedAction,
             name: form.name,
             email: form.email,
-            phone: form.phone,
+            phone: validatedPhone || null,
             message: form.message,
             consentEmail: form.consentEmail,
             consentSms: form.consentSms,

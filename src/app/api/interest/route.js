@@ -3,6 +3,7 @@ import { getSupabase } from '../../../lib/supabase';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
+import { logAudit, logError, ErrorTypes } from '../../../lib/logging';
 
 export async function POST(req) {
   const supabase = getSupabase();
@@ -17,6 +18,8 @@ export async function POST(req) {
       email: z.string().email('Invalid email').max(200),
       phone: z.string().max(200).optional().nullable(),
       message: z.string().max(4000).optional().nullable(),
+      consentEmail: z.boolean().optional().default(false),
+      consentSms: z.boolean().optional().default(false),
     });
     const body = await req.json();
     const parsed = schema.safeParse(body);
@@ -24,13 +27,41 @@ export async function POST(req) {
       const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
-      const { type, name, email, phone, message } = parsed.data;
-      const { error } = await supabase
+      const { type, name, email, phone, message, consentEmail, consentSms } = parsed.data;
+      const { data: interestRecord, error } = await supabase
         .from('interest')
-        .insert({ type, name, email, phone: phone ?? null, message: message ?? null });
+        .insert({
+          type,
+          name,
+          email,
+          phone: phone ?? null,
+          message: message ?? null,
+          consent_email: consentEmail,
+          consent_sms: consentSms,
+        })
+        .select('id')
+        .single();
       if (error) {
+        await logError({
+          errorType: ErrorTypes.DATABASE_ERROR,
+          errorMessage: error.message,
+          endpoint: '/api/interest',
+          method: 'POST',
+          userEmail: email,
+          request: req,
+        });
         return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
       }
+
+      // Log interest submission
+      await logAudit({
+        eventType: 'INTEREST_SUBMITTED',
+        targetId: interestRecord?.id,
+        targetType: 'interest',
+        details: { type, name, email, hasPhone: !!phone, consentEmail, consentSms },
+        request: req,
+        responseStatus: 201,
+      });
       await Promise.all([
         sendEmail(
           email,
