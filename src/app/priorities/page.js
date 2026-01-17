@@ -27,7 +27,7 @@ export default function PrioritiesPage() {
             My Priorities
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
-            Common sense leadership guided by three core principles
+            <strong>Common Sense</strong> leadership guided by three core principles
           </p>
         </div>
       </section>

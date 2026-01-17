@@ -24,7 +24,7 @@ export default function AboutPage() {
             About Doug
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
-            20 years of service · Common sense leadership
+            20 years of service · <strong>Common Sense</strong> leadership
           </p>
         </div>
       </section>

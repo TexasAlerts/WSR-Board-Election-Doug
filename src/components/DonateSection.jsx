@@ -25,7 +25,7 @@ export default function DonateSection() {
           Support the Campaign
         </h2>
         <p className="text-lg text-white/90 mb-10">
-          Your contribution helps us reach every voter in Prosper with a message of common sense leadership.
+          Your contribution helps us reach every voter in Prosper with a message of <strong>Common Sense</strong> leadership.
         </p>
 
         {/* Donation Amount Buttons */}

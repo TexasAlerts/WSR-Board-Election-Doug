@@ -183,7 +183,7 @@ function GetInvolvedContent() {
             Get Involved
           </h1>
           <p className="text-xl text-white/90 animate-fade-in animate-delay-200">
-            Join the movement for common sense leadership in Prosper
+            Join the movement for <strong>Common Sense</strong> leadership in Prosper
           </p>
         </div>
       </section>

@@ -90,7 +90,7 @@ export default function EndorsementsPage() {
             Endorsements
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
-            Neighbors supporting common sense leadership for Prosper
+            Neighbors supporting <strong>Common Sense</strong> leadership for Prosper
           </p>
         </div>
       </section>
