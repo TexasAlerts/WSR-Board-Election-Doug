@@ -16,6 +16,12 @@ export default function PrioritiesPage() {
           <div className="absolute top-10 right-20 w-64 h-64 bg-navy/5 rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 left-20 w-48 h-48 bg-prosper-red/5 rounded-full blur-3xl"></div>
         </div>
+        {/* Logo accent */}
+        <img
+          src="/wsr-logo.png"
+          alt=""
+          className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 opacity-80 pointer-events-none"
+        />
         <div className="relative z-10">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-4 animate-fade-in-down">
             My Priorities

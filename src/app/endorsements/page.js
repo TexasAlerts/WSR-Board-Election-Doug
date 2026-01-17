@@ -17,9 +17,28 @@ export default function EndorsementsPage() {
     load();
   }, []);
   return (
-    <div className="space-y-8 px-2 w-full">
-      <h1 className="text-xl sm:text-3xl font-bold text-navy">Endorsements</h1>
-      <p className="text-gray-600">Neighbors supporting common sense leadership for Prosper</p>
+    <div className="space-y-0">
+      {/* Hero */}
+      <section className="hero-pattern hero-gradient text-center py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        {/* Logo accent */}
+        <img
+          src="/wsr-logo.png"
+          alt=""
+          className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 opacity-80 pointer-events-none"
+        />
+        <div className="relative z-10">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-4 animate-fade-in-down">
+            Endorsements
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
+            Neighbors supporting common sense leadership for Prosper
+          </p>
+        </div>
+      </section>
+
+      {/* Endorsements List */}
+      <section className="py-12 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
       {endorsements.length === 0 ? (
         <p>No endorsements yet. Submit yours on the home page!</p>
       ) : (
@@ -33,15 +52,16 @@ export default function EndorsementsPage() {
         </div>
       )}
       {/* Link to endorse */}
-      <div className="mt-6">
-        {/* Use Next.js Link with hash to ensure smooth internal navigation */}
+      <div className="mt-8 text-center">
         <Link
-          href={{ pathname: '/', query: { form: 'endorsement' }, hash: 'get-involved' }}
-          className="text-prosper-red hover:underline font-medium"
+          href="/get-involved?form=endorsement"
+          className="btn-primary"
         >
           Endorse Doug
         </Link>
       </div>
+        </div>
+      </section>
     </div>
   );
 }

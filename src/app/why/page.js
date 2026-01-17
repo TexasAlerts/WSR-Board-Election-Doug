@@ -8,6 +8,12 @@ export default function WhyPage() {
     <div className="space-y-0">
       {/* Hero */}
       <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative overflow-hidden">
+        {/* Logo accent */}
+        <img
+          src="/wsr-logo.png"
+          alt=""
+          className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 opacity-40 pointer-events-none brightness-200"
+        />
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 animate-fade-in-down">
             Why I'm Running
