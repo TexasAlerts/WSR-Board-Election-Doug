@@ -66,11 +66,14 @@ export default function StickyNav() {
           <Link href="/why" className="text-gray-600 hover:text-navy transition-colors">
             Why I'm Running
           </Link>
+          <Link href="/polls" className="text-gray-600 hover:text-navy transition-colors">
+            Polls
+          </Link>
+          <Link href="/ideas" className="text-gray-600 hover:text-navy transition-colors">
+            Ideas
+          </Link>
           <Link href="/endorsements" className="text-gray-600 hover:text-navy transition-colors">
             Endorsements
-          </Link>
-          <Link href="/qna" className="text-gray-600 hover:text-navy transition-colors">
-            Q&A
           </Link>
           <Link href="/get-involved" className="text-gray-600 hover:text-navy transition-colors">
             Get Involved
@@ -92,11 +95,14 @@ export default function StickyNav() {
           <Link href="/why" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             Why I'm Running
           </Link>
+          <Link href="/polls" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+            Polls
+          </Link>
+          <Link href="/ideas" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+            Ideas
+          </Link>
           <Link href="/endorsements" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             Endorsements
-          </Link>
-          <Link href="/qna" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
-            Q&A
           </Link>
           <Link href="/get-involved" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             Get Involved
