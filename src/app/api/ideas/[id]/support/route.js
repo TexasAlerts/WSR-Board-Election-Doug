@@ -3,8 +3,9 @@ import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import { rateLimit } from '../../../../../lib/rateLimit';
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-const supabaseAdmin = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+// Use service role key if available, otherwise fall back to anon key
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+const supabase = createClient(process.env.SUPABASE_URL, supabaseKey);
 
 export async function POST(request, { params }) {
   const { id } = await params;
@@ -54,7 +55,7 @@ export async function POST(request, { params }) {
       return NextResponse.json({ ok: false, error: 'Already supported' }, { status: 400 });
     }
 
-    // Add support (use admin client to update count)
+    // Add support
     const { error: supportError } = await supabase
       .from('idea_supports')
       .insert({
@@ -70,7 +71,7 @@ export async function POST(request, { params }) {
     }
 
     // Increment support count
-    const { error: updateError } = await supabaseAdmin
+    const { error: updateError } = await supabase
       .from('ideas')
       .update({ support_count: idea.support_count + 1 })
       .eq('id', id);
@@ -121,7 +122,7 @@ export async function DELETE(request, { params }) {
     }
 
     // Remove support
-    const { error: deleteError } = await supabaseAdmin
+    const { error: deleteError } = await supabase
       .from('idea_supports')
       .delete()
       .eq('idea_id', id)
@@ -133,7 +134,7 @@ export async function DELETE(request, { params }) {
 
     // Decrement support count
     const newCount = Math.max(0, idea.support_count - 1);
-    const { error: updateError } = await supabaseAdmin
+    const { error: updateError } = await supabase
       .from('ideas')
       .update({ support_count: newCount })
       .eq('id', id);
