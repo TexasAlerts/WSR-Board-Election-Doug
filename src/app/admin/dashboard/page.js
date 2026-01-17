@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Users, MessageSquare, Send, CheckCircle, XCircle, Clock, Mail, Phone, Loader2, FileText, AlertTriangle, Eye, RefreshCw, ThumbsUp } from 'lucide-react';
+import { Users, MessageSquare, Send, CheckCircle, XCircle, Clock, Mail, Phone, Loader2, FileText, AlertTriangle, Eye, RefreshCw, ThumbsUp, Lightbulb, HelpCircle, UserPlus } from 'lucide-react';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -14,8 +14,14 @@ export default function AdminDashboard() {
   const [auditLogs, setAuditLogs] = useState([]);
   const [errorLogs, setErrorLogs] = useState([]);
   const [endorsements, setEndorsements] = useState([]);
+  const [questions, setQuestions] = useState([]);
+  const [ideas, setIdeas] = useState([]);
+  const [interest, setInterest] = useState([]);
   const [supporterFilter, setSupporterFilter] = useState('all');
   const [endorsementFilter, setEndorsementFilter] = useState('pending');
+  const [questionFilter, setQuestionFilter] = useState('pending');
+  const [ideaFilter, setIdeaFilter] = useState('pending');
+  const [interestFilter, setInterestFilter] = useState('all');
   const [commentFilter, setCommentFilter] = useState('pending');
   const [auditFilter, setAuditFilter] = useState('all');
   const [errorFilter, setErrorFilter] = useState('new');
@@ -29,7 +35,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     loadData();
-  }, [activeTab, supporterFilter, commentFilter, auditFilter, errorFilter, endorsementFilter]);
+  }, [activeTab, supporterFilter, commentFilter, auditFilter, errorFilter, endorsementFilter, questionFilter, ideaFilter, interestFilter]);
 
   const loadData = async () => {
     setLoading(true);
@@ -111,6 +117,48 @@ export default function AdminDashboard() {
           throw new Error(data.error);
         }
         setEndorsements(data.data || []);
+      } else if (activeTab === 'questions') {
+        const url = questionFilter === 'all'
+          ? '/api/admin/qna?status=all'
+          : `/api/admin/qna?status=${questionFilter}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!res.ok) {
+          if (res.status === 401) {
+            router.push('/auth/login?return=/admin/dashboard');
+            return;
+          }
+          throw new Error(data.error);
+        }
+        setQuestions(data.data || []);
+      } else if (activeTab === 'ideas') {
+        const url = ideaFilter === 'all'
+          ? '/api/admin/ideas?status=all'
+          : `/api/admin/ideas?status=${ideaFilter}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!res.ok) {
+          if (res.status === 401) {
+            router.push('/auth/login?return=/admin/dashboard');
+            return;
+          }
+          throw new Error(data.error);
+        }
+        setIdeas(data.data || []);
+      } else if (activeTab === 'interest') {
+        const url = interestFilter === 'all'
+          ? '/api/admin/interest?type=all'
+          : `/api/admin/interest?type=${interestFilter}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!res.ok) {
+          if (res.status === 401) {
+            router.push('/auth/login?return=/admin/dashboard');
+            return;
+          }
+          throw new Error(data.error);
+        }
+        setInterest(data.data || []);
       }
     } catch (err) {
       setError(err.message);
@@ -191,12 +239,56 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleEndorsementAction = async (id, action) => {
+  const handleEndorsementAction = async (id, action, rejection_reason = null) => {
     try {
       const res = await fetch('/api/admin/endorsements', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, action }),
+        body: JSON.stringify({ id, action, rejection_reason }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      loadData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleQuestionAction = async (id, action, answer = null, rejection_reason = null) => {
+    try {
+      const res = await fetch('/api/admin/qna', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, action, answer, rejection_reason }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      loadData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleIdeaAction = async (id, action, admin_response = null, rejection_reason = null) => {
+    try {
+      const res = await fetch('/api/admin/ideas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, action, admin_response, rejection_reason }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      loadData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleDeleteInterest = async (id) => {
+    if (!confirm('Are you sure you want to delete this interest record?')) return;
+    try {
+      const res = await fetch(`/api/admin/interest?id=${id}`, {
+        method: 'DELETE',
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
@@ -297,6 +389,39 @@ export default function AdminDashboard() {
         >
           <ThumbsUp className="w-5 h-5" />
           Endorsements
+        </button>
+        <button
+          onClick={() => setActiveTab('questions')}
+          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
+            activeTab === 'questions'
+              ? 'border-navy text-navy'
+              : 'border-transparent text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <HelpCircle className="w-5 h-5" />
+          Q&A
+        </button>
+        <button
+          onClick={() => setActiveTab('ideas')}
+          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
+            activeTab === 'ideas'
+              ? 'border-navy text-navy'
+              : 'border-transparent text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <Lightbulb className="w-5 h-5" />
+          Ideas
+        </button>
+        <button
+          onClick={() => setActiveTab('interest')}
+          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
+            activeTab === 'interest'
+              ? 'border-navy text-navy'
+              : 'border-transparent text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <UserPlus className="w-5 h-5" />
+          Volunteers
         </button>
       </div>
 
@@ -857,6 +982,11 @@ export default function AdminDashboard() {
                   {e.message && (
                     <p className="text-gray-800 mb-3 whitespace-pre-wrap italic">"{e.message}"</p>
                   )}
+                  {e.rejection_reason && (
+                    <div className="bg-red-50 p-2 rounded text-sm text-red-800 mb-3">
+                      Rejection reason: {e.rejection_reason}
+                    </div>
+                  )}
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-gray-500">{formatDate(e.created_at)}</span>
                     {e.status === 'pending' && (
@@ -869,7 +999,12 @@ export default function AdminDashboard() {
                           Approve
                         </button>
                         <button
-                          onClick={() => handleEndorsementAction(e.id, 'reject')}
+                          onClick={() => {
+                            const reason = prompt('Rejection reason (will be sent to user):');
+                            if (reason !== null) {
+                              handleEndorsementAction(e.id, 'reject', reason);
+                            }
+                          }}
                           className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
                         >
                           <XCircle className="w-4 h-4" />
@@ -885,6 +1020,275 @@ export default function AdminDashboard() {
                   No endorsements found
                 </div>
               )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Q&A Tab */}
+      {activeTab === 'questions' && (
+        <div>
+          <div className="flex gap-2 mb-4">
+            {['pending', 'approved', 'rejected', 'all'].map((s) => (
+              <button
+                key={s}
+                onClick={() => setQuestionFilter(s)}
+                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  questionFilter === s
+                    ? 'bg-navy text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-navy" />
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {questions.map((q) => (
+                <div key={q.id} className="bg-white rounded-xl shadow p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <span className="font-medium">{q.name}</span>
+                      <span className="text-gray-500 text-sm ml-2">{q.email}</span>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[q.status]}`}>
+                      {q.status}
+                    </span>
+                  </div>
+                  <p className="text-gray-800 mb-3 font-medium">{q.question}</p>
+                  {q.answer && (
+                    <div className="bg-green-50 p-3 rounded text-sm text-green-800 mb-3">
+                      <strong>Answer:</strong> {q.answer}
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-500">{formatDate(q.created_at)}</span>
+                    {q.status === 'pending' && (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => {
+                            const answer = prompt('Your answer:');
+                            if (answer !== null) {
+                              handleQuestionAction(q.id, 'approve', answer);
+                            }
+                          }}
+                          className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
+                        >
+                          <CheckCircle className="w-4 h-4" />
+                          Answer & Approve
+                        </button>
+                        <button
+                          onClick={() => {
+                            const reason = prompt('Rejection reason (will be sent to user):');
+                            if (reason !== null) {
+                              handleQuestionAction(q.id, 'reject', null, reason);
+                            }
+                          }}
+                          className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
+                        >
+                          <XCircle className="w-4 h-4" />
+                          Reject
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+              {questions.length === 0 && (
+                <div className="text-center py-12 text-gray-500">
+                  No questions found
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Ideas Tab */}
+      {activeTab === 'ideas' && (
+        <div>
+          <div className="flex gap-2 mb-4 flex-wrap">
+            {['pending', 'published', 'under_review', 'planned', 'completed', 'declined', 'all'].map((s) => (
+              <button
+                key={s}
+                onClick={() => setIdeaFilter(s)}
+                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  ideaFilter === s
+                    ? 'bg-navy text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {s.replace('_', ' ')}
+              </button>
+            ))}
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-navy" />
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {ideas.map((idea) => (
+                <div key={idea.id} className="bg-white rounded-xl shadow p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <span className="font-medium">{idea.name}</span>
+                      <span className="text-gray-500 text-sm ml-2">{idea.email}</span>
+                      <span className="ml-2 px-2 py-0.5 rounded bg-gray-100 text-xs text-gray-600">{idea.category}</span>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[idea.status] || 'bg-gray-100 text-gray-600'}`}>
+                      {idea.status.replace('_', ' ')}
+                    </span>
+                  </div>
+                  <h3 className="font-semibold text-navy mb-2">{idea.title}</h3>
+                  <p className="text-gray-700 mb-3 text-sm">{idea.content}</p>
+                  {idea.admin_response && (
+                    <div className="bg-blue-50 p-3 rounded text-sm text-blue-800 mb-3">
+                      <strong>Admin response:</strong> {idea.admin_response}
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-500">{formatDate(idea.created_at)}</span>
+                    {idea.status === 'pending' && (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => {
+                            const response = prompt('Your response (optional):');
+                            handleIdeaAction(idea.id, 'publish', response);
+                          }}
+                          className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
+                        >
+                          <CheckCircle className="w-4 h-4" />
+                          Publish
+                        </button>
+                        <button
+                          onClick={() => {
+                            const reason = prompt('Rejection reason (will be sent to user):');
+                            if (reason !== null) {
+                              handleIdeaAction(idea.id, 'reject', null, reason);
+                            }
+                          }}
+                          className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
+                        >
+                          <XCircle className="w-4 h-4" />
+                          Decline
+                        </button>
+                      </div>
+                    )}
+                    {idea.status !== 'pending' && idea.status !== 'declined' && (
+                      <button
+                        onClick={() => {
+                          const response = prompt('Add/update response:', idea.admin_response || '');
+                          if (response !== null) {
+                            handleIdeaAction(idea.id, 'respond', response);
+                          }
+                        }}
+                        className="flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200"
+                      >
+                        <MessageSquare className="w-4 h-4" />
+                        Respond
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+              {ideas.length === 0 && (
+                <div className="text-center py-12 text-gray-500">
+                  No ideas found
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Volunteers/Interest Tab */}
+      {activeTab === 'interest' && (
+        <div>
+          <div className="flex gap-2 mb-4 flex-wrap">
+            {['all', 'updates', 'volunteer', 'yardsign', 'meeting'].map((s) => (
+              <button
+                key={s}
+                onClick={() => setInterestFilter(s)}
+                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  interestFilter === s
+                    ? 'bg-navy text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {s === 'yardsign' ? 'Yard Signs' : s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
+              </button>
+            ))}
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-navy" />
+            </div>
+          ) : (
+            <div className="bg-white rounded-xl shadow overflow-hidden">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Message</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {interest.map((i) => (
+                    <tr key={i.id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          i.type === 'volunteer' ? 'bg-green-100 text-green-700' :
+                          i.type === 'yardsign' ? 'bg-blue-100 text-blue-700' :
+                          i.type === 'meeting' ? 'bg-purple-100 text-purple-700' :
+                          'bg-gray-100 text-gray-700'
+                        }`}>
+                          {i.type === 'yardsign' ? 'Yard Sign' : i.type}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 font-medium">{i.name}</td>
+                      <td className="px-4 py-3">
+                        <div className="text-sm">{i.email}</div>
+                        {i.phone && <div className="text-sm text-gray-500">{i.phone}</div>}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-600 max-w-xs truncate">
+                        {i.message || '-'}
+                      </td>
+                      <td className="px-4 py-3 text-xs text-gray-500">
+                        {formatDate(i.created_at)}
+                      </td>
+                      <td className="px-4 py-3">
+                        <button
+                          onClick={() => handleDeleteInterest(i.id)}
+                          className="text-red-600 hover:text-red-800"
+                          title="Delete"
+                        >
+                          <XCircle className="w-5 h-5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                  {interest.length === 0 && (
+                    <tr>
+                      <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
+                        No interest records found
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           )}
         </div>

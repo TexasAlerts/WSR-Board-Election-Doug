@@ -16,7 +16,7 @@ export async function GET(request) {
 
   try {
     let query = supabase
-      .from('endorsements')
+      .from('ideas')
       .select('*')
       .order('created_at', { ascending: false });
 
@@ -30,7 +30,7 @@ export async function GET(request) {
       await logError({
         errorType: ErrorTypes.DATABASE_ERROR,
         errorMessage: error.message,
-        endpoint: '/api/admin/endorsements',
+        endpoint: '/api/admin/ideas',
         method: 'GET',
         userId: supporter.id,
         userEmail: supporter.email,
@@ -45,7 +45,7 @@ export async function GET(request) {
       errorType: ErrorTypes.SERVER_ERROR,
       errorMessage: err.message,
       errorStack: err.stack,
-      endpoint: '/api/admin/endorsements',
+      endpoint: '/api/admin/ideas',
       method: 'GET',
       userId: supporter.id,
       userEmail: supporter.email,
@@ -65,32 +65,34 @@ export async function POST(request) {
 
   try {
     const body = await request.json();
-    const { id, action, rejection_reason } = body;
+    const { id, action, admin_response, rejection_reason } = body;
 
     if (!id || !action) {
       return NextResponse.json({ ok: false, error: 'Missing parameters' }, { status: 400 });
     }
 
-    // Get endorsement details for logging
-    const { data: endorsement } = await supabase
-      .from('endorsements')
-      .select('name, email, status')
+    // Get idea details for logging
+    const { data: idea } = await supabase
+      .from('ideas')
+      .select('name, email, title, status')
       .eq('id', id)
       .single();
 
-    if (action === 'approve') {
+    const site = process.env.SITE_URL || '';
+
+    if (action === 'publish') {
       const { data, error } = await supabase
-        .from('endorsements')
-        .update({ status: 'approved' })
+        .from('ideas')
+        .update({ status: 'published', admin_response: admin_response || null })
         .eq('id', id)
-        .select('email, name')
+        .select('email, name, title')
         .single();
 
       if (error) {
         await logError({
           errorType: ErrorTypes.DATABASE_ERROR,
           errorMessage: error.message,
-          endpoint: '/api/admin/endorsements',
+          endpoint: '/api/admin/ideas',
           method: 'POST',
           requestBody: body,
           userId: supporter.id,
@@ -100,45 +102,45 @@ export async function POST(request) {
         return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
       }
 
-      // Log approval
       await logAudit({
-        eventType: AuditEvents.ENDORSEMENT_APPROVED,
+        eventType: AuditEvents.IDEA_PUBLISHED || 'IDEA_PUBLISHED',
         supporterId: supporter.id,
         targetId: id,
-        targetType: 'endorsement',
-        oldValues: { status: endorsement?.status },
-        newValues: { status: 'approved' },
+        targetType: 'idea',
+        oldValues: { status: idea?.status },
+        newValues: { status: 'published' },
         details: {
-          endorserName: data?.name,
-          endorserEmail: data?.email,
-          approvedBy: `${supporter.first_name} ${supporter.last_name}`,
+          ideaTitle: data?.title,
+          submitterName: data?.name,
+          submitterEmail: data?.email,
+          publishedBy: `${supporter.first_name} ${supporter.last_name}`,
         },
         request,
         requestBody: body,
         responseStatus: 200,
       });
 
-      const site = process.env.SITE_URL || '';
       if (data?.email) {
+        const responseText = admin_response ? `\n\nDoug's response: ${admin_response}` : '';
         await sendEmail(
           data.email,
-          'Your endorsement has been published',
-          `Hi ${data.name || ''},\n\nYour endorsement is now live: ${site}/endorsements\n\nThank you for your support!\n\n--\nDoug Charles`
+          'Your idea has been published',
+          `Hi ${data.name || ''},\n\nYour idea "${data.title}" has been published: ${site}/ideas${responseText}\n\nThank you for sharing!\n\n--\nDoug Charles`
         ).catch((err) => console.error('User email failed', err));
       }
     } else if (action === 'reject') {
       const { data, error } = await supabase
-        .from('endorsements')
-        .update({ status: 'rejected', rejection_reason: rejection_reason || null })
+        .from('ideas')
+        .update({ status: 'declined', admin_response: rejection_reason || null })
         .eq('id', id)
-        .select('email, name')
+        .select('email, name, title')
         .single();
 
       if (error) {
         await logError({
           errorType: ErrorTypes.DATABASE_ERROR,
           errorMessage: error.message,
-          endpoint: '/api/admin/endorsements',
+          endpoint: '/api/admin/ideas',
           method: 'POST',
           requestBody: body,
           userId: supporter.id,
@@ -148,17 +150,17 @@ export async function POST(request) {
         return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
       }
 
-      // Log rejection
       await logAudit({
-        eventType: AuditEvents.ENDORSEMENT_REJECTED,
+        eventType: AuditEvents.IDEA_REJECTED || 'IDEA_REJECTED',
         supporterId: supporter.id,
         targetId: id,
-        targetType: 'endorsement',
-        oldValues: { status: endorsement?.status },
-        newValues: { status: 'rejected', rejection_reason },
+        targetType: 'idea',
+        oldValues: { status: idea?.status },
+        newValues: { status: 'declined', rejection_reason },
         details: {
-          endorserName: endorsement?.name,
-          endorserEmail: endorsement?.email,
+          ideaTitle: data?.title,
+          submitterName: data?.name,
+          submitterEmail: data?.email,
           rejectedBy: `${supporter.first_name} ${supporter.last_name}`,
           rejection_reason,
         },
@@ -167,15 +169,32 @@ export async function POST(request) {
         responseStatus: 200,
       });
 
-      // Send rejection email to user
       if (data?.email) {
-        const reasonText = rejection_reason
-          ? `\n\nReason: ${rejection_reason}`
-          : '';
+        const reasonText = rejection_reason ? `\n\nReason: ${rejection_reason}` : '';
         await sendEmail(
           data.email,
-          'Update on your endorsement submission',
-          `Hi ${data.name || ''},\n\nThank you for submitting an endorsement. Unfortunately, we are unable to publish it at this time.${reasonText}\n\nIf you have questions, please feel free to reach out.\n\n--\nDoug Charles`
+          'Update on your idea submission',
+          `Hi ${data.name || ''},\n\nThank you for submitting your idea "${data.title}". Unfortunately, we are unable to publish it at this time.${reasonText}\n\nIf you have questions, please feel free to reach out.\n\n--\nDoug Charles`
+        ).catch((err) => console.error('User email failed', err));
+      }
+    } else if (action === 'respond') {
+      // Add admin response without changing status
+      const { data, error } = await supabase
+        .from('ideas')
+        .update({ admin_response })
+        .eq('id', id)
+        .select('email, name, title')
+        .single();
+
+      if (error) {
+        return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      }
+
+      if (data?.email && admin_response) {
+        await sendEmail(
+          data.email,
+          'Response to your idea',
+          `Hi ${data.name || ''},\n\nDoug has responded to your idea "${data.title}":\n\n${admin_response}\n\nView your idea: ${site}/ideas\n\n--\nDoug Charles`
         ).catch((err) => console.error('User email failed', err));
       }
     } else {
@@ -188,7 +207,7 @@ export async function POST(request) {
       errorType: ErrorTypes.SERVER_ERROR,
       errorMessage: err.message,
       errorStack: err.stack,
-      endpoint: '/api/admin/endorsements',
+      endpoint: '/api/admin/ideas',
       method: 'POST',
       userId: supporter.id,
       userEmail: supporter.email,
