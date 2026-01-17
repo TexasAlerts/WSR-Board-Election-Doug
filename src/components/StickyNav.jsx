@@ -84,6 +84,9 @@ export default function StickyNav() {
           <Link href="/ideas" className="text-gray-600 hover:text-navy transition-colors">
             Ideas
           </Link>
+          <Link href="/qna" className="text-gray-600 hover:text-navy transition-colors">
+            Q&A
+          </Link>
           <Link href="/endorsements" className="text-gray-600 hover:text-navy transition-colors">
             Endorsements
           </Link>
@@ -150,6 +153,9 @@ export default function StickyNav() {
           </Link>
           <Link href="/ideas" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             Ideas
+          </Link>
+          <Link href="/qna" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+            Q&A
           </Link>
           <Link href="/endorsements" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             Endorsements

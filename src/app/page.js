@@ -7,23 +7,30 @@ import {
   Ear,
   ClipboardList,
   ShieldCheck,
+  HelpCircle,
 } from 'lucide-react';
 import Reveal from '../components/Reveal';
 
 export default function Home() {
   const [endorsements, setEndorsements] = useState([]);
+  const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
-    async function loadEndorsements() {
+    async function loadData() {
       try {
-        const res = await fetch('/api/endorsements', { cache: 'no-store' });
-        const data = await res.json();
-        setEndorsements(Array.isArray(data.data) ? data.data : []);
+        const [endorseRes, qnaRes] = await Promise.all([
+          fetch('/api/endorsements', { cache: 'no-store' }),
+          fetch('/api/questions', { cache: 'no-store' }),
+        ]);
+        const endorseData = await endorseRes.json();
+        const qnaData = await qnaRes.json();
+        setEndorsements(Array.isArray(endorseData.data) ? endorseData.data : []);
+        setQuestions(Array.isArray(qnaData.data) ? qnaData.data : []);
       } catch (err) {
-        console.error('Error loading endorsements', err);
+        console.error('Error loading data', err);
       }
     }
-    loadEndorsements();
+    loadData();
   }, []);
 
   return (
@@ -193,6 +200,50 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Q&A Preview Section */}
+      {questions.length > 0 && (
+        <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
+
+          <div className="max-w-4xl mx-auto">
+            <Reveal>
+              <div className="text-center mb-12">
+                <div className="flex justify-center mb-4">
+                  <div className="icon-container">
+                    <HelpCircle className="w-8 h-8 text-navy" aria-hidden="true" />
+                  </div>
+                </div>
+                <h2 className="section-title">Questions & Answers</h2>
+                <p className="section-subtitle">Direct answers from Doug on the issues that matter</p>
+              </div>
+            </Reveal>
+
+            <div className="space-y-6">
+              {questions.slice(0, 3).map((q, idx) => (
+                <Reveal key={q.id} delay={idx * 100}>
+                  <div className="card">
+                    <h3 className="font-semibold text-navy text-lg mb-3">{q.question}</h3>
+                    <p className="text-gray-700 leading-relaxed">{q.answer}</p>
+                    <p className="text-sm text-gray-500 mt-3">— Asked by {q.name}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+
+            <Reveal delay={300}>
+              <div className="text-center mt-12 space-y-4">
+                <Link href="/qna" className="btn-outline">
+                  View All Q&A
+                </Link>
+                <p className="text-gray-600 text-sm">
+                  Have a question? <Link href="/qna" className="text-navy font-medium hover:underline">Submit yours</Link>
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       {/* Endorsements Preview - Enhanced */}
       {endorsements.length > 0 && (
