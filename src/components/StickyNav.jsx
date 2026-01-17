@@ -3,15 +3,9 @@
 import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
-  ThumbsUp,
-  HelpCircle,
-  User,
   Menu,
   X,
   Home as HomeIcon,
-  FileCheck,
-  Megaphone,
-  Heart,
 } from 'lucide-react';
 
 export default function StickyNav() {
@@ -63,11 +57,14 @@ export default function StickyNav() {
         </button>
         {/* Desktop nav */}
         <div className="hidden sm:flex flex-row items-center gap-6 text-sm font-medium">
-          <Link href={{ pathname: '/', hash: 'issues' }} className="text-gray-600 hover:text-navy transition-colors">
+          <Link href="/priorities" className="text-gray-600 hover:text-navy transition-colors">
             Priorities
           </Link>
-          <Link href={{ pathname: '/', hash: 'about' }} className="text-gray-600 hover:text-navy transition-colors">
+          <Link href="/about" className="text-gray-600 hover:text-navy transition-colors">
             About
+          </Link>
+          <Link href="/why" className="text-gray-600 hover:text-navy transition-colors">
+            Why I'm Running
           </Link>
           <Link href="/endorsements" className="text-gray-600 hover:text-navy transition-colors">
             Endorsements
@@ -75,10 +72,10 @@ export default function StickyNav() {
           <Link href="/qna" className="text-gray-600 hover:text-navy transition-colors">
             Q&A
           </Link>
-          <Link href={{ pathname: '/', hash: 'get-involved' }} className="text-gray-600 hover:text-navy transition-colors">
+          <Link href="/get-involved" className="text-gray-600 hover:text-navy transition-colors">
             Get Involved
           </Link>
-          <Link href={{ pathname: '/', hash: 'donate' }} className="bg-prosper-red text-white px-5 py-2 rounded-lg font-semibold hover:bg-red-dark transition-colors">
+          <Link href="/donate" className="bg-prosper-red text-white px-5 py-2 rounded-lg font-semibold hover:bg-red-dark transition-colors">
             Donate
           </Link>
         </div>
@@ -86,11 +83,14 @@ export default function StickyNav() {
         <div
           className={`sm:hidden absolute left-0 top-full w-full bg-white border-t border-gray-100 p-6 flex-col gap-1 text-base shadow-lg transition-all duration-200 z-50 ${open ? 'flex' : 'hidden'}`}
         >
-          <Link href={{ pathname: '/', hash: 'issues' }} className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+          <Link href="/priorities" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             Priorities
           </Link>
-          <Link href={{ pathname: '/', hash: 'about' }} className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+          <Link href="/about" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             About Doug
+          </Link>
+          <Link href="/why" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+            Why I'm Running
           </Link>
           <Link href="/endorsements" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             Endorsements
@@ -98,11 +98,11 @@ export default function StickyNav() {
           <Link href="/qna" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             Q&A
           </Link>
-          <Link href={{ pathname: '/', hash: 'get-involved' }} className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+          <Link href="/get-involved" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             Get Involved
           </Link>
           <div className="pt-4 mt-2 border-t border-gray-100">
-            <Link href={{ pathname: '/', hash: 'donate' }} className="block py-3 bg-prosper-red text-white text-center rounded-lg font-semibold" onClick={() => setOpen(false)}>
+            <Link href="/donate" className="block py-3 bg-prosper-red text-white text-center rounded-lg font-semibold" onClick={() => setOpen(false)}>
               Donate
             </Link>
           </div>
