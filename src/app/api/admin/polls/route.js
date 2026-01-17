@@ -80,7 +80,7 @@ export async function POST(request) {
     const schema = z.object({
       title: z.string().min(1, 'Title is required').max(500),
       description: z.string().max(2000).optional().nullable(),
-      poll_type: z.enum(['single_choice', 'multiple_choice']).default('single_choice'),
+      poll_type: z.enum(['single_choice', 'multiple_choice', 'ranked_choice']).default('single_choice'),
       visibility: z.enum(['public', 'public_view', 'authenticated']).default('public'),
       status: z.enum(['draft', 'active', 'closed']).default('draft'),
       allow_comments: z.boolean().default(true),

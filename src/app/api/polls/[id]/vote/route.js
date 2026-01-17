@@ -27,6 +27,7 @@ export async function POST(request, { params }) {
       ? z.object({
           choice_id: z.string().uuid().optional(),
           choice_ids: z.array(z.string().uuid()).optional(),
+          rankings: z.array(z.string().uuid()).optional(),
           comment: z.string().max(2000).optional(),
         })
       : z.object({
@@ -34,6 +35,7 @@ export async function POST(request, { params }) {
           name: z.string().min(1, 'Name required').max(200),
           choice_id: z.string().uuid().optional(),
           choice_ids: z.array(z.string().uuid()).optional(),
+          rankings: z.array(z.string().uuid()).optional(),
           comment: z.string().max(2000).optional(),
         });
 
@@ -43,7 +45,7 @@ export async function POST(request, { params }) {
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 
-    const { email, name, choice_id, choice_ids, comment } = parsed.data;
+    const { email, name, choice_id, choice_ids, rankings, comment } = parsed.data;
 
     // Check if poll exists and is active
     const { data: poll, error: pollError } = await supabase
@@ -130,11 +132,17 @@ export async function POST(request, { params }) {
         return NextResponse.json({ ok: false, error: 'Please select an option' }, { status: 400 });
       }
       vote_data = { choice_id };
-    } else {
+    } else if (poll.poll_type === 'multiple_choice') {
       if (!choice_ids || choice_ids.length === 0) {
         return NextResponse.json({ ok: false, error: 'Please select at least one option' }, { status: 400 });
       }
       vote_data = { choice_ids };
+    } else if (poll.poll_type === 'ranked_choice') {
+      if (!rankings || rankings.length === 0) {
+        return NextResponse.json({ ok: false, error: 'Please rank your choices' }, { status: 400 });
+      }
+      // Store rankings as array of choice_ids in preference order (index 0 = 1st choice)
+      vote_data = { rankings };
     }
 
     // Insert vote

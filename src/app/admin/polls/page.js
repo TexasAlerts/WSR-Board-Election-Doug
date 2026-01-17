@@ -307,6 +307,7 @@ export default function AdminPollsPage() {
                     >
                       <option value="single_choice">Single Choice</option>
                       <option value="multiple_choice">Multiple Choice</option>
+                      <option value="ranked_choice">Ranked Choice</option>
                     </select>
                   </div>
 
@@ -479,7 +480,7 @@ export default function AdminPollsPage() {
                       {poll.status}
                     </span>
                     <span className="px-2 py-0.5 rounded bg-gray-100 text-xs text-gray-600">
-                      {poll.poll_type === 'single_choice' ? 'Single' : 'Multiple'} choice
+                      {poll.poll_type === 'single_choice' ? 'Single' : poll.poll_type === 'multiple_choice' ? 'Multiple' : 'Ranked'} choice
                     </span>
                   </div>
                   {poll.description && (
