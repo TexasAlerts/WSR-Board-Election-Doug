@@ -110,11 +110,11 @@ export default function RootLayout({ children }) {
             <p>
               © {new Date().getFullYear()} Doug Charles for Prosper Town Council
               {' | '}
-              <Link href="/privacy" className="underline hover:text-gray-300">
+              <Link href="/privacy" className="text-white underline hover:text-gray-300">
                 Privacy Policy
               </Link>
               {' | '}
-              <Link href="/terms" className="underline hover:text-gray-300">
+              <Link href="/terms" className="text-white underline hover:text-gray-300">
                 Terms of Use
               </Link>
             </p>
