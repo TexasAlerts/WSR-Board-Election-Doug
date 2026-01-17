@@ -91,13 +91,13 @@ export default function Home() {
             <Reveal delay={200}>
               <div className="stat-card">
                 <div className="stat-number">$210M</div>
-                <div className="stat-label">Bond Committee</div>
+                <div className="stat-label">2020 Bond Committee</div>
               </div>
             </Reveal>
             <Reveal delay={300}>
               <div className="stat-card">
-                <div className="stat-number">79%</div>
-                <div className="stat-label">Bond Executed</div>
+                <div className="stat-number">$6.5M</div>
+                <div className="stat-label">WSR Annexation Co-Petitioner</div>
               </div>
             </Reveal>
           </div>
