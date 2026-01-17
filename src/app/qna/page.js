@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Reveal from '../../components/Reveal';
 
 export default function QnAPage() {
   const [questions, setQuestions] = useState([]);
@@ -41,21 +42,35 @@ export default function QnAPage() {
   }
 
   return (
-    <div className="space-y-16">
+    <div className="space-y-0">
       {/* Hero */}
-      <section className="text-center py-8">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy mb-4">
-          Questions & Answers
-        </h1>
-        <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-          Have a question about my positions or priorities? Ask here and I'll respond publicly.
-        </p>
+      <section className="hero-pattern hero-gradient text-center py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-10 right-20 w-64 h-64 bg-navy/5 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 left-20 w-48 h-48 bg-prosper-red/5 rounded-full blur-3xl"></div>
+        </div>
+        {/* Logo accent */}
+        <img
+          src="/wsr-logo.png"
+          alt=""
+          className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 opacity-80 pointer-events-none"
+        />
+        <div className="relative z-10">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-4 animate-fade-in-down">
+            Questions & Answers
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
+            Have a question about my positions or priorities? Ask here and I'll respond publicly.
+          </p>
+        </div>
       </section>
 
       {/* Ask a Question Form */}
-      <section className="max-w-2xl mx-auto">
-        <div className="card">
-          <h2 className="text-xl font-bold text-navy mb-6">Ask Doug a Question</h2>
+      <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto">
+          <Reveal>
+            <div className="card">
+              <h2 className="text-xl font-bold text-navy mb-6">Ask Doug a Question</h2>
 
           {submitted ? (
             <div className="p-6 bg-green-50 border border-green-200 rounded-lg">
@@ -108,39 +123,49 @@ export default function QnAPage() {
               </button>
             </form>
           )}
+            </div>
+          </Reveal>
         </div>
       </section>
 
       {/* Published Q&A */}
-      <section className="bg-gray-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16">
+      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 relative">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
         <div className="max-w-4xl mx-auto">
-          <h2 className="section-title text-center mb-12">Published Answers</h2>
+          <Reveal>
+            <h2 className="section-title text-center mb-12">Published Answers</h2>
+          </Reveal>
 
           {loading ? (
             <div className="text-center text-gray-500">Loading questions...</div>
           ) : questions.length > 0 ? (
             <div className="space-y-6">
-              {questions.map((q) => (
-                <div key={q.id} className="card">
-                  <div className="mb-4">
-                    <span className="badge badge-navy">Question</span>
-                  </div>
-                  <p className="text-lg font-medium text-gray-800 mb-4">{q.question}</p>
-                  <div className="border-t border-gray-200 pt-4">
-                    <div className="mb-2">
-                      <span className="badge badge-red">Doug's Answer</span>
+              {questions.map((q, idx) => (
+                <Reveal key={q.id} delay={idx * 100}>
+                  <div className="card">
+                    <div className="mb-4">
+                      <span className="badge badge-navy">Question</span>
                     </div>
-                    <p className="text-gray-700 leading-relaxed">{q.answer}</p>
+                    <p className="text-lg font-medium text-gray-800 mb-4">{q.question}</p>
+                    <div className="border-t border-gray-200 pt-4">
+                      <div className="mb-2">
+                        <span className="badge badge-red">Doug's Answer</span>
+                      </div>
+                      <p className="text-gray-700 leading-relaxed">{q.answer}</p>
+                    </div>
+                    <p className="text-sm text-gray-500 mt-4">— Asked by {q.name}</p>
                   </div>
-                </div>
+                </Reveal>
               ))}
             </div>
           ) : (
-            <div className="card text-center">
-              <p className="text-gray-600">
-                No questions have been answered yet. Be the first to ask!
-              </p>
-            </div>
+            <Reveal>
+              <div className="card text-center">
+                <p className="text-gray-600">
+                  No questions have been answered yet. Be the first to ask!
+                </p>
+              </div>
+            </Reveal>
           )}
         </div>
       </section>
