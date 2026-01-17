@@ -7,7 +7,7 @@ import { Mail, MessageCircle } from 'lucide-react';
 import Reveal from '../../components/Reveal';
 import { validatePhoneNumber } from '../../lib/phoneValidation';
 
-const SHARE_MESSAGE = "I'm supporting Doug Charles for Town of Prosper Town Council Place 5! Learn more about his Common Sense leadership at www.dougcharles.com";
+const SHARE_MESSAGE = "I'm supporting Doug Charles for Town of Prosper Town Council Place 5! Learn more about his Common Sense leadership for ALL of Prosper at www.dougcharles.com";
 const SHARE_SUBJECT = "Check out Doug Charles for Prosper Town Council";
 
 const actionCards = [
@@ -196,7 +196,7 @@ function GetInvolvedContent() {
             Get Involved
           </h1>
           <p className="text-xl text-white/90 animate-fade-in animate-delay-200">
-            Join the movement for <strong>Common Sense</strong> leadership in Prosper
+            Join the movement for <strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper
           </p>
         </div>
       </section>

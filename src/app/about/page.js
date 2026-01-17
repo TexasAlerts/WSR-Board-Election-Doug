@@ -24,7 +24,7 @@ export default function AboutPage() {
             About Doug
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
-            20 years of service · <strong>Common Sense</strong> leadership
+            20 years of service · <strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper
           </p>
         </div>
       </section>
@@ -133,7 +133,7 @@ export default function AboutPage() {
                 In my professional career, I'm a Senior Vice President focused on business innovation and transformation. I lead teams that solve complex problems, manage budgets, and deliver results.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
-                I bring that same <strong className="text-navy">common sense</strong> approach to local government: understand the problem, gather input, develop solutions, and execute. No grandstanding, no politics—just get it done.
+                I bring that same <strong className="text-navy">common sense</strong> approach to local government—for <strong className="text-prosper-red">ALL</strong> of Prosper: understand the problem, gather input, develop solutions, and execute. No grandstanding, no politics—just get it done.
               </p>
             </div>
           </Reveal>

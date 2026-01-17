@@ -62,8 +62,8 @@ export default function Home() {
             </div>
 
             <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto animate-fade-in animate-on-load animate-delay-500">
-              A <strong className="text-navy">Common Sense</strong> leader committed to thoughtful growth, fiscal responsibility,
-              and preserving what makes Prosper special.
+              A <strong className="text-navy">Common Sense</strong> leader for <strong className="text-prosper-red">ALL</strong> of Prosper—committed to thoughtful growth, fiscal responsibility,
+              and preserving what makes our community special.
             </p>
 
             {/* Enhanced CTAs */}
@@ -121,7 +121,7 @@ export default function Home() {
           <Reveal>
             <div className="text-center mb-16">
               <h2 className="section-title">My Priorities</h2>
-              <p className="section-subtitle"><strong>Common Sense</strong> leadership for Prosper</p>
+              <p className="section-subtitle"><strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper</p>
             </div>
           </Reveal>
 
