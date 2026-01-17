@@ -12,8 +12,13 @@ export default function DonatePage() {
   const [message, setMessage] = useState({ type: '', text: '' });
 
   const ANEDOT_URL = 'https://secure.anedot.com/doug-charles-for-town-of-prosper-town-council-place-5/af99e860-1f84-443a-9a3d-a90ee0c797d9';
+  const DONATIONS_ENABLED = false; // Set to true when Anedot is approved
 
   const handleDonate = () => {
+    if (!DONATIONS_ENABLED) {
+      setMessage({ type: 'info', text: 'Online donations will be available soon. Please check back shortly!' });
+      return;
+    }
     const amount = selectedAmount || parseInt(customAmount, 10);
     if (!amount || amount < 1) {
       setMessage({ type: 'error', text: 'Please select or enter a donation amount.' });
@@ -44,6 +49,13 @@ export default function DonatePage() {
           <p className="text-xl text-white/90 animate-fade-in animate-delay-200">
             Your contribution helps us reach every voter in Prosper with a message of <strong>Common Sense</strong> leadership.
           </p>
+          {!DONATIONS_ENABLED && (
+            <div className="mt-6 bg-white/20 backdrop-blur-sm rounded-lg px-6 py-4 inline-block animate-fade-in animate-delay-300">
+              <p className="text-white font-semibold">
+                🔒 Coming Soon — We're activating our secure donation partner to protect your payment information.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -111,14 +123,22 @@ export default function DonatePage() {
                 <div className={`mt-6 p-4 rounded-lg flex items-start gap-3 ${
                   message.type === 'error'
                     ? 'bg-red-50 border border-red-200'
+                    : message.type === 'info'
+                    ? 'bg-blue-50 border border-blue-200'
                     : 'bg-green-50 border border-green-200'
                 }`}>
                   {message.type === 'error' ? (
                     <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                  ) : message.type === 'info' ? (
+                    <AlertCircle className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
                   ) : (
                     <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
                   )}
-                  <p className={`text-sm ${message.type === 'error' ? 'text-red-700' : 'text-green-700'}`}>
+                  <p className={`text-sm ${
+                    message.type === 'error' ? 'text-red-700'
+                    : message.type === 'info' ? 'text-blue-700'
+                    : 'text-green-700'
+                  }`}>
                     {message.text}
                   </p>
                 </div>
