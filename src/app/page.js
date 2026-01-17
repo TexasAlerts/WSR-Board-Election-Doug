@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import EndorsementsCarousel from '../components/EndorsementsCarousel';
+import DonateSection from '../components/DonateSection';
 import {
   Ear,
   ClipboardList,
@@ -110,11 +111,11 @@ function HomeContent() {
     <div className="space-y-16">
       {/* Hero Section */}
       <section className="text-center space-y-6">
-        {/* Campaign logo - use img tag for external/missing image fallback */}
+        {/* Campaign logo - displays if logo file exists */}
         <img
-          src="/campaign-logo.png"
+          src="/wsr-logo.png"
           alt="Doug Charles for Town Council Place 5 - A Common Sense Leader for All of Prosper"
-          className="mx-auto w-[300px] sm:w-[450px] md:w-[600px]"
+          className="mx-auto w-[200px] sm:w-[300px] md:w-[400px]"
           onError={(e) => { e.target.style.display = 'none'; }}
         />
         <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
@@ -260,6 +261,9 @@ function HomeContent() {
           </div>
         </section>
       )}
+
+      {/* Donate Section */}
+      <DonateSection />
 
       {/* Get involved section */}
       <section id="get-involved">

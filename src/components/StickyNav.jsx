@@ -11,6 +11,7 @@ import {
   Home as HomeIcon,
   FileCheck,
   Megaphone,
+  Heart,
 } from 'lucide-react';
 
 export default function StickyNav() {
@@ -77,6 +78,9 @@ export default function StickyNav() {
           <Link href={{ pathname: '/', hash: 'get-involved' }} className="flex items-center gap-1 hover:underline">
             <Megaphone className="h-4 w-4" /> Get Involved
           </Link>
+          <Link href={{ pathname: '/', hash: 'donate' }} className="flex items-center gap-1 bg-prosper-red text-white px-4 py-2 rounded-full hover:bg-prosper-red-light transition-colors">
+            <Heart className="h-4 w-4" /> Donate
+          </Link>
         </div>
         {/* Mobile nav dropdown */}
         <div
@@ -96,6 +100,9 @@ export default function StickyNav() {
           </Link>
           <Link href={{ pathname: '/', hash: 'get-involved' }} className="flex items-center gap-2 py-2 hover:underline" onClick={() => setOpen(false)}>
             <Megaphone className="h-5 w-5" /> Get Involved
+          </Link>
+          <Link href={{ pathname: '/', hash: 'donate' }} className="flex items-center gap-2 py-2 bg-prosper-red text-white px-4 rounded-full justify-center" onClick={() => setOpen(false)}>
+            <Heart className="h-5 w-5" /> Donate
           </Link>
         </div>
       </div>

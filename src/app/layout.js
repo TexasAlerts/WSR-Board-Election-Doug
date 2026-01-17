@@ -103,7 +103,13 @@ export default function RootLayout({ children }) {
         <footer className="bg-navy text-white py-6 mt-16 pb-24 sm:pb-6">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-center space-y-2">
             <p>Political advertising paid for by Doug Charles for Prosper Town Council.</p>
-            <p>© {new Date().getFullYear()} Doug Charles for Prosper Town Council</p>
+            <p>
+              © {new Date().getFullYear()} Doug Charles for Prosper Town Council
+              {' | '}
+              <Link href="/privacy" className="underline hover:text-gray-300">
+                Privacy Policy
+              </Link>
+            </p>
           </div>
         </footer>
         {/* Mobile call to action */}
