@@ -36,30 +36,34 @@ export default function EndorsementsPage() {
         </div>
       </section>
 
+      {/* Endorse CTA */}
+      <section className="py-8 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-gray-700 mb-4">Want to add your voice?</p>
+          <Link
+            href="/get-involved?form=endorsement"
+            className="btn-primary"
+          >
+            Endorse Doug
+          </Link>
+        </div>
+      </section>
+
       {/* Endorsements List */}
       <section className="py-12 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-      {endorsements.length === 0 ? (
-        <p>No endorsements yet. Submit yours on the home page!</p>
-      ) : (
-        <div className="space-y-4 sm:space-y-6">
-          {endorsements.map((e) => (
-            <div key={e.id} className="bg-white p-3 sm:p-4 rounded shadow-sm">
-              <p className="font-medium text-base sm:text-lg">{e.name}</p>
-              {e.message && <p className="mt-1 italic text-sm sm:text-base">“{e.message}”</p>}
+          {endorsements.length === 0 ? (
+            <p className="text-center text-gray-600">No endorsements yet. Be the first to show your support!</p>
+          ) : (
+            <div className="space-y-4 sm:space-y-6">
+              {endorsements.map((e) => (
+                <div key={e.id} className="bg-white p-3 sm:p-4 rounded shadow-sm">
+                  <p className="font-medium text-base sm:text-lg">{e.name}</p>
+                  {e.message && <p className="mt-1 italic text-sm sm:text-base">"{e.message}"</p>}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
-      {/* Link to endorse */}
-      <div className="mt-8 text-center">
-        <Link
-          href="/get-involved?form=endorsement"
-          className="btn-primary"
-        >
-          Endorse Doug
-        </Link>
-      </div>
+          )}
         </div>
       </section>
     </div>
