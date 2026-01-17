@@ -11,17 +11,16 @@ export default function DonatePage() {
   const [customAmount, setCustomAmount] = useState('');
   const [message, setMessage] = useState({ type: '', text: '' });
 
+  const ANEDOT_URL = 'https://secure.anedot.com/doug-charles-for-town-of-prosper-town-council-place-5/af99e860-1f84-443a-9a3d-a90ee0c797d9';
+
   const handleDonate = () => {
     const amount = selectedAmount || parseInt(customAmount, 10);
     if (!amount || amount < 1) {
       setMessage({ type: 'error', text: 'Please select or enter a donation amount.' });
       return;
     }
-    // TODO: Replace with actual Anedot or payment processor URL
-    setMessage({
-      type: 'success',
-      text: `Thank you for your interest in donating $${amount}! Online donations will be available soon. Please contact doug@dougcharles.com for now.`
-    });
+    // Redirect to Anedot with pre-selected amount
+    window.open(`${ANEDOT_URL}?amount=${amount}`, '_blank');
   };
 
   return (
