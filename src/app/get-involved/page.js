@@ -5,37 +5,98 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Reveal from '../../components/Reveal';
 
+const actionCards = [
+  {
+    id: 'updates',
+    icon: '📬',
+    title: 'Stay Informed',
+    description: 'Get campaign news and updates delivered to your inbox',
+  },
+  {
+    id: 'yardsign',
+    icon: '🏠',
+    title: 'Request a Yard Sign',
+    description: 'Show your support in your neighborhood',
+  },
+  {
+    id: 'volunteer',
+    icon: '🤝',
+    title: 'Volunteer Your Time',
+    description: 'Help with door-knocking, calls, and events',
+  },
+  {
+    id: 'meeting',
+    icon: '☕',
+    title: 'Meet with Doug',
+    description: 'Schedule a conversation about Prosper\'s future',
+  },
+  {
+    id: 'endorsement',
+    icon: '✓',
+    title: 'Endorse Doug',
+    description: 'Add your name to the list of supporters',
+  },
+  {
+    id: 'donate',
+    icon: '💪',
+    title: 'Make a Donation',
+    description: 'Help us reach more voters',
+    isLink: true,
+    href: '/donate',
+  },
+];
+
 function GetInvolvedContent() {
-  const [mode, setMode] = useState('volunteer');
-  const [formType, setFormType] = useState('updates');
-  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
+  const [selectedAction, setSelectedAction] = useState(null);
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+    consentEmail: false,
+    consentSms: false,
+  });
   const [submitMsg, setSubmitMsg] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const searchParams = useSearchParams();
 
   useEffect(() => {
     const ft = searchParams.get('form');
-    if (ft === 'endorsement') {
-      setMode('endorsement');
-    } else if (ft) {
-      setFormType(ft);
+    if (ft && actionCards.find(c => c.id === ft && !c.isLink)) {
+      setSelectedAction(ft);
     }
   }, [searchParams]);
+
+  function handleCardClick(card) {
+    if (card.isLink) return;
+    setSelectedAction(selectedAction === card.id ? null : card.id);
+    setSubmitMsg('');
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setSubmitMsg('');
+    setIsSubmitting(true);
+
     try {
-      if (mode === 'endorsement') {
+      if (selectedAction === 'endorsement') {
         const res = await fetch('/api/endorsements', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: form.name, email: form.email, message: form.message }),
+          body: JSON.stringify({
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            message: form.message,
+            consentEmail: form.consentEmail,
+            consentSms: form.consentSms,
+          }),
         });
         const data = await res.json();
         if (res.ok && data.ok) {
           setSubmitMsg('Thank you! Your endorsement has been received.');
-          setForm({ name: '', email: '', phone: '', message: '' });
+          setForm({ name: '', email: '', phone: '', message: '', consentEmail: false, consentSms: false });
         } else {
           setSubmitMsg(data.error || 'Something went wrong. Please try again.');
         }
@@ -43,12 +104,20 @@ function GetInvolvedContent() {
         const res = await fetch('/api/interest', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: formType, name: form.name, email: form.email, phone: form.phone, message: form.message }),
+          body: JSON.stringify({
+            type: selectedAction,
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            message: form.message,
+            consentEmail: form.consentEmail,
+            consentSms: form.consentSms,
+          }),
         });
         const data = await res.json();
         if (res.ok && data.ok) {
           setSubmitMsg('Thank you! We will be in touch.');
-          setForm({ name: '', email: '', phone: '', message: '' });
+          setForm({ name: '', email: '', phone: '', message: '', consentEmail: false, consentSms: false });
         } else {
           setSubmitMsg(data.error || 'Something went wrong. Please try again.');
         }
@@ -56,15 +125,31 @@ function GetInvolvedContent() {
     } catch (err) {
       console.error(err);
       setSubmitMsg('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
-  const formOptions = [
-    { value: 'updates', label: 'Get Updates' },
-    { value: 'volunteer', label: 'Volunteer' },
-    { value: 'yardsign', label: 'Request a Yard Sign' },
-    { value: 'meeting', label: 'Request a Meeting' },
-  ];
+  function getFormTitle() {
+    const card = actionCards.find(c => c.id === selectedAction);
+    return card ? card.title : '';
+  }
+
+  function getFormIcon() {
+    const card = actionCards.find(c => c.id === selectedAction);
+    return card ? card.icon : '';
+  }
+
+  function getSubmitLabel() {
+    switch (selectedAction) {
+      case 'updates': return 'Subscribe';
+      case 'yardsign': return 'Request Sign';
+      case 'volunteer': return 'Sign Up';
+      case 'meeting': return 'Request Meeting';
+      case 'endorsement': return 'Submit Endorsement';
+      default: return 'Submit';
+    }
+  }
 
   return (
     <div className="space-y-0">
@@ -90,272 +175,219 @@ function GetInvolvedContent() {
         </div>
       </section>
 
-      {/* Mode Toggle */}
+      {/* Action Cards */}
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto">
-          <Reveal>
-            <div className="flex justify-center gap-4 mb-8">
-              <button
-                type="button"
-                onClick={() => setMode('volunteer')}
-                className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ${
-                  mode === 'volunteer'
-                    ? 'bg-gradient-navy text-white shadow-navy-lg scale-105'
-                    : 'bg-gray-100 text-navy hover:bg-gray-200 hover:scale-[1.02]'
-                }`}
-              >
-                Volunteer
-              </button>
-              <button
-                type="button"
-                onClick={() => setMode('endorsement')}
-                className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ${
-                  mode === 'endorsement'
-                    ? 'bg-gradient-red text-white shadow-lg scale-105'
-                    : 'bg-gray-100 text-prosper-red hover:bg-gray-200 hover:scale-[1.02]'
-                }`}
-              >
-                Endorse Doug
-              </button>
-            </div>
-          </Reveal>
-
-          {/* Form */}
-          <Reveal delay={100}>
-            <div className="card">
-              <h2 className="text-xl font-bold text-navy mb-6">
-                {mode === 'endorsement' ? 'Submit Your Endorsement' : 'How Can You Help?'}
-              </h2>
-
-              <form onSubmit={handleSubmit} className="space-y-5">
-                {mode === 'volunteer' && (
-                  <>
-                <div>
-                  <label className="form-label">I'm interested in *</label>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {formOptions.map((opt) => (
-                      <button
-                        key={opt.value}
-                        type="button"
-                        onClick={() => setFormType(opt.value)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                          formType === opt.value
-                            ? 'bg-navy text-white'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="name" className="form-label">Name *</label>
-                  <input
-                    id="name"
-                    type="text"
-                    required
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="form-input"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="form-label">Email *</label>
-                  <input
-                    id="email"
-                    type="email"
-                    required
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="form-input"
-                  />
-                </div>
-
-                {(formType === 'updates' || formType === 'volunteer' || formType === 'yardsign') && (
-                  <div>
-                    <label htmlFor="phone" className="form-label">Phone (optional)</label>
-                    <input
-                      id="phone"
-                      type="text"
-                      value={form.phone}
-                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      className="form-input"
-                    />
-                  </div>
-                )}
-
-                {formType === 'yardsign' && (
-                  <div>
-                    <label htmlFor="address" className="form-label">Delivery Address *</label>
-                    <input
-                      id="address"
-                      type="text"
-                      required
-                      value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="form-input"
-                      placeholder="Street address in Prosper"
-                    />
-                  </div>
-                )}
-
-                {formType !== 'yardsign' && (
-                  <div>
-                    <label htmlFor="message" className="form-label">Message (optional)</label>
-                    <textarea
-                      id="message"
-                      rows={3}
-                      value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="form-input"
-                    />
-                  </div>
-                )}
-              </>
-            )}
-
-            {mode === 'endorsement' && (
-              <>
-                <div>
-                  <label htmlFor="ename" className="form-label">Name *</label>
-                  <input
-                    id="ename"
-                    type="text"
-                    required
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="form-input"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="eemail" className="form-label">Email *</label>
-                  <input
-                    id="eemail"
-                    type="email"
-                    required
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="form-input"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="emessage" className="form-label">Why I support Doug (optional)</label>
-                  <textarea
-                    id="emessage"
-                    rows={4}
-                    value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    className="form-input"
-                    placeholder="Share why you're endorsing Doug for Town Council..."
-                  />
-                </div>
-              </>
-            )}
-
-            <button type="submit" className="btn-primary w-full">
-              {mode === 'endorsement' ? 'Submit Endorsement' : 'Submit'}
-            </button>
-
-            {submitMsg && (
-              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                <p className="text-green-800 font-medium">{submitMsg}</p>
-              </div>
-                )}
-              </form>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Ways to Help */}
-      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative">
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
-
         <div className="max-w-4xl mx-auto">
           <Reveal>
-            <h2 className="section-title text-center mb-4">Ways to Support the Campaign</h2>
-            <p className="section-subtitle text-center">Every action makes a difference</p>
+            <h2 className="section-title text-center mb-4">Choose How You'd Like to Help</h2>
+            <p className="section-subtitle text-center mb-12">Every action makes a difference</p>
           </Reveal>
 
-          <div className="grid gap-6 md:grid-cols-2 mt-12">
-            <Reveal delay={0}>
-              <div className="card h-full">
-                <div className="icon-container">
-                  <span className="text-2xl">🏠</span>
-                </div>
-                <h3 className="text-xl font-bold text-navy mb-3">Display a Yard Sign</h3>
-                <p className="text-gray-600 mb-4">
-                  Show your support and help spread the word in your neighborhood.
-                </p>
-                <button
-                  onClick={() => {
-                    setMode('volunteer');
-                    setFormType('yardsign');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className="text-navy font-semibold hover:underline inline-flex items-center gap-1 transition-transform hover:translate-x-1"
-                >
-                  Request a sign →
-                </button>
-              </div>
-            </Reveal>
-
-            <Reveal delay={100}>
-              <div className="card h-full">
-                <div className="icon-container">
-                  <span className="text-2xl">🤝</span>
-                </div>
-                <h3 className="text-xl font-bold text-navy mb-3">Volunteer Your Time</h3>
-                <p className="text-gray-600 mb-4">
-                  Help with door-knocking, phone calls, events, or other campaign activities.
-                </p>
-                <button
-                  onClick={() => {
-                    setMode('volunteer');
-                    setFormType('volunteer');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className="text-navy font-semibold hover:underline inline-flex items-center gap-1 transition-transform hover:translate-x-1"
-                >
-                  Sign up to volunteer →
-                </button>
-              </div>
-            </Reveal>
-
-            <Reveal delay={200}>
-              <div className="card h-full">
-                <div className="icon-container">
-                  <span className="text-2xl">📢</span>
-                </div>
-                <h3 className="text-xl font-bold text-navy mb-3">Spread the Word</h3>
-                <p className="text-gray-600 mb-4">
-                  Share this website with friends and neighbors. Personal recommendations matter.
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal delay={300}>
-              <div className="card h-full">
-                <div className="icon-container">
-                  <span className="text-2xl">💪</span>
-                </div>
-                <h3 className="text-xl font-bold text-navy mb-3">Make a Donation</h3>
-                <p className="text-gray-600 mb-4">
-                  Every contribution helps us reach more voters across Prosper.
-                </p>
-                <Link href="/donate" className="text-prosper-red font-semibold hover:underline inline-flex items-center gap-1 transition-transform hover:translate-x-1">
-                  Donate now →
-                </Link>
-              </div>
-            </Reveal>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+            {actionCards.map((card, idx) => (
+              <Reveal key={card.id} delay={idx * 50}>
+                {card.isLink ? (
+                  <Link
+                    href={card.href}
+                    className="card h-full text-center cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-navy-lg border-2 border-transparent"
+                  >
+                    <div className="icon-container mx-auto mb-4">
+                      <span className="text-2xl">{card.icon}</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-navy mb-2">{card.title}</h3>
+                    <p className="text-sm text-gray-600">{card.description}</p>
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => handleCardClick(card)}
+                    className={`card h-full w-full text-center cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-navy-lg border-2 ${
+                      selectedAction === card.id
+                        ? 'border-navy bg-navy/5'
+                        : 'border-transparent'
+                    }`}
+                  >
+                    <div className="icon-container mx-auto mb-4">
+                      <span className="text-2xl">{card.icon}</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-navy mb-2">{card.title}</h3>
+                    <p className="text-sm text-gray-600">{card.description}</p>
+                  </button>
+                )}
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
+
+      {/* Form Section */}
+      {selectedAction && (
+        <section className="pb-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mx-auto">
+            <Reveal>
+              <div className="card">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{getFormIcon()}</span>
+                    <h2 className="text-xl font-bold text-navy">{getFormTitle()}</h2>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedAction(null)}
+                    className="text-gray-400 hover:text-gray-600 text-xl font-bold"
+                    aria-label="Close form"
+                  >
+                    ×
+                  </button>
+                </div>
+
+                {submitMsg && submitMsg.includes('Thank you') ? (
+                  <div className="p-6 bg-green-50 border border-green-200 rounded-lg">
+                    <p className="text-green-800 font-semibold">{submitMsg}</p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSubmitMsg('');
+                        setSelectedAction(null);
+                      }}
+                      className="mt-4 text-navy font-medium hover:underline"
+                    >
+                      ← Back to options
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                      <label htmlFor="name" className="form-label">Name *</label>
+                      <input
+                        id="name"
+                        type="text"
+                        required
+                        value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        className="form-input"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="email" className="form-label">Email *</label>
+                      <input
+                        id="email"
+                        type="email"
+                        required
+                        value={form.email}
+                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                        className="form-input"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="phone" className="form-label">
+                        Phone {selectedAction === 'meeting' ? '*' : '(optional)'}
+                      </label>
+                      <input
+                        id="phone"
+                        type="tel"
+                        required={selectedAction === 'meeting'}
+                        value={form.phone}
+                        onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                        className="form-input"
+                        placeholder="(555) 555-5555"
+                      />
+                    </div>
+
+                    {selectedAction === 'yardsign' && (
+                      <div>
+                        <label htmlFor="address" className="form-label">Delivery Address *</label>
+                        <input
+                          id="address"
+                          type="text"
+                          required
+                          value={form.message}
+                          onChange={(e) => setForm({ ...form, message: e.target.value })}
+                          className="form-input"
+                          placeholder="Street address in Prosper"
+                        />
+                      </div>
+                    )}
+
+                    {selectedAction === 'endorsement' && (
+                      <div>
+                        <label htmlFor="message" className="form-label">Why I support Doug (optional)</label>
+                        <textarea
+                          id="message"
+                          rows={3}
+                          value={form.message}
+                          onChange={(e) => setForm({ ...form, message: e.target.value })}
+                          className="form-input"
+                          placeholder="Share why you're endorsing Doug for Town Council..."
+                        />
+                      </div>
+                    )}
+
+                    {(selectedAction === 'volunteer' || selectedAction === 'meeting') && (
+                      <div>
+                        <label htmlFor="message" className="form-label">
+                          {selectedAction === 'meeting' ? 'Preferred time or message' : 'Message (optional)'}
+                        </label>
+                        <textarea
+                          id="message"
+                          rows={3}
+                          value={form.message}
+                          onChange={(e) => setForm({ ...form, message: e.target.value })}
+                          className="form-input"
+                          placeholder={selectedAction === 'meeting' ? 'Let us know your availability...' : ''}
+                        />
+                      </div>
+                    )}
+
+                    {/* Consent checkboxes */}
+                    <div className="space-y-3 pt-2">
+                      <label className="flex items-start gap-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={form.consentEmail}
+                          onChange={(e) => setForm({ ...form, consentEmail: e.target.checked })}
+                          className="mt-1 h-4 w-4 rounded border-gray-300 text-navy focus:ring-navy"
+                        />
+                        <span className="text-sm text-gray-600">
+                          I agree to receive campaign updates via email. You can unsubscribe at any time.
+                        </span>
+                      </label>
+
+                      <label className="flex items-start gap-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={form.consentSms}
+                          onChange={(e) => setForm({ ...form, consentSms: e.target.checked })}
+                          className="mt-1 h-4 w-4 rounded border-gray-300 text-navy focus:ring-navy"
+                        />
+                        <span className="text-sm text-gray-600">
+                          I agree to receive campaign updates via text message. Msg & data rates may apply. Reply STOP to opt out.
+                        </span>
+                      </label>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSubmitting ? 'Submitting...' : getSubmitLabel()}
+                    </button>
+
+                    {submitMsg && !submitMsg.includes('Thank you') && (
+                      <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <p className="text-red-800 font-medium">{submitMsg}</p>
+                      </div>
+                    )}
+                  </form>
+                )}
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
