@@ -322,107 +322,114 @@ export default function AdminDashboard() {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-navy mb-8">Admin Dashboard</h1>
 
-      {/* Tabs */}
-      <div className="flex gap-2 mb-6 border-b border-gray-200">
-        <button
-          onClick={() => setActiveTab('supporters')}
-          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
-            activeTab === 'supporters'
-              ? 'border-navy text-navy'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          <Users className="w-5 h-5" />
-          Supporters
-        </button>
-        <button
-          onClick={() => setActiveTab('comments')}
-          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
-            activeTab === 'comments'
-              ? 'border-navy text-navy'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          <MessageSquare className="w-5 h-5" />
-          Comments
-        </button>
-        <button
-          onClick={() => setActiveTab('broadcasts')}
-          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
-            activeTab === 'broadcasts'
-              ? 'border-navy text-navy'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          <Send className="w-5 h-5" />
-          Broadcasts
-        </button>
-        <button
-          onClick={() => setActiveTab('audit')}
-          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
-            activeTab === 'audit'
-              ? 'border-navy text-navy'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          <FileText className="w-5 h-5" />
-          Audit Logs
-        </button>
-        <button
-          onClick={() => setActiveTab('errors')}
-          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
-            activeTab === 'errors'
-              ? 'border-navy text-navy'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          <AlertTriangle className="w-5 h-5" />
-          Errors
-        </button>
-        <button
-          onClick={() => setActiveTab('endorsements')}
-          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
-            activeTab === 'endorsements'
-              ? 'border-navy text-navy'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          <ThumbsUp className="w-5 h-5" />
-          Endorsements
-        </button>
-        <button
-          onClick={() => setActiveTab('questions')}
-          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
-            activeTab === 'questions'
-              ? 'border-navy text-navy'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          <HelpCircle className="w-5 h-5" />
-          Q&A
-        </button>
-        <button
-          onClick={() => setActiveTab('ideas')}
-          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
-            activeTab === 'ideas'
-              ? 'border-navy text-navy'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          <Lightbulb className="w-5 h-5" />
-          Ideas
-        </button>
-        <button
-          onClick={() => setActiveTab('interest')}
-          className={`flex items-center gap-2 px-4 py-2 font-medium border-b-2 transition-colors ${
-            activeTab === 'interest'
-              ? 'border-navy text-navy'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          <UserPlus className="w-5 h-5" />
-          Volunteers
-        </button>
+      {/* Tabs - scrollable on mobile */}
+      <div className="overflow-x-auto -mx-4 px-4 mb-6">
+        <div className="flex gap-1 md:gap-2 border-b border-gray-200 min-w-max">
+          <button
+            onClick={() => setActiveTab('supporters')}
+            className={`flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 font-medium border-b-2 transition-colors whitespace-nowrap text-sm md:text-base ${
+              activeTab === 'supporters'
+                ? 'border-navy text-navy'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <Users className="w-4 h-4 md:w-5 md:h-5" />
+            <span className="hidden sm:inline">Supporters</span>
+            <span className="sm:hidden">Users</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('comments')}
+            className={`flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 font-medium border-b-2 transition-colors whitespace-nowrap text-sm md:text-base ${
+              activeTab === 'comments'
+                ? 'border-navy text-navy'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <MessageSquare className="w-4 h-4 md:w-5 md:h-5" />
+            Comments
+          </button>
+          <button
+            onClick={() => setActiveTab('broadcasts')}
+            className={`flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 font-medium border-b-2 transition-colors whitespace-nowrap text-sm md:text-base ${
+              activeTab === 'broadcasts'
+                ? 'border-navy text-navy'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <Send className="w-4 h-4 md:w-5 md:h-5" />
+            <span className="hidden sm:inline">Broadcasts</span>
+            <span className="sm:hidden">Send</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('audit')}
+            className={`flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 font-medium border-b-2 transition-colors whitespace-nowrap text-sm md:text-base ${
+              activeTab === 'audit'
+                ? 'border-navy text-navy'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <FileText className="w-4 h-4 md:w-5 md:h-5" />
+            <span className="hidden sm:inline">Audit Logs</span>
+            <span className="sm:hidden">Audit</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('errors')}
+            className={`flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 font-medium border-b-2 transition-colors whitespace-nowrap text-sm md:text-base ${
+              activeTab === 'errors'
+                ? 'border-navy text-navy'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <AlertTriangle className="w-4 h-4 md:w-5 md:h-5" />
+            Errors
+          </button>
+          <button
+            onClick={() => setActiveTab('endorsements')}
+            className={`flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 font-medium border-b-2 transition-colors whitespace-nowrap text-sm md:text-base ${
+              activeTab === 'endorsements'
+                ? 'border-navy text-navy'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <ThumbsUp className="w-4 h-4 md:w-5 md:h-5" />
+            <span className="hidden sm:inline">Endorsements</span>
+            <span className="sm:hidden">Endorse</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('questions')}
+            className={`flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 font-medium border-b-2 transition-colors whitespace-nowrap text-sm md:text-base ${
+              activeTab === 'questions'
+                ? 'border-navy text-navy'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <HelpCircle className="w-4 h-4 md:w-5 md:h-5" />
+            Q&A
+          </button>
+          <button
+            onClick={() => setActiveTab('ideas')}
+            className={`flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 font-medium border-b-2 transition-colors whitespace-nowrap text-sm md:text-base ${
+              activeTab === 'ideas'
+                ? 'border-navy text-navy'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <Lightbulb className="w-4 h-4 md:w-5 md:h-5" />
+            Ideas
+          </button>
+          <button
+            onClick={() => setActiveTab('interest')}
+            className={`flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 font-medium border-b-2 transition-colors whitespace-nowrap text-sm md:text-base ${
+              activeTab === 'interest'
+                ? 'border-navy text-navy'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <UserPlus className="w-4 h-4 md:w-5 md:h-5" />
+            <span className="hidden sm:inline">Volunteers</span>
+            <span className="sm:hidden">Vol</span>
+          </button>
+        </div>
       </div>
 
       {error && (
@@ -1233,7 +1240,9 @@ export default function AdminDashboard() {
               <Loader2 className="w-8 h-8 animate-spin text-navy" />
             </div>
           ) : (
-            <div className="bg-white rounded-xl shadow overflow-hidden">
+            <>
+            {/* Mobile: Card view, Desktop: Table view */}
+            <div className="hidden md:block bg-white rounded-xl shadow overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
@@ -1272,7 +1281,7 @@ export default function AdminDashboard() {
                       <td className="px-4 py-3">
                         <button
                           onClick={() => handleDeleteInterest(i.id)}
-                          className="text-red-600 hover:text-red-800"
+                          className="text-red-600 hover:text-red-800 p-2"
                           title="Delete"
                         >
                           <XCircle className="w-5 h-5" />
@@ -1290,6 +1299,44 @@ export default function AdminDashboard() {
                 </tbody>
               </table>
             </div>
+
+            {/* Mobile card view */}
+            <div className="md:hidden space-y-4">
+              {interest.map((i) => (
+                <div key={i.id} className="bg-white rounded-xl shadow p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      i.type === 'volunteer' ? 'bg-green-100 text-green-700' :
+                      i.type === 'yardsign' ? 'bg-blue-100 text-blue-700' :
+                      i.type === 'meeting' ? 'bg-purple-100 text-purple-700' :
+                      'bg-gray-100 text-gray-700'
+                    }`}>
+                      {i.type === 'yardsign' ? 'Yard Sign' : i.type}
+                    </span>
+                    <button
+                      onClick={() => handleDeleteInterest(i.id)}
+                      className="text-red-600 hover:text-red-800 p-2 -mr-2"
+                      title="Delete"
+                    >
+                      <XCircle className="w-5 h-5" />
+                    </button>
+                  </div>
+                  <div className="font-medium text-gray-900">{i.name}</div>
+                  <div className="text-sm text-gray-600">{i.email}</div>
+                  {i.phone && <div className="text-sm text-gray-500">{i.phone}</div>}
+                  {i.message && (
+                    <p className="text-sm text-gray-600 mt-2 line-clamp-2">{i.message}</p>
+                  )}
+                  <div className="text-xs text-gray-400 mt-2">{formatDate(i.created_at)}</div>
+                </div>
+              ))}
+              {interest.length === 0 && (
+                <div className="text-center py-12 text-gray-500">
+                  No interest records found
+                </div>
+              )}
+            </div>
+            </>
           )}
         </div>
       )}

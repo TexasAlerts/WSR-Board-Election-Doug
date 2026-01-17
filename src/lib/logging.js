@@ -2,6 +2,79 @@ import { getSupabase } from './supabase';
 import { sendEmail } from './sendEmail';
 
 /**
+ * Parse user agent to determine device type
+ */
+export function getDeviceType(userAgent) {
+  if (!userAgent || userAgent === 'unknown') return 'unknown';
+
+  const ua = userAgent.toLowerCase();
+
+  // Check for tablets first (before mobile, as some tablets report as mobile)
+  if (
+    /ipad/.test(ua) ||
+    (/android/.test(ua) && !/mobile/.test(ua)) ||
+    /tablet/.test(ua) ||
+    /kindle/.test(ua) ||
+    /silk/.test(ua) ||
+    /playbook/.test(ua)
+  ) {
+    return 'tablet';
+  }
+
+  // Check for mobile devices
+  if (
+    /mobile/.test(ua) ||
+    /iphone/.test(ua) ||
+    /ipod/.test(ua) ||
+    /android/.test(ua) ||
+    /blackberry/.test(ua) ||
+    /opera mini/.test(ua) ||
+    /iemobile/.test(ua) ||
+    /wpdesktop/.test(ua) ||
+    /windows phone/.test(ua)
+  ) {
+    return 'mobile';
+  }
+
+  // Default to desktop
+  return 'desktop';
+}
+
+/**
+ * Parse user agent to get browser and OS info
+ */
+export function parseUserAgent(userAgent) {
+  if (!userAgent || userAgent === 'unknown') {
+    return { browser: 'unknown', os: 'unknown', device: 'unknown' };
+  }
+
+  const ua = userAgent.toLowerCase();
+  let browser = 'unknown';
+  let os = 'unknown';
+
+  // Detect browser
+  if (/edg/.test(ua)) browser = 'Edge';
+  else if (/chrome/.test(ua) && !/chromium/.test(ua)) browser = 'Chrome';
+  else if (/safari/.test(ua) && !/chrome/.test(ua)) browser = 'Safari';
+  else if (/firefox/.test(ua)) browser = 'Firefox';
+  else if (/opera|opr/.test(ua)) browser = 'Opera';
+  else if (/msie|trident/.test(ua)) browser = 'IE';
+
+  // Detect OS
+  if (/windows/.test(ua)) os = 'Windows';
+  else if (/macintosh|mac os/.test(ua)) os = 'macOS';
+  else if (/iphone|ipad|ipod/.test(ua)) os = 'iOS';
+  else if (/android/.test(ua)) os = 'Android';
+  else if (/linux/.test(ua)) os = 'Linux';
+
+  return {
+    browser,
+    os,
+    device: getDeviceType(userAgent),
+  };
+}
+
+/**
  * Extract request metadata
  */
 export function getRequestMeta(request) {
@@ -12,8 +85,9 @@ export function getRequestMeta(request) {
   const method = request?.method || 'unknown';
   const url = request?.url ? new URL(request.url) : null;
   const path = url?.pathname || 'unknown';
+  const { browser, os, device } = parseUserAgent(userAgent);
 
-  return { ip, userAgent, method, path };
+  return { ip, userAgent, method, path, browser, os, device };
 }
 
 /**
@@ -51,6 +125,16 @@ export async function logAudit({
     const supabase = getSupabase();
     const meta = request ? getRequestMeta(request) : {};
 
+    // Merge device info into details
+    const enrichedDetails = {
+      ...details,
+      _device: {
+        type: meta.device || 'unknown',
+        browser: meta.browser || 'unknown',
+        os: meta.os || 'unknown',
+      },
+    };
+
     const { error } = await supabase
       .from('audit_logs')
       .insert({
@@ -60,7 +144,7 @@ export async function logAudit({
         target_type: targetType,
         old_values: oldValues,
         new_values: newValues,
-        details: details ? JSON.stringify(details) : null,
+        details: JSON.stringify(enrichedDetails),
         ip_address: meta.ip,
         user_agent: meta.userAgent,
         request_method: meta.method,
@@ -97,6 +181,13 @@ export async function logError({
     const supabase = getSupabase();
     const meta = request ? getRequestMeta(request) : {};
 
+    // Build device info for storage
+    const deviceInfo = {
+      type: meta.device || 'unknown',
+      browser: meta.browser || 'unknown',
+      os: meta.os || 'unknown',
+    };
+
     // Check if this error already exists (by message and endpoint)
     const { data: existing } = await supabase
       .from('error_logs')
@@ -119,7 +210,12 @@ export async function logError({
       return existing.id;
     }
 
-    // Insert new error
+    // Insert new error with device info in request_body
+    const enrichedRequestBody = {
+      ...(requestBody ? sanitizeBody(requestBody) : {}),
+      _device: deviceInfo,
+    };
+
     const { data: newError, error } = await supabase
       .from('error_logs')
       .insert({
@@ -128,7 +224,7 @@ export async function logError({
         error_stack: errorStack,
         endpoint: endpoint || meta.path,
         method: method || meta.method,
-        request_body: requestBody ? sanitizeBody(requestBody) : null,
+        request_body: enrichedRequestBody,
         user_id: userId,
         user_email: userEmail,
         ip_address: meta.ip,
@@ -142,7 +238,7 @@ export async function logError({
       return null;
     }
 
-    // Notify superusers
+    // Notify superusers with device info
     if (notifySuperusers) {
       await notifySuperusersOfError({
         errorId: newError.id,
@@ -150,6 +246,7 @@ export async function logError({
         errorMessage,
         endpoint: endpoint || meta.path,
         userEmail,
+        deviceInfo,
       });
     }
 
@@ -163,7 +260,7 @@ export async function logError({
 /**
  * Notify superusers of a new error
  */
-async function notifySuperusersOfError({ errorId, errorType, errorMessage, endpoint, userEmail }) {
+async function notifySuperusersOfError({ errorId, errorType, errorMessage, endpoint, userEmail, deviceInfo }) {
   try {
     const supabase = getSupabase();
 
@@ -180,6 +277,10 @@ async function notifySuperusersOfError({ errorId, errorType, errorMessage, endpo
       return;
     }
 
+    const deviceStr = deviceInfo
+      ? `${deviceInfo.type} / ${deviceInfo.browser} / ${deviceInfo.os}`
+      : 'Unknown';
+
     const subject = `[Error Alert] ${errorType}: ${errorMessage.substring(0, 50)}...`;
     const body = `
 A new error has occurred on the campaign website:
@@ -189,6 +290,7 @@ Type: ${errorType}
 Endpoint: ${endpoint}
 Message: ${errorMessage}
 User: ${userEmail || 'Anonymous'}
+Device: ${deviceStr}
 Time: ${new Date().toLocaleString()}
 
 Please review and resolve this error in the admin dashboard.
