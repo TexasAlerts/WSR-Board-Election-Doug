@@ -36,7 +36,7 @@ export default function Home() {
             <img
               src="/wsr-logo.png"
               alt="Doug Charles for Town Council Place 5 - A Common Sense Leader for All of Prosper"
-              className="mx-auto w-[320px] sm:w-[450px] md:w-[550px] lg:w-[650px] mb-8 drop-shadow-xl"
+              className="mx-auto w-[380px] sm:w-[520px] md:w-[680px] lg:w-[800px] mb-8 drop-shadow-xl"
               onError={(e) => { e.target.style.display = 'none'; }}
             />
           </div>
