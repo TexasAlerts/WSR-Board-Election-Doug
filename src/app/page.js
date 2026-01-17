@@ -28,35 +28,20 @@ export default function Home() {
 
   return (
     <div className="space-y-0">
-      {/* Hero Section - Enhanced */}
-      <section className="hero-pattern hero-gradient text-center py-16 md:py-24 relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
-        {/* Decorative background blurs */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-navy/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-80 h-80 bg-prosper-red/5 rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="relative z-10 max-w-4xl mx-auto">
+      {/* Hero Section */}
+      <section className="hero-gradient text-center py-10 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
           {/* Logo with entrance animation */}
           <div className="animate-fade-in-down">
             <img
               src="/wsr-logo.png"
-              alt="Doug Charles for Town Council Place 5"
-              className="mx-auto w-[200px] sm:w-[280px] md:w-[360px] mb-10 drop-shadow-lg"
+              alt="Doug Charles for Town Council Place 5 - A Common Sense Leader for All of Prosper"
+              className="mx-auto w-[320px] sm:w-[450px] md:w-[550px] lg:w-[650px] mb-8 drop-shadow-xl"
               onError={(e) => { e.target.style.display = 'none'; }}
             />
           </div>
 
           <div className="space-y-6">
-            {/* Name with staggered animation */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
-              <span className="inline-block text-navy animate-fade-in-up animate-on-load animate-delay-100">DOUG</span>{' '}
-              <span className="inline-block text-prosper-red animate-fade-in-up animate-on-load animate-delay-200">CHARLES</span>
-            </h1>
-
-            <p className="text-lg sm:text-xl text-gray-600 font-medium animate-fade-in animate-on-load animate-delay-300">
-              For Prosper Town Council · Place 5
-            </p>
 
             {/* Tagline with gradient accent lines */}
             <div className="flex items-center justify-center gap-4 py-6 animate-fade-in animate-on-load animate-delay-400">

@@ -308,13 +308,7 @@
    ============================================ */
 
 .hero-gradient {
-  background: linear-gradient(
-    180deg,
-    rgba(248, 248, 245, 0.8) 0%,
-    rgba(255, 255, 255, 1) 30%,
-    rgba(255, 255, 255, 1) 70%,
-    rgba(248, 248, 245, 0.5) 100%
-  );
+  background: #f8f8f5;
 }
 
 .hero-pattern {
