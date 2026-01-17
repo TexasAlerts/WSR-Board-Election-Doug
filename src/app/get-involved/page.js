@@ -32,9 +32,12 @@ function GetInvolvedContent() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: form.name, email: form.email, message: form.message }),
         });
-        if (res.ok) {
+        const data = await res.json();
+        if (res.ok && data.ok) {
           setSubmitMsg('Thank you! Your endorsement has been received.');
           setForm({ name: '', email: '', phone: '', message: '' });
+        } else {
+          setSubmitMsg(data.error || 'Something went wrong. Please try again.');
         }
       } else {
         const res = await fetch('/api/interest', {
@@ -42,13 +45,17 @@ function GetInvolvedContent() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ type: formType, name: form.name, email: form.email, phone: form.phone, message: form.message }),
         });
-        if (res.ok) {
+        const data = await res.json();
+        if (res.ok && data.ok) {
           setSubmitMsg('Thank you! We will be in touch.');
           setForm({ name: '', email: '', phone: '', message: '' });
+        } else {
+          setSubmitMsg(data.error || 'Something went wrong. Please try again.');
         }
       }
     } catch (err) {
       console.error(err);
+      setSubmitMsg('Something went wrong. Please try again.');
     }
   }
 

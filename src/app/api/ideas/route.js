@@ -56,7 +56,7 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  const supabase = getSupabaseAnon();
+  const supabase = getSupabase();
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   if (!rateLimit(ip)) {

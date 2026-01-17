@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getSupabaseAnon } from '../../../lib/supabase';
+import { getSupabase } from '../../../lib/supabase';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 
 export async function GET() {
-  const supabase = getSupabaseAnon();
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('questions')
     .select('*')
@@ -20,7 +20,7 @@ export async function GET() {
 }
 
 export async function POST(req) {
-  const supabase = getSupabaseAnon();
+  const supabase = getSupabase();
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
   if (!rateLimit(ip)) {
     return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });
