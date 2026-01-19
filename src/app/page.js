@@ -40,12 +40,15 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           {/* Logo with entrance animation */}
           <div className="animate-fade-in-down">
-            <img
-              src="/wsr-logo.png"
-              alt="Doug Charles for Town Council Place 5 - A Common Sense Leader for All of Prosper"
-              className="mx-auto w-[320px] sm:w-[520px] md:w-[680px] lg:w-[800px] mb-8 drop-shadow-xl"
-              onError={(e) => { e.target.style.display = 'none'; }}
-            />
+            <picture>
+              <source srcSet="/wsr-logo.webp" type="image/webp" />
+              <img
+                src="/wsr-logo.png"
+                alt="Doug Charles for Town Council Place 5 - A Common Sense Leader for All of Prosper"
+                className="mx-auto w-[320px] sm:w-[520px] md:w-[680px] lg:w-[800px] mb-8 drop-shadow-xl"
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
+            </picture>
           </div>
 
           <div className="space-y-6">

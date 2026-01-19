@@ -1,9 +1,9 @@
 export const metadata = {
   title: 'Endorsements | Doug Charles for Prosper Town Council',
-  description: "See who's endorsing Doug Charles for Prosper Town Council Place 5. Add your voice to support common sense leadership.",
+  description: "See who's endorsing Doug Charles for Prosper Town Council Place 5. Read testimonials from Prosper neighbors and add your voice to support Common Sense leadership for ALL of Prosper.",
   openGraph: {
     title: 'Endorsements | Doug Charles for Prosper Town Council',
-    description: "See who's endorsing Doug Charles for Prosper Town Council Place 5. Add your voice to support common sense leadership.",
+    description: "See who's endorsing Doug Charles for Prosper Town Council Place 5. Read testimonials from Prosper neighbors and add your voice to support Common Sense leadership for ALL of Prosper.",
     url: 'https://www.dougcharles.com/endorsements',
   },
 };

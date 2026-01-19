@@ -15,7 +15,7 @@ export default function AboutPage() {
         </div>
         {/* Logo accent */}
         <img
-          src="/wsr-logo.png"
+          src="/wsr-logo.webp"
           alt=""
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 opacity-80 pointer-events-none"
         />
@@ -103,7 +103,7 @@ export default function AboutPage() {
                   <div className="w-4 h-4 bg-gradient-to-br from-prosper-red to-red-dark rounded-full mt-1 flex-shrink-0 shadow-sm"></div>
                   <div>
                     <h3 className="text-xl font-bold text-navy mb-2">2020 Bond Election Committee</h3>
-                    <p className="text-gray-600">Helped pass $210M bond for roads, parks, and facilities. Now 79%+ executed on time and on budget.</p>
+                    <p className="text-gray-600">Helped pass $210M bond for roads, parks, and facilities. Now 79% executed on time and on budget.</p>
                   </div>
                 </div>
               </div>

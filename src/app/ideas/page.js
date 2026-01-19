@@ -167,7 +167,7 @@ export default function IdeasPage() {
         </div>
         {/* Logo accent */}
         <img
-          src="/wsr-logo.png"
+          src="/wsr-logo.webp"
           alt=""
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 opacity-40 pointer-events-none brightness-200"
         />
