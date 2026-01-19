@@ -14,7 +14,7 @@ export default function DonatePage() {
   const [message, setMessage] = useState({ type: '', text: '' });
 
   const ANEDOT_URL = 'https://secure.anedot.com/doug-charles-for-town-of-prosper-town-council-place-5/af99e860-1f84-443a-9a3d-a90ee0c797d9';
-  const DONATIONS_ENABLED = false; // Set to true when Anedot is approved
+  const DONATIONS_ENABLED = true;
 
   const handleDonate = () => {
     if (!DONATIONS_ENABLED) {
@@ -51,13 +51,6 @@ export default function DonatePage() {
           <p className="text-xl text-white/90 animate-fade-in animate-delay-200">
             Your contribution helps us reach every voter in Prosper with a message of <strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper.
           </p>
-          {!DONATIONS_ENABLED && (
-            <div className="mt-6 bg-white/20 backdrop-blur-sm rounded-lg px-6 py-4 inline-block animate-fade-in animate-delay-300">
-              <p className="text-white font-semibold">
-                🔒 Coming Soon — We're activating our secure donation partner to protect your payment information.
-              </p>
-            </div>
-          )}
         </div>
       </section>
 
