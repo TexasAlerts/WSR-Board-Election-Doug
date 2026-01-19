@@ -252,8 +252,8 @@ export default function AboutPage() {
                   <div className="text-sm font-bold text-navy whitespace-nowrap">Dec 2025</div>
                   <div>
                     <h3 className="text-lg font-bold text-navy mb-2">PISD Annexation Victory</h3>
-                    <p className="text-gray-600 mb-2">Led petition to bring <strong className="text-prosper-red">$6.5 million+</strong> in annual property taxes and <strong className="text-navy">274 Windsong Ranch students</strong> home to Prosper ISD. The Prosper ISD Board approved unanimously on December 15, 2025. Now awaiting TEA Commissioner final decision.</p>
-                    <p className="text-gray-500 italic text-sm mb-2">"The residents of Windsong Ranch...pay property taxes to Prosper ISD but their children attend Celina schools." — KERA News</p>
+                    <p className="text-gray-600 mb-2">Led petition to bring <strong className="text-prosper-red">$6.5 million+</strong> in annual property taxes home to Prosper ISD. Currently, <strong className="text-navy">274 Windsong Ranch students</strong> attend Prosper ISD schools, yet their property taxes go to <strong className="text-navy">Denton ISD—which provides zero educational services</strong>. With <strong className="text-prosper-red">52.6% of registered voters</strong> signing the petition, Prosper ISD Board approved unanimously on December 15, 2025. Now awaiting TEA Commissioner final decision.</p>
+                    <p className="text-gray-500 italic text-sm mb-2">"Students already attend and have full access to Prosper ISD, yet property tax revenue flows to Denton ISD, which educates none of these children."</p>
                     <a href="https://prosperisdpetition.com" target="_blank" rel="noopener noreferrer" className="text-navy font-medium hover:underline text-sm">Track progress at prosperisdpetition.com →</a>
                   </div>
                 </div>
