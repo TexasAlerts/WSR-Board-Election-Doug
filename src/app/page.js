@@ -197,7 +197,7 @@ export default function Home() {
               </p>
               <div className="pt-2">
                 <Link href="/about" className="btn-outline">
-                  See Full Bio & Experience →
+                  See Full Bio, Experience & Track Record →
                 </Link>
               </div>
             </Reveal>

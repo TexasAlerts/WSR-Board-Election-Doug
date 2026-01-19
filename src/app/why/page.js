@@ -127,6 +127,11 @@ export default function WhyPage() {
               <p className="text-gray-700 leading-relaxed not-italic">
                 These decisions are too important to leave to chance. They deserve <strong className="text-prosper-red">experienced, thoughtful leadership</strong> from someone who knows Prosper and cares about its future.
               </p>
+              <div className="pt-6 not-italic">
+                <Link href="/about" className="text-navy font-semibold hover:underline">
+                  See my proven track record in Prosper →
+                </Link>
+              </div>
             </div>
           </Reveal>
         </div>

@@ -42,7 +42,7 @@ export default function PrioritiesPage() {
               </div>
               <h2 className="text-2xl font-bold mb-4 text-navy">Listen</h2>
               <p className="text-gray-600 leading-relaxed">
-                Good decisions start with hearing from residents—not as an afterthought, but from the beginning. Your voice should shape outcomes before votes are taken. That's why I'll hold periodic "Coffee with Doug" sessions at local spots where any Prosper resident can meet with me directly—no appointment needed. I'll also maintain my website at dougcharles.com so you can participate in pulse polls, submit ideas, and share your voice as your elected representative.
+                Good decisions start with <strong className="text-navy">hearing from residents</strong>—not as an afterthought, but <strong className="text-prosper-red">from the beginning</strong>. Your voice should shape outcomes <strong className="text-navy">before votes are taken</strong>. That's why I'll hold periodic <strong className="text-navy">"Coffee with Doug"</strong> sessions at local spots where any Prosper resident can meet with me directly—no appointment needed. I'll also maintain my website at dougcharles.com so you can participate in pulse polls, submit ideas, and share your voice as your elected representative.
               </p>
             </div>
           </Reveal>
@@ -54,7 +54,7 @@ export default function PrioritiesPage() {
               </div>
               <h2 className="text-2xl font-bold mb-4 text-navy">Plan</h2>
               <p className="text-gray-600 leading-relaxed">
-                Build it right the first time. Right-size projects before we break ground. Think long-term so we're not fixing mistakes or asking for more money later.
+                <strong className="text-navy">Build it right the first time.</strong> Right-size projects before we break ground. <strong className="text-prosper-red">Think long-term</strong> so we're not fixing mistakes or asking for more money later.
               </p>
             </div>
           </Reveal>
@@ -66,7 +66,7 @@ export default function PrioritiesPage() {
               </div>
               <h2 className="text-2xl font-bold mb-4 text-navy">Protect</h2>
               <p className="text-gray-600 leading-relaxed">
-                Prosper isn't just another suburb—it's Friday night football under the lights, Small Town Big Heart, and downtown festivals that bring neighbors together. Growth should add to that story, not erase it.
+                Prosper isn't just another suburb—it's <strong className="text-navy">Friday night football under the lights</strong>, <strong className="text-prosper-red">Small Town Big Heart</strong>, and downtown festivals that bring neighbors together. Growth should <strong className="text-navy">add to that story</strong>, not erase it.
               </p>
             </div>
           </Reveal>
