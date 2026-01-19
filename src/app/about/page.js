@@ -47,10 +47,13 @@ export default function AboutPage() {
 
           <Reveal direction="right" className="md:col-span-3 space-y-6">
             <p className="text-lg text-gray-700 leading-relaxed">
-              I've called <strong className="text-navy">Prosper</strong> home for <strong>20 years</strong>. I've raised my family here, served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and was elected to the Windsong Ranch HOA Board in October 2025.
+              I moved to <strong className="text-navy">Prosper</strong> <strong>20 years ago</strong> for the same reasons you probably did—great schools, safe neighborhoods, and room to raise a family. I've watched this town grow from a few thousand people to over 35,000, and I've welcomed every new neighbor along the way.
             </p>
             <p className="text-lg text-gray-700 leading-relaxed">
-              I'm running for Town Council because <strong className="text-prosper-red">Prosper is at a crossroads</strong>. The decisions we make over the next few years will shape our community for decades. We need leaders who will listen to all residents, plan thoughtfully, and protect what makes this town special.
+              In the last 5-7 years, as Prosper started changing from that "Small Town, Big Heart" feeling, I became more active in local government. I've raised my family here, served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and currently serve on the Windsong Ranch HOA Board.
+            </p>
+            <p className="text-lg text-gray-700 leading-relaxed">
+              <strong className="text-prosper-red">Whether you've been here 20 years or 2 months, you deserve a voice at the table.</strong>
             </p>
             <p className="text-lg text-gray-700 leading-relaxed">
               <strong>This isn't about political agendas or party labels.</strong> It's about good governance for the place we all call home.
@@ -121,8 +124,95 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Professional Background */}
+      {/* Proven Track Record */}
       <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <h2 className="section-title text-center mb-4">Proven Track Record</h2>
+            <p className="section-subtitle text-center">Results, not just promises</p>
+          </Reveal>
+
+          <div className="space-y-6 mt-12">
+            <Reveal delay={0}>
+              <div className="card">
+                <div className="flex items-start gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap">Aug 2020</div>
+                  <div>
+                    <h3 className="text-lg font-bold text-navy mb-2">Advocated for Neighborhood Character</h3>
+                    <p className="text-gray-600 mb-2">Spoke at Town Council questioning whether new home designs fit existing neighborhood character.</p>
+                    <p className="text-gray-500 italic text-sm">"Not questioning the quality of the product or even the look of the product. I'm just questioning does it really fit our subdivision." — Prosper Press News</p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={100}>
+              <div className="card">
+                <div className="flex items-start gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap">Nov 2020</div>
+                  <div>
+                    <h3 className="text-lg font-bold text-navy mb-2">Bond Election Committee</h3>
+                    <p className="text-gray-600">Helped pass $210M in bonds for roads, parks, and facilities. Six years later: 79%+ executed on time and on budget.</p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={200}>
+              <div className="card">
+                <div className="flex items-start gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap">2021-2023</div>
+                  <div>
+                    <h3 className="text-lg font-bold text-navy mb-2">Planning & Zoning Commissioner</h3>
+                    <p className="text-gray-600">Reviewed hundreds of development applications. Learned firsthand how land use decisions impact neighborhoods—and how to ask the right questions.</p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={300}>
+              <div className="card">
+                <div className="flex items-start gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap">Oct 2025</div>
+                  <div>
+                    <h3 className="text-lg font-bold text-navy mb-2">Windsong Ranch HOA Board</h3>
+                    <p className="text-gray-600">Elected by neighbors to serve on the board of one of Prosper's largest communities.</p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={400}>
+              <div className="card">
+                <div className="flex items-start gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap">Nov 2025</div>
+                  <div>
+                    <h3 className="text-lg font-bold text-navy mb-2">Common Sense on Bond Proposals</h3>
+                    <p className="text-gray-600 mb-2">When some 2025 bond proposals seemed undersized, said publicly: voters agreed, passing infrastructure while rejecting undersized facilities.</p>
+                    <p className="text-gray-500 italic text-sm">"Let's build it once, not twice—unless we're going to build it once and expand it with a thoughtful plan that's communicated." — Community Impact</p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={500}>
+              <div className="card">
+                <div className="flex items-start gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap">Dec 2025</div>
+                  <div>
+                    <h3 className="text-lg font-bold text-navy mb-2">PISD Annexation Victory</h3>
+                    <p className="text-gray-600">Led petition to bring 274 Windsong Ranch students' tax dollars home to Prosper ISD. Prosper ISD Board approved unanimously on December 15, 2025. Now awaiting TEA Commissioner final decision.</p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Professional Background */}
+      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
         <div className="max-w-4xl mx-auto">
           <Reveal>
             <h2 className="section-title text-center mb-8">Professional Background</h2>
@@ -133,7 +223,7 @@ export default function AboutPage() {
                 In my professional career, I'm a Senior Vice President focused on business innovation and transformation. I lead teams that solve complex problems, manage budgets, and deliver results.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
-                I bring that same <strong className="text-navy">common sense</strong> approach to local government—for <strong className="text-prosper-red">ALL</strong> of Prosper: understand the problem, gather input, develop solutions, and execute. No grandstanding, no politics—just get it done.
+                I bring that same <strong className="text-navy">common sense</strong> approach to local government—for <strong className="text-prosper-red">ALL</strong> of Prosper: understand the problem, gather input, develop solutions, and execute. No grandstanding, no games—just get it done, and done right.
               </p>
             </div>
           </Reveal>

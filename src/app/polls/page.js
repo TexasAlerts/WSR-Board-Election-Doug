@@ -162,8 +162,11 @@ export default function PollsPage() {
             <Reveal>
               <div className="card text-center py-12">
                 <div className="text-4xl mb-4">📊</div>
-                <h2 className="text-xl font-bold text-navy mb-2">No Active Polls</h2>
-                <p className="text-gray-600">Check back soon for community polls!</p>
+                <h2 className="text-xl font-bold text-navy mb-2">Gathering Community Input</h2>
+                <p className="text-gray-600 mb-4">We're gathering community input on key issues. Check back soon for polls, or visit the Ideas page to share your thoughts directly.</p>
+                <Link href="/ideas" className="btn-primary">
+                  Share an Idea
+                </Link>
               </div>
             </Reveal>
           ) : (

@@ -138,7 +138,7 @@ export default function WhyPage() {
           <Reveal>
             <h2 className="text-2xl sm:text-3xl font-bold mb-4">Join the Campaign</h2>
             <p className="text-white/90 mb-8 max-w-xl mx-auto">
-              Together, we can ensure Prosper's growth is managed wisely and every resident's voice is heard.
+              Local races are decided by a few hundred votes. Your support—and your voice—can make the difference.
             </p>
           </Reveal>
           <Reveal delay={100}>
