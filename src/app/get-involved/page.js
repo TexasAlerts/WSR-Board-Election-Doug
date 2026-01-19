@@ -310,7 +310,7 @@ function GetInvolvedContent() {
                   <button
                     type="button"
                     onClick={() => setSelectedAction(null)}
-                    className="text-gray-400 hover:text-gray-600 text-xl font-bold"
+                    className="text-gray-400 hover:text-gray-600 text-xl font-bold min-w-[44px] min-h-[44px] flex items-center justify-center"
                     aria-label="Close form"
                   >
                     ×
@@ -424,7 +424,7 @@ function GetInvolvedContent() {
                           type="checkbox"
                           checked={form.consentEmail}
                           onChange={(e) => setForm({ ...form, consentEmail: e.target.checked })}
-                          className="mt-1 h-4 w-4 rounded border-gray-300 text-navy focus:ring-navy"
+                          className="mt-1 h-5 w-5 rounded border-gray-300 text-navy focus:ring-navy"
                         />
                         <span className="text-sm text-gray-600">
                           I agree to receive campaign updates via email. You can unsubscribe at any time.
@@ -436,7 +436,7 @@ function GetInvolvedContent() {
                           type="checkbox"
                           checked={form.consentSms}
                           onChange={(e) => setForm({ ...form, consentSms: e.target.checked })}
-                          className="mt-1 h-4 w-4 rounded border-gray-300 text-navy focus:ring-navy"
+                          className="mt-1 h-5 w-5 rounded border-gray-300 text-navy focus:ring-navy"
                         />
                         <span className="text-sm text-gray-600">
                           I agree to receive campaign updates via text message. Msg & data rates may apply. Reply STOP to opt out.

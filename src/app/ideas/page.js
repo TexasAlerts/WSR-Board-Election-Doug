@@ -299,12 +299,12 @@ export default function IdeasPage() {
           aria-labelledby="modal-title"
         >
           <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <div className="flex justify-between items-start mb-6">
                 <h2 id="modal-title" className="text-2xl font-bold text-navy">Submit Your Idea</h2>
                 <button
                   onClick={() => setShowSubmitForm(false)}
-                  className="text-gray-400 hover:text-gray-600 text-2xl"
+                  className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
                   aria-label="Close form"
                 >×</button>
               </div>
@@ -379,7 +379,7 @@ export default function IdeasPage() {
                     id="is_public"
                     checked={submitForm.is_public}
                     onChange={e => setSubmitForm({ ...submitForm, is_public: e.target.checked })}
-                    className="w-4 h-4 rounded border-gray-300"
+                    className="w-5 h-5 rounded border-gray-300"
                   />
                   <label htmlFor="is_public" className="text-sm text-gray-600">
                     Make this idea public for others to see and support
@@ -411,12 +411,12 @@ export default function IdeasPage() {
           aria-labelledby="support-modal-title"
         >
           <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full" onClick={e => e.stopPropagation()}>
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <div className="flex justify-between items-start mb-4">
                 <h2 id="support-modal-title" className="text-xl font-bold text-navy">Support This Idea</h2>
                 <button
                   onClick={() => setShowSupportModal(false)}
-                  className="text-gray-400 hover:text-gray-600 text-2xl"
+                  className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
                   aria-label="Close"
                 >×</button>
               </div>
