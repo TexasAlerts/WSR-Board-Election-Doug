@@ -224,10 +224,10 @@ export default function PollsPage() {
       {selectedPoll && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelectedPoll(null)}>
           <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto pb-safe" onClick={e => e.stopPropagation()}>
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <div className="flex justify-between items-start mb-6">
                 <h2 className="text-2xl font-bold text-navy">{selectedPoll.title}</h2>
-                <button onClick={() => setSelectedPoll(null)} className="text-gray-400 hover:text-gray-600 text-2xl">×</button>
+                <button onClick={() => setSelectedPoll(null)} className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center">×</button>
               </div>
 
               {selectedPoll.description && (
@@ -332,7 +332,7 @@ export default function PollsPage() {
                             >
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                  <div className={`w-11 h-11 rounded-full border-2 flex items-center justify-center font-bold text-lg ${
+                                  <div className={`w-11 h-11 rounded-full border-2 flex items-center justify-center font-bold text-base sm:text-lg ${
                                     rank !== null
                                       ? 'border-navy bg-navy text-white'
                                       : 'border-gray-300 text-gray-400'

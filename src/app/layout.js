@@ -140,7 +140,7 @@ export default function RootLayout({ children }) {
           </div>
         </footer>
         {/* Mobile call to action */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t py-2 px-4 flex justify-around sm:hidden z-50">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t py-2 px-4 pb-safe flex justify-around sm:hidden z-50">
           <Link href="/#get-involved" className="bg-navy text-white px-4 py-2 rounded-full text-sm">
             Get Involved
           </Link>
