@@ -135,7 +135,7 @@ export default function Home() {
                   <Ear className="w-8 h-8 text-navy" aria-hidden="true" />
                 </div>
                 <h3 className="text-xl font-bold mb-3 text-navy">Listen</h3>
-                <p className="text-gray-600">Good decisions start with hearing from residents—not as an afterthought, but from the beginning.</p>
+                <p className="text-gray-600">Good decisions start with hearing from residents—not as an afterthought, but from the beginning. Your voice should shape outcomes before votes are taken.</p>
               </div>
             </Reveal>
 
@@ -145,7 +145,7 @@ export default function Home() {
                   <ClipboardList className="w-8 h-8 text-navy" aria-hidden="true" />
                 </div>
                 <h3 className="text-xl font-bold mb-3 text-navy">Plan</h3>
-                <p className="text-gray-600">Build it right the first time. Right-size projects before we break ground.</p>
+                <p className="text-gray-600">Build it right the first time. Right-size projects before we break ground. Think long-term so we're not fixing mistakes or asking for more money later.</p>
               </div>
             </Reveal>
 
@@ -155,7 +155,7 @@ export default function Home() {
                   <ShieldCheck className="w-8 h-8 text-navy" aria-hidden="true" />
                 </div>
                 <h3 className="text-xl font-bold mb-3 text-navy">Protect</h3>
-                <p className="text-gray-600">Growth isn't the enemy—losing our community character is.</p>
+                <p className="text-gray-600">Prosper isn't just another suburb—it's Friday night football under the lights, Small Town Big Heart, and downtown festivals that bring neighbors together.</p>
               </div>
             </Reveal>
           </div>
@@ -163,7 +163,7 @@ export default function Home() {
           <Reveal delay={400}>
             <div className="text-center mt-12">
               <Link href="/priorities" className="btn-outline">
-                Learn More About My Priorities
+                See Full Priority Details →
               </Link>
             </div>
           </Reveal>
@@ -190,14 +190,14 @@ export default function Home() {
             <Reveal direction="right" className="md:col-span-3 space-y-6">
               <h2 className="section-title">About Doug</h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                I've called <strong className="text-navy">Prosper</strong> home for <strong>20 years</strong>. I've served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and was elected to the Windsong Ranch HOA Board.
+                I moved to <strong className="text-navy">Prosper</strong> <strong>20 years ago</strong> for the same reasons you probably did—great schools, safe neighborhoods, and room to raise a family. I've served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and was elected to the Windsong Ranch HOA Board.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
                 I'm running because <strong className="text-prosper-red">Prosper is at a crossroads</strong>. The decisions we make now will shape our community for decades.
               </p>
               <div className="pt-2">
                 <Link href="/about" className="btn-outline">
-                  Read More About Doug
+                  See Full Bio & Experience →
                 </Link>
               </div>
             </Reveal>
