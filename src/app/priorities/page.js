@@ -88,7 +88,7 @@ export default function PrioritiesPage() {
               <div className="card">
                 <h3 className="text-xl font-bold text-navy mb-4">Transparent Government</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Every resident deserves to know what their local government is doing and why. I'll push for earlier public input on major decisions, clearer communication about town projects, and more accessible council meetings. The best decisions happen when residents are informed and engaged from the start.
+                  Every resident deserves to know what their local government is doing and why. I'll push for <strong className="text-navy">earlier public input</strong> on major decisions, <strong className="text-navy">clearer communication</strong> about town projects, and more accessible council meetings. The best decisions happen when residents are <strong className="text-prosper-red">informed and engaged from the start</strong>.
                 </p>
               </div>
             </Reveal>
@@ -97,7 +97,7 @@ export default function PrioritiesPage() {
               <div className="card">
                 <h3 className="text-xl font-bold text-navy mb-4">Responsible Growth</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Prosper is growing whether we like it or not. The question is whether we manage that growth wisely. That means holding developers accountable for the infrastructure their projects require, growing our commercial tax base so homeowners aren't carrying the full load, and protecting the quality of life that brought us all here. Growth should benefit existing residents, not just developers—and that includes ensuring our fire and police have the capacity to keep pace with new rooftops.
+                  Prosper is growing whether we like it or not. The question is whether we <strong className="text-navy">manage that growth wisely</strong>. That means <strong className="text-navy">holding developers accountable</strong> for the infrastructure their projects require, growing our <strong className="text-navy">commercial tax base</strong> so homeowners aren't carrying the full load, and protecting the quality of life that brought us all here. Growth should benefit <strong className="text-prosper-red">existing residents, not just developers</strong>—and that includes ensuring our fire and police have the capacity to keep pace with new rooftops.
                 </p>
               </div>
             </Reveal>
@@ -106,7 +106,7 @@ export default function PrioritiesPage() {
               <div className="card">
                 <h3 className="text-xl font-bold text-navy mb-4">Fiscal Responsibility</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Your tax dollars should be spent wisely. That means right-sizing projects from the start, planning for long-term maintenance costs, and being honest about what things really cost. I've worked on the bond committee and Planning & Zoning Commission—I know how to read a budget and ask the tough questions.
+                  Your tax dollars should be spent wisely. That means <strong className="text-navy">right-sizing projects from the start</strong>, planning for long-term maintenance costs, and being honest about what things really cost. I've worked on the <strong className="text-navy">bond committee</strong> and <strong className="text-navy">Planning & Zoning Commission</strong>—I know how to read a budget and <strong className="text-prosper-red">ask the tough questions</strong>.
                 </p>
               </div>
             </Reveal>
@@ -115,7 +115,7 @@ export default function PrioritiesPage() {
               <div className="card">
                 <h3 className="text-xl font-bold text-navy mb-4">Community Character</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Prosper isn't just another suburb. We have a character worth preserving—Friday night football at Children's Health Stadium, the "Small Town, Big Heart" spirit, downtown festivals, and neighbors who still wave from their driveways. Every zoning decision, every development approval, should strengthen what makes Prosper special—not dilute it.
+                  Prosper isn't just another suburb. We have a character worth preserving—<strong className="text-navy">Friday night football</strong> at Children's Health Stadium, the <strong className="text-prosper-red">"Small Town, Big Heart"</strong> spirit, downtown festivals, and neighbors who still wave from their driveways. Every zoning decision, every development approval, should <strong className="text-navy">strengthen what makes Prosper special</strong>—not dilute it.
                 </p>
               </div>
             </Reveal>
@@ -124,7 +124,7 @@ export default function PrioritiesPage() {
               <div className="card">
                 <h3 className="text-xl font-bold text-navy mb-4">Strategic Commercial Development</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Prosper ranks #8 among the wealthiest zip codes in Texas (Source: US Census). Our tollway corridor and remaining commercial development should reflect that—not strip malls and fast food chains. With The Fields, PGA, and Universal Theme Park right next door, let's build a commercial base that draws people to our downtown, our retail, our restaurants. By creating the right environment for high-end commercial development, we can attract jobs and destinations Prosper residents will enjoy.
+                  Prosper ranks <strong className="text-prosper-red">#8 among the wealthiest zip codes in Texas</strong> (Source: US Census). Our tollway corridor and remaining commercial development should reflect that—not strip malls and fast food chains. With <strong className="text-navy">The Fields, PGA, and Universal Theme Park</strong> right next door, let's build a commercial base that draws people to <strong className="text-navy">our downtown, our retail, our restaurants</strong>. By creating the right environment for high-end commercial development, we can attract jobs and destinations Prosper residents will enjoy.
                 </p>
               </div>
             </Reveal>
