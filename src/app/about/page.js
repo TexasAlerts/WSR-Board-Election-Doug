@@ -136,6 +136,19 @@ export default function AboutPage() {
             <Reveal delay={0}>
               <div className="card">
                 <div className="flex items-start gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap">Nov 2019</div>
+                  <div>
+                    <h3 className="text-lg font-bold text-navy mb-2">Organized 585 Residents to Protect Neighborhood Standards</h3>
+                    <p className="text-gray-600 mb-2">As Prosper's growth accelerated, I wanted to protect the community I moved to while embracing positive growth. When a developer sought to allow 40-foot lots and "4-pack" homes in Windsong Ranch, I organized a petition that gathered 585 signatures in 48 hours. The Planning & Zoning Commission voted 7-0 against the proposal.</p>
+                    <p className="text-gray-500 italic text-sm">"Thank you for being engaged and active in keeping Prosper the envy of the area."</p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={50}>
+              <div className="card">
+                <div className="flex items-start gap-4">
                   <div className="text-sm font-bold text-navy whitespace-nowrap">Aug 2020</div>
                   <div>
                     <h3 className="text-lg font-bold text-navy mb-2">Advocated for Neighborhood Character</h3>
@@ -152,7 +165,19 @@ export default function AboutPage() {
                   <div className="text-sm font-bold text-navy whitespace-nowrap">Nov 2020</div>
                   <div>
                     <h3 className="text-lg font-bold text-navy mb-2">Bond Election Committee</h3>
-                    <p className="text-gray-600">Helped pass $210M in bonds for roads, parks, and facilities. Six years later: 79%+ executed on time and on budget.</p>
+                    <p className="text-gray-600">Helped pass $210M in bonds for roads, parks, and facilities. Six years later: 79% executed on time and on budget.</p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={150}>
+              <div className="card">
+                <div className="flex items-start gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap">Sept 2021</div>
+                  <div>
+                    <h3 className="text-lg font-bold text-navy mb-2">Advocated for Tax Relief & Public Safety Investment</h3>
+                    <p className="text-gray-600 mb-2">Appeared before Town Council to advocate for a 4-cent property tax rate reduction while simultaneously calling for a 7% pay increase for Police and Fire personnel. Challenged the Town's excessive reserves, arguing taxpayer money should be returned or invested in infrastructure—not hoarded. This consistent support for public safety continued in 2025, when I advocated for the public safety bond propositions.</p>
                   </div>
                 </div>
               </div>
@@ -170,7 +195,33 @@ export default function AboutPage() {
               </div>
             </Reveal>
 
+            <Reveal delay={250}>
+              <div className="card">
+                <div className="flex items-start gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap">Nov 2023</div>
+                  <div>
+                    <h3 className="text-lg font-bold text-navy mb-2">Advocated for Fiscal Responsibility in PISD Bond</h3>
+                    <p className="text-gray-600 mb-2">Consistent advocacy for fiscal responsibility means being willing to take a stand where common sense matters. During the $2.7 billion PISD bond election, I spoke publicly about smart spending priorities. Voters agreed—passing three propositions while rejecting the $102 million stadium bond.</p>
+                    <p className="text-gray-500 italic text-sm">"We need smart spending that maximizes benefits for our students without unnecessary burdens on our finances." — Texas Scorecard</p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
             <Reveal delay={300}>
+              <div className="card">
+                <div className="flex items-start gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap">Apr 2025</div>
+                  <div>
+                    <h3 className="text-lg font-bold text-navy mb-2">Filed Ethics Complaint on Outside PAC Spending</h3>
+                    <p className="text-gray-600 mb-2">I pay attention to the details and follow the money to ensure voters know who is supporting candidates making decisions in our town and ISD. When a Washington D.C.-based PAC spent $50,000 on Prosper ISD races without transparency, I filed a formal complaint with the Texas Ethics Commission. The Dallas Morning News Editorial Board noted my transparency, contrasting it with secretive outside groups.</p>
+                    <p className="text-gray-500 italic text-sm">"$50,000 just didn't randomly show up from Washington, D.C., into Prosper ISD. There's an agenda." — Dallas Morning News</p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={350}>
               <div className="card">
                 <div className="flex items-start gap-4">
                   <div className="text-sm font-bold text-navy whitespace-nowrap">Oct 2025</div>
@@ -188,14 +239,14 @@ export default function AboutPage() {
                   <div className="text-sm font-bold text-navy whitespace-nowrap">Nov 2025</div>
                   <div>
                     <h3 className="text-lg font-bold text-navy mb-2">Common Sense on Bond Proposals</h3>
-                    <p className="text-gray-600 mb-2">When some 2025 bond proposals seemed undersized, said publicly: voters agreed, passing infrastructure while rejecting undersized facilities.</p>
+                    <p className="text-gray-600 mb-2">When some 2025 bond proposals seemed undersized, said publicly: voters agreed, passing infrastructure and public safety bonds while rejecting undersized facilities.</p>
                     <p className="text-gray-500 italic text-sm">"Let's build it once, not twice—unless we're going to build it once and expand it with a thoughtful plan that's communicated." — Community Impact</p>
                   </div>
                 </div>
               </div>
             </Reveal>
 
-            <Reveal delay={500}>
+            <Reveal delay={450}>
               <div className="card">
                 <div className="flex items-start gap-4">
                   <div className="text-sm font-bold text-navy whitespace-nowrap">Dec 2025</div>
