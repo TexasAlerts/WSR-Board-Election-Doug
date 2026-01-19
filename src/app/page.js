@@ -92,7 +92,7 @@ export default function Home() {
             <Reveal delay={100} className="h-full">
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">3</div>
-                <div className="stat-label">Years P&Z Service</div>
+                <div className="stat-label">Years Planning & Zoning</div>
               </div>
             </Reveal>
             <Reveal delay={200} className="h-full">
@@ -103,9 +103,9 @@ export default function Home() {
             </Reveal>
             <Reveal delay={300} className="h-full">
               <div className="stat-card h-full flex flex-col justify-center">
-                <div className="stat-number">$6.5M+</div>
-                <div className="stat-label">PISD WSR Annexation</div>
-                <div className="text-xs text-gray-500 mt-1">Lead Petitioner · Awaiting State Approval</div>
+                <div className="stat-number">$6.5M</div>
+                <div className="stat-label">Annual Tax Revenue</div>
+                <div className="text-xs text-gray-500 mt-1">PISD Annexation · Approved by Prosper ISD</div>
               </div>
             </Reveal>
           </div>
@@ -187,7 +187,7 @@ export default function Home() {
             <Reveal direction="right" className="md:col-span-3 space-y-6">
               <h2 className="section-title">About Doug</h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                I've called <strong className="text-navy">Prosper</strong> home for <strong>20 years</strong>. I've served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and was elected to the WSR HOA Board in Oct 2025.
+                I've called <strong className="text-navy">Prosper</strong> home for <strong>20 years</strong>. I've served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and was elected to the Windsong Ranch HOA Board.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
                 I'm running because <strong className="text-prosper-red">Prosper is at a crossroads</strong>. The decisions we make now will shape our community for decades.
@@ -297,7 +297,7 @@ export default function Home() {
 
           <Reveal delay={100}>
             <p className="text-xl text-white/90 mb-10 leading-relaxed">
-              Together, we can ensure Prosper's growth is managed wisely and every resident's voice is heard.
+              Local races are decided by a few hundred votes. Your support—and your voice—can make the difference.
             </p>
           </Reveal>
 

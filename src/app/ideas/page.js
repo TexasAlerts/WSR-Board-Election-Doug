@@ -217,8 +217,8 @@ export default function IdeasPage() {
             <Reveal>
               <div className="card text-center py-12">
                 <div className="text-4xl mb-4">💡</div>
-                <h2 className="text-xl font-bold text-navy mb-2">No Ideas Yet</h2>
-                <p className="text-gray-600 mb-6">Be the first to share an idea for Prosper!</p>
+                <h2 className="text-xl font-bold text-navy mb-2">Be the First!</h2>
+                <p className="text-gray-600 mb-6">Be the first to share your ideas for making Prosper better! Use the form above to submit your thoughts.</p>
                 <button onClick={() => setShowSubmitForm(true)} className="btn-primary">
                   Submit Your Idea
                 </button>

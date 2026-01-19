@@ -160,9 +160,11 @@ export default function QnAPage() {
             </div>
           ) : (
             <Reveal>
-              <div className="card text-center">
+              <div className="card text-center py-8">
+                <div className="text-4xl mb-4">❓</div>
+                <h3 className="text-lg font-bold text-navy mb-2">No Questions Yet</h3>
                 <p className="text-gray-600">
-                  No questions have been answered yet. Be the first to ask!
+                  No questions yet—be the first to ask! I'll personally respond to questions submitted here.
                 </p>
               </div>
             </Reveal>

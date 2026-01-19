@@ -6,7 +6,7 @@ import { AuthProvider } from '../context/AuthContext';
 
 export const metadata = {
   title: 'Doug Charles for Prosper Town Council - Place 5',
-  description: 'A Common Sense Leader for All of Prosper. Doug Charles is running for Town Council Place 5 in the May 2026 election.',
+  description: 'Doug Charles for Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. Election May 2, 2026.',
   icons: {
     icon: [
       { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
@@ -17,7 +17,7 @@ export const metadata = {
   },
   openGraph: {
     title: 'Doug Charles for Prosper Town Council - Place 5',
-    description: 'A Common Sense Leader for All of Prosper. Doug Charles is running for Town Council Place 5 in the May 2026 election.',
+    description: 'Doug Charles for Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. Election May 2, 2026.',
     url: 'https://www.dougcharles.com',
     siteName: 'Doug Charles for Prosper',
     locale: 'en_US',
@@ -100,8 +100,8 @@ export default function RootLayout({ children }) {
                 },
                 {
                   "@type": "WebPage",
-                  "name": "Issues",
-                  "url": "https://www.dougcharles.com/#issues"
+                  "name": "Priorities",
+                  "url": "https://www.dougcharles.com/priorities"
                 }
               ]
             }
@@ -113,6 +113,19 @@ export default function RootLayout({ children }) {
         <footer className="bg-navy text-white py-6 mt-16 pb-24 sm:pb-6">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-center space-y-2">
             <p>Political advertising paid for by Doug Charles for Prosper Town Council.</p>
+            <p>Questions? Email <a href="mailto:doug@dougcharles.com" className="text-white underline hover:text-gray-300">doug@dougcharles.com</a></p>
+            <div className="flex justify-center gap-4 pt-2">
+              <a href="#" aria-label="Facebook" className="text-white hover:text-gray-300">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+                </svg>
+              </a>
+              <a href="#" aria-label="X (Twitter)" className="text-white hover:text-gray-300">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+            </div>
             <p>
               © {new Date().getFullYear()} Doug Charles for Prosper Town Council
               {' | '}
