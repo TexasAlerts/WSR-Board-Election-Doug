@@ -10,7 +10,7 @@ export default function WhyPage() {
       <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative overflow-hidden">
         {/* Logo accent */}
         <img
-          src="/wsr-logo.png"
+          src="/wsr-logo.webp"
           alt=""
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 opacity-40 pointer-events-none brightness-200"
         />

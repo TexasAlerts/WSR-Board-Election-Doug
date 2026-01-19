@@ -1,5 +1,6 @@
 import './globals.css';
 import StickyNav from '../components/StickyNav';
+import ErrorBoundary from '../components/ErrorBoundary';
 import Link from 'next/link';
 import Script from 'next/script';
 import { AuthProvider } from '../context/AuthContext';
@@ -22,11 +23,18 @@ export const metadata = {
     siteName: 'Doug Charles for Prosper',
     locale: 'en_US',
     type: 'website',
+    images: [{
+      url: 'https://www.dougcharles.com/campaign-preview.png',
+      width: 1200,
+      height: 630,
+      alt: 'Doug Charles for Prosper Town Council Place 5 - A Common Sense Leader for ALL of Prosper',
+    }],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Doug Charles for Prosper Town Council - Place 5',
     description: 'A Common Sense Leader for All of Prosper',
+    images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };
 
@@ -74,45 +82,67 @@ export default function RootLayout({ children }) {
           {`
             {
               "@context": "https://schema.org",
-              "@type": "WebSite",
-              "name": "Doug Charles for Prosper Town Council",
-              "url": "https://www.dougcharles.com",
-              "description": "Official campaign site for Doug Charles, candidate for Prosper Town Council Place 5. A Common Sense Leader for All of Prosper.",
-              "publisher": {
-                "@type": "Person",
-                "name": "Doug Charles"
-              },
-              "mainEntity": [
+              "@graph": [
                 {
-                  "@type": "WebPage",
-                  "name": "About Doug",
-                  "url": "https://www.dougcharles.com/#about"
+                  "@type": "WebSite",
+                  "name": "Doug Charles for Prosper Town Council",
+                  "url": "https://www.dougcharles.com",
+                  "description": "Official campaign site for Doug Charles, candidate for Prosper Town Council Place 5. A Common Sense Leader for All of Prosper.",
+                  "publisher": {
+                    "@id": "https://www.dougcharles.com/#person"
+                  }
                 },
                 {
-                  "@type": "WebPage",
-                  "name": "Endorsements",
-                  "url": "https://www.dougcharles.com/endorsements"
+                  "@type": "Person",
+                  "@id": "https://www.dougcharles.com/#person",
+                  "name": "Doug Charles",
+                  "jobTitle": "Candidate for Prosper Town Council Place 5",
+                  "description": "20-year Prosper resident, former Planning & Zoning Commissioner (2021-2023), 2020 Bond Election Committee member, Windsong Ranch HOA Board member.",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Prosper",
+                    "addressRegion": "TX",
+                    "addressCountry": "US"
+                  },
+                  "email": "doug@dougcharles.com",
+                  "url": "https://www.dougcharles.com",
+                  "image": "https://www.dougcharles.com/headshot.jpg"
                 },
                 {
-                  "@type": "WebPage",
-                  "name": "Q&A",
-                  "url": "https://www.dougcharles.com/qna"
-                },
-                {
-                  "@type": "WebPage",
-                  "name": "Priorities",
-                  "url": "https://www.dougcharles.com/priorities"
+                  "@type": "Event",
+                  "name": "Prosper Town Council Election - Place 5",
+                  "startDate": "2026-05-02",
+                  "endDate": "2026-05-02",
+                  "eventStatus": "https://schema.org/EventScheduled",
+                  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+                  "location": {
+                    "@type": "Place",
+                    "name": "Town of Prosper",
+                    "address": {
+                      "@type": "PostalAddress",
+                      "addressLocality": "Prosper",
+                      "addressRegion": "TX",
+                      "addressCountry": "US"
+                    }
+                  },
+                  "description": "Election Day for Prosper Town Council Place 5. Early voting: April 20-28, 2026.",
+                  "organizer": {
+                    "@type": "Organization",
+                    "name": "Town of Prosper"
+                  }
                 }
               ]
             }
           `}
         </Script>
         <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 sm:pb-8">
-          {children}
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
         </main>
         <footer className="bg-navy text-white py-6 mt-16 pb-24 sm:pb-6">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-center space-y-2">
-            <p>Political advertising paid for by Doug Charles for Prosper Town Council.</p>
+            <p>Political advertising paid for by Doug Charles for Prosper Town Council Place 5.</p>
             <p>Questions? Email <a href="mailto:doug@dougcharles.com" className="text-white underline hover:text-gray-300">doug@dougcharles.com</a></p>
             <div className="flex justify-center gap-4 pt-2">
               <a href="#" aria-label="Facebook" className="text-white hover:text-gray-300">
