@@ -30,19 +30,19 @@ export default function WhyPage() {
           <div className="space-y-8 text-lg text-gray-700 leading-relaxed">
             <Reveal>
               <p>
-                Prosper is growing fast. That's not necessarily bad—but it means we need to be thoughtful about the decisions ahead.
+                Prosper is <strong className="text-navy">growing fast</strong>. That's not necessarily bad—but it means we need to be <strong className="text-navy">thoughtful about the decisions ahead</strong>.
               </p>
             </Reveal>
 
             <Reveal delay={100}>
               <p>
-                I've been in the room where these decisions get made. I've read the development applications, asked the hard questions, and seen what happens when we plan well—and when we don't.
+                I've been <strong className="text-navy">in the room where these decisions get made</strong>. I've read the development applications, asked the hard questions, and seen what happens when we plan well—and when we don't.
               </p>
             </Reveal>
 
             <Reveal delay={200}>
               <p>
-                I'm running to bring that experience to the Town Council, and to make sure <strong className="text-navy">every resident's voice is heard</strong>.
+                I'm running to bring that <strong className="text-prosper-red">experience to the Town Council</strong>, and to make sure <strong className="text-navy">every resident's voice is heard</strong>.
               </p>
             </Reveal>
           </div>
@@ -60,7 +60,7 @@ export default function WhyPage() {
                 Town Council isn't about party labels.
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                It's about potholes, parks, and planning. It's about whether the roads work, growth happens thoughtfully, and Prosper keeps its character.
+                It's about <strong className="text-navy">potholes, parks, and planning</strong>. It's about whether the roads work, growth happens thoughtfully, and <strong className="text-prosper-red">Prosper keeps its character</strong>.
               </p>
             </div>
           </Reveal>
@@ -80,7 +80,7 @@ export default function WhyPage() {
               <div className="card h-full">
                 <h3 className="text-xl font-bold text-navy mb-3">Listen Before Deciding</h3>
                 <p className="text-gray-600">
-                  Too often, residents feel like decisions are made before their input is gathered. I'll push for meaningful public engagement early in the process—not after the plans are already drawn.
+                  Too often, residents feel like decisions are made before their input is gathered. I'll push for <strong className="text-navy">meaningful public engagement early</strong> in the process—not after the plans are already drawn.
                 </p>
               </div>
             </Reveal>
@@ -89,7 +89,7 @@ export default function WhyPage() {
               <div className="card h-full">
                 <h3 className="text-xl font-bold text-navy mb-3">Ask the Hard Questions</h3>
                 <p className="text-gray-600">
-                  What will this cost long-term? Does our infrastructure support this? What do residents actually want? I'll bring the same analytical approach I use professionally to every council decision.
+                  What will this cost long-term? Does our infrastructure support this? What do residents actually want? I'll bring the same <strong className="text-navy">analytical approach</strong> I use professionally to every council decision.
                 </p>
               </div>
             </Reveal>
@@ -98,7 +98,7 @@ export default function WhyPage() {
               <div className="card h-full">
                 <h3 className="text-xl font-bold text-navy mb-3">Focus on Results</h3>
                 <p className="text-gray-600">
-                  No grandstanding, no political theater. Just thoughtful governance focused on making Prosper better for everyone who lives here.
+                  <strong className="text-navy">No grandstanding, no political theater.</strong> Just thoughtful governance focused on making Prosper better for everyone who lives here.
                 </p>
               </div>
             </Reveal>
@@ -107,7 +107,7 @@ export default function WhyPage() {
               <div className="card h-full">
                 <h3 className="text-xl font-bold text-navy mb-3">Be Accessible</h3>
                 <p className="text-gray-600">
-                  Your council members should be easy to reach. I'll be available to residents—not just during campaign season, but throughout my term.
+                  Your council members should be <strong className="text-navy">easy to reach</strong>. I'll be available to residents—not just during campaign season, but <strong className="text-prosper-red">throughout my term</strong>.
                 </p>
               </div>
             </Reveal>
@@ -122,10 +122,10 @@ export default function WhyPage() {
             <div className="quote-enhanced">
               <h2 className="text-xl font-bold text-navy mb-4 not-italic">The Stakes Are High</h2>
               <p className="text-gray-700 leading-relaxed mb-4 not-italic">
-                The decisions we make in the next few years will shape Prosper for decades. We're deciding where roads go, what gets built, and how we balance growth with quality of life.
+                The decisions we make in the next few years will <strong className="text-navy">shape Prosper for decades</strong>. We're deciding where roads go, what gets built, and how we balance growth with quality of life.
               </p>
               <p className="text-gray-700 leading-relaxed not-italic">
-                These decisions are too important to leave to chance. They deserve experienced, thoughtful leadership from someone who knows Prosper and cares about its future.
+                These decisions are too important to leave to chance. They deserve <strong className="text-prosper-red">experienced, thoughtful leadership</strong> from someone who knows Prosper and cares about its future.
               </p>
             </div>
           </Reveal>
