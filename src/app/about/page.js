@@ -79,9 +79,10 @@ export default function AboutPage() {
       {/* Sticky Tab Navigation - positioned right after hero */}
       <div
         ref={tabNavRef}
-        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-50 -mx-4 sm:-mx-6 lg:-mx-8 bg-white"
+        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-50 -mx-4 sm:-mx-6 lg:-mx-8 bg-white isolate"
+        style={{ isolation: 'isolate' }}
       >
-        <div className="border-b border-gray-200 shadow-lg">
+        <div className="border-b border-gray-200 shadow-lg relative z-10 bg-white">
         <div className="px-4 sm:px-6 lg:px-8 py-3">
           <div className="max-w-4xl mx-auto">
             {/* Desktop tabs */}
@@ -132,8 +133,8 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Tab Content - custom class creates lower stacking context than sticky nav (z-50) */}
-      <div ref={contentRef} className="min-h-[60vh] tab-content-below-sticky">
+      {/* Tab Content - isolate creates independent stacking context, z-0 ensures it's below sticky nav */}
+      <div ref={contentRef} className="min-h-[60vh] relative isolate" style={{ zIndex: 0, isolation: 'isolate' }}>
         {activeTab === 'about' && <AboutContent />}
         {activeTab === 'why' && <WhyContent />}
         {activeTab === 'priorities' && <PrioritiesContent />}
