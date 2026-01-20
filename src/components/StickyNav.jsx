@@ -67,7 +67,7 @@ export default function StickyNav() {
           <span className="sm:hidden"><HomeIcon className="h-7 w-7" /></span>
         </Link>
         <button
-          className="sm:hidden p-2 text-navy"
+          className="sm:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-navy"
           onClick={toggle}
           aria-label="Toggle navigation menu"
         >

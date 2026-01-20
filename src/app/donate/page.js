@@ -86,7 +86,7 @@ export default function DonatePage() {
                   Or enter a custom amount
                 </label>
                 <div className="relative max-w-[200px] mx-auto">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold text-lg">$</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold text-lg" aria-hidden="true">$</span>
                   <input
                     id="customAmount"
                     type="number"
@@ -98,8 +98,10 @@ export default function DonatePage() {
                       setSelectedAmount(null);
                     }}
                     className="form-input text-center text-lg pl-10"
+                    aria-describedby="custom-amount-hint"
                   />
                 </div>
+                <p id="custom-amount-hint" className="text-xs text-gray-500 text-center mt-2">Minimum $1</p>
               </div>
 
               {/* Donate Button */}
@@ -113,7 +115,10 @@ export default function DonatePage() {
 
               {/* Message Display */}
               {message.text && (
-                <div className={`mt-6 p-4 rounded-lg flex items-start gap-3 ${
+                <div
+                  role="alert"
+                  aria-live="polite"
+                  className={`mt-6 p-4 rounded-lg flex items-start gap-3 ${
                   message.type === 'error'
                     ? 'bg-red-50 border border-red-200'
                     : message.type === 'info'

@@ -4,6 +4,21 @@ import ErrorBoundary from '../components/ErrorBoundary';
 import Link from 'next/link';
 import Script from 'next/script';
 import { AuthProvider } from '../context/AuthContext';
+import { Open_Sans, Oswald } from 'next/font/google';
+
+const openSans = Open_Sans({
+  subsets: ['latin'],
+  weight: ['400', '600'],
+  variable: '--font-open-sans',
+  display: 'swap',
+});
+
+const oswald = Oswald({
+  subsets: ['latin'],
+  weight: ['500', '700'],
+  variable: '--font-oswald',
+  display: 'swap',
+});
 
 export const metadata = {
   title: 'Doug Charles for Prosper Town Council - Place 5',
@@ -50,16 +65,18 @@ const KEY_DATES = [
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${openSans.variable} ${oswald.variable}`}>
       <head>
         <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body>
         <AuthProvider>
+        {/* Skip to main content - Accessibility */}
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-[100] focus:bg-navy focus:text-white focus:px-4 focus:py-2 focus:underline">
+          Skip to main content
+        </a>
         {/* Key dates banner */}
         <header className="bg-navy text-white text-sm sm:text-base py-2 px-4 sticky top-0 z-50 shadow-md">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-y-1 lg:gap-y-0 max-w-6xl mx-auto">
@@ -135,7 +152,7 @@ export default function RootLayout({ children }) {
             }
           `}
         </Script>
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 sm:pb-8 relative" style={{ zIndex: 1 }}>
+        <main id="main-content" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24 sm:pb-8 relative" style={{ zIndex: 1 }}>
           <ErrorBoundary>
             {children}
           </ErrorBoundary>
@@ -144,17 +161,11 @@ export default function RootLayout({ children }) {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-center space-y-2">
             <p>Political advertising paid for by Doug Charles for Prosper Town Council Place 5.</p>
             <p>Questions? Email <a href="mailto:doug@dougcharles.com" className="text-white underline hover:text-gray-300">doug@dougcharles.com</a></p>
-            <div className="flex justify-center gap-4 pt-2">
-              <a href="#" aria-label="Facebook" className="text-white hover:text-gray-300">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
-                </svg>
-              </a>
-              <a href="#" aria-label="X (Twitter)" className="text-white hover:text-gray-300">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-              </a>
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 pt-2">
+              <Link href="/about" className="text-white hover:text-gray-300 hover:underline">About</Link>
+              <Link href="/priorities" className="text-white hover:text-gray-300 hover:underline">Priorities</Link>
+              <Link href="/get-involved" className="text-white hover:text-gray-300 hover:underline">Get Involved</Link>
+              <Link href="/donate" className="text-white hover:text-gray-300 hover:underline">Donate</Link>
             </div>
             <p>
               © {new Date().getFullYear()} Doug Charles for Prosper Town Council

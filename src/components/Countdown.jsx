@@ -31,7 +31,7 @@ export default function Countdown({ open, close }) {
 
   return (
     <div className="w-full text-center sm:text-right">
-      <span className="font-semibold text-coral whitespace-nowrap uppercase">
+      <span className="font-semibold text-prosper-red whitespace-nowrap uppercase">
         {`${label} ${days} day${days === 1 ? '' : 's'}`}
       </span>
     </div>

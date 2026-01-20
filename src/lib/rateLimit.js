@@ -1,5 +1,29 @@
 const requests = new Map();
 
+// Cleanup stale entries every 5 minutes to prevent memory leaks
+const CLEANUP_INTERVAL = 5 * 60 * 1000; // 5 minutes
+const MAX_ENTRY_AGE = 60 * 60 * 1000; // 1 hour
+
+let cleanupTimer = null;
+
+function cleanupStaleEntries() {
+  const now = Date.now();
+  for (const [ip, entry] of requests.entries()) {
+    if (now - entry.startTime > MAX_ENTRY_AGE) {
+      requests.delete(ip);
+    }
+  }
+}
+
+// Start cleanup timer if not already running
+if (typeof cleanupTimer !== 'number') {
+  cleanupTimer = setInterval(cleanupStaleEntries, CLEANUP_INTERVAL);
+  // Prevent timer from keeping Node.js process alive
+  if (cleanupTimer.unref) {
+    cleanupTimer.unref();
+  }
+}
+
 /**
  * Basic in-memory IP rate limiter.
  * @param {string} ip - Client IP address

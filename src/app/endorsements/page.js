@@ -142,45 +142,50 @@ export default function EndorsementsPage() {
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                      <label htmlFor="name" className="form-label">Name *</label>
+                      <label htmlFor="endorsement-name" className="form-label">Name *</label>
                       <input
-                        id="name"
+                        id="endorsement-name"
                         type="text"
                         required
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
                         className="form-input"
+                        autoComplete="name"
                       />
                     </div>
 
                     <div>
-                      <label htmlFor="email" className="form-label">Email *</label>
+                      <label htmlFor="endorsement-email" className="form-label">Email *</label>
                       <input
-                        id="email"
+                        id="endorsement-email"
                         type="email"
                         required
                         value={form.email}
                         onChange={(e) => setForm({ ...form, email: e.target.value })}
                         className="form-input"
+                        autoComplete="email"
                       />
                     </div>
 
                     <div>
-                      <label htmlFor="phone" className="form-label">Phone (optional)</label>
+                      <label htmlFor="endorsement-phone" className="form-label">Phone (optional)</label>
                       <input
-                        id="phone"
+                        id="endorsement-phone"
                         type="tel"
                         value={form.phone}
                         onChange={(e) => setForm({ ...form, phone: e.target.value })}
                         className="form-input"
                         placeholder="(555) 555-5555"
+                        autoComplete="tel"
+                        aria-describedby="endorsement-phone-hint"
                       />
+                      <p id="endorsement-phone-hint" className="text-sm text-gray-500 mt-1">US phone numbers only</p>
                     </div>
 
                     <div>
-                      <label htmlFor="message" className="form-label">Why I support Doug (optional)</label>
+                      <label htmlFor="endorsement-message" className="form-label">Why I support Doug (optional)</label>
                       <textarea
-                        id="message"
+                        id="endorsement-message"
                         rows={3}
                         value={form.message}
                         onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -190,31 +195,32 @@ export default function EndorsementsPage() {
                     </div>
 
                     {/* Consent checkboxes */}
-                    <div className="space-y-3 pt-2">
-                      <label className="flex items-start gap-3 cursor-pointer">
+                    <fieldset className="space-y-3 pt-2">
+                      <legend className="sr-only">Communication preferences</legend>
+                      <label className="flex items-start gap-3 cursor-pointer min-h-[44px]">
                         <input
                           type="checkbox"
                           checked={form.consentEmail}
                           onChange={(e) => setForm({ ...form, consentEmail: e.target.checked })}
-                          className="mt-1 h-4 w-4 rounded border-gray-300 text-navy focus:ring-navy"
+                          className="mt-0.5 h-5 w-5 min-w-[20px] rounded border-gray-300 text-navy focus:ring-navy focus:ring-2"
                         />
                         <span className="text-sm text-gray-600">
                           I agree to receive campaign updates via email. You can unsubscribe at any time.
                         </span>
                       </label>
 
-                      <label className="flex items-start gap-3 cursor-pointer">
+                      <label className="flex items-start gap-3 cursor-pointer min-h-[44px]">
                         <input
                           type="checkbox"
                           checked={form.consentSms}
                           onChange={(e) => setForm({ ...form, consentSms: e.target.checked })}
-                          className="mt-1 h-4 w-4 rounded border-gray-300 text-navy focus:ring-navy"
+                          className="mt-0.5 h-5 w-5 min-w-[20px] rounded border-gray-300 text-navy focus:ring-navy focus:ring-2"
                         />
                         <span className="text-sm text-gray-600">
                           I agree to receive campaign updates via text message. Msg & data rates may apply. Reply STOP to opt out.
                         </span>
                       </label>
-                    </div>
+                    </fieldset>
 
                     <button
                       type="submit"
@@ -225,7 +231,7 @@ export default function EndorsementsPage() {
                     </button>
 
                     {submitMsg && !submitMsg.includes('Thank you') && (
-                      <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                      <div role="alert" aria-live="polite" className="p-4 bg-red-50 border border-red-200 rounded-lg">
                         <p className="text-red-800 font-medium">{submitMsg}</p>
                       </div>
                     )}

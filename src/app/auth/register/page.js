@@ -84,8 +84,8 @@ export default function RegisterPage() {
 
       <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-8 space-y-6">
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+          <div role="alert" aria-live="polite" className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
             <p className="text-red-700 text-sm">{error}</p>
           </div>
         )}
@@ -93,12 +93,13 @@ export default function RegisterPage() {
         {/* Name */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="reg-firstName" className="block text-sm font-medium text-gray-700 mb-1">
               First Name *
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
               <input
+                id="reg-firstName"
                 type="text"
                 name="firstName"
                 value={formData.firstName}
@@ -106,14 +107,16 @@ export default function RegisterPage() {
                 required
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                 placeholder="John"
+                autoComplete="given-name"
               />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="reg-lastName" className="block text-sm font-medium text-gray-700 mb-1">
               Last Name *
             </label>
             <input
+              id="reg-lastName"
               type="text"
               name="lastName"
               value={formData.lastName}
@@ -121,18 +124,20 @@ export default function RegisterPage() {
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
               placeholder="Doe"
+              autoComplete="family-name"
             />
           </div>
         </div>
 
         {/* Email */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="reg-email" className="block text-sm font-medium text-gray-700 mb-1">
             Email Address *
           </label>
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
             <input
+              id="reg-email"
               type="email"
               name="email"
               value={formData.email}
@@ -140,18 +145,20 @@ export default function RegisterPage() {
               required
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
               placeholder="john@example.com"
+              autoComplete="email"
             />
           </div>
         </div>
 
         {/* Phone */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="reg-phone" className="block text-sm font-medium text-gray-700 mb-1">
             Phone Number *
           </label>
           <div className="relative">
-            <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
             <input
+              id="reg-phone"
               type="tel"
               name="phone"
               value={formData.phone}
@@ -159,22 +166,26 @@ export default function RegisterPage() {
               required
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
               placeholder="(972) 555-1234"
+              autoComplete="tel"
+              aria-describedby="phone-verification-hint"
             />
           </div>
-          <p className="text-xs text-gray-500 mt-1">
+          <p id="phone-verification-hint" className="text-xs text-gray-500 mt-1">
             We&apos;ll send a verification code to confirm your number.
           </p>
         </div>
 
         {/* Address */}
-        <div className="space-y-4">
+        <fieldset className="space-y-4">
+          <legend className="sr-only">Address</legend>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="reg-streetAddress" className="block text-sm font-medium text-gray-700 mb-1">
               Street Address *
             </label>
             <div className="relative">
-              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
               <input
+                id="reg-streetAddress"
                 type="text"
                 name="streetAddress"
                 value={formData.streetAddress}
@@ -182,41 +193,47 @@ export default function RegisterPage() {
                 required
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                 placeholder="123 Main Street"
+                autoComplete="street-address"
               />
             </div>
           </div>
           <div className="grid grid-cols-6 gap-4">
             <div className="col-span-3">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="reg-city" className="block text-sm font-medium text-gray-700 mb-1">
                 City *
               </label>
               <input
+                id="reg-city"
                 type="text"
                 name="city"
                 value={formData.city}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
+                autoComplete="address-level2"
               />
             </div>
             <div className="col-span-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="reg-state" className="block text-sm font-medium text-gray-700 mb-1">
                 State
               </label>
               <input
+                id="reg-state"
                 type="text"
                 name="state"
                 value={formData.state}
                 onChange={handleChange}
                 maxLength={2}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
+                autoComplete="address-level1"
               />
             </div>
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="reg-zipCode" className="block text-sm font-medium text-gray-700 mb-1">
                 ZIP Code *
               </label>
               <input
+                id="reg-zipCode"
                 type="text"
                 name="zipCode"
                 value={formData.zipCode}
@@ -224,39 +241,40 @@ export default function RegisterPage() {
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                 placeholder="75078"
+                autoComplete="postal-code"
               />
             </div>
           </div>
-        </div>
+        </fieldset>
 
         {/* Consent */}
-        <div className="space-y-3 pt-4 border-t">
-          <p className="text-sm font-medium text-gray-700">Communication Preferences</p>
-          <label className="flex items-start gap-3 cursor-pointer">
+        <fieldset className="space-y-3 pt-4 border-t">
+          <legend className="text-sm font-medium text-gray-700">Communication Preferences</legend>
+          <label className="flex items-start gap-3 cursor-pointer min-h-[44px]">
             <input
               type="checkbox"
               name="emailConsent"
               checked={formData.emailConsent}
               onChange={handleChange}
-              className="mt-1 w-4 h-4 text-navy rounded focus:ring-navy"
+              className="mt-0.5 w-5 h-5 min-w-[20px] text-navy rounded focus:ring-navy focus:ring-2"
             />
             <span className="text-sm text-gray-600">
               I agree to receive campaign updates and news via email
             </span>
           </label>
-          <label className="flex items-start gap-3 cursor-pointer">
+          <label className="flex items-start gap-3 cursor-pointer min-h-[44px]">
             <input
               type="checkbox"
               name="smsConsent"
               checked={formData.smsConsent}
               onChange={handleChange}
-              className="mt-1 w-4 h-4 text-navy rounded focus:ring-navy"
+              className="mt-0.5 w-5 h-5 min-w-[20px] text-navy rounded focus:ring-navy focus:ring-2"
             />
             <span className="text-sm text-gray-600">
               I agree to receive text message alerts (standard rates may apply)
             </span>
           </label>
-        </div>
+        </fieldset>
 
         {/* Submit */}
         <button

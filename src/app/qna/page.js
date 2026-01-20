@@ -7,6 +7,8 @@ export default function QnAPage() {
   const [form, setForm] = useState({ name: '', email: '', question: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     async function loadQuestions() {
@@ -25,18 +27,26 @@ export default function QnAPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setError('');
+    setIsSubmitting(true);
     try {
       const res = await fetch('/api/questions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
-      if (res.ok) {
+      const data = await res.json();
+      if (res.ok && data.ok) {
         setSubmitted(true);
         setForm({ name: '', email: '', question: '' });
+      } else {
+        setError(data.error || 'Something went wrong. Please try again.');
       }
     } catch (err) {
       console.error(err);
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -87,6 +97,7 @@ export default function QnAPage() {
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     className="form-input"
+                    autoComplete="name"
                   />
                 </div>
 
@@ -99,8 +110,10 @@ export default function QnAPage() {
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     className="form-input"
+                    autoComplete="email"
+                    aria-describedby="email-hint"
                   />
-                  <p className="text-sm text-gray-500 mt-1">Your email won't be published.</p>
+                  <p id="email-hint" className="text-sm text-gray-500 mt-1">Your email won't be published.</p>
                 </div>
 
                 <div>
@@ -116,8 +129,18 @@ export default function QnAPage() {
                   />
                 </div>
 
-                <button type="submit" className="btn-secondary w-full">
-                  Submit Question
+                {error && (
+                  <div role="alert" aria-live="polite" className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-red-800 font-medium">{error}</p>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn-secondary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Submitting...' : 'Submit Question'}
                 </button>
               </form>
             )}

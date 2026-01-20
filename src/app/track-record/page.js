@@ -116,7 +116,7 @@ export default function TrackRecordPage() {
                 <div className="text-sm font-bold text-navy whitespace-nowrap bg-navy/5 px-3 py-1 rounded-full self-start">Nov 2025</div>
                 <div>
                   <h3 className="text-lg font-bold text-navy mb-2">Common Sense on Bond Proposals</h3>
-                  <p className="text-gray-600 mb-2">When some 2025 bond proposals seemed undersized, said publicly: voters agreed, passing <strong className="text-navy">infrastructure and public safety bonds</strong> while rejecting undersized facilities.</p>
+                  <p className="text-gray-600 mb-2">When some 2025 bond proposals seemed undersized, I said publicly: voters agreed, passing <strong className="text-navy">infrastructure and public safety bonds</strong> while rejecting undersized facilities.</p>
                   <p className="text-gray-500 italic text-sm">"Let's build it once, not twice—unless we're going to build it once and expand it with a thoughtful plan that's communicated." — Community Impact</p>
                 </div>
               </div>

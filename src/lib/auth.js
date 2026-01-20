@@ -14,9 +14,13 @@ export function generateToken(length = 32) {
   return token;
 }
 
-// Generate 6-digit SMS code
+// Generate 6-digit SMS code using cryptographically secure random
 export function generateSMSCode() {
-  return Math.floor(100000 + Math.random() * 900000).toString();
+  const array = new Uint32Array(1);
+  crypto.getRandomValues(array);
+  // Generate number between 100000 and 999999
+  const code = 100000 + (array[0] % 900000);
+  return code.toString();
 }
 
 // Hash password
