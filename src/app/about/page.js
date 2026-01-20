@@ -114,10 +114,11 @@ export default function AboutPage() {
       </section>
 
       {/* Sticky Tab Navigation */}
-      <nav
+      <div
         ref={tabNavRef}
-        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-40 bg-white border-b border-gray-200 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] -mx-4 sm:-mx-6 lg:-mx-8"
+        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-50 -mx-4 sm:-mx-6 lg:-mx-8 bg-white"
       >
+        <nav className="bg-white border-b border-gray-200 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]">
         <div className="px-4 sm:px-6 lg:px-8 py-3">
           <div className="max-w-4xl mx-auto">
             {/* Desktop tabs */}
@@ -165,7 +166,8 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </nav>
+        </nav>
+      </div>
 
       {/* Tab Content */}
       <div ref={contentRef} className="min-h-[60vh]">
