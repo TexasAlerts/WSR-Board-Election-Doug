@@ -23,8 +23,11 @@ const TABS = [
 
 export default function AboutPage() {
   const [activeTab, setActiveTab] = useState('about');
+  const [isTabsFixed, setIsTabsFixed] = useState(false);
   const tabNavRef = useRef(null);
+  const tabPlaceholderRef = useRef(null);
   const contentRef = useRef(null);
+  const heroRef = useRef(null);
 
   // Handle hash-based navigation on mount
   useEffect(() => {
@@ -34,15 +37,33 @@ export default function AboutPage() {
     }
   }, []);
 
+  // Handle scroll to toggle fixed positioning
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!heroRef.current) return;
+      const heroBottom = heroRef.current.getBoundingClientRect().bottom;
+      // Get the offset from the banner and main nav
+      const bannerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--banner-offset') || '40', 10);
+      const mainNavHeight = 64;
+      const threshold = bannerHeight + mainNavHeight;
+
+      setIsTabsFixed(heroBottom <= threshold);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Check initial state
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
     window.history.replaceState(null, '', `#${tabId}`);
 
-    // Scroll to position content just below the sticky tabs
-    if (contentRef.current && tabNavRef.current) {
-      const tabNavHeight = tabNavRef.current.offsetHeight;
+    // Scroll to position content just below the tabs
+    if (contentRef.current) {
+      const bannerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--banner-offset') || '40', 10);
       const mainNavHeight = 64;
-      const bannerHeight = 40; // Approximate banner height
+      const tabNavHeight = tabNavRef.current?.offsetHeight || 60;
       const contentTop = contentRef.current.getBoundingClientRect().top + window.scrollY;
       const scrollTarget = contentTop - mainNavHeight - bannerHeight - tabNavHeight - 8;
 
@@ -56,7 +77,7 @@ export default function AboutPage() {
   return (
     <div className="space-y-0 relative">
       {/* Hero - Compact */}
-      <section className="hero-pattern hero-gradient text-center py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <section ref={heroRef} className="hero-pattern hero-gradient text-center py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-10 left-20 w-64 h-64 bg-navy/5 rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 right-20 w-48 h-48 bg-prosper-red/5 rounded-full blur-3xl"></div>
@@ -76,13 +97,23 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Sticky Tab Navigation - positioned right after hero */}
+      {/* Placeholder to prevent layout shift when tabs become fixed */}
+      <div
+        ref={tabPlaceholderRef}
+        style={{ height: isTabsFixed ? (tabNavRef.current?.offsetHeight || 60) : 0 }}
+        className="-mx-4 sm:-mx-6 lg:-mx-8"
+      />
+
+      {/* Tab Navigation - switches between static and fixed */}
       <div
         ref={tabNavRef}
-        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-50 -mx-4 sm:-mx-6 lg:-mx-8 bg-white isolate"
-        style={{ isolation: 'isolate' }}
+        className={`-mx-4 sm:-mx-6 lg:-mx-8 bg-white border-b border-gray-200 shadow-lg ${
+          isTabsFixed
+            ? 'fixed left-0 right-0 z-[9999]'
+            : 'relative'
+        }`}
+        style={isTabsFixed ? { top: 'calc(var(--banner-offset, 40px) + 64px)' } : {}}
       >
-        <div className="border-b border-gray-200 shadow-lg relative z-10 bg-white">
         <div className="px-4 sm:px-6 lg:px-8 py-3">
           <div className="max-w-4xl mx-auto">
             {/* Desktop tabs */}
@@ -130,11 +161,10 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-        </div>
       </div>
 
-      {/* Tab Content - isolate creates independent stacking context, z-0 ensures it's below sticky nav */}
-      <div ref={contentRef} className="min-h-[60vh] relative isolate" style={{ zIndex: 0, isolation: 'isolate' }}>
+      {/* Tab Content */}
+      <div ref={contentRef} className="min-h-[60vh]">
         {activeTab === 'about' && <AboutContent />}
         {activeTab === 'why' && <WhyContent />}
         {activeTab === 'priorities' && <PrioritiesContent />}
