@@ -1,4 +1,5 @@
 "use client";
+import Image from 'next/image';
 import { useEffect, useState, useRef } from 'react';
 
 export default function EndorsementsPage() {
@@ -79,10 +80,12 @@ export default function EndorsementsPage() {
       {/* Hero */}
       <section className="hero-pattern hero-gradient text-center py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         {/* Logo accent */}
-        <img
+        <Image
           src="/wsr-logo.webp"
           alt=""
-          className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 opacity-80 pointer-events-none"
+          width={96}
+          height={64}
+          className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"
         />
         <div className="relative z-10">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-4 animate-fade-in-down">

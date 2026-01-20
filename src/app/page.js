@@ -39,15 +39,15 @@ export default function Home() {
           {/* Logo with entrance animation */}
           <div className="animate-fade-in-down">
             <h1 className="sr-only">Doug Charles for Prosper Town Council Place 5</h1>
-            <picture>
-              <source srcSet="/wsr-logo.webp" type="image/webp" />
-              <img
-                src="/wsr-logo.png"
-                alt="Doug Charles for Town Council Place 5 - A Common Sense Leader for All of Prosper"
-                className="mx-auto w-[320px] sm:w-[520px] md:w-[680px] lg:w-[800px] mb-8 drop-shadow-xl"
-                onError={(e) => { e.target.style.display = 'none'; }}
-              />
-            </picture>
+            <Image
+              src="/wsr-logo.webp"
+              alt="Doug Charles for Town Council Place 5 - A Common Sense Leader for All of Prosper"
+              width={800}
+              height={533}
+              priority
+              className="mx-auto w-full max-w-[320px] sm:max-w-[520px] md:max-w-[680px] lg:max-w-[800px] h-auto mb-8 drop-shadow-xl"
+              sizes="(max-width: 640px) 320px, (max-width: 768px) 520px, (max-width: 1024px) 680px, 800px"
+            />
           </div>
 
           <div className="space-y-6">
