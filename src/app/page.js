@@ -145,7 +145,7 @@ export default function Home() {
                   <ClipboardList className="w-8 h-8 text-navy" aria-hidden="true" />
                 </div>
                 <h3 className="text-xl font-bold mb-3 text-navy">Plan</h3>
-                <p className="text-gray-600">Build it right the first time. Right-size projects before we break ground. Think long-term so we're not fixing mistakes or asking for more money later.</p>
+                <p className="text-gray-600">Build it right the first time. Size projects correctly from the start. Think long-term so we're not fixing mistakes or asking for more money later.</p>
               </div>
             </Reveal>
 
