@@ -76,44 +76,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Bio Section - Always visible, outside tabs - z-0 ensures it's below sticky nav */}
-      <section className="py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-white relative z-0">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
-            <div className="w-full md:w-2/5 flex-shrink-0">
-              <Reveal direction="left">
-                <div className="relative max-w-[280px] md:max-w-[320px] mx-auto">
-                  <div className="absolute -inset-3 bg-gradient-to-br from-navy/10 to-prosper-red/10 rounded-2xl blur-xl"></div>
-                  <Image
-                    src="/headshot.jpg"
-                    alt="Doug Charles"
-                    width={320}
-                    height={400}
-                    className="relative rounded-xl shadow-navy-lg w-full"
-                  />
-                </div>
-              </Reveal>
-            </div>
-            <div className="w-full md:w-3/5">
-              <Reveal direction="right">
-                <div className="space-y-4 text-base md:text-lg text-gray-700 leading-relaxed">
-                  <p>
-                    I moved to <strong className="text-navy">Prosper 20 years ago</strong> for the same reasons you probably did—great schools, safe neighborhoods, and room to raise a family.
-                  </p>
-                  <p>
-                    I've served on the <strong className="text-navy">Planning & Zoning Commission</strong>, the <strong className="text-navy">2020 Bond Committee</strong>, and currently serve on the <strong className="text-navy">Windsong Ranch HOA Board</strong>.
-                  </p>
-                  <p className="text-prosper-red font-semibold">
-                    Whether you've been here 20 years or 2 months, you deserve a voice at the table.
-                  </p>
-                </div>
-              </Reveal>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Sticky Tab Navigation */}
+      {/* Sticky Tab Navigation - positioned right after hero */}
       <div
         ref={tabNavRef}
         className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-50 -mx-4 sm:-mx-6 lg:-mx-8 bg-white"
@@ -202,6 +165,43 @@ export default function AboutPage() {
 function AboutContent() {
   return (
     <>
+      {/* Bio Section */}
+      <section className="py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+            <div className="w-full md:w-2/5 flex-shrink-0">
+              <Reveal direction="left">
+                <div className="relative max-w-[280px] md:max-w-[320px] mx-auto">
+                  <div className="absolute -inset-3 bg-gradient-to-br from-navy/10 to-prosper-red/10 rounded-2xl blur-xl"></div>
+                  <Image
+                    src="/headshot.jpg"
+                    alt="Doug Charles"
+                    width={320}
+                    height={400}
+                    className="relative rounded-xl shadow-navy-lg w-full"
+                  />
+                </div>
+              </Reveal>
+            </div>
+            <div className="w-full md:w-3/5">
+              <Reveal direction="right">
+                <div className="space-y-4 text-base md:text-lg text-gray-700 leading-relaxed">
+                  <p>
+                    I moved to <strong className="text-navy">Prosper 20 years ago</strong> for the same reasons you probably did—great schools, safe neighborhoods, and room to raise a family.
+                  </p>
+                  <p>
+                    I've served on the <strong className="text-navy">Planning & Zoning Commission</strong>, the <strong className="text-navy">2020 Bond Committee</strong>, and currently serve on the <strong className="text-navy">Windsong Ranch HOA Board</strong>.
+                  </p>
+                  <p className="text-prosper-red font-semibold">
+                    Whether you've been here 20 years or 2 months, you deserve a voice at the table.
+                  </p>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Experience Section */}
       <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
