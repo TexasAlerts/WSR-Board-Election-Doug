@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -15,16 +15,18 @@ import {
 import Reveal from '../../components/Reveal';
 
 const TABS = [
-  { id: 'about', label: 'About Doug', icon: User },
-  { id: 'why', label: 'Why I\'m Running', icon: Heart },
-  { id: 'priorities', label: 'Priorities', icon: Target },
-  { id: 'track-record', label: 'Track Record', icon: Award },
+  { id: 'about', label: 'About Doug', shortLabel: 'About', icon: User },
+  { id: 'why', label: "Why I'm Running", shortLabel: 'Why', icon: Heart },
+  { id: 'priorities', label: 'Priorities', shortLabel: 'Goals', icon: Target },
+  { id: 'track-record', label: 'Track Record', shortLabel: 'Record', icon: Award },
 ];
 
 export default function AboutPage() {
   const [activeTab, setActiveTab] = useState('about');
+  const tabNavRef = useRef(null);
+  const contentRef = useRef(null);
 
-  // Handle hash-based navigation
+  // Handle hash-based navigation on mount
   useEffect(() => {
     const hash = window.location.hash.slice(1);
     if (hash && TABS.some(t => t.id === hash)) {
@@ -35,14 +37,26 @@ export default function AboutPage() {
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
     window.history.replaceState(null, '', `#${tabId}`);
-    // Scroll to show the tab content area
-    document.getElementById('tab-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Scroll to position content just below the sticky tabs
+    if (contentRef.current && tabNavRef.current) {
+      const tabNavHeight = tabNavRef.current.offsetHeight;
+      const mainNavHeight = 64;
+      const bannerHeight = 40; // Approximate banner height
+      const contentTop = contentRef.current.getBoundingClientRect().top + window.scrollY;
+      const scrollTarget = contentTop - mainNavHeight - bannerHeight - tabNavHeight - 8;
+
+      window.scrollTo({
+        top: Math.max(0, scrollTarget),
+        behavior: 'smooth'
+      });
+    }
   };
 
   return (
     <div className="space-y-0">
-      {/* Hero */}
-      <section className="hero-pattern hero-gradient text-center py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Hero - Compact */}
+      <section className="hero-pattern hero-gradient text-center py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-10 left-20 w-64 h-64 bg-navy/5 rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 right-20 w-48 h-48 bg-prosper-red/5 rounded-full blur-3xl"></div>
@@ -53,48 +67,108 @@ export default function AboutPage() {
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 opacity-80 pointer-events-none"
         />
         <div className="relative z-10">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-4 animate-fade-in-down">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy mb-3 animate-fade-in-down">
             Meet Doug Charles
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
             <strong>Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper
           </p>
         </div>
       </section>
 
-      {/* Tab Navigation */}
-      <section id="tab-nav" className="py-6 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-white border-b border-gray-100">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex justify-center gap-2 sm:gap-4">
-            {TABS.map((tab) => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => handleTabChange(tab.id)}
-                  className={`flex items-center gap-2 px-4 sm:px-6 py-3 rounded-lg font-semibold transition-all duration-300 min-h-[44px] ${
-                    activeTab === tab.id
-                      ? 'bg-navy text-white shadow-lg'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  <Icon className="w-5 h-5" aria-hidden="true" />
-                  <span className="hidden sm:inline">{tab.label}</span>
-                  <span className="sm:hidden text-sm">{
-                    tab.id === 'about' ? 'About' :
-                    tab.id === 'why' ? 'Why' :
-                    tab.id === 'priorities' ? 'Goals' :
-                    'Record'
-                  }</span>
-                </button>
-              );
-            })}
+      {/* Bio Section - Always visible, outside tabs */}
+      <section className="py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+            <div className="w-full md:w-2/5 flex-shrink-0">
+              <Reveal direction="left">
+                <div className="relative max-w-[280px] md:max-w-[320px] mx-auto">
+                  <div className="absolute -inset-3 bg-gradient-to-br from-navy/10 to-prosper-red/10 rounded-2xl blur-xl"></div>
+                  <Image
+                    src="/headshot.jpg"
+                    alt="Doug Charles"
+                    width={320}
+                    height={400}
+                    className="relative rounded-xl shadow-navy-lg w-full"
+                  />
+                </div>
+              </Reveal>
+            </div>
+            <div className="w-full md:w-3/5">
+              <Reveal direction="right">
+                <div className="space-y-4 text-base md:text-lg text-gray-700 leading-relaxed">
+                  <p>
+                    I moved to <strong className="text-navy">Prosper 20 years ago</strong> for the same reasons you probably did—great schools, safe neighborhoods, and room to raise a family.
+                  </p>
+                  <p>
+                    I've served on the <strong className="text-navy">Planning & Zoning Commission</strong>, the <strong className="text-navy">2020 Bond Committee</strong>, and currently serve on the <strong className="text-navy">Windsong Ranch HOA Board</strong>.
+                  </p>
+                  <p className="text-prosper-red font-semibold">
+                    Whether you've been here 20 years or 2 months, you deserve a voice at the table.
+                  </p>
+                </div>
+              </Reveal>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* Sticky Tab Navigation */}
+      <nav
+        ref={tabNavRef}
+        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-40 bg-white border-y border-gray-200 shadow-sm -mx-4 sm:-mx-6 lg:-mx-8"
+      >
+        <div className="px-4 sm:px-6 lg:px-8 py-3">
+          <div className="max-w-4xl mx-auto">
+            {/* Desktop tabs */}
+            <div className="hidden sm:flex justify-center gap-2 md:gap-3">
+              {TABS.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => handleTabChange(tab.id)}
+                    className={`flex items-center gap-2 px-4 md:px-5 py-2.5 rounded-lg font-semibold text-sm md:text-base transition-all duration-200 min-h-[44px] ${
+                      activeTab === tab.id
+                        ? 'bg-navy text-white shadow-md'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-navy'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4 md:w-5 md:h-5" aria-hidden="true" />
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Mobile tabs - horizontal scroll */}
+            <div className="sm:hidden overflow-x-auto scrollbar-hide -mx-4 px-4">
+              <div className="flex gap-2 min-w-max pb-1">
+                {TABS.map((tab) => {
+                  const Icon = tab.icon;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => handleTabChange(tab.id)}
+                      className={`flex items-center gap-1.5 px-3 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap transition-all duration-200 min-h-[44px] ${
+                        activeTab === tab.id
+                          ? 'bg-navy text-white shadow-md'
+                          : 'bg-gray-100 text-gray-600'
+                      }`}
+                    >
+                      <Icon className="w-4 h-4" aria-hidden="true" />
+                      <span>{tab.shortLabel}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       {/* Tab Content */}
-      <div id="tab-content" className="min-h-[50vh]">
+      <div ref={contentRef} className="min-h-[60vh]">
         {activeTab === 'about' && <AboutContent />}
         {activeTab === 'why' && <WhyContent />}
         {activeTab === 'priorities' && <PrioritiesContent />}
@@ -126,50 +200,15 @@ export default function AboutPage() {
 function AboutContent() {
   return (
     <>
-      {/* Bio Section */}
-      <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-5 gap-10 items-center">
-          <Reveal direction="left" className="md:col-span-2">
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-br from-navy/10 to-prosper-red/10 rounded-2xl blur-xl"></div>
-              <Image
-                src="/headshot.jpg"
-                alt="Doug Charles"
-                width={400}
-                height={500}
-                className="relative rounded-xl shadow-navy-lg mx-auto w-full max-w-[360px]"
-              />
-            </div>
-          </Reveal>
-
-          <Reveal direction="right" className="md:col-span-3 space-y-6">
-            <p className="text-lg text-gray-700 leading-relaxed">
-              I moved to <strong className="text-navy">Prosper</strong> <strong>20 years ago</strong> for the same reasons you probably did—great schools, safe neighborhoods, and room to raise a family. I've watched this town grow from a few thousand people to over 35,000, and I've welcomed every new neighbor along the way.
-            </p>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              In the last 5-7 years, as Prosper started changing from that "Small Town, Big Heart" feeling, I became more active in local government. I've raised my family here, served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and currently serve on the Windsong Ranch HOA Board.
-            </p>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              <strong className="text-prosper-red">Whether you've been here 20 years or 2 months, you deserve a voice at the table.</strong>
-            </p>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              <strong>This isn't about political agendas or party labels.</strong> It's about good governance for the place we all call home.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
       {/* Experience Section */}
-      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative">
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
-
+      <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <Reveal>
             <h2 className="section-title text-center mb-4">Experience & Service</h2>
             <p className="section-subtitle text-center">A proven track record of community leadership</p>
           </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
             <Reveal delay={0}>
               <div className="card h-full">
                 <div className="flex items-start gap-4">
@@ -222,7 +261,7 @@ function AboutContent() {
       </section>
 
       {/* Professional Background */}
-      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative">
+      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 md:py-20 relative">
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
         <div className="max-w-4xl mx-auto">
           <Reveal>
@@ -248,9 +287,9 @@ function WhyContent() {
   return (
     <>
       {/* Main Content */}
-      <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+      <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
-          <div className="space-y-8 text-lg text-gray-700 leading-relaxed">
+          <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
             <Reveal>
               <p>
                 Prosper is <strong className="text-navy">growing fast</strong>. That's not necessarily bad—but it means we need to be <strong className="text-navy">thoughtful about the decisions ahead</strong>.
@@ -273,7 +312,7 @@ function WhyContent() {
       </section>
 
       {/* Key Message */}
-      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative">
+      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 md:py-20 relative">
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
 
         <div className="max-w-3xl mx-auto">
@@ -291,14 +330,14 @@ function WhyContent() {
       </section>
 
       {/* What I'll Do Differently */}
-      <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+      <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <Reveal>
             <h2 className="section-title text-center mb-4">What I'll Do Differently</h2>
             <p className="section-subtitle text-center"><strong>Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper</p>
           </Reveal>
 
-          <div className="grid gap-6 md:grid-cols-2 mt-12">
+          <div className="grid gap-6 md:grid-cols-2 mt-10">
             <Reveal delay={0}>
               <div className="card h-full">
                 <h3 className="text-xl font-bold text-navy mb-3">Listen Before Deciding</h3>
@@ -339,7 +378,7 @@ function WhyContent() {
       </section>
 
       {/* The Stakes */}
-      <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
           <Reveal>
             <div className="quote-enhanced">
@@ -362,8 +401,8 @@ function PrioritiesContent() {
   return (
     <>
       {/* Three Pillars */}
-      <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 gap-8 md:grid-cols-3">
+      <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
           <Reveal delay={0}>
             <div className="card text-center h-full">
               <div className="icon-container-lg">
@@ -403,7 +442,7 @@ function PrioritiesContent() {
       </section>
 
       {/* Detailed Priorities */}
-      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative">
+      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 md:py-20 relative">
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
 
         <div className="max-w-4xl mx-auto">
@@ -412,7 +451,7 @@ function PrioritiesContent() {
             <p className="section-subtitle text-center">Practical solutions for our community</p>
           </Reveal>
 
-          <div className="space-y-6 mt-12">
+          <div className="space-y-6 mt-10">
             <Reveal delay={0}>
               <div className="card">
                 <h3 className="text-xl font-bold text-navy mb-4">Transparent Government</h3>
@@ -468,18 +507,18 @@ function TrackRecordContent() {
   return (
     <>
       {/* Proven Track Record */}
-      <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+      <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <Reveal>
             <h2 className="section-title text-center mb-4">Proven Track Record</h2>
             <p className="section-subtitle text-center">Results, not just promises</p>
           </Reveal>
 
-          <div className="space-y-6 mt-12">
+          <div className="space-y-5 mt-10">
             <Reveal delay={0}>
               <div className="card">
-                <div className="flex items-start gap-4">
-                  <div className="text-sm font-bold text-navy whitespace-nowrap">Nov 2019</div>
+                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap bg-navy/5 px-3 py-1 rounded-full self-start">Nov 2019</div>
                   <div>
                     <h3 className="text-lg font-bold text-navy mb-2">Organized 585 Residents to Protect Neighborhood Standards</h3>
                     <p className="text-gray-600 mb-2">As Prosper's growth accelerated, I wanted to <strong className="text-navy">protect the community</strong> I moved to while embracing <strong className="text-navy">positive growth</strong>. When a developer sought to allow 40-foot lots and "4-pack" homes in Windsong Ranch, I organized a petition that gathered <strong className="text-prosper-red">585 signatures in 48 hours</strong>. The Planning & Zoning Commission voted <strong className="text-navy">7-0 against</strong> the proposal.</p>
@@ -491,8 +530,8 @@ function TrackRecordContent() {
 
             <Reveal delay={50}>
               <div className="card">
-                <div className="flex items-start gap-4">
-                  <div className="text-sm font-bold text-navy whitespace-nowrap">Aug 2020</div>
+                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap bg-navy/5 px-3 py-1 rounded-full self-start">Aug 2020</div>
                   <div>
                     <h3 className="text-lg font-bold text-navy mb-2">Advocated for Neighborhood Character</h3>
                     <p className="text-gray-600 mb-2">Spoke at Town Council questioning whether new home designs fit existing <strong className="text-navy">neighborhood character</strong>.</p>
@@ -504,8 +543,8 @@ function TrackRecordContent() {
 
             <Reveal delay={100}>
               <div className="card">
-                <div className="flex items-start gap-4">
-                  <div className="text-sm font-bold text-navy whitespace-nowrap">Nov 2020</div>
+                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap bg-navy/5 px-3 py-1 rounded-full self-start">Nov 2020</div>
                   <div>
                     <h3 className="text-lg font-bold text-navy mb-2">Bond Election Committee</h3>
                     <p className="text-gray-600">Helped pass <strong className="text-navy">$210M</strong> in bonds for roads, parks, and facilities—infrastructure investments that continue to benefit Prosper residents today.</p>
@@ -516,8 +555,8 @@ function TrackRecordContent() {
 
             <Reveal delay={150}>
               <div className="card">
-                <div className="flex items-start gap-4">
-                  <div className="text-sm font-bold text-navy whitespace-nowrap">Sept 2021</div>
+                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap bg-navy/5 px-3 py-1 rounded-full self-start">Sept 2021</div>
                   <div>
                     <h3 className="text-lg font-bold text-navy mb-2">Advocated for Tax Relief & Public Safety Investment</h3>
                     <p className="text-gray-600 mb-2">Appeared before Town Council to advocate for a <strong className="text-navy">4-cent property tax rate reduction</strong> while simultaneously calling for a <strong className="text-prosper-red">7% pay increase for Police and Fire</strong> personnel. Challenged the Town's excessive reserves, arguing taxpayer money should be returned or invested in infrastructure—not hoarded. This <strong className="text-navy">consistent support for public safety</strong> continued in 2025, when I advocated for the public safety bond propositions.</p>
@@ -528,8 +567,8 @@ function TrackRecordContent() {
 
             <Reveal delay={200}>
               <div className="card">
-                <div className="flex items-start gap-4">
-                  <div className="text-sm font-bold text-navy whitespace-nowrap">2021-2023</div>
+                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap bg-navy/5 px-3 py-1 rounded-full self-start">2021-2023</div>
                   <div>
                     <h3 className="text-lg font-bold text-navy mb-2">Planning & Zoning Commissioner</h3>
                     <p className="text-gray-600">Reviewed <strong className="text-navy">hundreds of development applications</strong>. Learned firsthand how land use decisions impact neighborhoods—and how to <strong className="text-navy">ask the right questions</strong>.</p>
@@ -540,8 +579,8 @@ function TrackRecordContent() {
 
             <Reveal delay={250}>
               <div className="card">
-                <div className="flex items-start gap-4">
-                  <div className="text-sm font-bold text-navy whitespace-nowrap">Nov 2023</div>
+                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap bg-navy/5 px-3 py-1 rounded-full self-start">Nov 2023</div>
                   <div>
                     <h3 className="text-lg font-bold text-navy mb-2">Advocated for Fiscal Responsibility in PISD Bond</h3>
                     <p className="text-gray-600 mb-2">Consistent advocacy for <strong className="text-navy">fiscal responsibility</strong> means being willing to take a stand where <strong className="text-prosper-red">common sense</strong> matters. During the <strong className="text-navy">$2.7 billion</strong> PISD bond election, I spoke publicly about smart spending priorities. Voters agreed—passing three propositions while <strong className="text-navy">rejecting the $102 million stadium bond</strong>.</p>
@@ -553,8 +592,8 @@ function TrackRecordContent() {
 
             <Reveal delay={300}>
               <div className="card">
-                <div className="flex items-start gap-4">
-                  <div className="text-sm font-bold text-navy whitespace-nowrap">Apr 2025</div>
+                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap bg-navy/5 px-3 py-1 rounded-full self-start">Apr 2025</div>
                   <div>
                     <h3 className="text-lg font-bold text-navy mb-2">Filed Ethics Complaint on Outside PAC Spending</h3>
                     <p className="text-gray-600 mb-2">I pay attention to the details and <strong className="text-navy">follow the money</strong> to ensure voters know who is supporting candidates making decisions in our town and ISD. When a Washington D.C.-based PAC spent <strong className="text-prosper-red">$50,000</strong> on Prosper ISD races without transparency, I filed a formal complaint with the <strong className="text-navy">Texas Ethics Commission</strong>. The Dallas Morning News Editorial Board noted my transparency, contrasting it with secretive outside groups.</p>
@@ -566,8 +605,8 @@ function TrackRecordContent() {
 
             <Reveal delay={350}>
               <div className="card">
-                <div className="flex items-start gap-4">
-                  <div className="text-sm font-bold text-navy whitespace-nowrap">Oct 2025</div>
+                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap bg-navy/5 px-3 py-1 rounded-full self-start">Oct 2025</div>
                   <div>
                     <h3 className="text-lg font-bold text-navy mb-2">Windsong Ranch HOA Board</h3>
                     <p className="text-gray-600"><strong className="text-navy">Elected by neighbors</strong> to serve on the board of one of Prosper's largest communities.</p>
@@ -578,8 +617,8 @@ function TrackRecordContent() {
 
             <Reveal delay={400}>
               <div className="card">
-                <div className="flex items-start gap-4">
-                  <div className="text-sm font-bold text-navy whitespace-nowrap">Nov 2025</div>
+                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap bg-navy/5 px-3 py-1 rounded-full self-start">Nov 2025</div>
                   <div>
                     <h3 className="text-lg font-bold text-navy mb-2">Common Sense on Bond Proposals</h3>
                     <p className="text-gray-600 mb-2">When some 2025 bond proposals seemed undersized, said publicly: voters agreed, passing <strong className="text-navy">infrastructure and public safety bonds</strong> while rejecting undersized facilities.</p>
@@ -591,8 +630,8 @@ function TrackRecordContent() {
 
             <Reveal delay={450}>
               <div className="card">
-                <div className="flex items-start gap-4">
-                  <div className="text-sm font-bold text-navy whitespace-nowrap">Dec 2025</div>
+                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                  <div className="text-sm font-bold text-navy whitespace-nowrap bg-navy/5 px-3 py-1 rounded-full self-start">Dec 2025</div>
                   <div>
                     <h3 className="text-lg font-bold text-navy mb-2">PISD Annexation Victory</h3>
                     <p className="text-gray-600 mb-2">Led petition to bring <strong className="text-prosper-red">$6.5 million+</strong> in annual property taxes home to Prosper ISD. Currently, <strong className="text-navy">274 Windsong Ranch students</strong> attend Prosper ISD schools, yet their property taxes go to <strong className="text-navy">Denton ISD—which provides zero educational services</strong>. With <strong className="text-prosper-red">52.6% of registered voters</strong> signing the petition, Prosper ISD Board approved unanimously on December 15, 2025. Now awaiting TEA Commissioner final decision.</p>
