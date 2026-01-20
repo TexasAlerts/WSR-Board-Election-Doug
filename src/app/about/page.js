@@ -1,10 +1,40 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import {
+  Ear,
+  ClipboardList,
+  ShieldCheck,
+  User,
+  Target,
+  Heart,
+} from 'lucide-react';
 import Reveal from '../../components/Reveal';
 
+const TABS = [
+  { id: 'about', label: 'About Doug', icon: User },
+  { id: 'why', label: 'Why I\'m Running', icon: Heart },
+  { id: 'priorities', label: 'Priorities', icon: Target },
+];
+
 export default function AboutPage() {
+  const [activeTab, setActiveTab] = useState('about');
+
+  // Handle hash-based navigation
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash && TABS.some(t => t.id === hash)) {
+      setActiveTab(hash);
+    }
+  }, []);
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    window.history.replaceState(null, '', `#${tabId}`);
+  };
+
   return (
     <div className="space-y-0">
       {/* Hero */}
@@ -13,7 +43,6 @@ export default function AboutPage() {
           <div className="absolute top-10 left-20 w-64 h-64 bg-navy/5 rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 right-20 w-48 h-48 bg-prosper-red/5 rounded-full blur-3xl"></div>
         </div>
-        {/* Logo accent */}
         <img
           src="/wsr-logo.webp"
           alt=""
@@ -21,14 +50,72 @@ export default function AboutPage() {
         />
         <div className="relative z-10">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-4 animate-fade-in-down">
-            About Doug
+            Meet Doug Charles
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
-            <strong>Proven Track Record</strong> · <strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper
+            <strong>Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper
           </p>
         </div>
       </section>
 
+      {/* Tab Navigation */}
+      <section className="py-6 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-white border-b border-gray-100 sticky top-[calc(var(--banner-offset,40px)+64px)] z-30">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex justify-center gap-2 sm:gap-4">
+            {TABS.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabChange(tab.id)}
+                  className={`flex items-center gap-2 px-4 sm:px-6 py-3 rounded-lg font-semibold transition-all duration-300 min-h-[44px] ${
+                    activeTab === tab.id
+                      ? 'bg-navy text-white shadow-lg'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  <Icon className="w-5 h-5" aria-hidden="true" />
+                  <span className="hidden sm:inline">{tab.label}</span>
+                  <span className="sm:hidden text-sm">{tab.id === 'about' ? 'About' : tab.id === 'why' ? 'Why' : 'Goals'}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Tab Content */}
+      <div className="min-h-[50vh]">
+        {activeTab === 'about' && <AboutContent />}
+        {activeTab === 'why' && <WhyContent />}
+        {activeTab === 'priorities' && <PrioritiesContent />}
+      </div>
+
+      {/* CTA */}
+      <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16">
+        <div className="max-w-3xl mx-auto text-center relative z-10">
+          <Reveal>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6">Ready to Get Involved?</h2>
+          </Reveal>
+          <Reveal delay={100}>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/get-involved" className="btn-white">
+                Join the Campaign
+              </Link>
+              <Link href="/donate" className="btn-secondary">
+                Donate
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function AboutContent() {
+  return (
+    <>
       {/* Bio Section */}
       <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto grid md:grid-cols-5 gap-10 items-center">
@@ -282,25 +369,226 @@ export default function AboutPage() {
           </Reveal>
         </div>
       </section>
+    </>
+  );
+}
 
-      {/* CTA */}
-      <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16">
-        <div className="max-w-3xl mx-auto text-center relative z-10">
+function WhyContent() {
+  return (
+    <>
+      {/* Main Content */}
+      <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto">
+          <div className="space-y-8 text-lg text-gray-700 leading-relaxed">
+            <Reveal>
+              <p>
+                Prosper is <strong className="text-navy">growing fast</strong>. That's not necessarily bad—but it means we need to be <strong className="text-navy">thoughtful about the decisions ahead</strong>.
+              </p>
+            </Reveal>
+
+            <Reveal delay={100}>
+              <p>
+                I've been <strong className="text-navy">in the room where these decisions get made</strong>. I've read the development applications, asked the hard questions, and seen what happens when we plan well—and when we don't.
+              </p>
+            </Reveal>
+
+            <Reveal delay={200}>
+              <p>
+                I'm running to bring that <strong className="text-prosper-red">experience to the Town Council</strong>, and to make sure <strong className="text-navy">every resident's voice is heard</strong>.
+              </p>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Key Message */}
+      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
+
+        <div className="max-w-3xl mx-auto">
           <Reveal>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6">Ready to Learn More?</h2>
-          </Reveal>
-          <Reveal delay={100}>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/priorities" className="btn-white">
-                See My Priorities
-              </Link>
-              <Link href="/why" className="btn-secondary">
-                Why I'm Running
-              </Link>
+            <div className="card text-center">
+              <h2 className="text-2xl sm:text-3xl font-bold text-navy mb-4">
+                Town Council isn't about party labels.
+              </h2>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                It's about <strong className="text-navy">potholes, parks, and planning</strong>. It's about whether the roads work, growth happens thoughtfully, and <strong className="text-prosper-red">Prosper keeps its character</strong>.
+              </p>
             </div>
           </Reveal>
         </div>
       </section>
-    </div>
+
+      {/* What I'll Do Differently */}
+      <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <h2 className="section-title text-center mb-4">What I'll Do Differently</h2>
+            <p className="section-subtitle text-center"><strong>Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper</p>
+          </Reveal>
+
+          <div className="grid gap-6 md:grid-cols-2 mt-12">
+            <Reveal delay={0}>
+              <div className="card h-full">
+                <h3 className="text-xl font-bold text-navy mb-3">Listen Before Deciding</h3>
+                <p className="text-gray-600">
+                  Too often, residents feel like decisions are made before their input is gathered. I'll push for <strong className="text-navy">meaningful public engagement early</strong> in the process—not after the plans are already drawn.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={100}>
+              <div className="card h-full">
+                <h3 className="text-xl font-bold text-navy mb-3">Ask the Hard Questions</h3>
+                <p className="text-gray-600">
+                  What will this cost long-term? Does our infrastructure support this? What do residents actually want? I'll bring the same <strong className="text-navy">analytical approach</strong> I use professionally to every council decision.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={200}>
+              <div className="card h-full">
+                <h3 className="text-xl font-bold text-navy mb-3">Focus on Results</h3>
+                <p className="text-gray-600">
+                  <strong className="text-navy">No grandstanding, no political theater.</strong> Just thoughtful governance focused on making Prosper better for everyone who lives here.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={300}>
+              <div className="card h-full">
+                <h3 className="text-xl font-bold text-navy mb-3">Be Accessible</h3>
+                <p className="text-gray-600">
+                  Your council members should be <strong className="text-navy">easy to reach</strong>. I'll be available to residents—not just during campaign season, but <strong className="text-prosper-red">throughout my term</strong>.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* The Stakes */}
+      <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto">
+          <Reveal>
+            <div className="quote-enhanced">
+              <h2 className="text-xl font-bold text-navy mb-4 not-italic">The Stakes Are High</h2>
+              <p className="text-gray-700 leading-relaxed mb-4 not-italic">
+                The decisions we make in the next few years will <strong className="text-navy">shape Prosper for decades</strong>. We're deciding where roads go, what gets built, and how we balance growth with quality of life.
+              </p>
+              <p className="text-gray-700 leading-relaxed not-italic">
+                These decisions are too important to leave to chance. They deserve <strong className="text-prosper-red">experienced, thoughtful leadership</strong> from someone who knows Prosper and cares about its future.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function PrioritiesContent() {
+  return (
+    <>
+      {/* Three Pillars */}
+      <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 gap-8 md:grid-cols-3">
+          <Reveal delay={0}>
+            <div className="card text-center h-full">
+              <div className="icon-container-lg">
+                <Ear className="w-10 h-10 text-navy" aria-hidden="true" />
+              </div>
+              <h2 className="text-2xl font-bold mb-4 text-navy">Listen</h2>
+              <p className="text-gray-600 leading-relaxed">
+                Good decisions start with <strong className="text-navy">hearing from residents</strong>—not as an afterthought, but <strong className="text-prosper-red">from the beginning</strong>. Your voice should shape outcomes <strong className="text-navy">before votes are taken</strong>. That's why I'll hold periodic <strong className="text-navy">"Coffee with Doug"</strong> sessions at local spots where any Prosper resident can meet with me directly—no appointment needed.
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={150}>
+            <div className="card text-center h-full">
+              <div className="icon-container-lg">
+                <ClipboardList className="w-10 h-10 text-navy" aria-hidden="true" />
+              </div>
+              <h2 className="text-2xl font-bold mb-4 text-navy">Plan</h2>
+              <p className="text-gray-600 leading-relaxed">
+                <strong className="text-navy">Build it right the first time.</strong> Size projects correctly from the start so we don't run out of money halfway through. <strong className="text-prosper-red">Think long-term</strong> so we're not fixing mistakes or asking for more money later.
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={300}>
+            <div className="card text-center h-full">
+              <div className="icon-container-lg">
+                <ShieldCheck className="w-10 h-10 text-navy" aria-hidden="true" />
+              </div>
+              <h2 className="text-2xl font-bold mb-4 text-navy">Protect</h2>
+              <p className="text-gray-600 leading-relaxed">
+                Prosper isn't just another suburb—it's <strong className="text-navy">Friday night football under the lights</strong>, <strong className="text-prosper-red">Small Town Big Heart</strong>, and downtown festivals that bring neighbors together. Growth should <strong className="text-navy">add to that story</strong>, not erase it.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Detailed Priorities */}
+      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
+
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <h2 className="section-title text-center mb-4">What This Means for Prosper</h2>
+            <p className="section-subtitle text-center">Practical solutions for our community</p>
+          </Reveal>
+
+          <div className="space-y-6 mt-12">
+            <Reveal delay={0}>
+              <div className="card">
+                <h3 className="text-xl font-bold text-navy mb-4">Transparent Government</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Every resident deserves to know what their local government is doing and why. I'll push for <strong className="text-navy">earlier public input</strong> on major decisions, <strong className="text-navy">clearer communication</strong> about town projects, and more accessible council meetings. The best decisions happen when residents are <strong className="text-prosper-red">informed and engaged from the start</strong>.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={100}>
+              <div className="card">
+                <h3 className="text-xl font-bold text-navy mb-4">Responsible Growth</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Prosper is growing whether we like it or not. The question is whether we <strong className="text-navy">manage that growth wisely</strong>. That means <strong className="text-navy">holding developers accountable</strong> for the infrastructure their projects require, attracting businesses so <strong className="text-navy">homeowners don't carry the full tax burden</strong>, and protecting the quality of life that brought us all here. Growth should benefit <strong className="text-prosper-red">existing residents, not just developers</strong>—and that includes ensuring our fire and police have the capacity to keep pace with new rooftops.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={200}>
+              <div className="card">
+                <h3 className="text-xl font-bold text-navy mb-4">Fiscal Responsibility</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Your tax dollars should be spent wisely. That means <strong className="text-navy">right-sizing projects from the start</strong>, planning for long-term maintenance costs, and being honest about what things really cost. I've worked on the <strong className="text-navy">bond committee</strong> and <strong className="text-navy">Planning & Zoning Commission</strong>—I know how to read a budget and <strong className="text-prosper-red">ask the tough questions</strong>.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={300}>
+              <div className="card">
+                <h3 className="text-xl font-bold text-navy mb-4">Community Character</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Prosper isn't just another suburb. We have a character worth preserving—<strong className="text-navy">Friday night football</strong> at Children's Health Stadium, the <strong className="text-prosper-red">"Small Town, Big Heart"</strong> spirit, downtown festivals, and neighbors who still wave from their driveways. Every zoning decision, every development approval, should <strong className="text-navy">strengthen what makes Prosper special</strong>—not dilute it.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={400}>
+              <div className="card">
+                <h3 className="text-xl font-bold text-navy mb-4">Strategic Commercial Development</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Prosper ranks <strong className="text-prosper-red">#8 among the wealthiest zip codes in Texas</strong> (Source: US Census). Our tollway corridor and remaining commercial development should reflect that—not strip malls and fast food chains. With <strong className="text-navy">The Fields, PGA, and Universal Theme Park</strong> right next door, let's build a commercial base that draws people to <strong className="text-navy">our downtown, our retail, our restaurants</strong>. By creating the right environment for high-end commercial development, we can attract jobs and destinations Prosper residents will enjoy.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
