@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -21,13 +22,91 @@ const TABS = [
   { id: 'track-record', label: 'Track Record', shortLabel: 'Record', icon: Award },
 ];
 
+// Tab navigation component that renders via portal when fixed
+function TabNavigation({ activeTab, onTabChange, isFixed, tabNavRef }) {
+  const content = (
+    <div
+      ref={tabNavRef}
+      className={`bg-white border-b border-gray-200 shadow-lg ${
+        isFixed ? 'fixed left-0 right-0' : ''
+      }`}
+      style={isFixed ? {
+        top: 'calc(var(--banner-offset, 40px) + 64px)',
+        zIndex: 9999,
+      } : {}}
+    >
+      <div className="px-4 sm:px-6 lg:px-8 py-3">
+        <div className="max-w-4xl mx-auto">
+          {/* Desktop tabs */}
+          <div className="hidden sm:flex justify-center gap-2 md:gap-3">
+            {TABS.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => onTabChange(tab.id)}
+                  className={`flex items-center gap-2 px-4 md:px-5 py-2.5 rounded-lg font-semibold text-sm md:text-base transition-all duration-200 min-h-[44px] ${
+                    activeTab === tab.id
+                      ? 'bg-navy text-white shadow-md'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-navy'
+                  }`}
+                >
+                  <Icon className="w-4 h-4 md:w-5 md:h-5" aria-hidden="true" />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Mobile tabs - horizontal scroll */}
+          <div className="sm:hidden overflow-x-auto scrollbar-hide -mx-4 px-4">
+            <div className="flex gap-2 min-w-max pb-1">
+              {TABS.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => onTabChange(tab.id)}
+                    className={`flex items-center gap-1.5 px-3 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap transition-all duration-200 min-h-[44px] ${
+                      activeTab === tab.id
+                        ? 'bg-navy text-white shadow-md'
+                        : 'bg-gray-100 text-gray-600'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" aria-hidden="true" />
+                    <span>{tab.shortLabel}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // When fixed, render via portal to body to escape all stacking contexts
+  if (isFixed && typeof document !== 'undefined') {
+    return createPortal(content, document.body);
+  }
+
+  return content;
+}
+
 export default function AboutPage() {
   const [activeTab, setActiveTab] = useState('about');
   const [isTabsFixed, setIsTabsFixed] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const tabNavRef = useRef(null);
   const tabPlaceholderRef = useRef(null);
   const contentRef = useRef(null);
   const heroRef = useRef(null);
+  const [tabHeight, setTabHeight] = useState(60);
+
+  // Ensure component is mounted before using portals
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Handle hash-based navigation on mount
   useEffect(() => {
@@ -36,6 +115,13 @@ export default function AboutPage() {
       setActiveTab(hash);
     }
   }, []);
+
+  // Measure tab height for placeholder
+  useEffect(() => {
+    if (tabNavRef.current) {
+      setTabHeight(tabNavRef.current.offsetHeight);
+    }
+  }, [mounted]);
 
   // Handle scroll to toggle fixed positioning
   useEffect(() => {
@@ -63,9 +149,8 @@ export default function AboutPage() {
     if (contentRef.current) {
       const bannerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--banner-offset') || '40', 10);
       const mainNavHeight = 64;
-      const tabNavHeight = tabNavRef.current?.offsetHeight || 60;
       const contentTop = contentRef.current.getBoundingClientRect().top + window.scrollY;
-      const scrollTarget = contentTop - mainNavHeight - bannerHeight - tabNavHeight - 8;
+      const scrollTarget = contentTop - mainNavHeight - bannerHeight - tabHeight - 8;
 
       window.scrollTo({
         top: Math.max(0, scrollTarget),
@@ -100,68 +185,31 @@ export default function AboutPage() {
       {/* Placeholder to prevent layout shift when tabs become fixed */}
       <div
         ref={tabPlaceholderRef}
-        style={{ height: isTabsFixed ? (tabNavRef.current?.offsetHeight || 60) : 0 }}
+        style={{ height: isTabsFixed ? tabHeight : 0 }}
         className="-mx-4 sm:-mx-6 lg:-mx-8"
       />
 
-      {/* Tab Navigation - switches between static and fixed */}
-      <div
-        ref={tabNavRef}
-        className={`-mx-4 sm:-mx-6 lg:-mx-8 bg-white border-b border-gray-200 shadow-lg ${
-          isTabsFixed
-            ? 'fixed left-0 right-0 z-[9999]'
-            : 'relative'
-        }`}
-        style={isTabsFixed ? { top: 'calc(var(--banner-offset, 40px) + 64px)' } : {}}
-      >
-        <div className="px-4 sm:px-6 lg:px-8 py-3">
-          <div className="max-w-4xl mx-auto">
-            {/* Desktop tabs */}
-            <div className="hidden sm:flex justify-center gap-2 md:gap-3">
-              {TABS.map((tab) => {
-                const Icon = tab.icon;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => handleTabChange(tab.id)}
-                    className={`flex items-center gap-2 px-4 md:px-5 py-2.5 rounded-lg font-semibold text-sm md:text-base transition-all duration-200 min-h-[44px] ${
-                      activeTab === tab.id
-                        ? 'bg-navy text-white shadow-md'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-navy'
-                    }`}
-                  >
-                    <Icon className="w-4 h-4 md:w-5 md:h-5" aria-hidden="true" />
-                    <span>{tab.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Mobile tabs - horizontal scroll */}
-            <div className="sm:hidden overflow-x-auto scrollbar-hide -mx-4 px-4">
-              <div className="flex gap-2 min-w-max pb-1">
-                {TABS.map((tab) => {
-                  const Icon = tab.icon;
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => handleTabChange(tab.id)}
-                      className={`flex items-center gap-1.5 px-3 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap transition-all duration-200 min-h-[44px] ${
-                        activeTab === tab.id
-                          ? 'bg-navy text-white shadow-md'
-                          : 'bg-gray-100 text-gray-600'
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" aria-hidden="true" />
-                      <span>{tab.shortLabel}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Tab Navigation - uses portal when fixed to escape stacking contexts */}
+      <div className={isTabsFixed ? 'hidden' : '-mx-4 sm:-mx-6 lg:-mx-8'}>
+        {mounted && (
+          <TabNavigation
+            activeTab={activeTab}
+            onTabChange={handleTabChange}
+            isFixed={isTabsFixed}
+            tabNavRef={tabNavRef}
+          />
+        )}
       </div>
+
+      {/* Portal-rendered fixed tabs (when scrolled) */}
+      {mounted && isTabsFixed && (
+        <TabNavigation
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          isFixed={true}
+          tabNavRef={null}
+        />
+      )}
 
       {/* Tab Content */}
       <div ref={contentRef} className="min-h-[60vh]">
