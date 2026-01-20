@@ -306,30 +306,35 @@ export default function IdeasPage() {
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label className="form-label">Your Name *</label>
+                  <label htmlFor="idea-name" className="form-label">Your Name *</label>
                   <input
+                    id="idea-name"
                     type="text"
                     required
                     value={submitForm.name}
                     onChange={e => setSubmitForm({ ...submitForm, name: e.target.value })}
                     className="form-input"
+                    autoComplete="name"
                   />
                 </div>
 
                 <div>
-                  <label className="form-label">Your Email *</label>
+                  <label htmlFor="idea-email" className="form-label">Your Email *</label>
                   <input
+                    id="idea-email"
                     type="email"
                     required
                     value={submitForm.email}
                     onChange={e => setSubmitForm({ ...submitForm, email: e.target.value })}
                     className="form-input"
+                    autoComplete="email"
                   />
                 </div>
 
                 <div>
-                  <label className="form-label">Category *</label>
+                  <label htmlFor="idea-category" className="form-label">Category *</label>
                   <select
+                    id="idea-category"
                     value={submitForm.category}
                     onChange={e => setSubmitForm({ ...submitForm, category: e.target.value })}
                     className="form-input"
@@ -343,8 +348,9 @@ export default function IdeasPage() {
                 </div>
 
                 <div>
-                  <label className="form-label">Title *</label>
+                  <label htmlFor="idea-title" className="form-label">Title *</label>
                   <input
+                    id="idea-title"
                     type="text"
                     required
                     minLength={5}
@@ -352,12 +358,15 @@ export default function IdeasPage() {
                     onChange={e => setSubmitForm({ ...submitForm, title: e.target.value })}
                     className="form-input"
                     placeholder="Give your idea a clear title"
+                    aria-describedby="title-hint"
                   />
+                  <p id="title-hint" className="text-xs text-gray-500 mt-1">At least 5 characters</p>
                 </div>
 
                 <div>
-                  <label className="form-label">Description *</label>
+                  <label htmlFor="idea-content" className="form-label">Description *</label>
                   <textarea
+                    id="idea-content"
                     required
                     minLength={20}
                     rows={5}
@@ -365,7 +374,9 @@ export default function IdeasPage() {
                     onChange={e => setSubmitForm({ ...submitForm, content: e.target.value })}
                     className="form-input"
                     placeholder="Describe your idea in detail..."
+                    aria-describedby="content-hint"
                   />
+                  <p id="content-hint" className="text-xs text-gray-500 mt-1">At least 20 characters</p>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -418,14 +429,16 @@ export default function IdeasPage() {
               <p className="text-gray-600 text-sm mb-4">Enter your email to show your support for this idea.</p>
               <form onSubmit={submitSupport} className="space-y-4">
                 <div>
-                  <label className="form-label">Email *</label>
+                  <label htmlFor="support-email" className="form-label">Email *</label>
                   <input
+                    id="support-email"
                     type="email"
                     required
                     value={supportEmail}
                     onChange={e => setSupportEmail(e.target.value)}
                     className="form-input"
                     placeholder="you@example.com"
+                    autoComplete="email"
                   />
                 </div>
                 {supportMsg && (

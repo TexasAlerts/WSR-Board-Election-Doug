@@ -38,6 +38,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           {/* Logo with entrance animation */}
           <div className="animate-fade-in-down">
+            <h1 className="sr-only">Doug Charles for Prosper Town Council Place 5</h1>
             <picture>
               <source srcSet="/wsr-logo.webp" type="image/webp" />
               <img
@@ -146,7 +147,7 @@ export default function Home() {
                 <ShieldCheck className="w-8 h-8 text-navy" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-bold mb-3 text-navy">Protect</h3>
-              <p className="text-gray-600">Prosper isn't just another suburb—it's Friday night football under the lights, Small Town Big Heart, and downtown festivals that bring neighbors together.</p>
+              <p className="text-gray-600">Prosper isn't just another suburb—it's Friday night football under the lights, Small Town, Big Heart, and downtown festivals that bring neighbors together.</p>
             </div>
           </div>
 
