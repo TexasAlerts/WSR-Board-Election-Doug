@@ -6,6 +6,14 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
+    screens: {
+      'xs': '375px',  // Extra small (iPhone SE, small Android)
+      'sm': '640px',  // Small (default)
+      'md': '768px',  // Medium (tablets)
+      'lg': '1024px', // Large (laptops)
+      'xl': '1280px', // Extra large
+      '2xl': '1536px', // 2XL
+    },
     extend: {
       fontFamily: {
         heading: ['Oswald', 'sans-serif'],

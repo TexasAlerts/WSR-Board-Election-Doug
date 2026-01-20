@@ -80,17 +80,20 @@ export default function RootLayout({ children }) {
           Skip to main content
         </a>
         {/* Key dates banner */}
-        <header className="bg-navy text-white text-sm sm:text-base py-2 px-4 sticky top-0 z-50 shadow-md">
-          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-y-1 lg:gap-y-0 max-w-6xl mx-auto">
-            <div className="flex flex-wrap justify-center lg:justify-start gap-x-4 gap-y-1 w-full min-w-0 text-center lg:text-left">
+        <header className="bg-navy text-white text-sm py-2 px-3 sm:px-4 sticky top-0 z-50 shadow-md">
+          <div className="flex items-center justify-between gap-2 max-w-6xl mx-auto">
+            {/* Mobile: Compact single line | Desktop: Full dates */}
+            <div className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm min-w-0">
               {KEY_DATES.map((item, idx) => (
-                <div key={idx} className="whitespace-nowrap min-w-0 truncate">
-                  <strong>{item.label}</strong> – {item.date}
+                <div key={idx} className="whitespace-nowrap flex items-center gap-1">
+                  <span className="font-bold">{item.label}</span>
+                  <span className="hidden xs:inline">–</span>
+                  <span className="text-white/90">{item.date}</span>
                 </div>
               ))}
             </div>
-            <div className="whitespace-nowrap text-center lg:text-right font-semibold text-prosper-red bg-white px-3 py-1 rounded-full text-sm">
-              Town Council Place 5
+            <div className="whitespace-nowrap font-bold text-prosper-red bg-white px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm shrink-0">
+              Place 5
             </div>
           </div>
         </header>
@@ -182,11 +185,16 @@ export default function RootLayout({ children }) {
             </p>
           </div>
         </footer>
-        {/* Mobile call to action - Single CTA for better conversion */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t py-3 px-4 pb-safe flex justify-center sm:hidden z-50">
-          <Link href="/get-involved" className="bg-navy text-white px-8 py-3 rounded-full text-base font-semibold shadow-md min-w-[44px] min-h-[44px]">
-            Get Involved
-          </Link>
+        {/* Mobile call to action - Dual CTA for conversion */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 py-3 px-4 pb-safe sm:hidden z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
+          <div className="flex gap-3 max-w-md mx-auto">
+            <Link href="/get-involved" className="flex-1 bg-navy text-white py-3.5 rounded-full text-base font-bold shadow-lg min-h-[48px] flex items-center justify-center active:scale-[0.98] transition-transform">
+              Get Involved
+            </Link>
+            <Link href="/donate" className="bg-prosper-red text-white px-5 py-3.5 rounded-full text-base font-bold shadow-lg min-h-[48px] flex items-center justify-center active:scale-[0.98] transition-transform">
+              Donate
+            </Link>
+          </div>
         </div>
         </AuthProvider>
       </body>
