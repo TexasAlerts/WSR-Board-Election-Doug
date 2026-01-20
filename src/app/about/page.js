@@ -116,7 +116,7 @@ export default function AboutPage() {
       {/* Sticky Tab Navigation */}
       <nav
         ref={tabNavRef}
-        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-40 bg-white border-y border-gray-200 shadow-sm -mx-4 sm:-mx-6 lg:-mx-8"
+        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-40 bg-white border-b border-gray-200 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] -mx-4 sm:-mx-6 lg:-mx-8"
       >
         <div className="px-4 sm:px-6 lg:px-8 py-3">
           <div className="max-w-4xl mx-auto">
