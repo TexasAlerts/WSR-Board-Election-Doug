@@ -301,6 +301,7 @@ function GetInvolvedContent() {
           selectedAction ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden pb-0'
         }`}
         aria-hidden={!selectedAction}
+        inert={!selectedAction ? '' : undefined}
       >
         <div className="max-w-2xl mx-auto">
           <div className="card">
