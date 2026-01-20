@@ -6,7 +6,9 @@ export async function GET() {
     const supporter = await getCurrentSupporter();
 
     if (!supporter) {
-      return NextResponse.json({ ok: false, authenticated: false }, { status: 401 });
+      // Return 200 with authenticated: false instead of 401 to avoid browser console errors
+      // The client checks the 'authenticated' field to determine auth state
+      return NextResponse.json({ ok: true, authenticated: false });
     }
 
     return NextResponse.json({

@@ -294,11 +294,16 @@ function GetInvolvedContent() {
         </div>
       </section>
 
-      {/* Form Section */}
-      {selectedAction && (
-        <section ref={formRef} className="pb-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 scroll-mt-4">
-          <div className="max-w-2xl mx-auto">
-            <div className="card">
+      {/* Form Section - Always rendered but hidden when no action selected to prevent CLS */}
+      <section
+        ref={formRef}
+        className={`pb-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 scroll-mt-4 transition-all duration-300 ${
+          selectedAction ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden pb-0'
+        }`}
+        aria-hidden={!selectedAction}
+      >
+        <div className="max-w-2xl mx-auto">
+          <div className="card">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">{getFormIcon()}</span>
@@ -465,7 +470,6 @@ function GetInvolvedContent() {
             </div>
           </div>
         </section>
-      )}
     </div>
   );
 }
