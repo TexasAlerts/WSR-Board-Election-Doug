@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Mail, MessageCircle } from 'lucide-react';
-import Reveal from '../../components/Reveal';
 import { validatePhoneNumber } from '../../lib/phoneValidation';
 
 const SHARE_MESSAGE = "I'm supporting Doug Charles for Prosper Town Council Place 5! Learn more about his Common Sense leadership for ALL of Prosper at www.dougcharles.com";
@@ -204,43 +203,41 @@ function GetInvolvedContent() {
       {/* Action Cards */}
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          <Reveal>
-            <h2 className="section-title text-center mb-4">Choose How You'd Like to Help</h2>
-            <p className="section-subtitle text-center mb-12">Every action makes a difference</p>
-          </Reveal>
+          <h2 className="section-title text-center mb-4">Choose How You'd Like to Help</h2>
+          <p className="section-subtitle text-center mb-12">Every action makes a difference</p>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {actionCards.map((card, idx) => (
-              <Reveal key={card.id} delay={idx * 50}>
-                {card.isLink ? (
-                  <Link
-                    href={card.href}
-                    className="card h-full text-center cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-navy-lg border-2 border-transparent"
-                  >
-                    <div className="icon-container mx-auto mb-4">
-                      <span className="text-2xl">{card.icon}</span>
-                    </div>
-                    <h3 className="text-lg font-bold text-navy mb-2">{card.title}</h3>
-                    <p className="text-sm text-gray-600">{card.description}</p>
-                  </Link>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => handleCardClick(card)}
-                    className={`card h-full w-full text-center cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-navy-lg border-2 ${
-                      selectedAction === card.id
-                        ? 'border-navy bg-navy/5'
-                        : 'border-transparent'
-                    }`}
-                  >
-                    <div className="icon-container mx-auto mb-4">
-                      <span className="text-2xl">{card.icon}</span>
-                    </div>
-                    <h3 className="text-lg font-bold text-navy mb-2">{card.title}</h3>
-                    <p className="text-sm text-gray-600">{card.description}</p>
-                  </button>
-                )}
-              </Reveal>
+            {actionCards.map((card) => (
+              card.isLink ? (
+                <Link
+                  key={card.id}
+                  href={card.href}
+                  className="card h-full text-center cursor-pointer transition-all duration-300 hover:shadow-navy-lg border-2 border-transparent"
+                >
+                  <div className="icon-container mx-auto mb-4">
+                    <span className="text-2xl">{card.icon}</span>
+                  </div>
+                  <h3 className="text-lg font-bold text-navy mb-2">{card.title}</h3>
+                  <p className="text-sm text-gray-600">{card.description}</p>
+                </Link>
+              ) : (
+                <button
+                  key={card.id}
+                  type="button"
+                  onClick={() => handleCardClick(card)}
+                  className={`card h-full w-full text-center cursor-pointer transition-all duration-300 hover:shadow-navy-lg border-2 ${
+                    selectedAction === card.id
+                      ? 'border-navy bg-navy/5'
+                      : 'border-transparent'
+                  }`}
+                >
+                  <div className="icon-container mx-auto mb-4">
+                    <span className="text-2xl">{card.icon}</span>
+                  </div>
+                  <h3 className="text-lg font-bold text-navy mb-2">{card.title}</h3>
+                  <p className="text-sm text-gray-600">{card.description}</p>
+                </button>
+              )
             ))}
           </div>
         </div>
@@ -249,50 +246,48 @@ function GetInvolvedContent() {
       {/* Spread the Word Section */}
       <section className="pb-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          <Reveal>
-            <div className="card bg-gradient-to-br from-navy/5 to-prosper-red/5">
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-navy mb-2">Spread the Word</h2>
-                <p className="text-gray-600">
-                  Help us reach more Prosper residents by sharing with friends and neighbors
+          <div className="card bg-gradient-to-br from-navy/5 to-prosper-red/5">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-navy mb-2">Spread the Word</h2>
+              <p className="text-gray-600">
+                Help us reach more Prosper residents by sharing with friends and neighbors
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-6">
+              {/* Email Share */}
+              <div className="text-center">
+                <a
+                  href={`mailto:?subject=${encodeURIComponent(SHARE_SUBJECT)}&body=${encodeURIComponent(SHARE_MESSAGE)}`}
+                  className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-navy text-white font-semibold rounded-lg hover:bg-navy/90 transition-all"
+                >
+                  <Mail className="w-5 h-5" />
+                  Share via Email
+                </a>
+                <p className="text-sm text-gray-500 mt-3">
+                  Opens your email app with a pre-written message. Choose who to send it to.
                 </p>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-6">
-                {/* Email Share */}
-                <div className="text-center">
-                  <a
-                    href={`mailto:?subject=${encodeURIComponent(SHARE_SUBJECT)}&body=${encodeURIComponent(SHARE_MESSAGE)}`}
-                    className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-navy text-white font-semibold rounded-lg hover:bg-navy/90 transition-all hover:scale-[1.02]"
-                  >
-                    <Mail className="w-5 h-5" />
-                    Share via Email
-                  </a>
-                  <p className="text-sm text-gray-500 mt-3">
-                    Opens your email app with a pre-written message. Choose who to send it to.
-                  </p>
-                </div>
-
-                {/* Text Share */}
-                <div className="text-center">
-                  <a
-                    href={`sms:?&body=${encodeURIComponent(SHARE_MESSAGE)}`}
-                    className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-prosper-red text-white font-semibold rounded-lg hover:bg-prosper-red/90 transition-all hover:scale-[1.02]"
-                  >
-                    <MessageCircle className="w-5 h-5" />
-                    Share via Text
-                  </a>
-                  <p className="text-sm text-gray-500 mt-3">
-                    Opens your messaging app with a pre-written text. Select your contacts.
-                  </p>
-                </div>
+              {/* Text Share */}
+              <div className="text-center">
+                <a
+                  href={`sms:?&body=${encodeURIComponent(SHARE_MESSAGE)}`}
+                  className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-prosper-red text-white font-semibold rounded-lg hover:bg-prosper-red/90 transition-all"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  Share via Text
+                </a>
+                <p className="text-sm text-gray-500 mt-3">
+                  Opens your messaging app with a pre-written text. Select your contacts.
+                </p>
               </div>
-
-              <p className="text-center text-xs text-gray-400 mt-6">
-                Personal recommendations are the most powerful way to reach voters!
-              </p>
             </div>
-          </Reveal>
+
+            <p className="text-center text-xs text-gray-400 mt-6">
+              Personal recommendations are the most powerful way to reach voters!
+            </p>
+          </div>
         </div>
       </section>
 
@@ -300,8 +295,7 @@ function GetInvolvedContent() {
       {selectedAction && (
         <section ref={formRef} className="pb-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 scroll-mt-4">
           <div className="max-w-2xl mx-auto">
-            <Reveal>
-              <div className="card">
+            <div className="card">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">{getFormIcon()}</span>
@@ -459,8 +453,7 @@ function GetInvolvedContent() {
                     )}
                   </form>
                 )}
-              </div>
-            </Reveal>
+            </div>
           </div>
         </section>
       )}

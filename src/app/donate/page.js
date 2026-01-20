@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { AlertCircle, CheckCircle, Mail, MessageCircle } from 'lucide-react';
-import Reveal from '../../components/Reveal';
 
 const DONATION_AMOUNTS = [25, 50, 100, 250, 500, 1000];
 const SHARE_MESSAGE = "I'm supporting Doug Charles for Prosper Town Council Place 5! Learn more about his Common Sense leadership for ALL of Prosper at www.dougcharles.com";
@@ -57,9 +56,8 @@ export default function DonatePage() {
       {/* Donation Form */}
       <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
-          <Reveal>
-            <div className="card">
-              <h2 className="text-2xl font-bold text-navy mb-8 text-center">Choose Your Contribution</h2>
+          <div className="card">
+            <h2 className="text-2xl font-bold text-navy mb-8 text-center">Choose Your Contribution</h2>
 
               {/* Amount Buttons */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
@@ -145,8 +143,7 @@ export default function DonatePage() {
                   You're contributing: <strong className="text-prosper-red text-xl">${selectedAmount || customAmount}</strong>
                 </p>
               )}
-            </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
@@ -155,41 +152,33 @@ export default function DonatePage() {
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
 
         <div className="max-w-4xl mx-auto">
-          <Reveal>
-            <h2 className="section-title text-center mb-4">Your Support Makes a Difference</h2>
-            <p className="section-subtitle text-center">Every dollar helps build a stronger campaign</p>
-          </Reveal>
+          <h2 className="section-title text-center mb-4">Your Support Makes a Difference</h2>
+          <p className="section-subtitle text-center">Every dollar helps build a stronger campaign</p>
 
           <div className="grid gap-6 md:grid-cols-3 mt-12">
-            <Reveal delay={0}>
-              <div className="card text-center h-full">
-                <div className="icon-container">
-                  <span className="text-2xl">🏠</span>
-                </div>
-                <h3 className="text-xl font-bold text-navy mb-3">Yard Signs</h3>
-                <p className="text-gray-600">Help spread the message across Prosper neighborhoods.</p>
+            <div className="card text-center h-full">
+              <div className="icon-container">
+                <span className="text-2xl">🏠</span>
               </div>
-            </Reveal>
+              <h3 className="text-xl font-bold text-navy mb-3">Yard Signs</h3>
+              <p className="text-gray-600">Help spread the message across Prosper neighborhoods.</p>
+            </div>
 
-            <Reveal delay={100}>
-              <div className="card text-center h-full">
-                <div className="icon-container">
-                  <span className="text-2xl">📬</span>
-                </div>
-                <h3 className="text-xl font-bold text-navy mb-3">Voter Outreach</h3>
-                <p className="text-gray-600">Connect with voters through mailers, door-to-door, and digital campaigns.</p>
+            <div className="card text-center h-full">
+              <div className="icon-container">
+                <span className="text-2xl">📬</span>
               </div>
-            </Reveal>
+              <h3 className="text-xl font-bold text-navy mb-3">Voter Outreach</h3>
+              <p className="text-gray-600">Connect with voters through mailers, door-to-door, and digital campaigns.</p>
+            </div>
 
-            <Reveal delay={200}>
-              <div className="card text-center h-full">
-                <div className="icon-container">
-                  <span className="text-2xl">🤝</span>
-                </div>
-                <h3 className="text-xl font-bold text-navy mb-3">Community Events</h3>
-                <p className="text-gray-600">Host meet-and-greets and town halls to hear from residents.</p>
+            <div className="card text-center h-full">
+              <div className="icon-container">
+                <span className="text-2xl">🤝</span>
               </div>
-            </Reveal>
+              <h3 className="text-xl font-bold text-navy mb-3">Community Events</h3>
+              <p className="text-gray-600">Host meet-and-greets and town halls to hear from residents.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -197,65 +186,61 @@ export default function DonatePage() {
       {/* Spread the Word Section */}
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          <Reveal>
-            <div className="card bg-gradient-to-br from-navy/5 to-prosper-red/5">
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-navy mb-2">Spread the Word</h2>
-                <p className="text-gray-600">
-                  Can't donate right now? Help us reach more Prosper residents by sharing with friends and neighbors!
+          <div className="card bg-gradient-to-br from-navy/5 to-prosper-red/5">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-navy mb-2">Spread the Word</h2>
+              <p className="text-gray-600">
+                Can't donate right now? Help us reach more Prosper residents by sharing with friends and neighbors!
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-6">
+              {/* Email Share */}
+              <div className="text-center">
+                <a
+                  href={`mailto:?subject=${encodeURIComponent(SHARE_SUBJECT)}&body=${encodeURIComponent(SHARE_MESSAGE)}`}
+                  className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-navy text-white font-semibold rounded-lg hover:bg-navy/90 transition-all"
+                >
+                  <Mail className="w-5 h-5" />
+                  Share via Email
+                </a>
+                <p className="text-sm text-gray-500 mt-3">
+                  Opens your email app with a pre-written message. Choose who to send it to.
                 </p>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-6">
-                {/* Email Share */}
-                <div className="text-center">
-                  <a
-                    href={`mailto:?subject=${encodeURIComponent(SHARE_SUBJECT)}&body=${encodeURIComponent(SHARE_MESSAGE)}`}
-                    className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-navy text-white font-semibold rounded-lg hover:bg-navy/90 transition-all hover:scale-[1.02]"
-                  >
-                    <Mail className="w-5 h-5" />
-                    Share via Email
-                  </a>
-                  <p className="text-sm text-gray-500 mt-3">
-                    Opens your email app with a pre-written message. Choose who to send it to.
-                  </p>
-                </div>
-
-                {/* Text Share */}
-                <div className="text-center">
-                  <a
-                    href={`sms:?&body=${encodeURIComponent(SHARE_MESSAGE)}`}
-                    className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-prosper-red text-white font-semibold rounded-lg hover:bg-prosper-red/90 transition-all hover:scale-[1.02]"
-                  >
-                    <MessageCircle className="w-5 h-5" />
-                    Share via Text
-                  </a>
-                  <p className="text-sm text-gray-500 mt-3">
-                    Opens your messaging app with a pre-written text. Select your contacts.
-                  </p>
-                </div>
+              {/* Text Share */}
+              <div className="text-center">
+                <a
+                  href={`sms:?&body=${encodeURIComponent(SHARE_MESSAGE)}`}
+                  className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-prosper-red text-white font-semibold rounded-lg hover:bg-prosper-red/90 transition-all"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  Share via Text
+                </a>
+                <p className="text-sm text-gray-500 mt-3">
+                  Opens your messaging app with a pre-written text. Select your contacts.
+                </p>
               </div>
-
-              <p className="text-center text-xs text-gray-400 mt-6">
-                Personal recommendations are the most powerful way to reach voters!
-              </p>
             </div>
-          </Reveal>
+
+            <p className="text-center text-xs text-gray-400 mt-6">
+              Personal recommendations are the most powerful way to reach voters!
+            </p>
+          </div>
         </div>
       </section>
 
       {/* Legal Disclaimer */}
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto text-center">
-          <Reveal>
-            <div className="card bg-gray-50/50">
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Political advertising paid for by Doug Charles for Prosper Town Council.
-                <br /><br />
-                Under Texas law, contributions from corporations and labor organizations are prohibited. Individual contributions are not tax-deductible. By contributing, you confirm you are a U.S. citizen or permanent resident and this contribution is from your own funds.
-              </p>
-            </div>
-          </Reveal>
+          <div className="card bg-gray-50/50">
+            <p className="text-sm text-gray-600 leading-relaxed">
+              Political advertising paid for by Doug Charles for Prosper Town Council.
+              <br /><br />
+              Under Texas law, contributions from corporations and labor organizations are prohibited. Individual contributions are not tax-deductible. By contributing, you confirm you are a U.S. citizen or permanent resident and this contribution is from your own funds.
+            </p>
+          </div>
         </div>
       </section>
     </div>

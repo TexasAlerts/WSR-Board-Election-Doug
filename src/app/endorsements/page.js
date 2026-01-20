@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState, useRef } from 'react';
-import Reveal from '../../components/Reveal';
 
 export default function EndorsementsPage() {
   const [endorsements, setEndorsements] = useState([]);
@@ -113,8 +112,7 @@ export default function EndorsementsPage() {
       {showForm && (
         <section ref={formRef} className="py-12 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
-            <Reveal>
-              <div className="card">
+            <div className="card">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">✓</span>
@@ -233,8 +231,7 @@ export default function EndorsementsPage() {
                     )}
                   </form>
                 )}
-              </div>
-            </Reveal>
+            </div>
           </div>
         </section>
       )}
