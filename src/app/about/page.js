@@ -35,8 +35,15 @@ export default function AboutPage() {
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
     window.history.replaceState(null, '', `#${tabId}`);
-    // Scroll to top of content area
-    document.getElementById('tab-content')?.scrollIntoView({ behavior: 'smooth' });
+    // Scroll so tabs are at the top of the viewport (below the sticky nav)
+    const tabNav = document.getElementById('tab-nav');
+    if (tabNav) {
+      const navHeight = 64; // Height of main nav
+      const bannerOffset = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--banner-offset') || '40', 10);
+      const offset = navHeight + bannerOffset;
+      const elementPosition = tabNav.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -63,7 +70,7 @@ export default function AboutPage() {
       </section>
 
       {/* Tab Navigation */}
-      <section className="py-6 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-white border-b border-gray-100 sticky top-[calc(var(--banner-offset,40px)+64px)] z-30">
+      <section id="tab-nav" className="py-6 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-white border-b border-gray-100 sticky top-[calc(var(--banner-offset,40px)+64px)] z-30">
         <div className="max-w-4xl mx-auto">
           <div className="flex justify-center gap-2 sm:gap-4">
             {TABS.map((tab) => {
