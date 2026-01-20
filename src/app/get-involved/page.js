@@ -209,36 +209,36 @@ function GetInvolvedContent() {
           <h2 className="section-title text-center mb-4">Choose How You'd Like to Help</h2>
           <p className="section-subtitle text-center mb-12">Every action makes a difference</p>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
             {actionCards.map((card) => (
               card.isLink ? (
                 <Link
                   key={card.id}
                   href={card.href}
-                  className="card h-full text-center cursor-pointer transition-all duration-300 hover:shadow-navy-lg border-2 border-transparent"
+                  className="card h-full text-center cursor-pointer transition-all duration-300 hover:shadow-navy-lg active:scale-[0.98] border-2 border-transparent p-4 sm:p-6"
                 >
-                  <div className="icon-container mx-auto mb-4">
-                    <span className="text-2xl">{card.icon}</span>
+                  <div className="icon-container mx-auto mb-3 sm:mb-4 w-12 h-12 sm:w-14 sm:h-14">
+                    <span className="text-xl sm:text-2xl">{card.icon}</span>
                   </div>
-                  <h3 className="text-lg font-bold text-navy mb-2">{card.title}</h3>
-                  <p className="text-sm text-gray-600">{card.description}</p>
+                  <h3 className="text-base sm:text-lg font-bold text-navy mb-1 sm:mb-2">{card.title}</h3>
+                  <p className="text-xs sm:text-sm text-gray-600 leading-snug">{card.description}</p>
                 </Link>
               ) : (
                 <button
                   key={card.id}
                   type="button"
                   onClick={() => handleCardClick(card)}
-                  className={`card h-full w-full text-center cursor-pointer transition-all duration-300 hover:shadow-navy-lg border-2 ${
+                  className={`card h-full w-full text-center cursor-pointer transition-all duration-300 hover:shadow-navy-lg active:scale-[0.98] border-2 p-4 sm:p-6 ${
                     selectedAction === card.id
-                      ? 'border-navy bg-navy/5'
+                      ? 'border-navy bg-navy/5 shadow-navy-md'
                       : 'border-transparent'
                   }`}
                 >
-                  <div className="icon-container mx-auto mb-4">
-                    <span className="text-2xl">{card.icon}</span>
+                  <div className="icon-container mx-auto mb-3 sm:mb-4 w-12 h-12 sm:w-14 sm:h-14">
+                    <span className="text-xl sm:text-2xl">{card.icon}</span>
                   </div>
-                  <h3 className="text-lg font-bold text-navy mb-2">{card.title}</h3>
-                  <p className="text-sm text-gray-600">{card.description}</p>
+                  <h3 className="text-base sm:text-lg font-bold text-navy mb-1 sm:mb-2">{card.title}</h3>
+                  <p className="text-xs sm:text-sm text-gray-600 leading-snug">{card.description}</p>
                 </button>
               )
             ))}
@@ -257,18 +257,18 @@ function GetInvolvedContent() {
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-6">
+            <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
               {/* Email Share */}
               <div className="text-center">
                 <a
                   href={`mailto:?subject=${encodeURIComponent(SHARE_SUBJECT)}&body=${encodeURIComponent(SHARE_MESSAGE)}`}
-                  className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-navy text-white font-semibold rounded-lg hover:bg-navy/90 transition-all"
+                  className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-navy text-white font-semibold rounded-xl hover:bg-navy/90 active:scale-[0.98] transition-all min-h-[56px] shadow-md"
                 >
                   <Mail className="w-5 h-5" />
                   Share via Email
                 </a>
-                <p className="text-sm text-gray-500 mt-3">
-                  Opens your email app with a pre-written message. Choose who to send it to.
+                <p className="text-xs sm:text-sm text-gray-500 mt-2 sm:mt-3">
+                  Opens your email app with a pre-written message
                 </p>
               </div>
 
@@ -276,13 +276,13 @@ function GetInvolvedContent() {
               <div className="text-center">
                 <a
                   href={`sms:?&body=${encodeURIComponent(SHARE_MESSAGE)}`}
-                  className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-prosper-red text-white font-semibold rounded-lg hover:bg-prosper-red/90 transition-all"
+                  className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-prosper-red text-white font-semibold rounded-xl hover:bg-prosper-red/90 active:scale-[0.98] transition-all min-h-[56px] shadow-md"
                 >
                   <MessageCircle className="w-5 h-5" />
                   Share via Text
                 </a>
-                <p className="text-sm text-gray-500 mt-3">
-                  Opens your messaging app with a pre-written text. Select your contacts.
+                <p className="text-xs sm:text-sm text-gray-500 mt-2 sm:mt-3">
+                  Opens your messaging app with a pre-written text
                 </p>
               </div>
             </div>

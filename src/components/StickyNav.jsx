@@ -179,53 +179,53 @@ export default function StickyNav() {
         </div>
         {/* Mobile nav dropdown */}
         <div
-          className={`sm:hidden absolute left-0 top-full w-full bg-white border-t border-gray-100 p-6 flex-col gap-1 text-base shadow-lg transition-all duration-200 z-50 ${open ? 'flex' : 'hidden'}`}
+          className={`sm:hidden absolute left-0 top-full w-full bg-white border-t border-gray-100 px-4 py-5 flex-col gap-0.5 text-base shadow-xl transition-all duration-200 z-50 max-h-[calc(100vh-120px)] overflow-y-auto ${open ? 'flex' : 'hidden'}`}
         >
           {/* About section */}
-          <div className="py-2 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">About</div>
-          <Link href="/about" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+          <div className="py-2 px-3 text-xs font-bold text-navy uppercase tracking-wider">About Doug</div>
+          <Link href="/about" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
             About Doug
           </Link>
-          <Link href="/why" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+          <Link href="/why" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
             Why I'm Running
           </Link>
-          <Link href="/priorities" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+          <Link href="/priorities" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
             Priorities
           </Link>
-          <Link href="/track-record" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+          <Link href="/track-record" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
             Track Record
           </Link>
 
           {/* Engage section */}
-          <div className="py-2 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-2">Engage</div>
-          <Link href="/polls" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+          <div className="py-2 px-3 text-xs font-bold text-navy uppercase tracking-wider mt-3">Get Involved</div>
+          <Link href="/polls" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
             Polls
           </Link>
-          <Link href="/ideas" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+          <Link href="/ideas" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
             Ideas
           </Link>
-          <Link href="/qna" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+          <Link href="/qna" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
             Q&A
           </Link>
-          <Link href="/endorsements" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+          <Link href="/endorsements" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
             Endorsements
           </Link>
-          <Link href="/get-involved" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+          <Link href="/get-involved" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
             Get Involved
           </Link>
 
           {/* Auth section - Mobile */}
-          <div className="pt-4 mt-2 border-t border-gray-100 space-y-2">
+          <div className="pt-4 mt-3 border-t border-gray-200 space-y-3">
             {!loading && (
               isAuthenticated ? (
                 <>
-                  <div className="px-4 py-2 text-sm text-gray-500">
-                    Signed in as {supporter?.firstName} {supporter?.lastName}
+                  <div className="px-4 py-2 text-sm text-gray-500 bg-gray-50 rounded-lg">
+                    Signed in as <span className="font-medium text-navy">{supporter?.firstName} {supporter?.lastName}</span>
                   </div>
                   {isAdmin && (
                     <Link
                       href="/admin/dashboard"
-                      className="block py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium"
+                      className="block py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium min-h-[48px] flex items-center"
                       onClick={() => setOpen(false)}
                     >
                       Admin Panel
@@ -233,23 +233,23 @@ export default function StickyNav() {
                   )}
                   <button
                     onClick={handleLogout}
-                    className="block w-full py-3 px-4 text-left text-gray-700 hover:bg-gray-50 rounded-lg font-medium"
+                    className="block w-full py-3.5 px-4 text-left text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium min-h-[48px]"
                   >
                     Sign Out
                   </button>
                 </>
               ) : (
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   <Link
                     href="/auth/login"
-                    className="flex-1 py-3 bg-navy text-white text-center rounded-lg font-semibold"
+                    className="flex-1 py-3.5 bg-navy text-white text-center rounded-xl font-semibold min-h-[48px] flex items-center justify-center active:bg-navy-dark"
                     onClick={() => setOpen(false)}
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/auth/register"
-                    className="flex-1 py-3 border border-navy text-navy text-center rounded-lg font-semibold"
+                    className="flex-1 py-3.5 border-2 border-navy text-navy text-center rounded-xl font-semibold min-h-[48px] flex items-center justify-center active:bg-navy/5"
                     onClick={() => setOpen(false)}
                   >
                     Sign Up
@@ -257,8 +257,8 @@ export default function StickyNav() {
                 </div>
               )
             )}
-            <Link href="/donate" className="block py-3 bg-prosper-red text-white text-center rounded-lg font-semibold" onClick={() => setOpen(false)}>
-              Donate
+            <Link href="/donate" className="block py-3.5 bg-prosper-red text-white text-center rounded-xl font-semibold min-h-[48px] flex items-center justify-center active:bg-prosper-red-dark shadow-md" onClick={() => setOpen(false)}>
+              Donate to the Campaign
             </Link>
           </div>
         </div>

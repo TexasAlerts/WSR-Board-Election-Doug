@@ -69,11 +69,11 @@ export default function Home() {
             </p>
 
             {/* Enhanced CTAs */}
-            <div className="flex flex-wrap justify-center gap-4 pt-8 animate-fade-in-up animate-on-load animate-delay-600">
-              <Link href="/get-involved" className="btn-primary text-lg px-10 py-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-8 animate-fade-in-up animate-on-load animate-delay-600 px-4 sm:px-0">
+              <Link href="/get-involved" className="btn-primary text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto text-center">
                 Get Involved
               </Link>
-              <Link href="/about" className="btn-outline text-lg px-10 py-4">
+              <Link href="/about" className="btn-outline text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto text-center">
                 About Doug Charles
               </Link>
             </div>
@@ -277,11 +277,11 @@ export default function Home() {
             Local races are decided by a few hundred votes. Your support—and your voice—can make the difference.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/get-involved" className="btn-white text-lg px-10 py-4">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4 sm:px-0">
+            <Link href="/get-involved" className="btn-white text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto text-center">
               Get Involved
             </Link>
-            <Link href="/donate" className="btn-secondary text-lg px-10 py-4">
+            <Link href="/donate" className="btn-secondary text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto text-center">
               Donate
             </Link>
           </div>
