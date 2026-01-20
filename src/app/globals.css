@@ -384,3 +384,21 @@
 .priorities-gradient {
   background: linear-gradient(180deg, #F8F8F5 0%, #FFFFFF 50%, #F8F8F5 100%);
 }
+
+/* ============================================
+   STICKY TAB CONTENT FIX
+   Ensures all content below sticky tabs stays below them
+   by creating a lower stacking context for the content area
+   ============================================ */
+
+/* Force tab content sections to stay below sticky nav (z-50) */
+.tab-content-below-sticky {
+  position: relative;
+  z-index: 1;
+}
+
+.tab-content-below-sticky > section,
+.tab-content-below-sticky > * {
+  position: relative;
+  z-index: 1;
+}

@@ -76,8 +76,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Bio Section - Always visible, outside tabs */}
-      <section className="py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-white">
+      {/* Bio Section - Always visible, outside tabs - z-0 ensures it's below sticky nav */}
+      <section className="py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-white relative z-0">
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
             <div className="w-full md:w-2/5 flex-shrink-0">
@@ -116,9 +116,9 @@ export default function AboutPage() {
       {/* Sticky Tab Navigation */}
       <div
         ref={tabNavRef}
-        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-50 -mx-4 sm:-mx-6 lg:-mx-8"
+        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-50 -mx-4 sm:-mx-6 lg:-mx-8 bg-white"
       >
-        <div className="bg-white border-b border-gray-200 shadow-lg">
+        <div className="border-b border-gray-200 shadow-lg">
         <div className="px-4 sm:px-6 lg:px-8 py-3">
           <div className="max-w-4xl mx-auto">
             {/* Desktop tabs */}
@@ -169,8 +169,8 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Tab Content */}
-      <div ref={contentRef} className="min-h-[60vh]">
+      {/* Tab Content - custom class creates lower stacking context than sticky nav (z-50) */}
+      <div ref={contentRef} className="min-h-[60vh] tab-content-below-sticky">
         {activeTab === 'about' && <AboutContent />}
         {activeTab === 'why' && <WhyContent />}
         {activeTab === 'priorities' && <PrioritiesContent />}
