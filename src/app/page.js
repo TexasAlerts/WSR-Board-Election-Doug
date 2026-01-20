@@ -74,7 +74,7 @@ export default function Home() {
                 Get Involved
               </Link>
               <Link href="/about" className="btn-outline text-lg px-10 py-4">
-                Learn More
+                About Doug Charles
               </Link>
             </div>
           </div>
