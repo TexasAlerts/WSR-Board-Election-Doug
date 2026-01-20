@@ -113,12 +113,13 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Sticky Tab Navigation - z-50 ensures it stays above all content */}
+      {/* Sticky Tab Navigation - high z-index and bg-white on wrapper for full coverage */}
       <div
         ref={tabNavRef}
-        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-50 -mx-4 sm:-mx-6 lg:-mx-8"
+        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-[999] -mx-4 sm:-mx-6 lg:-mx-8 bg-white"
+        style={{ isolation: 'isolate' }}
       >
-        <nav className="bg-white border-b border-gray-200 shadow-md">
+        <nav className="bg-white border-b border-gray-200 shadow-lg relative z-10">
         <div className="px-4 sm:px-6 lg:px-8 py-3">
           <div className="max-w-4xl mx-auto">
             {/* Desktop tabs */}
