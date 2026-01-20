@@ -169,8 +169,8 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Tab Content - contain: paint creates stacking context that stays below sticky */}
-      <div ref={contentRef} className="min-h-[60vh]" style={{ contain: 'paint' }}>
+      {/* Tab Content */}
+      <div ref={contentRef} className="min-h-[60vh]">
         {activeTab === 'about' && <AboutContent />}
         {activeTab === 'why' && <WhyContent />}
         {activeTab === 'priorities' && <PrioritiesContent />}

@@ -37,13 +37,15 @@ export default function Reveal({
     return () => observer.disconnect();
   }, [once]);
 
-  const transforms = {
-    up: 'translateY(30px)',
-    down: 'translateY(-30px)',
-    left: 'translateX(30px)',
-    right: 'translateX(-30px)',
-    scale: 'scale(0.95)',
-    none: 'none',
+  // Use clip-path instead of transform to avoid creating stacking contexts
+  // that interfere with sticky positioning (z-index only works within same stacking context)
+  const clipPaths = {
+    up: 'inset(0 0 100% 0)',      // Hidden at bottom, reveals upward
+    down: 'inset(100% 0 0 0)',    // Hidden at top, reveals downward
+    left: 'inset(0 100% 0 0)',    // Hidden at right, reveals from left
+    right: 'inset(0 0 0 100%)',   // Hidden at left, reveals from right
+    scale: 'inset(5% 5% 5% 5%)',  // Slightly inset, reveals outward
+    none: 'inset(0 0 0 0)',
   };
 
   return (
@@ -52,8 +54,8 @@ export default function Reveal({
       className={className}
       style={{
         opacity: isRevealed ? 1 : 0,
-        transform: isRevealed ? 'none' : transforms[direction],
-        transition: `opacity 0.6s ease-out ${delay}ms, transform 0.6s ease-out ${delay}ms`,
+        clipPath: isRevealed ? 'inset(0 0 0 0)' : clipPaths[direction],
+        transition: `opacity 0.6s ease-out ${delay}ms, clip-path 0.6s ease-out ${delay}ms`,
       }}
     >
       {children}
