@@ -1,9 +1,9 @@
 export const metadata = {
-  title: 'Meet Doug Charles | About, Why I\'m Running & Priorities',
-  description: 'Meet Doug Charles: 20-year Prosper resident, former P&Z Commissioner, 2020 Bond Committee member. Learn about his priorities for Town Council Place 5: Listen, Plan, Protect.',
+  title: 'About Doug Charles | Prosper Town Council Place 5 Candidate',
+  description: 'Meet Doug Charles: 20-year Prosper resident, former P&Z Commissioner (2021-2023), 2020 Bond Committee member, Windsong Ranch HOA Board. Common sense leadership for all of Prosper.',
   openGraph: {
-    title: 'Meet Doug Charles | About, Why I\'m Running & Priorities',
-    description: 'Meet Doug Charles: 20-year Prosper resident, former P&Z Commissioner, 2020 Bond Committee member. Learn about his priorities for Town Council Place 5: Listen, Plan, Protect.',
+    title: 'About Doug Charles | Prosper Town Council Place 5 Candidate',
+    description: 'Meet Doug Charles: 20-year Prosper resident, former P&Z Commissioner, 2020 Bond Committee member. Common sense leadership for all of Prosper.',
     url: 'https://www.dougcharles.com/about',
     images: [{
       url: 'https://www.dougcharles.com/campaign-preview.png',
@@ -14,6 +14,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    title: 'About Doug Charles | Prosper Town Council Candidate',
+    description: '20-year Prosper resident, former P&Z Commissioner. Common sense leadership for all of Prosper.',
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };
