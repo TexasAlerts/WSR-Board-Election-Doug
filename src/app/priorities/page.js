@@ -27,7 +27,7 @@ export default function PrioritiesPage() {
             My Priorities
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
-            <strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper—guided by three core principles
+            <strong>Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper—guided by three core principles
           </p>
         </div>
       </section>
@@ -54,7 +54,7 @@ export default function PrioritiesPage() {
               </div>
               <h2 className="text-2xl font-bold mb-4 text-navy">Plan</h2>
               <p className="text-gray-600 leading-relaxed">
-                <strong className="text-navy">Build it right the first time.</strong> Right-size projects before we break ground. <strong className="text-prosper-red">Think long-term</strong> so we're not fixing mistakes or asking for more money later.
+                <strong className="text-navy">Build it right the first time.</strong> Size projects correctly from the start so we don't run out of money halfway through. <strong className="text-prosper-red">Think long-term</strong> so we're not fixing mistakes or asking for more money later.
               </p>
             </div>
           </Reveal>
@@ -97,7 +97,7 @@ export default function PrioritiesPage() {
               <div className="card">
                 <h3 className="text-xl font-bold text-navy mb-4">Responsible Growth</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  Prosper is growing whether we like it or not. The question is whether we <strong className="text-navy">manage that growth wisely</strong>. That means <strong className="text-navy">holding developers accountable</strong> for the infrastructure their projects require, growing our <strong className="text-navy">commercial tax base</strong> so homeowners aren't carrying the full load, and protecting the quality of life that brought us all here. Growth should benefit <strong className="text-prosper-red">existing residents, not just developers</strong>—and that includes ensuring our fire and police have the capacity to keep pace with new rooftops.
+                  Prosper is growing whether we like it or not. The question is whether we <strong className="text-navy">manage that growth wisely</strong>. That means <strong className="text-navy">holding developers accountable</strong> for the infrastructure their projects require, attracting businesses so <strong className="text-navy">homeowners don't carry the full tax burden</strong>, and protecting the quality of life that brought us all here. Growth should benefit <strong className="text-prosper-red">existing residents, not just developers</strong>—and that includes ensuring our fire and police have the capacity to keep pace with new rooftops.
                 </p>
               </div>
             </Reveal>

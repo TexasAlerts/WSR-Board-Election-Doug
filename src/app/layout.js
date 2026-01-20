@@ -169,16 +169,10 @@ export default function RootLayout({ children }) {
             </p>
           </div>
         </footer>
-        {/* Mobile call to action */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t py-2 px-4 pb-safe flex justify-around sm:hidden z-50">
-          <Link href="/#get-involved" className="bg-navy text-white px-4 py-2 rounded-full text-sm">
+        {/* Mobile call to action - Single CTA for better conversion */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t py-3 px-4 pb-safe flex justify-center sm:hidden z-50">
+          <Link href="/get-involved" className="bg-navy text-white px-8 py-3 rounded-full text-base font-semibold shadow-md min-w-[44px] min-h-[44px]">
             Get Involved
-          </Link>
-          <Link
-            href="/?form=endorsement#get-involved"
-            className="bg-prosper-red text-white px-4 py-2 rounded-full text-sm"
-          >
-            Endorse Doug
           </Link>
         </div>
         </AuthProvider>
