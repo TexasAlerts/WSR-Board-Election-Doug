@@ -5,7 +5,11 @@ export default function WhyPage() {
   return (
     <div className="space-y-0">
       {/* Hero */}
-      <section className="hero-pattern hero-gradient text-center py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <section className="hero-pattern hero-gradient text-center py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-10 right-20 w-64 h-64 bg-navy/5 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 left-20 w-48 h-48 bg-prosper-red/5 rounded-full blur-3xl"></div>
+        </div>
         <Image
           src="/wsr-logo.webp"
           alt=""
@@ -13,11 +17,11 @@ export default function WhyPage() {
           height={64}
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"
         />
-        <div className="relative">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy mb-3">
+        <div className="relative z-10">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-4 animate-fade-in-down">
             Why I'm Running
           </h1>
-          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
             <strong>Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper
           </p>
         </div>
