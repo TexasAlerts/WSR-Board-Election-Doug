@@ -72,14 +72,8 @@ export default function StickyNav() {
         </button>
         {/* Desktop nav */}
         <div className="hidden sm:flex flex-row items-center gap-6 text-sm font-medium">
-          <Link href="/priorities" className="text-gray-600 hover:text-navy transition-colors">
-            Priorities
-          </Link>
           <Link href="/about" className="text-gray-600 hover:text-navy transition-colors">
-            About
-          </Link>
-          <Link href="/why" className="text-gray-600 hover:text-navy transition-colors">
-            Why I'm Running
+            About Doug
           </Link>
           <Link href="/polls" className="text-gray-600 hover:text-navy transition-colors">
             Polls
@@ -145,14 +139,8 @@ export default function StickyNav() {
         <div
           className={`sm:hidden absolute left-0 top-full w-full bg-white border-t border-gray-100 p-6 flex-col gap-1 text-base shadow-lg transition-all duration-200 z-50 ${open ? 'flex' : 'hidden'}`}
         >
-          <Link href="/priorities" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
-            Priorities
-          </Link>
           <Link href="/about" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             About Doug
-          </Link>
-          <Link href="/why" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
-            Why I'm Running
           </Link>
           <Link href="/polls" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             Polls

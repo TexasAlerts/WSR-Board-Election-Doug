@@ -162,7 +162,7 @@ export default function Home() {
 
           <Reveal delay={400}>
             <div className="text-center mt-12">
-              <Link href="/priorities" className="btn-outline">
+              <Link href="/about#priorities" className="btn-outline">
                 See Full Priority Details →
               </Link>
             </div>
