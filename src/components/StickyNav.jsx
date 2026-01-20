@@ -62,9 +62,9 @@ export default function StickyNav() {
       className="bg-white border-b border-gray-100 py-4 px-4 sticky [top:var(--banner-offset)] z-40"
     >
       <div className="max-w-6xl mx-auto flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold text-navy flex items-center">
+        <Link href="/" className="text-xl font-bold text-navy flex items-center" aria-label="Home">
           <span className="sm:inline hidden">Home</span>
-          <span className="sm:hidden"><HomeIcon className="h-7 w-7" /></span>
+          <span className="sm:hidden" aria-hidden="true"><HomeIcon className="h-7 w-7" /></span>
         </Link>
         <button
           className="sm:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-navy"
