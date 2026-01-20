@@ -40,10 +40,6 @@ export default function AboutPage() {
     <>
       {/* Hero - outside the scrolling content */}
       <section className="hero-pattern hero-gradient text-center py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-10 left-20 w-64 h-64 bg-navy/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 right-20 w-48 h-48 bg-prosper-red/5 rounded-full blur-3xl"></div>
-        </div>
         <img
           src="/wsr-logo.webp"
           alt=""
@@ -59,8 +55,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Sticky Tab Navigation */}
-      <nav className="sticky top-[104px] z-[100] -mx-4 sm:-mx-6 lg:-mx-8 bg-white border-b border-gray-200 shadow-lg">
+      {/* Sticky Tab Navigation - isolation creates independent stacking context */}
+      <nav className="sticky top-[104px] z-[100] -mx-4 sm:-mx-6 lg:-mx-8 bg-white border-b border-gray-200 shadow-lg" style={{ isolation: 'isolate' }}>
         <div className="px-4 sm:px-6 lg:px-8 py-3">
           <div className="max-w-4xl mx-auto">
             {/* Desktop tabs */}
@@ -110,8 +106,8 @@ export default function AboutPage() {
         </div>
       </nav>
 
-      {/* Tab Content - NO animations, NO transforms, NO opacity changes */}
-      <div className="min-h-[60vh]">
+      {/* Tab Content - negative z-index to paint behind sticky nav */}
+      <div className="min-h-[60vh] relative" style={{ zIndex: -1 }}>
         {activeTab === 'about' && <AboutContent />}
         {activeTab === 'why' && <WhyContent />}
         {activeTab === 'priorities' && <PrioritiesContent />}
@@ -145,7 +141,6 @@ function AboutContent() {
           <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
             <div className="w-full md:w-2/5 flex-shrink-0">
               <div className="relative max-w-[280px] md:max-w-[320px] mx-auto">
-                <div className="absolute -inset-3 bg-gradient-to-br from-navy/10 to-prosper-red/10 rounded-2xl blur-xl"></div>
                 <Image
                   src="/headshot.jpg"
                   alt="Doug Charles"
@@ -224,7 +219,7 @@ function AboutContent() {
 
       {/* Professional Background */}
       <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 md:py-20 relative">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-1 accent-line-full"></div>
+        <div className="absolute top-0 left-0 right-0 mx-auto w-16 h-1 accent-line-full"></div>
         <div className="max-w-4xl mx-auto">
           <h2 className="section-title text-center mb-8">Professional Background</h2>
           <div className="card">
@@ -263,7 +258,7 @@ function WhyContent() {
 
       {/* Key Message */}
       <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 md:py-20 relative">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-1 accent-line-full"></div>
+        <div className="absolute top-0 left-0 right-0 mx-auto w-16 h-1 accent-line-full"></div>
         <div className="max-w-3xl mx-auto">
           <div className="card text-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-navy mb-4">
@@ -372,7 +367,7 @@ function PrioritiesContent() {
 
       {/* Detailed Priorities */}
       <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 md:py-20 relative">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-1 accent-line-full"></div>
+        <div className="absolute top-0 left-0 right-0 mx-auto w-16 h-1 accent-line-full"></div>
         <div className="max-w-4xl mx-auto">
           <h2 className="section-title text-center mb-4">What This Means for Prosper</h2>
           <p className="section-subtitle text-center">Practical solutions for our community</p>
