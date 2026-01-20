@@ -113,12 +113,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Sticky Tab Navigation */}
+      {/* Sticky Tab Navigation - z-50 ensures it stays above all content */}
       <div
         ref={tabNavRef}
-        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-50 -mx-4 sm:-mx-6 lg:-mx-8 bg-white"
+        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-50 -mx-4 sm:-mx-6 lg:-mx-8"
       >
-        <nav className="bg-white border-b border-gray-200 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <nav className="bg-white border-b border-gray-200 shadow-md">
         <div className="px-4 sm:px-6 lg:px-8 py-3">
           <div className="max-w-4xl mx-auto">
             {/* Desktop tabs */}
@@ -169,16 +169,16 @@ export default function AboutPage() {
         </nav>
       </div>
 
-      {/* Tab Content */}
-      <div ref={contentRef} className="min-h-[60vh]">
+      {/* Tab Content - relative z-0 ensures content slides under sticky nav */}
+      <div ref={contentRef} className="min-h-[60vh] relative z-0">
         {activeTab === 'about' && <AboutContent />}
         {activeTab === 'why' && <WhyContent />}
         {activeTab === 'priorities' && <PrioritiesContent />}
         {activeTab === 'track-record' && <TrackRecordContent />}
       </div>
 
-      {/* CTA */}
-      <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16">
+      {/* CTA - relative z-0 ensures it slides under sticky nav */}
+      <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 relative z-0">
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <Reveal>
             <h2 className="text-2xl sm:text-3xl font-bold mb-6">Ready to Get Involved?</h2>
