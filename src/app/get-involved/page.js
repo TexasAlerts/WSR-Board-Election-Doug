@@ -298,10 +298,8 @@ function GetInvolvedContent() {
       <section
         ref={formRef}
         className={`pb-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 scroll-mt-4 transition-all duration-300 ${
-          selectedAction ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden pb-0'
+          selectedAction ? 'opacity-100' : 'hidden'
         }`}
-        aria-hidden={!selectedAction}
-        inert={!selectedAction ? '' : undefined}
       >
         <div className="max-w-2xl mx-auto">
           <div className="card">
