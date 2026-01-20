@@ -94,8 +94,7 @@
   }
 
   .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(27, 58, 93, 0.12);
+    box-shadow: 0 12px 24px rgba(27, 58, 93, 0.15);
     border-color: rgba(27, 58, 93, 0.12);
   }
 
@@ -211,7 +210,7 @@
   }
 
   .form-input:focus {
-    transform: translateY(-1px);
+    /* transform removed to prevent stacking context issues with sticky elements */
   }
 
   .form-label {
@@ -229,8 +228,7 @@
   }
 
   .card:hover .icon-container {
-    transform: scale(1.1);
-    background: linear-gradient(135deg, rgba(27, 58, 93, 0.12) 0%, rgba(27, 58, 93, 0.2) 100%);
+    background: linear-gradient(135deg, rgba(27, 58, 93, 0.15) 0%, rgba(27, 58, 93, 0.25) 100%);
   }
 
   /* Large icon container for page heroes */
@@ -251,8 +249,7 @@
   }
 
   .stat-card:hover {
-    transform: translateY(-2px);
-    background: linear-gradient(135deg, rgba(27, 58, 93, 0.06) 0%, rgba(27, 58, 93, 0.12) 100%);
+    background: linear-gradient(135deg, rgba(27, 58, 93, 0.08) 0%, rgba(27, 58, 93, 0.14) 100%);
   }
 
   .stat-number {
