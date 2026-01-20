@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Ear, ClipboardList, ShieldCheck } from 'lucide-react';
 
@@ -6,10 +7,12 @@ export default function PrioritiesPage() {
     <div className="space-y-0">
       {/* Hero */}
       <section className="hero-pattern hero-gradient text-center py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <img
+        <Image
           src="/wsr-logo.webp"
           alt=""
-          className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 opacity-80 pointer-events-none"
+          width={96}
+          height={64}
+          className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"
         />
         <div className="relative">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy mb-3">

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import Link from 'next/link';
 import { Mail, AlertCircle, CheckCircle, Loader2, ArrowLeft } from 'lucide-react';
@@ -44,10 +45,12 @@ export default function ForgotPasswordPage() {
           <div className="absolute top-10 right-20 w-64 h-64 bg-navy/5 rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 left-20 w-48 h-48 bg-prosper-red/5 rounded-full blur-3xl"></div>
         </div>
-        <img
-          src="/wsr-logo.png"
+        <Image
+          src="/wsr-logo.webp"
           alt=""
-          className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 opacity-80 pointer-events-none"
+          width={96}
+          height={64}
+          className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"
         />
         <div className="relative z-10">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy mb-4 animate-fade-in-down">
