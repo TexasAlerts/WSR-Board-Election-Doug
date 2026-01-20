@@ -10,12 +10,14 @@ import {
   User,
   LogOut,
   Settings,
+  ChevronDown,
 } from 'lucide-react';
 
 export default function StickyNav() {
   const navRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [aboutMenuOpen, setAboutMenuOpen] = useState(false);
   const { supporter, isAuthenticated, isAdmin, logout, loading } = useAuth();
 
   useEffect(() => {
@@ -36,16 +38,17 @@ export default function StickyNav() {
 
   // Close menu on outside click (mobile)
   useEffect(() => {
-    if (!open && !userMenuOpen) return;
+    if (!open && !userMenuOpen && !aboutMenuOpen) return;
     function handle(e) {
       if (navRef.current && !navRef.current.contains(e.target)) {
         setOpen(false);
         setUserMenuOpen(false);
+        setAboutMenuOpen(false);
       }
     }
     document.addEventListener('mousedown', handle);
     return () => document.removeEventListener('mousedown', handle);
-  }, [open, userMenuOpen]);
+  }, [open, userMenuOpen, aboutMenuOpen]);
 
   const handleLogout = async () => {
     await logout();
@@ -72,9 +75,48 @@ export default function StickyNav() {
         </button>
         {/* Desktop nav */}
         <div className="hidden sm:flex flex-row items-center gap-6 text-sm font-medium">
-          <Link href="/about" className="text-gray-600 hover:text-navy transition-colors">
-            About Doug
-          </Link>
+          {/* About dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setAboutMenuOpen(!aboutMenuOpen)}
+              className="flex items-center gap-1 text-gray-600 hover:text-navy transition-colors"
+            >
+              About
+              <ChevronDown className={`w-4 h-4 transition-transform ${aboutMenuOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {aboutMenuOpen && (
+              <div className="absolute left-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
+                <Link
+                  href="/about"
+                  className="block px-4 py-2 text-gray-700 hover:bg-gray-50"
+                  onClick={() => setAboutMenuOpen(false)}
+                >
+                  About Doug
+                </Link>
+                <Link
+                  href="/why"
+                  className="block px-4 py-2 text-gray-700 hover:bg-gray-50"
+                  onClick={() => setAboutMenuOpen(false)}
+                >
+                  Why I'm Running
+                </Link>
+                <Link
+                  href="/priorities"
+                  className="block px-4 py-2 text-gray-700 hover:bg-gray-50"
+                  onClick={() => setAboutMenuOpen(false)}
+                >
+                  Priorities
+                </Link>
+                <Link
+                  href="/track-record"
+                  className="block px-4 py-2 text-gray-700 hover:bg-gray-50"
+                  onClick={() => setAboutMenuOpen(false)}
+                >
+                  Track Record
+                </Link>
+              </div>
+            )}
+          </div>
           <Link href="/polls" className="text-gray-600 hover:text-navy transition-colors">
             Polls
           </Link>
@@ -139,9 +181,23 @@ export default function StickyNav() {
         <div
           className={`sm:hidden absolute left-0 top-full w-full bg-white border-t border-gray-100 p-6 flex-col gap-1 text-base shadow-lg transition-all duration-200 z-50 ${open ? 'flex' : 'hidden'}`}
         >
+          {/* About section */}
+          <div className="py-2 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">About</div>
           <Link href="/about" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             About Doug
           </Link>
+          <Link href="/why" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+            Why I'm Running
+          </Link>
+          <Link href="/priorities" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+            Priorities
+          </Link>
+          <Link href="/track-record" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
+            Track Record
+          </Link>
+
+          {/* Engage section */}
+          <div className="py-2 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-2">Engage</div>
           <Link href="/polls" className="py-3 px-4 text-gray-700 hover:bg-gray-50 rounded-lg font-medium" onClick={() => setOpen(false)}>
             Polls
           </Link>
