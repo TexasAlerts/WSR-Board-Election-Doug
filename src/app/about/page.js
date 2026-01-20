@@ -54,7 +54,7 @@ export default function AboutPage() {
   };
 
   return (
-    <div className="space-y-0">
+    <div className="space-y-0 relative">
       {/* Hero - Compact */}
       <section className="hero-pattern hero-gradient text-center py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -113,13 +113,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Sticky Tab Navigation - high z-index and bg-white on wrapper for full coverage */}
+      {/* Sticky Tab Navigation */}
       <div
         ref={tabNavRef}
-        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-[999] -mx-4 sm:-mx-6 lg:-mx-8 bg-white"
-        style={{ isolation: 'isolate' }}
+        className="sticky top-[calc(var(--banner-offset,40px)+64px)] z-50 -mx-4 sm:-mx-6 lg:-mx-8"
       >
-        <nav className="bg-white border-b border-gray-200 shadow-lg relative z-10">
+        <div className="bg-white border-b border-gray-200 shadow-lg">
         <div className="px-4 sm:px-6 lg:px-8 py-3">
           <div className="max-w-4xl mx-auto">
             {/* Desktop tabs */}
@@ -167,19 +166,19 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-        </nav>
+        </div>
       </div>
 
-      {/* Tab Content - relative z-0 ensures content slides under sticky nav */}
-      <div ref={contentRef} className="min-h-[60vh] relative z-0">
+      {/* Tab Content - contain: paint creates stacking context that stays below sticky */}
+      <div ref={contentRef} className="min-h-[60vh]" style={{ contain: 'paint' }}>
         {activeTab === 'about' && <AboutContent />}
         {activeTab === 'why' && <WhyContent />}
         {activeTab === 'priorities' && <PrioritiesContent />}
         {activeTab === 'track-record' && <TrackRecordContent />}
       </div>
 
-      {/* CTA - relative z-0 ensures it slides under sticky nav */}
-      <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 relative z-0">
+      {/* CTA */}
+      <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16">
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <Reveal>
             <h2 className="text-2xl sm:text-3xl font-bold mb-6">Ready to Get Involved?</h2>
