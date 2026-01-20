@@ -1,6 +1,7 @@
 import './globals.css';
 import StickyNav from '../components/StickyNav';
 import ErrorBoundary from '../components/ErrorBoundary';
+import ScrollToTop from '../components/ScrollToTop';
 import Link from 'next/link';
 import Script from 'next/script';
 import { AuthProvider } from '../context/AuthContext';
@@ -75,6 +76,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <AuthProvider>
+        <ScrollToTop />
         {/* Skip to main content - Accessibility */}
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-[100] focus:bg-navy focus:text-white focus:px-4 focus:py-2 focus:underline">
           Skip to main content
