@@ -9,8 +9,6 @@ import {
   ShieldCheck,
   HelpCircle,
 } from 'lucide-react';
-import Reveal from '../components/Reveal';
-
 export default function Home() {
   const [endorsements, setEndorsements] = useState([]);
   const [questions, setQuestions] = useState([]);
@@ -86,31 +84,31 @@ export default function Home() {
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 items-stretch">
-            <Reveal delay={0} className="h-full">
+            <div className="h-full">
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">20</div>
                 <div className="stat-label">Years in Prosper</div>
               </div>
-            </Reveal>
-            <Reveal delay={100} className="h-full">
+            </div>
+            <div className="h-full">
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">3</div>
                 <div className="stat-label">Years Planning & Zoning</div>
               </div>
-            </Reveal>
-            <Reveal delay={200} className="h-full">
+            </div>
+            <div className="h-full">
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">$210M</div>
                 <div className="stat-label">2020 Bond Committee</div>
               </div>
-            </Reveal>
-            <Reveal delay={300} className="h-full">
+            </div>
+            <div className="h-full">
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">$6.5M</div>
                 <div className="stat-label">Annual Tax Revenue</div>
                 <div className="text-xs text-gray-500 mt-1">PISD Annexation · Approved by Prosper ISD</div>
               </div>
-            </Reveal>
+            </div>
           </div>
         </div>
       </section>
@@ -121,52 +119,42 @@ export default function Home() {
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
 
         <div className="max-w-6xl mx-auto">
-          <Reveal>
-            <div className="text-center mb-16">
-              <h2 className="section-title">My Priorities</h2>
-              <p className="section-subtitle"><strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper</p>
-            </div>
-          </Reveal>
-
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            <Reveal delay={0}>
-              <div className="card text-center h-full">
-                <div className="icon-container">
-                  <Ear className="w-8 h-8 text-navy" aria-hidden="true" />
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-navy">Listen</h3>
-                <p className="text-gray-600">Good decisions start with hearing from residents—not as an afterthought, but from the beginning. Your voice should shape outcomes before votes are taken.</p>
-              </div>
-            </Reveal>
-
-            <Reveal delay={150}>
-              <div className="card text-center h-full">
-                <div className="icon-container">
-                  <ClipboardList className="w-8 h-8 text-navy" aria-hidden="true" />
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-navy">Plan</h3>
-                <p className="text-gray-600">Build it right the first time. Size projects correctly from the start. Think long-term so we're not fixing mistakes or asking for more money later.</p>
-              </div>
-            </Reveal>
-
-            <Reveal delay={300}>
-              <div className="card text-center h-full">
-                <div className="icon-container">
-                  <ShieldCheck className="w-8 h-8 text-navy" aria-hidden="true" />
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-navy">Protect</h3>
-                <p className="text-gray-600">Prosper isn't just another suburb—it's Friday night football under the lights, Small Town Big Heart, and downtown festivals that bring neighbors together.</p>
-              </div>
-            </Reveal>
+          <div className="text-center mb-16">
+            <h2 className="section-title">My Priorities</h2>
+            <p className="section-subtitle"><strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper</p>
           </div>
 
-          <Reveal delay={400}>
-            <div className="text-center mt-12">
-              <Link href="/about#priorities" className="btn-outline">
-                See Full Priority Details →
-              </Link>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="card text-center h-full">
+              <div className="icon-container">
+                <Ear className="w-8 h-8 text-navy" aria-hidden="true" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-navy">Listen</h3>
+              <p className="text-gray-600">Good decisions start with hearing from residents—not as an afterthought, but from the beginning. Your voice should shape outcomes before votes are taken.</p>
             </div>
-          </Reveal>
+
+            <div className="card text-center h-full">
+              <div className="icon-container">
+                <ClipboardList className="w-8 h-8 text-navy" aria-hidden="true" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-navy">Plan</h3>
+              <p className="text-gray-600">Build it right the first time. Size projects correctly from the start. Think long-term so we're not fixing mistakes or asking for more money later.</p>
+            </div>
+
+            <div className="card text-center h-full">
+              <div className="icon-container">
+                <ShieldCheck className="w-8 h-8 text-navy" aria-hidden="true" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-navy">Protect</h3>
+              <p className="text-gray-600">Prosper isn't just another suburb—it's Friday night football under the lights, Small Town Big Heart, and downtown festivals that bring neighbors together.</p>
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <Link href="/about#priorities" className="btn-outline">
+              See Full Priority Details →
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -174,7 +162,7 @@ export default function Home() {
       <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-5 gap-10 items-center">
-            <Reveal direction="left" className="md:col-span-2">
+            <div className="md:col-span-2">
               <div className="relative">
                 <div className="absolute -inset-4 bg-gradient-to-br from-navy/10 to-prosper-red/10 rounded-2xl blur-xl"></div>
                 <Image
@@ -185,9 +173,9 @@ export default function Home() {
                   className="relative rounded-xl shadow-navy-lg mx-auto w-full max-w-[320px]"
                 />
               </div>
-            </Reveal>
+            </div>
 
-            <Reveal direction="right" className="md:col-span-3 space-y-6">
+            <div className="md:col-span-3 space-y-6">
               <h2 className="section-title">About Doug</h2>
               <p className="text-lg text-gray-700 leading-relaxed">
                 I moved to <strong className="text-navy">Prosper</strong> <strong>20 years ago</strong> for the same reasons you probably did—great schools, safe neighborhoods, and room to raise a family. I've served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and was elected to the Windsong Ranch HOA Board.
@@ -200,7 +188,7 @@ export default function Home() {
                   See Full Bio, Experience & Track Record →
                 </Link>
               </div>
-            </Reveal>
+            </div>
           </div>
         </div>
       </section>
@@ -211,40 +199,34 @@ export default function Home() {
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
 
           <div className="max-w-4xl mx-auto">
-            <Reveal>
-              <div className="text-center mb-12">
-                <div className="flex justify-center mb-4">
-                  <div className="icon-container">
-                    <HelpCircle className="w-8 h-8 text-navy" aria-hidden="true" />
-                  </div>
+            <div className="text-center mb-12">
+              <div className="flex justify-center mb-4">
+                <div className="icon-container">
+                  <HelpCircle className="w-8 h-8 text-navy" aria-hidden="true" />
                 </div>
-                <h2 className="section-title">Questions & Answers</h2>
-                <p className="section-subtitle">Direct answers from Doug on the issues that matter</p>
               </div>
-            </Reveal>
+              <h2 className="section-title">Questions & Answers</h2>
+              <p className="section-subtitle">Direct answers from Doug on the issues that matter</p>
+            </div>
 
             <div className="space-y-6">
-              {questions.slice(0, 3).map((q, idx) => (
-                <Reveal key={q.id} delay={idx * 100}>
-                  <div className="card">
-                    <h3 className="font-semibold text-navy text-lg mb-3">{q.question}</h3>
-                    <p className="text-gray-700 leading-relaxed">{q.answer}</p>
-                    <p className="text-sm text-gray-500 mt-3">— Asked by {q.name}</p>
-                  </div>
-                </Reveal>
+              {questions.slice(0, 3).map((q) => (
+                <div key={q.id} className="card">
+                  <h3 className="font-semibold text-navy text-lg mb-3">{q.question}</h3>
+                  <p className="text-gray-700 leading-relaxed">{q.answer}</p>
+                  <p className="text-sm text-gray-500 mt-3">— Asked by {q.name}</p>
+                </div>
               ))}
             </div>
 
-            <Reveal delay={300}>
-              <div className="text-center mt-12 space-y-4">
-                <Link href="/qna" className="btn-outline">
-                  View All Q&A
-                </Link>
-                <p className="text-gray-600 text-sm">
-                  Have a question? <Link href="/qna" className="text-navy font-medium hover:underline">Submit yours</Link>
-                </p>
-              </div>
-            </Reveal>
+            <div className="text-center mt-12 space-y-4">
+              <Link href="/qna" className="btn-outline">
+                View All Q&A
+              </Link>
+              <p className="text-gray-600 text-sm">
+                Have a question? <Link href="/qna" className="text-navy font-medium hover:underline">Submit yours</Link>
+              </p>
+            </div>
           </div>
         </section>
       )}
@@ -255,36 +237,30 @@ export default function Home() {
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
 
           <div className="max-w-4xl mx-auto">
-            <Reveal>
-              <h2 className="section-title text-center mb-4">Community Support</h2>
-              <p className="section-subtitle text-center">Hear from your neighbors</p>
-            </Reveal>
+            <h2 className="section-title text-center mb-4">Community Support</h2>
+            <p className="section-subtitle text-center">Hear from your neighbors</p>
 
             <div className="grid gap-6 md:grid-cols-2 mt-8">
-              {endorsements.slice(0, 4).map((e, idx) => (
-                <Reveal key={e.id} delay={idx * 100}>
-                  <div className="card h-full">
-                    <div className="quote-enhanced mb-4">
-                      <p className="text-gray-700 not-italic">"{e.message}"</p>
-                    </div>
-                    <p className="font-semibold text-navy flex items-center gap-3">
-                      <span className="w-10 h-10 bg-gradient-to-br from-navy to-navy-light rounded-full flex items-center justify-center text-sm text-white font-bold shadow-sm">
-                        {e.name.charAt(0)}
-                      </span>
-                      {e.name}
-                    </p>
+              {endorsements.slice(0, 4).map((e) => (
+                <div key={e.id} className="card h-full">
+                  <div className="quote-enhanced mb-4">
+                    <p className="text-gray-700 not-italic">"{e.message}"</p>
                   </div>
-                </Reveal>
+                  <p className="font-semibold text-navy flex items-center gap-3">
+                    <span className="w-10 h-10 bg-gradient-to-br from-navy to-navy-light rounded-full flex items-center justify-center text-sm text-white font-bold shadow-sm">
+                      {e.name.charAt(0)}
+                    </span>
+                    {e.name}
+                  </p>
+                </div>
               ))}
             </div>
 
-            <Reveal delay={400}>
-              <div className="text-center mt-12">
-                <Link href="/endorsements" className="btn-outline">
-                  View All Endorsements
-                </Link>
-              </div>
-            </Reveal>
+            <div className="text-center mt-12">
+              <Link href="/endorsements" className="btn-outline">
+                View All Endorsements
+              </Link>
+            </div>
           </div>
         </section>
       )}
@@ -292,28 +268,22 @@ export default function Home() {
       {/* CTA Section - Enhanced */}
       <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20">
         <div className="max-w-3xl mx-auto text-center relative z-10">
-          <Reveal>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-              Join the Campaign
-            </h2>
-          </Reveal>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+            Join the Campaign
+          </h2>
 
-          <Reveal delay={100}>
-            <p className="text-xl text-white/90 mb-10 leading-relaxed">
-              Local races are decided by a few hundred votes. Your support—and your voice—can make the difference.
-            </p>
-          </Reveal>
+          <p className="text-xl text-white/90 mb-10 leading-relaxed">
+            Local races are decided by a few hundred votes. Your support—and your voice—can make the difference.
+          </p>
 
-          <Reveal delay={200}>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/get-involved" className="btn-white text-lg px-10 py-4">
-                Get Involved
-              </Link>
-              <Link href="/donate" className="btn-secondary text-lg px-10 py-4">
-                Donate
-              </Link>
-            </div>
-          </Reveal>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/get-involved" className="btn-white text-lg px-10 py-4">
+              Get Involved
+            </Link>
+            <Link href="/donate" className="btn-secondary text-lg px-10 py-4">
+              Donate
+            </Link>
+          </div>
         </div>
       </section>
     </div>

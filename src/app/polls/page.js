@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Reveal from '../../components/Reveal';
 
 export default function PollsPage() {
   const [polls, setPolls] = useState([]);
@@ -159,61 +158,57 @@ export default function PollsPage() {
           {loading ? (
             <div className="text-center py-12 text-gray-500">Loading polls...</div>
           ) : polls.length === 0 ? (
-            <Reveal>
-              <div className="card text-center py-12">
-                <div className="text-4xl mb-4">📊</div>
-                <h2 className="text-xl font-bold text-navy mb-2">Gathering Community Input</h2>
-                <p className="text-gray-600 mb-4">We're gathering community input on key issues. Check back soon for polls, or visit the Ideas page to share your thoughts directly.</p>
-                <Link href="/ideas" className="btn-primary">
-                  Share an Idea
-                </Link>
-              </div>
-            </Reveal>
+            <div className="card text-center py-12">
+              <div className="text-4xl mb-4">📊</div>
+              <h2 className="text-xl font-bold text-navy mb-2">Gathering Community Input</h2>
+              <p className="text-gray-600 mb-4">We're gathering community input on key issues. Check back soon for polls, or visit the Ideas page to share your thoughts directly.</p>
+              <Link href="/ideas" className="btn-primary">
+                Share an Idea
+              </Link>
+            </div>
           ) : (
             <div className="space-y-6">
-              {polls.map((poll, idx) => (
-                <Reveal key={poll.id} delay={idx * 100}>
-                  <div className="card">
-                    <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
-                      <h2 className="text-xl font-bold text-navy">{poll.title}</h2>
-                      <div className="flex gap-2">
-                        <span className="px-3 py-1 bg-navy/10 text-navy text-sm rounded-full font-medium">
-                          {poll.poll_type === 'single_choice' ? 'Single Choice' : poll.poll_type === 'multiple_choice' ? 'Multiple Choice' : 'Ranked Choice'}
-                        </span>
-                        {hasVoted[poll.id] && (
-                          <span className="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full font-medium">
-                            Voted
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {poll.description && (
-                      <p className="text-gray-600 mb-4">{poll.description}</p>
-                    )}
-
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                      <span className="text-prosper-red font-semibold">
-                        {poll.vote_count} vote{poll.vote_count !== 1 ? 's' : ''}
+              {polls.map((poll) => (
+                <div key={poll.id} className="card">
+                  <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+                    <h2 className="text-xl font-bold text-navy">{poll.title}</h2>
+                    <div className="flex gap-2">
+                      <span className="px-3 py-1 bg-navy/10 text-navy text-sm rounded-full font-medium">
+                        {poll.poll_type === 'single_choice' ? 'Single Choice' : poll.poll_type === 'multiple_choice' ? 'Multiple Choice' : 'Ranked Choice'}
                       </span>
-                      {hasVoted[poll.id] ? (
-                        <Link
-                          href={`/polls/${poll.id}`}
-                          className="text-navy font-semibold hover:underline"
-                        >
-                          View Results →
-                        </Link>
-                      ) : (
-                        <button
-                          onClick={() => setSelectedPoll(poll)}
-                          className="btn-primary"
-                        >
-                          Vote Now
-                        </button>
+                      {hasVoted[poll.id] && (
+                        <span className="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full font-medium">
+                          Voted
+                        </span>
                       )}
                     </div>
                   </div>
-                </Reveal>
+
+                  {poll.description && (
+                    <p className="text-gray-600 mb-4">{poll.description}</p>
+                  )}
+
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <span className="text-prosper-red font-semibold">
+                      {poll.vote_count} vote{poll.vote_count !== 1 ? 's' : ''}
+                    </span>
+                    {hasVoted[poll.id] ? (
+                      <Link
+                        href={`/polls/${poll.id}`}
+                        className="text-navy font-semibold hover:underline"
+                      >
+                        View Results →
+                      </Link>
+                    ) : (
+                      <button
+                        onClick={() => setSelectedPoll(poll)}
+                        className="btn-primary"
+                      >
+                        Vote Now
+                      </button>
+                    )}
+                  </div>
+                </div>
               ))}
             </div>
           )}
@@ -413,13 +408,11 @@ export default function PollsPage() {
       <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 relative">
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
         <div className="max-w-3xl mx-auto text-center">
-          <Reveal>
-            <h2 className="section-title mb-4">Have an Idea?</h2>
-            <p className="text-gray-600 mb-8">Share your ideas for making Prosper better</p>
-            <Link href="/ideas" className="btn-primary">
-              Submit an Idea
-            </Link>
-          </Reveal>
+          <h2 className="section-title mb-4">Have an Idea?</h2>
+          <p className="text-gray-600 mb-8">Share your ideas for making Prosper better</p>
+          <Link href="/ideas" className="btn-primary">
+            Submit an Idea
+          </Link>
         </div>
       </section>
     </div>

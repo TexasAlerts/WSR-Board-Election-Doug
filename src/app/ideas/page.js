@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Reveal from '../../components/Reveal';
 
 const CATEGORIES = [
   { value: 'all', label: 'All Ideas', icon: '💡' },
@@ -214,75 +213,71 @@ export default function IdeasPage() {
           {loading ? (
             <div className="text-center py-12 text-gray-500">Loading ideas...</div>
           ) : ideas.length === 0 ? (
-            <Reveal>
-              <div className="card text-center py-12">
-                <div className="text-4xl mb-4">💡</div>
-                <h2 className="text-xl font-bold text-navy mb-2">Be the First!</h2>
-                <p className="text-gray-600 mb-6">Be the first to share your ideas for making Prosper better! Use the form above to submit your thoughts.</p>
-                <button onClick={() => setShowSubmitForm(true)} className="btn-primary">
-                  Submit Your Idea
-                </button>
-              </div>
-            </Reveal>
+            <div className="card text-center py-12">
+              <div className="text-4xl mb-4">💡</div>
+              <h2 className="text-xl font-bold text-navy mb-2">Be the First!</h2>
+              <p className="text-gray-600 mb-6">Be the first to share your ideas for making Prosper better! Use the form above to submit your thoughts.</p>
+              <button onClick={() => setShowSubmitForm(true)} className="btn-primary">
+                Submit Your Idea
+              </button>
+            </div>
           ) : (
             <div className="space-y-6">
-              {ideas.map((idea, idx) => (
-                <Reveal key={idea.id} delay={idx * 100}>
-                  <div className="card">
-                    <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
-                      <div className="flex flex-wrap gap-2">
-                        <span className="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full font-medium capitalize">
-                          {CATEGORIES.find(c => c.value === idea.category)?.icon} {idea.category}
-                        </span>
-                        <span className={`px-3 py-1 text-sm rounded-full font-medium capitalize ${STATUS_COLORS[idea.status] || 'bg-gray-100 text-gray-600'}`}>
-                          {idea.status.replace('_', ' ')}
-                        </span>
-                      </div>
-                      <span className="text-sm text-gray-500">
-                        {new Date(idea.created_at).toLocaleDateString()}
+              {ideas.map((idea) => (
+                <div key={idea.id} className="card">
+                  <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full font-medium capitalize">
+                        {CATEGORIES.find(c => c.value === idea.category)?.icon} {idea.category}
+                      </span>
+                      <span className={`px-3 py-1 text-sm rounded-full font-medium capitalize ${STATUS_COLORS[idea.status] || 'bg-gray-100 text-gray-600'}`}>
+                        {idea.status.replace('_', ' ')}
                       </span>
                     </div>
+                    <span className="text-sm text-gray-500">
+                      {new Date(idea.created_at).toLocaleDateString()}
+                    </span>
+                  </div>
 
-                    <h2 className="text-xl font-bold text-navy mb-2">{idea.title}</h2>
-                    <p className="text-gray-600 mb-4">
-                      {idea.content.length > 200 ? idea.content.slice(0, 200) + '...' : idea.content}
-                    </p>
+                  <h2 className="text-xl font-bold text-navy mb-2">{idea.title}</h2>
+                  <p className="text-gray-600 mb-4">
+                    {idea.content.length > 200 ? idea.content.slice(0, 200) + '...' : idea.content}
+                  </p>
 
-                    {idea.admin_response && (
-                      <div className="bg-navy/5 rounded-lg p-4 mb-4">
-                        <p className="text-sm font-semibold text-navy mb-1">Response from Doug:</p>
-                        <p className="text-gray-700">{idea.admin_response}</p>
-                      </div>
-                    )}
+                  {idea.admin_response && (
+                    <div className="bg-navy/5 rounded-lg p-4 mb-4">
+                      <p className="text-sm font-semibold text-navy mb-1">Response from Doug:</p>
+                      <p className="text-gray-700">{idea.admin_response}</p>
+                    </div>
+                  )}
 
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                      <div className="flex items-center gap-4">
-                        <button
-                          onClick={() => handleSupport(idea.id)}
-                          className={`flex items-center gap-2 px-4 py-3 min-h-[44px] rounded-lg font-medium transition-all ${
-                            supportedIdeas[idea.id]
-                              ? 'bg-prosper-red text-white'
-                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                          }`}
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <div className="flex items-center gap-4">
+                      <button
+                        onClick={() => handleSupport(idea.id)}
+                        className={`flex items-center gap-2 px-4 py-3 min-h-[44px] rounded-lg font-medium transition-all ${
+                          supportedIdeas[idea.id]
+                            ? 'bg-prosper-red text-white'
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill={supportedIdeas[idea.id] ? 'currentColor' : 'none'}
+                          stroke="currentColor"
+                          strokeWidth="2"
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill={supportedIdeas[idea.id] ? 'currentColor' : 'none'}
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          >
-                            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
-                          </svg>
-                          <span>{idea.support_count}</span>
-                        </button>
-                        <span className="text-sm text-gray-500">by {idea.name}</span>
-                      </div>
+                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+                        </svg>
+                        <span>{idea.support_count}</span>
+                      </button>
+                      <span className="text-sm text-gray-500">by {idea.name}</span>
                     </div>
                   </div>
-                </Reveal>
+                </div>
               ))}
             </div>
           )}
@@ -451,13 +446,11 @@ export default function IdeasPage() {
       <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 relative">
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
         <div className="max-w-3xl mx-auto text-center">
-          <Reveal>
-            <h2 className="section-title mb-4">Have Your Say</h2>
-            <p className="text-gray-600 mb-8">Check out our community polls to share your voice</p>
-            <Link href="/polls" className="btn-primary">
-              View Polls
-            </Link>
-          </Reveal>
+          <h2 className="section-title mb-4">Have Your Say</h2>
+          <p className="text-gray-600 mb-8">Check out our community polls to share your voice</p>
+          <Link href="/polls" className="btn-primary">
+            View Polls
+          </Link>
         </div>
       </section>
     </div>
