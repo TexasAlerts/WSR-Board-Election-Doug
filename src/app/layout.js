@@ -4,6 +4,21 @@ import ErrorBoundary from '../components/ErrorBoundary';
 import Link from 'next/link';
 import Script from 'next/script';
 import { AuthProvider } from '../context/AuthContext';
+import { Open_Sans, Oswald } from 'next/font/google';
+
+const openSans = Open_Sans({
+  subsets: ['latin'],
+  weight: ['400', '600'],
+  variable: '--font-open-sans',
+  display: 'swap',
+});
+
+const oswald = Oswald({
+  subsets: ['latin'],
+  weight: ['500', '700'],
+  variable: '--font-oswald',
+  display: 'swap',
+});
 
 export const metadata = {
   title: 'Doug Charles for Prosper Town Council - Place 5',
@@ -50,13 +65,11 @@ const KEY_DATES = [
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${openSans.variable} ${oswald.variable}`}>
       <head>
         <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body>
         <AuthProvider>

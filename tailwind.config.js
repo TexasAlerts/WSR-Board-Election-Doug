@@ -24,11 +24,6 @@ module.exports = {
           light: '#CF3040',
           dark: '#9F1020',
         },
-        red: {
-          DEFAULT: '#BF1E2E',
-          light: '#CF3040',
-          dark: '#9F1020',
-        },
         // Light cream/white background from sign
         cream: {
           DEFAULT: '#F5F5F0'
