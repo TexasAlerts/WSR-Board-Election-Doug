@@ -1,24 +1,22 @@
 'use client';
 
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-
-const useIsomorphicLayoutEffect =
-  typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 /**
  * ScrollToTop component
  * Reliably scrolls to top of page on route changes in Next.js App Router
  *
- * Handles:
- * - Browser scroll restoration conflicts
- * - CSS smooth-scroll override
- * - Layout timing issues with sticky elements
+ * Uses multiple techniques to ensure scroll works:
+ * 1. Disables browser scroll restoration
+ * 2. Uses both window.scrollTo and documentElement.scrollTop
+ * 3. Multiple timing attempts (immediate, RAF, setTimeout)
  */
 export default function ScrollToTop() {
   const pathname = usePathname();
+  const isFirstMount = useRef(true);
 
-  // Disable browser's automatic scroll restoration
+  // Disable browser's automatic scroll restoration on mount
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
@@ -26,21 +24,44 @@ export default function ScrollToTop() {
   }, []);
 
   // Scroll to top on pathname change
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
+    // Skip on first mount - page loads at correct position
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+
     const scrollToTop = () => {
+      // Method 1: Standard scrollTo with instant behavior
       window.scrollTo({
         top: 0,
         left: 0,
-        behavior: 'instant' // Bypasses CSS smooth scroll
+        behavior: 'instant'
       });
+
+      // Method 2: Direct DOM manipulation as fallback
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0; // For Safari
     };
 
-    // Use requestAnimationFrame for proper timing
+    // Immediate scroll
+    scrollToTop();
+
+    // RAF scroll - after browser paint
     requestAnimationFrame(() => {
       scrollToTop();
-      // Fallback for layout shifts
-      setTimeout(scrollToTop, 50);
     });
+
+    // Delayed scroll - catch any late layout shifts
+    const timeout1 = setTimeout(scrollToTop, 0);
+    const timeout2 = setTimeout(scrollToTop, 50);
+    const timeout3 = setTimeout(scrollToTop, 100);
+
+    return () => {
+      clearTimeout(timeout1);
+      clearTimeout(timeout2);
+      clearTimeout(timeout3);
+    };
   }, [pathname]);
 
   return null;
