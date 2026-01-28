@@ -1,4 +1,5 @@
 export const metadata = {
+  alternates: { canonical: '/qna' },
   title: 'Q&A | Doug Charles for Prosper Town Council',
   description: 'Questions for Doug Charles? Ask here and get answers about his positions and priorities for Prosper Town Council Place 5.',
   openGraph: {

@@ -22,6 +22,10 @@ const oswald = Oswald({
 });
 
 export const metadata = {
+  metadataBase: new URL('https://www.dougcharles.com'),
+  alternates: {
+    canonical: '/',
+  },
   title: 'Doug Charles for Prosper Town Council - Place 5',
   description: 'Doug Charles for Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. Election May 2, 2026.',
   icons: {

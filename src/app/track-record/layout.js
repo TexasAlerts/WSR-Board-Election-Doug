@@ -1,4 +1,5 @@
 export const metadata = {
+  alternates: { canonical: '/track-record' },
   title: 'Track Record | Doug Charles for Prosper Town Council',
   description: "Doug Charles's proven track record: organized 585 residents, P&Z Commissioner, $210M bond committee, PISD annexation victory. Results, not just promises.",
   openGraph: {

@@ -1,4 +1,5 @@
 export const metadata = {
+  alternates: { canonical: '/about' },
   title: 'About Doug Charles | Prosper Town Council Place 5 Candidate',
   description: 'Meet Doug Charles: 20-year Prosper resident, former P&Z Commissioner (2021-2023), 2020 Bond Committee member, Windsong Ranch HOA Board member. Candidate for Prosper Town Council Place 5.',
   openGraph: {
