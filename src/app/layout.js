@@ -121,7 +121,7 @@ export default function RootLayout({ children }) {
                   "@id": "https://www.dougcharles.com/#person",
                   "name": "Doug Charles",
                   "jobTitle": "Candidate for Prosper Town Council Place 5",
-                  "description": "20-year Prosper resident, former Planning & Zoning Commissioner (2021-2023), 2020 Bond Election Committee member, Windsong Ranch HOA Board member.",
+                  "description": "20-year Prosper resident, former Planning & Zoning Commissioner (2021-2023), 2020 Bond Election Committee member, Windsong Ranch HOA Board member. Candidate for Prosper Town Council Place 5.",
                   "address": {
                     "@type": "PostalAddress",
                     "addressLocality": "Prosper",
