@@ -15,6 +15,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    title: 'Community Ideas | Doug Charles for Prosper Town Council',
+    description: 'Submit your ideas for making Prosper better. Share your vision for roads, parks, development, and more.',
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };

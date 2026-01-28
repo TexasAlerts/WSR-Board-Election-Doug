@@ -15,6 +15,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    title: 'Endorsements | Doug Charles for Prosper Town Council',
+    description: "See who's endorsing Doug Charles. Read testimonials from Prosper neighbors.",
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };

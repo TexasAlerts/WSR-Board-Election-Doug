@@ -15,6 +15,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    title: 'Community Polls | Doug Charles for Prosper Town Council',
+    description: 'Vote on community polls about growth, traffic, parks, and local priorities in Prosper.',
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };

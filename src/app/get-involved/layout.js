@@ -15,6 +15,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    title: 'Get Involved | Doug Charles for Prosper Town Council',
+    description: 'Request a yard sign, volunteer, or sign up for updates. Join the campaign for Prosper Town Council Place 5.',
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };

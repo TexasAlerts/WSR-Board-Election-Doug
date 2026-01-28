@@ -15,6 +15,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    title: 'Terms of Use | Doug Charles for Prosper Town Council',
+    description: 'Terms of use for the Doug Charles for Prosper Town Council campaign website.',
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };

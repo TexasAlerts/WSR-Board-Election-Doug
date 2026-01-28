@@ -15,6 +15,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    title: "Why I'm Running | Doug Charles for Prosper Town Council",
+    description: 'Experienced, accessible leadership focused on results—not politics. May 2026 election.',
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };

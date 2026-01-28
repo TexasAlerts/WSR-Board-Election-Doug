@@ -15,6 +15,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    title: 'Priorities | Doug Charles for Prosper Town Council',
+    description: "Listen to residents, Plan for long-term success, Protect Prosper's character.",
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };

@@ -15,6 +15,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    title: 'Q&A | Doug Charles for Prosper Town Council',
+    description: 'Ask Doug Charles questions about his positions and priorities for Prosper Town Council Place 5.',
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };
