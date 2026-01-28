@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 
 const CATEGORIES = [
@@ -43,18 +43,7 @@ export default function IdeasPage() {
   const [supportEmail, setSupportEmail] = useState('');
   const [supportMsg, setSupportMsg] = useState('');
 
-  useEffect(() => {
-    loadIdeas();
-    // Load supported ideas from localStorage
-    try {
-      const supported = JSON.parse(localStorage.getItem('supportedIdeas') || '{}');
-      setSupportedIdeas(supported);
-    } catch {
-      setSupportedIdeas({});
-    }
-  }, [category]);
-
-  async function loadIdeas() {
+  const loadIdeas = useCallback(async () => {
     setLoading(true);
     try {
       const url = category === 'all' ? '/api/ideas' : `/api/ideas?category=${category}`;
@@ -68,7 +57,18 @@ export default function IdeasPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [category]);
+
+  useEffect(() => {
+    loadIdeas();
+    // Load supported ideas from localStorage
+    try {
+      const supported = JSON.parse(localStorage.getItem('supportedIdeas') || '{}');
+      setSupportedIdeas(supported);
+    } catch {
+      setSupportedIdeas({});
+    }
+  }, [loadIdeas]);
 
   async function handleSubmit(e) {
     e.preventDefault();

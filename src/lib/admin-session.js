@@ -1,14 +1,72 @@
-import { randomUUID } from 'crypto';
+import { getSupabase } from './supabase';
+import { generateToken } from './auth';
 
-const sessions = new Set();
+/**
+ * Create a persistent admin session stored in Supabase.
+ * Returns a secure token to be stored as an httpOnly cookie.
+ */
+export async function createAdminSession(request) {
+  const supabase = getSupabase();
+  const token = generateToken(64);
+  const expiresAt = new Date();
+  expiresAt.setHours(expiresAt.getHours() + 8);
 
-export function createSession() {
-  const token = randomUUID();
-  sessions.add(token);
+  const ip = request?.headers?.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+  const userAgent = request?.headers?.get('user-agent') || 'unknown';
+
+  const { error } = await supabase
+    .from('admin_sessions')
+    .insert({
+      token,
+      expires_at: expiresAt.toISOString(),
+      ip_address: ip,
+      user_agent: userAgent,
+    });
+
+  if (error) {
+    console.error('Create admin session error:', error);
+    return null;
+  }
+
   return token;
 }
 
-export function requireAdmin(req) {
-  const cookie = req.cookies.get('admin_session');
-  return cookie && sessions.has(cookie.value);
+/**
+ * Validate an admin session token against Supabase.
+ * Returns true if the session exists and has not expired.
+ */
+export async function validateAdminSession(token) {
+  if (!token) return false;
+
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from('admin_sessions')
+    .select('id')
+    .eq('token', token)
+    .gt('expires_at', new Date().toISOString())
+    .single();
+
+  return !error && !!data;
+}
+
+/**
+ * Delete an admin session (logout).
+ */
+export async function deleteAdminSession(token) {
+  if (!token) return;
+  const supabase = getSupabase();
+  await supabase.from('admin_sessions').delete().eq('token', token);
+}
+
+/**
+ * Check if the current request has a valid admin session.
+ * Checks both admin_session cookie (password-based admin) and
+ * session_token cookie (supporter-based admin with role check).
+ */
+export async function requireAdmin(req) {
+  const adminCookie = req.cookies.get('admin_session');
+  if (adminCookie && await validateAdminSession(adminCookie.value)) {
+    return true;
+  }
+  return false;
 }

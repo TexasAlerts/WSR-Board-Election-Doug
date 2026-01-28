@@ -238,8 +238,9 @@ export default function PollsPage() {
 
               <form onSubmit={handleVote} className="space-y-6">
                 <div>
-                  <label className="form-label">Your Name *</label>
+                  <label htmlFor="poll-vote-name" className="form-label">Your Name *</label>
                   <input
+                    id="poll-vote-name"
                     type="text"
                     required
                     value={voteForm.name}
@@ -250,8 +251,9 @@ export default function PollsPage() {
                 </div>
 
                 <div>
-                  <label className="form-label">Your Email *</label>
+                  <label htmlFor="poll-vote-email" className="form-label">Your Email *</label>
                   <input
+                    id="poll-vote-email"
                     type="email"
                     required
                     value={voteForm.email}
@@ -385,8 +387,9 @@ export default function PollsPage() {
 
                 {selectedPoll.allow_comments && (
                   <div>
-                    <label className="form-label">Comment (optional)</label>
+                    <label htmlFor="poll-vote-comment" className="form-label">Comment (optional)</label>
                     <textarea
+                      id="poll-vote-comment"
                       rows={3}
                       value={voteForm.comment}
                       onChange={e => setVoteForm({ ...voteForm, comment: e.target.value })}

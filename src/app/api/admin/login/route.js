@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { createSession } from '../../../../lib/admin-session';
+import { createAdminSession } from '../../../../lib/admin-session';
 import { rateLimit } from '../../../../lib/rateLimit';
 
 export async function POST(req) {
@@ -29,7 +29,7 @@ export async function POST(req) {
   }
 
   if (valid) {
-    const token = createSession();
+    const token = await createAdminSession(req);
     const res = NextResponse.json({ ok: true });
     // Set secure cookie. In production the secure flag ensures HTTPS only.
     res.cookies.set('admin_session', token, {
