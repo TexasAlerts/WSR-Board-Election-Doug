@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 import { logAudit, logError, ErrorTypes } from '../../../lib/logging';
+import { sanitizeText } from '../../../lib/sanitize';
 
 export async function POST(req) {
   const supabase = getSupabase();
@@ -27,7 +28,9 @@ export async function POST(req) {
       const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
-      const { type, name, email, phone, message, consentEmail, consentSms } = parsed.data;
+      const { type, name: rawName, email, phone, message: rawMessage, consentEmail, consentSms } = parsed.data;
+      const name = sanitizeText(rawName);
+      const message = rawMessage ? sanitizeText(rawMessage) : null;
       const { data: interestRecord, error } = await supabase
         .from('interest')
         .insert({
@@ -35,7 +38,7 @@ export async function POST(req) {
           name,
           email,
           phone: phone ?? null,
-          message: message ?? null,
+          message,
           consent_email: consentEmail,
           consent_sms: consentSms,
         })
@@ -75,6 +78,6 @@ export async function POST(req) {
       ]);
       return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
-    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }

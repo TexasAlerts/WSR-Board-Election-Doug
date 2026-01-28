@@ -29,8 +29,12 @@ export default function PollsPage() {
     loadPolls();
 
     // Check localStorage for voted polls
-    const voted = JSON.parse(localStorage.getItem('votedPolls') || '{}');
-    setHasVoted(voted);
+    try {
+      const voted = JSON.parse(localStorage.getItem('votedPolls') || '{}');
+      setHasVoted(voted);
+    } catch {
+      setHasVoted({});
+    }
   }, []);
 
   async function handleVote(e) {

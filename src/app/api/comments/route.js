@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail } from '../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
+import { sanitizeText } from '../../../lib/sanitize';
 
 // GET: Fetch comments for a poll or idea
 export async function GET(request) {
@@ -131,7 +132,8 @@ export async function POST(request) {
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 
-    const { poll_id, idea_id, parent_id, content } = parsed.data;
+    const { poll_id, idea_id, parent_id, content: rawContent } = parsed.data;
+    const content = sanitizeText(rawContent);
 
     // Verify parent comment exists if replying
     if (parent_id) {
@@ -227,6 +229,6 @@ export async function POST(request) {
       userEmail: supporter?.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }

@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
+import { sanitizeText } from '../../../lib/sanitize';
 
 export async function GET(request) {
   const supabase = getSupabase();
@@ -81,7 +82,10 @@ export async function POST(request) {
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 
-    const { name, email, category, title, content, is_public } = parsed.data;
+    const { name: rawName, email, category, title: rawTitle, content: rawContent, is_public } = parsed.data;
+    const name = sanitizeText(rawName);
+    const title = sanitizeText(rawTitle);
+    const content = sanitizeText(rawContent);
 
     const { data: newIdea, error } = await supabase
       .from('ideas')
@@ -149,6 +153,6 @@ export async function POST(request) {
       method: 'POST',
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }

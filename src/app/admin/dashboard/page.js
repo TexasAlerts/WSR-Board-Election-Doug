@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Users, MessageSquare, Send, CheckCircle, XCircle, Clock, Mail, Phone, Loader2, FileText, AlertTriangle, Eye, RefreshCw, ThumbsUp, Lightbulb, HelpCircle, UserPlus, BarChart3 } from 'lucide-react';
+import { ConfirmModal, PromptModal } from '../../../components/AdminModal';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -27,6 +28,28 @@ export default function AdminDashboard() {
   const [auditFilter, setAuditFilter] = useState('all');
   const [errorFilter, setErrorFilter] = useState('new');
   const [error, setError] = useState('');
+
+  // Modal state for accessible confirm/prompt dialogs
+  const [confirmModal, setConfirmModal] = useState({ open: false, title: '', message: '', onConfirm: null });
+  const [promptModal, setPromptModal] = useState({ open: false, title: '', label: '', defaultValue: '', multiline: false, onSubmit: null });
+
+  const showConfirm = useCallback((title, message) => {
+    return new Promise((resolve) => {
+      setConfirmModal({
+        open: true, title, message,
+        onConfirm: () => { setConfirmModal(m => ({ ...m, open: false })); resolve(true); },
+      });
+    });
+  }, []);
+
+  const showPrompt = useCallback((title, label, defaultValue = '', multiline = false) => {
+    return new Promise((resolve) => {
+      setPromptModal({
+        open: true, title, label, defaultValue, multiline,
+        onSubmit: (val) => { setPromptModal(m => ({ ...m, open: false })); resolve(val); },
+      });
+    });
+  }, []);
 
   // Broadcast form state
   const [broadcastType, setBroadcastType] = useState('email');
@@ -286,7 +309,8 @@ export default function AdminDashboard() {
   };
 
   const handleDeleteInterest = async (id) => {
-    if (!confirm('Are you sure you want to delete this interest record?')) return;
+    const confirmed = await showConfirm('Delete Interest Record', 'Are you sure you want to delete this interest record?');
+    if (!confirmed) return;
     try {
       const res = await fetch(`/api/admin/interest?id=${id}`, {
         method: 'DELETE',
@@ -598,8 +622,8 @@ export default function AdminDashboard() {
                           Approve
                         </button>
                         <button
-                          onClick={() => {
-                            const reason = prompt('Rejection reason (optional):');
+                          onClick={async () => {
+                            const reason = await showPrompt('Reject Comment', 'Rejection reason (optional):');
                             moderateComment(c.id, 'rejected', reason);
                           }}
                           className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
@@ -921,11 +945,9 @@ export default function AdminDashboard() {
                         </button>
                       )}
                       <button
-                        onClick={() => {
-                          const notes = prompt('Resolution notes:');
-                          if (notes !== null) {
-                            updateErrorStatus(err.id, 'resolved', notes);
-                          }
+                        onClick={async () => {
+                          const notes = await showPrompt('Resolve Error', 'Resolution notes:');
+                          updateErrorStatus(err.id, 'resolved', notes);
                         }}
                         className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
                       >
@@ -933,11 +955,9 @@ export default function AdminDashboard() {
                         Resolve
                       </button>
                       <button
-                        onClick={() => {
-                          const notes = prompt('Reason for not fixing:');
-                          if (notes !== null) {
-                            updateErrorStatus(err.id, 'wont_fix', notes);
-                          }
+                        onClick={async () => {
+                          const notes = await showPrompt("Won't Fix", 'Reason for not fixing:');
+                          updateErrorStatus(err.id, 'wont_fix', notes);
                         }}
                         className="flex items-center gap-1 px-3 py-1 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
                       >
@@ -1014,11 +1034,9 @@ export default function AdminDashboard() {
                           Approve
                         </button>
                         <button
-                          onClick={() => {
-                            const reason = prompt('Rejection reason (will be sent to user):');
-                            if (reason !== null) {
-                              handleEndorsementAction(e.id, 'reject', reason);
-                            }
+                          onClick={async () => {
+                            const reason = await showPrompt('Reject Endorsement', 'Rejection reason (will be sent to user):');
+                            handleEndorsementAction(e.id, 'reject', reason);
                           }}
                           className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
                         >
@@ -1087,9 +1105,9 @@ export default function AdminDashboard() {
                     {q.status === 'pending' && (
                       <div className="flex gap-2">
                         <button
-                          onClick={() => {
-                            const answer = prompt('Your answer:');
-                            if (answer !== null) {
+                          onClick={async () => {
+                            const answer = await showPrompt('Answer Question', 'Your answer:', '', true);
+                            if (answer) {
                               handleQuestionAction(q.id, 'approve', answer);
                             }
                           }}
@@ -1099,9 +1117,9 @@ export default function AdminDashboard() {
                           Answer & Approve
                         </button>
                         <button
-                          onClick={() => {
-                            const reason = prompt('Rejection reason (will be sent to user):');
-                            if (reason !== null) {
+                          onClick={async () => {
+                            const reason = await showPrompt('Reject Question', 'Rejection reason (will be sent to user):');
+                            if (reason) {
                               handleQuestionAction(q.id, 'reject', null, reason);
                             }
                           }}
@@ -1174,8 +1192,8 @@ export default function AdminDashboard() {
                     {idea.status === 'pending' && (
                       <div className="flex gap-2">
                         <button
-                          onClick={() => {
-                            const response = prompt('Your response (optional):');
+                          onClick={async () => {
+                            const response = await showPrompt('Publish Idea', 'Your response (optional):');
                             handleIdeaAction(idea.id, 'publish', response);
                           }}
                           className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
@@ -1184,9 +1202,9 @@ export default function AdminDashboard() {
                           Publish
                         </button>
                         <button
-                          onClick={() => {
-                            const reason = prompt('Rejection reason (will be sent to user):');
-                            if (reason !== null) {
+                          onClick={async () => {
+                            const reason = await showPrompt('Decline Idea', 'Rejection reason (will be sent to user):');
+                            if (reason) {
                               handleIdeaAction(idea.id, 'reject', null, reason);
                             }
                           }}
@@ -1199,9 +1217,9 @@ export default function AdminDashboard() {
                     )}
                     {idea.status !== 'pending' && idea.status !== 'declined' && (
                       <button
-                        onClick={() => {
-                          const response = prompt('Add/update response:', idea.admin_response || '');
-                          if (response !== null) {
+                        onClick={async () => {
+                          const response = await showPrompt('Respond to Idea', 'Add/update response:', idea.admin_response || '', true);
+                          if (response) {
                             handleIdeaAction(idea.id, 'respond', response);
                           }
                         }}
@@ -1348,6 +1366,23 @@ export default function AdminDashboard() {
           )}
         </div>
       )}
+      {/* Accessible modal dialogs */}
+      <ConfirmModal
+        open={confirmModal.open}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        onConfirm={confirmModal.onConfirm || (() => {})}
+        onCancel={() => setConfirmModal(m => ({ ...m, open: false }))}
+      />
+      <PromptModal
+        open={promptModal.open}
+        title={promptModal.title}
+        label={promptModal.label}
+        defaultValue={promptModal.defaultValue}
+        multiline={promptModal.multiline}
+        onSubmit={promptModal.onSubmit || (() => {})}
+        onCancel={() => setPromptModal(m => ({ ...m, open: false }))}
+      />
     </div>
   );
 }

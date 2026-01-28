@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
 import { createSession } from '../../../../lib/admin-session';
 import { rateLimit } from '../../../../lib/rateLimit';
 
@@ -14,7 +15,20 @@ export async function POST(req) {
 
   const body = await req.json();
   const password = (body.password || '').toString();
-  if (password === process.env.ADMIN_PASSWORD) {
+
+  // Support bcrypt-hashed ADMIN_PASSWORD_HASH (preferred) or plaintext ADMIN_PASSWORD (legacy)
+  const storedHash = process.env.ADMIN_PASSWORD_HASH;
+  const storedPlain = process.env.ADMIN_PASSWORD;
+  let valid = false;
+
+  if (storedHash) {
+    valid = await bcrypt.compare(password, storedHash);
+  } else if (storedPlain) {
+    // Legacy plaintext comparison — migrate to ADMIN_PASSWORD_HASH
+    valid = password === storedPlain;
+  }
+
+  if (valid) {
     const token = createSession();
     const res = NextResponse.json({ ok: true });
     // Set secure cookie. In production the secure flag ensures HTTPS only.

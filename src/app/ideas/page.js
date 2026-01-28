@@ -46,8 +46,12 @@ export default function IdeasPage() {
   useEffect(() => {
     loadIdeas();
     // Load supported ideas from localStorage
-    const supported = JSON.parse(localStorage.getItem('supportedIdeas') || '{}');
-    setSupportedIdeas(supported);
+    try {
+      const supported = JSON.parse(localStorage.getItem('supportedIdeas') || '{}');
+      setSupportedIdeas(supported);
+    } catch {
+      setSupportedIdeas({});
+    }
   }, [category]);
 
   async function loadIdeas() {
