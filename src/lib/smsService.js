@@ -3,13 +3,20 @@
  * Requires TELNYX_API_KEY and TELNYX_PHONE_NUMBER environment variables
  */
 
-import Telnyx from 'telnyx';
+import TelnyxModule from 'telnyx';
 
 let telnyxClient = null;
 
 function getTelnyxClient() {
   if (!telnyxClient && process.env.TELNYX_API_KEY) {
-    telnyxClient = new Telnyx(process.env.TELNYX_API_KEY);
+    // Telnyx SDK exports a callable factory; use the inner class if available
+    const TelnyxConstructor = TelnyxModule.Telnyx || TelnyxModule.default || TelnyxModule;
+    try {
+      telnyxClient = new TelnyxConstructor(process.env.TELNYX_API_KEY);
+    } catch {
+      // Fallback: call as factory function (some bundlers strip class semantics)
+      telnyxClient = TelnyxConstructor(process.env.TELNYX_API_KEY);
+    }
   }
   return telnyxClient;
 }

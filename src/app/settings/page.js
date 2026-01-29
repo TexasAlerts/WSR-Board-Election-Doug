@@ -114,8 +114,8 @@ export default function SettingsPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to update');
       setProfileMsg({ type: 'success', text: 'Profile updated successfully!' });
+      await refreshAuth();
       setEditingProfile(false);
-      refreshAuth();
     } catch (err) {
       setProfileMsg({ type: 'error', text: err.message });
     } finally {
