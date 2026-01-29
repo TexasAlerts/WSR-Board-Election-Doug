@@ -8,7 +8,7 @@ const OPT_IN_KEYWORDS = ['start', 'unstop', 'subscribe'];
 function validateTelnyxWebhook(body, request) {
   const secret = process.env.TELNYX_WEBHOOK_SECRET;
   if (!secret) {
-    return null; // Skip validation if no secret configured
+    return NextResponse.json({ error: 'Webhook secret not configured' }, { status: 500 });
   }
 
   // Check for Telnyx signature header

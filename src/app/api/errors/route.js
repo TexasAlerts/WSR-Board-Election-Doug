@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { logError, ErrorTypes } from '../../../lib/logging';
+import { rateLimit } from '../../../lib/rateLimit';
 import { cookies } from 'next/headers';
 
 /**
@@ -15,6 +16,12 @@ import { cookies } from 'next/headers';
  * - user_agent: Browser user agent
  */
 export async function POST(request) {
+  // Rate limit: 10 error reports per minute per IP
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  if (!rateLimit(`errors:${ip}`, 10, 60000)) {
+    return NextResponse.json({ ok: false, error: 'Too many error reports' }, { status: 429 });
+  }
+
   try {
     const body = await request.json();
     const { category, message, stack, component_stack, url, user_agent } = body;

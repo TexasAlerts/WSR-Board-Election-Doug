@@ -169,6 +169,7 @@ function CommentsReport({ data }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
+        <caption className="sr-only">Reported comments</caption>
         <thead>
           <tr className="border-b text-left">
             <th className="p-2">Name</th>
@@ -205,6 +206,7 @@ function IdeasReport({ data }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
+        <caption className="sr-only">Reported ideas</caption>
         <thead>
           <tr className="border-b text-left">
             <th className="p-2">Title</th>

@@ -16,17 +16,11 @@ export async function POST(req) {
   const body = await req.json();
   const password = (body.password || '').toString();
 
-  // Support bcrypt-hashed ADMIN_PASSWORD_HASH (preferred) or plaintext ADMIN_PASSWORD (legacy)
   const storedHash = process.env.ADMIN_PASSWORD_HASH;
-  const storedPlain = process.env.ADMIN_PASSWORD;
-  let valid = false;
-
-  if (storedHash) {
-    valid = await bcrypt.compare(password, storedHash);
-  } else if (storedPlain) {
-    // Legacy plaintext comparison — migrate to ADMIN_PASSWORD_HASH
-    valid = password === storedPlain;
+  if (!storedHash) {
+    return NextResponse.json({ ok: false, error: 'Admin login not configured' }, { status: 500 });
   }
+  const valid = await bcrypt.compare(password, storedHash);
 
   if (valid) {
     const token = await createAdminSession(req);

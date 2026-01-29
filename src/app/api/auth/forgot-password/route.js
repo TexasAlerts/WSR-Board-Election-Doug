@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { rateLimit } from '../../../../lib/rateLimit';
 import { getSupporterByEmail, createEmailVerification } from '../../../../lib/auth';
 import { sendPasswordResetEmail } from '../../../../lib/emailService';
-import { logAudit, logError, ErrorTypes } from '../../../../lib/logging';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 export async function POST(req) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
@@ -53,7 +53,7 @@ export async function POST(req) {
 
           // Log the password reset request
           await logAudit({
-            eventType: 'PASSWORD_RESET_REQUESTED',
+            eventType: AuditEvents.PASSWORD_RESET_REQUESTED,
             supporterId: supporter.id,
             targetType: 'supporter',
             targetId: supporter.id,

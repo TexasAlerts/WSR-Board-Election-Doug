@@ -177,7 +177,7 @@ export default function AdminDashboard() {
       if (!res.ok) throw new Error(data.error);
       loadData();
     } catch (err) {
-      alert(err.message);
+      showConfirm('Error', err.message);
     }
   };
 
@@ -199,7 +199,7 @@ export default function AdminDashboard() {
       if (!res.ok) throw new Error(data.error);
       loadData();
     } catch (err) {
-      alert(err.message);
+      showConfirm('Error', err.message);
     }
   };
 
@@ -214,7 +214,7 @@ export default function AdminDashboard() {
       if (!res.ok) throw new Error(data.error);
       loadData();
     } catch (err) {
-      alert(err.message);
+      showConfirm('Error', err.message);
     }
   };
 
@@ -234,12 +234,12 @@ export default function AdminDashboard() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
-      alert(data.message);
+      showConfirm('Success', data.message);
       setBroadcastSubject('');
       setBroadcastMessage('');
       loadData();
     } catch (err) {
-      alert(err.message);
+      showConfirm('Error', err.message);
     } finally {
       setSending(false);
     }
@@ -256,7 +256,7 @@ export default function AdminDashboard() {
       if (!res.ok) throw new Error(data.error);
       loadData();
     } catch (err) {
-      alert(err.message);
+      showConfirm('Error', err.message);
     }
   };
 
@@ -271,7 +271,7 @@ export default function AdminDashboard() {
       if (!res.ok) throw new Error(data.error);
       loadData();
     } catch (err) {
-      alert(err.message);
+      showConfirm('Error', err.message);
     }
   };
 
@@ -286,7 +286,7 @@ export default function AdminDashboard() {
       if (!res.ok) throw new Error(data.error);
       loadData();
     } catch (err) {
-      alert(err.message);
+      showConfirm('Error', err.message);
     }
   };
 
@@ -301,7 +301,7 @@ export default function AdminDashboard() {
       if (!res.ok) throw new Error(data.error);
       loadData();
     } catch (err) {
-      alert(err.message);
+      showConfirm('Error', err.message);
     }
   };
 
@@ -316,7 +316,7 @@ export default function AdminDashboard() {
       if (!res.ok) throw new Error(data.error);
       loadData();
     } catch (err) {
-      alert(err.message);
+      showConfirm('Error', err.message);
     }
   };
 

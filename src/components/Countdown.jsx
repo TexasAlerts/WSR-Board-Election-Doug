@@ -30,7 +30,7 @@ export default function Countdown({ open, close }) {
   const label = phase === 'pre' ? 'Voting opens in' : 'Voting closes in';
 
   return (
-    <div className="w-full text-center sm:text-right">
+    <div className="w-full text-center sm:text-right" aria-live="polite" aria-atomic="true">
       <span className="font-semibold text-prosper-red whitespace-nowrap uppercase">
         {`${label} ${days} day${days === 1 ? '' : 's'}`}
       </span>

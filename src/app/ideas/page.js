@@ -422,18 +422,18 @@ export default function IdeasPage() {
                   <p id="content-hint" className="text-xs text-gray-500 mt-1">At least 20 characters</p>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <label htmlFor="is_public" className="flex items-center gap-3 cursor-pointer min-h-[44px]">
                   <input
                     type="checkbox"
                     id="is_public"
                     checked={submitForm.is_public}
                     onChange={e => setSubmitForm({ ...submitForm, is_public: e.target.checked })}
-                    className="w-5 h-5 rounded border-gray-300"
+                    className="w-5 h-5 min-w-[20px] rounded border-gray-300"
                   />
-                  <label htmlFor="is_public" className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600">
                     Make this idea public for others to see and support
-                  </label>
-                </div>
+                  </span>
+                </label>
 
                 {submitMsg && (
                   <div role="alert" aria-live="polite" className={`p-4 rounded-lg ${submitMsg.includes('Thank') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>

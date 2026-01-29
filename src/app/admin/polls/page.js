@@ -363,22 +363,22 @@ export default function AdminPollsPage() {
                 </div>
 
                 <div className="flex gap-6">
-                  <label className="flex items-center gap-2">
+                  <label className="flex items-center gap-2 cursor-pointer min-h-[44px]">
                     <input
                       type="checkbox"
                       checked={formData.allow_comments}
                       onChange={(e) => setFormData({ ...formData, allow_comments: e.target.checked })}
-                      className="rounded border-gray-300 text-navy focus:ring-navy"
+                      className="w-5 h-5 min-w-[20px] rounded border-gray-300 text-navy focus:ring-navy"
                     />
                     <span className="text-sm text-gray-700">Allow comments</span>
                   </label>
 
-                  <label className="flex items-center gap-2">
+                  <label className="flex items-center gap-2 cursor-pointer min-h-[44px]">
                     <input
                       type="checkbox"
                       checked={formData.show_results_before_vote}
                       onChange={(e) => setFormData({ ...formData, show_results_before_vote: e.target.checked })}
-                      className="rounded border-gray-300 text-navy focus:ring-navy"
+                      className="w-5 h-5 min-w-[20px] rounded border-gray-300 text-navy focus:ring-navy"
                     />
                     <span className="text-sm text-gray-700">Show results before voting</span>
                   </label>

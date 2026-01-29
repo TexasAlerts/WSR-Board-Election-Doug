@@ -3,7 +3,7 @@ import { getSupabase } from '../../../lib/supabase';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
-import { logAudit, logError, ErrorTypes } from '../../../lib/logging';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
 import { sanitizeText } from '../../../lib/sanitize';
 
 export async function POST(req) {
@@ -58,7 +58,7 @@ export async function POST(req) {
 
       // Log interest submission
       await logAudit({
-        eventType: 'INTEREST_SUBMITTED',
+        eventType: AuditEvents.INTEREST_SUBMITTED,
         targetId: interestRecord?.id,
         targetType: 'interest',
         details: { type, name, email, hasPhone: !!phone, consentEmail, consentSms },
