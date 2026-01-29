@@ -62,7 +62,7 @@ export default function LoginPage() {
         {/* Logo accent */}
         <Image
           src="/wsr-logo.webp"
-          alt=""
+          alt="Windsong Ranch - Doug Charles for Prosper"
           width={96}
           height={64}
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"
