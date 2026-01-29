@@ -84,7 +84,7 @@ export default function QnAPage() {
             <h2 className="text-xl font-bold text-navy mb-6">Ask Doug a Question</h2>
 
             {submitted ? (
-              <div className="p-6 bg-green-50 border border-green-200 rounded-lg">
+              <div className="p-6 bg-green-50 border border-green-200 rounded-lg" role="status" aria-live="polite">
                 <p className="text-green-800 font-semibold">
                   Thank you for your question! I'll review it and post an answer soon.
                 </p>
@@ -158,7 +158,7 @@ export default function QnAPage() {
           <h2 className="section-title text-center mb-12">Published Answers</h2>
 
           {loading ? (
-            <div className="text-center text-gray-500">Loading questions...</div>
+            <div className="text-center text-gray-500" role="status" aria-live="polite">Loading questions...</div>
           ) : questions.length > 0 ? (
             <div className="space-y-6">
               {questions.map((q) => (

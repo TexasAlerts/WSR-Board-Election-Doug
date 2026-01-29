@@ -87,6 +87,7 @@ export default function StickyNav() {
   return (
     <nav
       ref={navRef}
+      aria-label="Main navigation"
       className="bg-white border-b border-gray-100 py-4 px-4 sticky [top:var(--banner-offset)] z-40"
     >
       <div className="max-w-6xl mx-auto flex justify-between items-center">

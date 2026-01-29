@@ -6,6 +6,9 @@ export const metadata = {
     title: 'Community Ideas | Doug Charles for Prosper Town Council',
     description: 'Submit your ideas for making Prosper better. Doug Charles believes great ideas come from neighbors. Share your vision for roads, parks, development, and more.',
     url: 'https://www.dougcharles.com/ideas',
+    type: 'website',
+    siteName: 'Doug Charles for Prosper',
+    locale: 'en_US',
     images: [{
       url: 'https://www.dougcharles.com/campaign-preview.png',
       width: 1200,

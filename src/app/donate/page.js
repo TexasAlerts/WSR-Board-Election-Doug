@@ -72,6 +72,7 @@ export default function DonatePage() {
                       setSelectedAmount(amount);
                       setCustomAmount('');
                     }}
+                    aria-pressed={selectedAmount === amount}
                     className={`px-4 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ${
                       selectedAmount === amount
                         ? 'bg-gradient-red text-white shadow-lg scale-105'

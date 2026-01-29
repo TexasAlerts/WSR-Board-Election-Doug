@@ -6,6 +6,9 @@ export const metadata = {
     title: 'Donate | Doug Charles for Prosper Town Council',
     description: 'Support Doug Charles for Prosper Town Council Place 5. Local elections are decided by a few hundred votes. Your contribution helps reach every voter.',
     url: 'https://www.dougcharles.com/donate',
+    type: 'website',
+    siteName: 'Doug Charles for Prosper',
+    locale: 'en_US',
     images: [{
       url: 'https://www.dougcharles.com/campaign-preview.png',
       width: 1200,

@@ -233,7 +233,7 @@ export default function PollsPage() {
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {loading ? (
-            <div className="text-center py-12 text-gray-500">Loading polls...</div>
+            <div className="text-center py-12 text-gray-500" role="status" aria-live="polite">Loading polls...</div>
           ) : polls.length === 0 ? (
             <div className="card text-center py-12">
               <div className="text-4xl mb-4">📊</div>

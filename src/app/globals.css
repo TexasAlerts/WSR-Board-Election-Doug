@@ -79,6 +79,29 @@
     }
   }
 
+  /* Print styles */
+  @media print {
+    nav, footer, .fixed, [class*="sticky"] {
+      display: none !important;
+    }
+    body {
+      color: #000 !important;
+      background: #fff !important;
+    }
+    a[href]::after {
+      content: " (" attr(href) ")";
+      font-size: 0.8em;
+      color: #555;
+    }
+    a[href^="/"]::after {
+      content: " (https://www.dougcharles.com" attr(href) ")";
+    }
+    a[href^="#"]::after,
+    a[href^="javascript:"]::after {
+      content: "";
+    }
+  }
+
   /* Staggered animation delays */
   .animate-delay-100 { animation-delay: 100ms; }
   .animate-delay-200 { animation-delay: 200ms; }

@@ -6,6 +6,9 @@ export const metadata = {
     title: "Why I'm Running | Doug Charles for Prosper Town Council",
     description: 'Why Doug Charles is running for Prosper Town Council. Experienced, accessible leadership focused on results—not politics. May 2026 election.',
     url: 'https://www.dougcharles.com/why',
+    type: 'website',
+    siteName: 'Doug Charles for Prosper',
+    locale: 'en_US',
     images: [{
       url: 'https://www.dougcharles.com/campaign-preview.png',
       width: 1200,

@@ -6,6 +6,9 @@ export const metadata = {
     title: 'Q&A | Doug Charles for Prosper Town Council',
     description: 'Questions for Doug Charles? Ask here and get answers about his positions and priorities for Prosper Town Council Place 5.',
     url: 'https://www.dougcharles.com/qna',
+    type: 'website',
+    siteName: 'Doug Charles for Prosper',
+    locale: 'en_US',
     images: [{
       url: 'https://www.dougcharles.com/campaign-preview.png',
       width: 1200,

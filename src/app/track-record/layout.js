@@ -6,6 +6,9 @@ export const metadata = {
     title: 'Track Record | Doug Charles for Prosper Town Council',
     description: "Doug Charles's proven track record: organized 585 residents, P&Z Commissioner, $210M bond committee, PISD annexation victory. Results, not just promises.",
     url: 'https://www.dougcharles.com/track-record',
+    type: 'website',
+    siteName: 'Doug Charles for Prosper',
+    locale: 'en_US',
     images: [{
       url: 'https://www.dougcharles.com/campaign-preview.png',
       width: 1200,

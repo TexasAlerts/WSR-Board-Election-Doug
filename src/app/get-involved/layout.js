@@ -6,6 +6,9 @@ export const metadata = {
     title: 'Get Involved | Doug Charles for Prosper Town Council',
     description: "Get involved with Doug Charles's campaign for Prosper Town Council Place 5. Request a yard sign, volunteer, or sign up for updates.",
     url: 'https://www.dougcharles.com/get-involved',
+    type: 'website',
+    siteName: 'Doug Charles for Prosper',
+    locale: 'en_US',
     images: [{
       url: 'https://www.dougcharles.com/campaign-preview.png',
       width: 1200,

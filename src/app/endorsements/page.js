@@ -132,7 +132,7 @@ export default function EndorsementsPage() {
                 </div>
 
                 {submitMsg && submitMsg.includes('Thank you') ? (
-                  <div className="p-6 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="p-6 bg-green-50 border border-green-200 rounded-lg" role="status" aria-live="polite">
                     <p className="text-green-800 font-semibold">{submitMsg}</p>
                     <button
                       type="button"

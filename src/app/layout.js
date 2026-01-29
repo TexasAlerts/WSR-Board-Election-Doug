@@ -50,6 +50,7 @@ export const metadata = {
       alt: 'Doug Charles for Prosper Town Council Place 5 - A Common Sense Leader for ALL of Prosper',
     }],
   },
+  themeColor: '#1B3A5D',
   twitter: {
     card: 'summary_large_image',
     title: 'Doug Charles for Prosper Town Council - Place 5',

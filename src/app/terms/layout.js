@@ -6,6 +6,9 @@ export const metadata = {
     title: 'Terms of Use | Doug Charles for Prosper Town Council',
     description: 'Terms of use for the Doug Charles for Prosper Town Council Place 5 campaign website.',
     url: 'https://www.dougcharles.com/terms',
+    type: 'website',
+    siteName: 'Doug Charles for Prosper',
+    locale: 'en_US',
     images: [{
       url: 'https://www.dougcharles.com/campaign-preview.png',
       width: 1200,

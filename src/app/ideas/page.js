@@ -252,7 +252,7 @@ export default function IdeasPage() {
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {loading ? (
-            <div className="text-center py-12 text-gray-500">Loading ideas...</div>
+            <div className="text-center py-12 text-gray-500" role="status" aria-live="polite">Loading ideas...</div>
           ) : ideas.length === 0 ? (
             <div className="card text-center py-12">
               <div className="text-4xl mb-4">💡</div>
@@ -436,7 +436,7 @@ export default function IdeasPage() {
                 </div>
 
                 {submitMsg && (
-                  <div className={`p-4 rounded-lg ${submitMsg.includes('Thank') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                  <div role="alert" aria-live="polite" className={`p-4 rounded-lg ${submitMsg.includes('Thank') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
                     {submitMsg}
                   </div>
                 )}
@@ -485,7 +485,7 @@ export default function IdeasPage() {
                   />
                 </div>
                 {supportMsg && (
-                  <div className="p-3 bg-red-50 text-red-700 rounded-lg text-sm">
+                  <div role="alert" aria-live="polite" className="p-3 bg-red-50 text-red-700 rounded-lg text-sm">
                     {supportMsg}
                   </div>
                 )}
