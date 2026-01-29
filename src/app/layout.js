@@ -30,6 +30,7 @@ export const metadata = {
   description: 'Doug Charles for Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. Election May 2, 2026.',
   icons: {
     icon: [
+      { url: '/favicon.ico', sizes: '32x32' },
       { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
       { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
       { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
@@ -49,6 +50,10 @@ export const metadata = {
       height: 630,
       alt: 'Doug Charles for Prosper Town Council Place 5 - A Common Sense Leader for ALL of Prosper',
     }],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
   themeColor: '#1B3A5D',
   twitter: {

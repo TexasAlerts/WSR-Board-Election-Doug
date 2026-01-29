@@ -141,7 +141,7 @@ export default function QnAPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn-secondary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-secondary w-full min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? 'Submitting...' : 'Submit Question'}
                 </button>
