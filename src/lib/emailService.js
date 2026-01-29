@@ -208,6 +208,47 @@ export async function sendCommentRejectedEmail(email, name, reason) {
 }
 
 /**
+ * Send phone update reminder email (sent when user skips phone verification)
+ */
+export async function sendPhoneUpdateReminderEmail(email, name) {
+  const client = getResendClient();
+  if (!client) return { success: false, error: 'Email service not configured' };
+
+  try {
+    const { data, error } = await client.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: 'Update Your Phone Number - Doug Charles for Prosper',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #1e3a5f;">Update Your Phone Number</h2>
+          <p>Hi ${name},</p>
+          <p>Welcome to the campaign! You skipped phone verification during signup. To stay informed on polls, comments, and ideas via text message, we recommend updating your phone to a cell number.</p>
+          <p style="margin: 30px 0;">
+            <a href="${SITE_URL}/settings" style="background-color: #c41e3a; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+              Update Phone Number
+            </a>
+          </p>
+          <p style="color: #666; font-size: 14px;">
+            You can update your phone number and verify it anytime in your <a href="${SITE_URL}/settings" style="color: #1e3a5f;">account settings</a>.
+          </p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+          <p style="color: #999; font-size: 12px;">
+            Doug Charles for Prosper Town Council<br>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
+          </p>
+        </div>
+      `,
+    });
+
+    if (error) return { success: false, error: error.message };
+    return { success: true, id: data?.id };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
+/**
  * Send admin notification for new registration
  */
 export async function sendAdminNewRegistrationEmail(supporter) {

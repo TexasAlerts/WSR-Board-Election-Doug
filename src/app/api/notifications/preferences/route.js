@@ -2,6 +2,26 @@ import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, getVerifiedVoter } from '../../../../lib/auth';
 
+const ALL_PREF_FIELDS = [
+  // Existing email prefs
+  'email_on_comment_moderation',
+  'email_on_new_comment',
+  'email_on_new_reply',
+  'email_on_weekly_digest',
+  // New email prefs
+  'email_on_new_poll',
+  'email_on_broadcast',
+  'email_on_system',
+  // SMS prefs
+  'sms_on_new_poll',
+  'sms_on_comment_activity',
+  'sms_on_new_idea',
+  'sms_on_broadcast',
+  'sms_on_system',
+];
+
+const DEFAULTS = Object.fromEntries(ALL_PREF_FIELDS.map((f) => [f, true]));
+
 export async function GET() {
   const supabase = getSupabase();
   const supporter = await getCurrentSupporter();
@@ -14,24 +34,17 @@ export async function GET() {
 
   const { data, error } = await supabase
     .from('notification_preferences')
-    .select('email_on_comment_moderation, email_on_new_comment, email_on_new_reply, email_on_weekly_digest')
+    .select(ALL_PREF_FIELDS.join(', '))
     .eq('email', email)
     .single();
 
   if (error || !data) {
-    // Return defaults
-    return NextResponse.json({
-      ok: true,
-      data: {
-        email_on_comment_moderation: true,
-        email_on_new_comment: true,
-        email_on_new_reply: true,
-        email_on_weekly_digest: true,
-      },
-    });
+    return NextResponse.json({ ok: true, data: DEFAULTS });
   }
 
-  return NextResponse.json({ ok: true, data });
+  // Fill in defaults for any missing columns (backward compat)
+  const merged = { ...DEFAULTS, ...data };
+  return NextResponse.json({ ok: true, data: merged });
 }
 
 export async function PATCH(request) {
@@ -46,9 +59,8 @@ export async function PATCH(request) {
 
   try {
     const body = await request.json();
-    const allowedFields = ['email_on_comment_moderation', 'email_on_new_comment', 'email_on_new_reply', 'email_on_weekly_digest'];
     const updates = {};
-    for (const field of allowedFields) {
+    for (const field of ALL_PREF_FIELDS) {
       if (typeof body[field] === 'boolean') {
         updates[field] = body[field];
       }

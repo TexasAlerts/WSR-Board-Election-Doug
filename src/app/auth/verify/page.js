@@ -115,6 +115,34 @@ function VerifyContent() {
     }
   };
 
+  const handleSkipPhone = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/auth/skip-phone', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ supporterId: supporter.id }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to skip verification');
+      }
+
+      setStep('success');
+      setTimeout(() => {
+        router.push('/polls');
+      }, 2000);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const resendSmsCode = async () => {
     setResending(true);
     setError('');
@@ -347,6 +375,23 @@ function VerifyContent() {
                 </>
               )}
             </button>
+          </div>
+
+          <div className="mt-4 pt-4 border-t border-gray-200 text-center">
+            <p className="text-sm text-gray-500 mb-2">
+              Don&apos;t have a cell phone or can&apos;t receive texts?
+            </p>
+            <button
+              type="button"
+              onClick={handleSkipPhone}
+              disabled={loading}
+              className="text-sm text-gray-500 hover:text-navy underline"
+            >
+              Skip phone verification for now
+            </button>
+            <p className="text-xs text-gray-400 mt-1">
+              You can add a cell phone later in your account settings.
+            </p>
           </div>
         </form>
       </div>

@@ -64,6 +64,11 @@ export default function RegisterPage() {
           <p className="text-green-700 mb-4">
             We&apos;ve sent a verification link to <strong>{formData.email}</strong>.
           </p>
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+            <p className="text-yellow-800 text-sm font-medium">
+              ⚠️ <strong>Check your spam/junk folder!</strong> Verification emails sometimes get filtered. If you don&apos;t see it in your inbox, look in your junk or spam folder.
+            </p>
+          </div>
           <p className="text-green-600 text-sm">
             Click the link in your email to verify your address and create your password.
             The link expires in 24 hours.
@@ -153,7 +158,7 @@ export default function RegisterPage() {
         {/* Phone */}
         <div>
           <label htmlFor="reg-phone" className="block text-sm font-medium text-gray-700 mb-1">
-            Phone Number *
+            Cell Phone Number *
           </label>
           <div className="relative">
             <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
@@ -171,7 +176,7 @@ export default function RegisterPage() {
             />
           </div>
           <p id="phone-verification-hint" className="text-xs text-gray-500 mt-1">
-            We&apos;ll send a verification code to confirm your number.
+            Please provide a cell phone that can receive text messages for verification.
           </p>
         </div>
 

@@ -190,6 +190,15 @@ export default function StickyNav() {
                 </button>
                 {userMenuOpen && (
                   <div id="user-dropdown-menu" role="menu" className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
+                    <Link
+                      href="/settings"
+                      role="menuitem"
+                      className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      <Settings className="w-4 h-4" />
+                      Settings
+                    </Link>
                     {isAdmin && (
                       <Link
                         href="/admin/dashboard"
@@ -271,6 +280,13 @@ export default function StickyNav() {
                   <div className="px-4 py-2 text-sm text-gray-500 bg-gray-50 rounded-lg">
                     Signed in as <span className="font-medium text-navy">{supporter?.firstName} {supporter?.lastName}</span>
                   </div>
+                  <Link
+                    href="/settings"
+                    className="block py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium min-h-[48px] flex items-center"
+                    onClick={() => setOpen(false)}
+                  >
+                    Settings
+                  </Link>
                   {isAdmin && (
                     <Link
                       href="/admin/dashboard"
