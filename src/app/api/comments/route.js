@@ -6,6 +6,7 @@ import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail } from '../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
 import { sanitizeText } from '../../../lib/sanitize';
+import { getUserDisplayName } from '../../../lib/formatDisplayName';
 
 // GET: Fetch comments for a poll or idea
 export async function GET(request) {
@@ -25,7 +26,7 @@ export async function GET(request) {
     .from('comments')
     .select(`
       id,
-      name,
+      display_name,
       content,
       created_at,
       upvotes,
@@ -158,6 +159,7 @@ export async function POST(request) {
     }
 
     // Insert comment
+    const displayName = getUserDisplayName(supporter);
     const { data: comment, error } = await supabase
       .from('comments')
       .insert({
@@ -167,6 +169,7 @@ export async function POST(request) {
         supporter_id: supporter.id,
         name: `${supporter.first_name} ${supporter.last_name}`,
         email: supporter.email,
+        display_name: displayName,
         content: content.trim(),
         status: 'pending', // Requires moderation
         upvotes: 0,

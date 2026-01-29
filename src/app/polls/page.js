@@ -3,14 +3,18 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import VerifiedVoterModal from '../../components/VerifiedVoterModal';
 
 export default function PollsPage() {
   const [polls, setPolls] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedPoll, setSelectedPoll] = useState(null);
-  const [voteForm, setVoteForm] = useState({ email: '', name: '', selectedChoice: null, selectedChoices: [], rankings: [], comment: '' });
+  const [voteForm, setVoteForm] = useState({ email: '', name: '', selectedChoice: null, selectedChoices: [], rankings: [], comment: '', otherText: '' });
   const [hasVoted, setHasVoted] = useState({});
   const [submitMsg, setSubmitMsg] = useState('');
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
+  const [pendingPoll, setPendingPoll] = useState(null);
+  const [verifiedVoter, setVerifiedVoter] = useState(null);
 
   useEffect(() => {
     async function loadPolls() {
@@ -35,7 +39,39 @@ export default function PollsPage() {
     } catch {
       setHasVoted({});
     }
+
+    // Check if user is already a verified voter (cookie set by server)
+    // We check by looking for voter info in localStorage as a client-side cache
+    try {
+      const voter = JSON.parse(localStorage.getItem('verifiedVoter') || 'null');
+      if (voter) setVerifiedVoter(voter);
+    } catch {
+      // ignore
+    }
   }, []);
+
+  function handleVoteClick(poll) {
+    if (verifiedVoter) {
+      // Already verified, open vote modal directly
+      setSelectedPoll(poll);
+      setVoteForm({ ...voteForm, email: verifiedVoter.email, name: verifiedVoter.name });
+    } else {
+      // Need verification first
+      setPendingPoll(poll);
+      setShowVerifyModal(true);
+    }
+  }
+
+  function handleVerified(voter) {
+    setVerifiedVoter(voter);
+    localStorage.setItem('verifiedVoter', JSON.stringify(voter));
+    setShowVerifyModal(false);
+    if (pendingPoll) {
+      setSelectedPoll(pendingPoll);
+      setVoteForm({ ...voteForm, email: voter.email, name: voter.name });
+      setPendingPoll(null);
+    }
+  }
 
   async function handleVote(e) {
     e.preventDefault();
@@ -46,6 +82,7 @@ export default function PollsPage() {
       email: voteForm.email,
       name: voteForm.name,
       comment: voteForm.comment || undefined,
+      other_text: voteForm.otherText || undefined,
     };
 
     if (selectedPoll.poll_type === 'single_choice') {
@@ -81,7 +118,7 @@ export default function PollsPage() {
         setHasVoted({ ...hasVoted, [selectedPoll.id]: voteForm.email });
         localStorage.setItem('votedPolls', JSON.stringify({ ...hasVoted, [selectedPoll.id]: voteForm.email }));
         setSelectedPoll(null);
-        setVoteForm({ email: '', name: '', selectedChoice: null, selectedChoices: [], rankings: [], comment: '' });
+        setVoteForm({ email: '', name: '', selectedChoice: null, selectedChoices: [], rankings: [], comment: '', otherText: '' });
         // Reload polls to get updated counts
         const pollsRes = await fetch('/api/polls');
         const pollsData = await pollsRes.json();
@@ -208,7 +245,7 @@ export default function PollsPage() {
                       </Link>
                     ) : (
                       <button
-                        onClick={() => setSelectedPoll(poll)}
+                        onClick={() => handleVoteClick(poll)}
                         className="btn-primary"
                       >
                         Vote Now
@@ -237,31 +274,42 @@ export default function PollsPage() {
               )}
 
               <form onSubmit={handleVote} className="space-y-6">
-                <div>
-                  <label htmlFor="poll-vote-name" className="form-label">Your Name *</label>
-                  <input
-                    id="poll-vote-name"
-                    type="text"
-                    required
-                    value={voteForm.name}
-                    onChange={e => setVoteForm({ ...voteForm, name: e.target.value })}
-                    className="form-input"
-                    placeholder="Enter your name"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="poll-vote-email" className="form-label">Your Email *</label>
-                  <input
-                    id="poll-vote-email"
-                    type="email"
-                    required
-                    value={voteForm.email}
-                    onChange={e => setVoteForm({ ...voteForm, email: e.target.value })}
-                    className="form-input"
-                    placeholder="Enter your email"
-                  />
-                </div>
+                {verifiedVoter ? (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-green-700 font-medium">Voting as: {verifiedVoter.name}</p>
+                      <p className="text-xs text-green-600">{verifiedVoter.email}</p>
+                    </div>
+                    <span className="text-green-500 text-lg">&#10003;</span>
+                  </div>
+                ) : (
+                  <>
+                    <div>
+                      <label htmlFor="poll-vote-name" className="form-label">Your Name *</label>
+                      <input
+                        id="poll-vote-name"
+                        type="text"
+                        required
+                        value={voteForm.name}
+                        onChange={e => setVoteForm({ ...voteForm, name: e.target.value })}
+                        className="form-input"
+                        placeholder="Enter your name"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="poll-vote-email" className="form-label">Your Email *</label>
+                      <input
+                        id="poll-vote-email"
+                        type="email"
+                        required
+                        value={voteForm.email}
+                        onChange={e => setVoteForm({ ...voteForm, email: e.target.value })}
+                        className="form-input"
+                        placeholder="Enter your email"
+                      />
+                    </div>
+                  </>
+                )}
 
                 <div>
                   <label className="form-label">
@@ -275,42 +323,58 @@ export default function PollsPage() {
                   {/* Single and Multiple Choice UI */}
                   {(selectedPoll.poll_type === 'single_choice' || selectedPoll.poll_type === 'multiple_choice') && (
                     <div className="space-y-2 mt-2">
-                      {selectedPoll.choices?.map(choice => (
-                        <button
-                          key={choice.id}
-                          type="button"
-                          onClick={() => {
-                            if (selectedPoll.poll_type === 'single_choice') {
-                              setVoteForm({ ...voteForm, selectedChoice: choice.id });
-                            } else {
-                              toggleChoice(choice.id);
-                            }
-                          }}
-                          className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${
-                            (selectedPoll.poll_type === 'single_choice' && voteForm.selectedChoice === choice.id) ||
-                            (selectedPoll.poll_type === 'multiple_choice' && voteForm.selectedChoices.includes(choice.id))
-                              ? 'border-navy bg-navy/5 text-navy'
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className={`w-5 h-5 rounded-${selectedPoll.poll_type === 'single_choice' ? 'full' : 'md'} border-2 flex items-center justify-center ${
-                              (selectedPoll.poll_type === 'single_choice' && voteForm.selectedChoice === choice.id) ||
-                              (selectedPoll.poll_type === 'multiple_choice' && voteForm.selectedChoices.includes(choice.id))
-                                ? 'border-navy bg-navy text-white'
-                                : 'border-gray-300'
-                            }`}>
-                              {((selectedPoll.poll_type === 'single_choice' && voteForm.selectedChoice === choice.id) ||
-                                (selectedPoll.poll_type === 'multiple_choice' && voteForm.selectedChoices.includes(choice.id))) && (
-                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                              )}
-                            </div>
-                            <span>{choice.text || choice.choice_text}</span>
+                      {selectedPoll.choices?.map(choice => {
+                        const isOther = choice.is_other_option;
+                        const isSelected = selectedPoll.poll_type === 'single_choice'
+                          ? voteForm.selectedChoice === choice.id
+                          : voteForm.selectedChoices.includes(choice.id);
+                        return (
+                          <div key={choice.id}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (selectedPoll.poll_type === 'single_choice') {
+                                  setVoteForm({ ...voteForm, selectedChoice: choice.id, otherText: isOther ? voteForm.otherText : '' });
+                                } else {
+                                  toggleChoice(choice.id);
+                                  if (!isOther) setVoteForm(prev => ({ ...prev, otherText: '' }));
+                                }
+                              }}
+                              className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${
+                                isSelected
+                                  ? 'border-navy bg-navy/5 text-navy'
+                                  : 'border-gray-200 hover:border-gray-300'
+                              }`}
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className={`w-5 h-5 rounded-${selectedPoll.poll_type === 'single_choice' ? 'full' : 'md'} border-2 flex items-center justify-center ${
+                                  isSelected
+                                    ? 'border-navy bg-navy text-white'
+                                    : 'border-gray-300'
+                                }`}>
+                                  {isSelected && (
+                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                  )}
+                                </div>
+                                <span>{isOther ? 'Other' : (choice.text || choice.choice_text)}</span>
+                              </div>
+                            </button>
+                            {isOther && isSelected && (
+                              <input
+                                type="text"
+                                value={voteForm.otherText}
+                                onChange={e => setVoteForm({ ...voteForm, otherText: e.target.value })}
+                                placeholder="Please specify..."
+                                className="form-input mt-2 ml-8"
+                                maxLength={500}
+                                required
+                              />
+                            )}
                           </div>
-                        </button>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
 
@@ -425,6 +489,14 @@ export default function PollsPage() {
           </Link>
         </div>
       </section>
+
+      {/* Voter Verification Modal */}
+      {showVerifyModal && (
+        <VerifiedVoterModal
+          onClose={() => { setShowVerifyModal(false); setPendingPoll(null); }}
+          onVerified={handleVerified}
+        />
+      )}
     </div>
   );
 }

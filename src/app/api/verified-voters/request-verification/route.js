@@ -1,0 +1,107 @@
+import { NextResponse } from 'next/server';
+import { getSupabase } from '../../../../lib/supabase';
+import { generateToken } from '../../../../lib/auth';
+import { sendVoterVerificationEmail } from '../../../../lib/emailService';
+import { rateLimit } from '../../../../lib/rateLimit';
+import { parseNameParts } from '../../../../lib/formatDisplayName';
+import { z } from 'zod';
+
+const schema = z.object({
+  email: z.string().email('Valid email required'),
+  name: z.string().min(1, 'Name required').max(200),
+});
+
+export async function POST(request) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+  if (!rateLimit(ip, 3, 60_000)) {
+    return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });
+  }
+
+  try {
+    const body = await request.json();
+    const parsed = schema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json({ ok: false, error: parsed.error.errors[0].message }, { status: 400 });
+    }
+
+    const { email, name } = parsed.data;
+    const normalizedEmail = email.toLowerCase().trim();
+    const supabase = getSupabase();
+
+    // Check if already a registered supporter with verified email
+    const { data: supporter } = await supabase
+      .from('supporters')
+      .select('id, email_verified_at')
+      .eq('email', normalizedEmail)
+      .single();
+
+    if (supporter && supporter.email_verified_at) {
+      return NextResponse.json({
+        ok: false,
+        error: 'This email is registered as a supporter. Please sign in to vote.',
+        isRegistered: true,
+      }, { status: 400 });
+    }
+
+    // Check if already verified
+    const { data: existing } = await supabase
+      .from('verified_voters')
+      .select('id, verified_at')
+      .eq('email', normalizedEmail)
+      .single();
+
+    if (existing && existing.verified_at) {
+      return NextResponse.json({
+        ok: true,
+        alreadyVerified: true,
+        message: 'Email already verified. You can vote now.',
+      });
+    }
+
+    const token = generateToken(64);
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 24);
+    const { first_name, last_initial } = parseNameParts(name);
+
+    if (existing) {
+      // Update existing unverified record
+      await supabase
+        .from('verified_voters')
+        .update({
+          name,
+          first_name,
+          last_initial,
+          verification_token: token,
+          token_expires_at: expiresAt.toISOString(),
+        })
+        .eq('id', existing.id);
+    } else {
+      // Create new record
+      await supabase
+        .from('verified_voters')
+        .insert({
+          email: normalizedEmail,
+          name,
+          first_name,
+          last_initial,
+          verification_token: token,
+          token_expires_at: expiresAt.toISOString(),
+        });
+    }
+
+    // Send verification email
+    const emailResult = await sendVoterVerificationEmail(normalizedEmail, name, token);
+    if (!emailResult.success) {
+      console.error('Failed to send voter verification email:', emailResult.error);
+      return NextResponse.json({ ok: false, error: 'Failed to send verification email' }, { status: 500 });
+    }
+
+    return NextResponse.json({
+      ok: true,
+      message: 'Verification email sent. Please check your inbox.',
+    });
+  } catch (err) {
+    console.error('Request verification error:', err);
+    return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
+  }
+}

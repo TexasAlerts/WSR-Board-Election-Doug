@@ -64,12 +64,19 @@ export async function POST(request) {
     return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });
   }
 
+  // Require registered supporter
+  const supporter = await getCurrentSupporter();
+  if (!supporter || supporter.id === 'admin') {
+    return NextResponse.json(
+      { ok: false, error: 'Please sign in as a registered supporter to submit ideas' },
+      { status: 401 }
+    );
+  }
+
   try {
     const body = await request.json();
 
     const schema = z.object({
-      name: z.string().min(1, 'Name is required').max(200),
-      email: z.string().email('Valid email required').max(200),
       category: z.enum(['infrastructure', 'community', 'safety', 'environment', 'general', 'question']),
       title: z.string().min(5, 'Title must be at least 5 characters').max(200),
       content: z.string().min(20, 'Content must be at least 20 characters').max(4000),
@@ -82,8 +89,9 @@ export async function POST(request) {
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 
-    const { name: rawName, email, category, title: rawTitle, content: rawContent, is_public } = parsed.data;
-    const name = sanitizeText(rawName);
+    const { category, title: rawTitle, content: rawContent, is_public } = parsed.data;
+    const name = `${supporter.first_name} ${supporter.last_name}`;
+    const email = supporter.email;
     const title = sanitizeText(rawTitle);
     const content = sanitizeText(rawContent);
 
@@ -98,6 +106,7 @@ export async function POST(request) {
         is_public,
         status: 'pending',
         support_count: 0,
+        supporter_id: supporter.id,
       })
       .select('id')
       .single();

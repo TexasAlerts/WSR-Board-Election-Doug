@@ -15,6 +15,7 @@ const EndorsementsTab = lazy(() => import('../../../components/admin/Endorsement
 const QuestionsTab = lazy(() => import('../../../components/admin/QuestionsTab'));
 const IdeasTab = lazy(() => import('../../../components/admin/IdeasTab'));
 const InterestTab = lazy(() => import('../../../components/admin/InterestTab'));
+const ReportsTab = lazy(() => import('../../../components/admin/ReportsTab'));
 
 function TabSpinner() {
   return (
@@ -327,6 +328,7 @@ export default function AdminDashboard() {
     { id: 'questions', label: 'Q&A', Icon: HelpCircle },
     { id: 'ideas', label: 'Ideas', Icon: Lightbulb },
     { id: 'interest', label: 'Volunteers', mobileLabel: 'Vol', Icon: UserPlus },
+    { id: 'reports', label: 'Reports', Icon: BarChart3 },
   ];
 
   return (
@@ -445,6 +447,10 @@ export default function AdminDashboard() {
             setFilter={setInterestFilter} handleDeleteInterest={handleDeleteInterest}
             formatDate={formatDate}
           />
+        )}
+
+        {activeTab === 'reports' && (
+          <ReportsTab />
         )}
       </Suspense>
 

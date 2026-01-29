@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { rateLimit } from '../../../../../lib/rateLimit';
 import { sendNotificationEmail } from '../../../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../../lib/logging';
+import { getUserDisplayName } from '../../../../../lib/formatDisplayName';
 
 export async function POST(request, { params }) {
   const supabase = getSupabase();
@@ -29,6 +30,7 @@ export async function POST(request, { params }) {
           choice_ids: z.array(z.string().uuid()).optional(),
           rankings: z.array(z.string().uuid()).optional(),
           comment: z.string().max(2000).optional(),
+          other_text: z.string().max(500).optional(),
         })
       : z.object({
           email: z.string().email('Valid email required'),
@@ -37,6 +39,7 @@ export async function POST(request, { params }) {
           choice_ids: z.array(z.string().uuid()).optional(),
           rankings: z.array(z.string().uuid()).optional(),
           comment: z.string().max(2000).optional(),
+          other_text: z.string().max(500).optional(),
         });
 
     const parsed = schema.safeParse(body);
@@ -45,7 +48,7 @@ export async function POST(request, { params }) {
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 
-    const { email, name, choice_id, choice_ids, rankings, comment } = parsed.data;
+    const { email, name, choice_id, choice_ids, rankings, comment, other_text } = parsed.data;
 
     // Check if poll exists and is active
     const { data: poll, error: pollError } = await supabase
@@ -83,11 +86,10 @@ export async function POST(request, { params }) {
       voterEmail = supporter.email;
       voterName = `${supporter.first_name} ${supporter.last_name}`;
     } else {
-      // Public poll - check for verified voter or create one
+      // Public poll - require verified email
       voterEmail = email.toLowerCase();
       voterName = name;
 
-      // Check if email is verified for public polls
       const { data: verifiedVoter } = await supabase
         .from('verified_voters')
         .select('id, verified_at')
@@ -95,12 +97,10 @@ export async function POST(request, { params }) {
         .single();
 
       if (!verifiedVoter || !verifiedVoter.verified_at) {
-        // For now, allow voting without email verification
-        // In production, you might want to require verification
-        // return NextResponse.json(
-        //   { ok: false, error: 'Please verify your email first', requiresVerification: true },
-        //   { status: 400 }
-        // );
+        return NextResponse.json(
+          { ok: false, error: 'Please verify your email first', requiresVerification: true },
+          { status: 400 }
+        );
       }
     }
 
@@ -125,6 +125,19 @@ export async function POST(request, { params }) {
       );
     }
 
+    // Validate "Other" option: if choice is an "Other" option, other_text is required
+    if (choice_id) {
+      const { data: choiceData } = await supabase
+        .from('poll_choices')
+        .select('is_other_option')
+        .eq('id', choice_id)
+        .single();
+
+      if (choiceData?.is_other_option && (!other_text || !other_text.trim())) {
+        return NextResponse.json({ ok: false, error: 'Please specify your "Other" answer' }, { status: 400 });
+      }
+    }
+
     // Build vote data
     let vote_data;
     if (poll.poll_type === 'single_choice') {
@@ -141,7 +154,6 @@ export async function POST(request, { params }) {
       if (!rankings || rankings.length === 0) {
         return NextResponse.json({ ok: false, error: 'Please rank your choices' }, { status: 400 });
       }
-      // Store rankings as array of choice_ids in preference order (index 0 = 1st choice)
       vote_data = { rankings };
     }
 
@@ -150,6 +162,7 @@ export async function POST(request, { params }) {
       poll_id: id,
       vote_data,
       ip_address: ip,
+      other_text: other_text?.trim() || null,
     };
 
     if (isAuthenticated) {
@@ -171,22 +184,18 @@ export async function POST(request, { params }) {
       return NextResponse.json({ ok: false, error: 'Failed to record vote' }, { status: 500 });
     }
 
-    // Insert comment if provided (supporters only for authenticated polls)
-    if (comment && comment.trim() && poll.allow_comments) {
+    // Insert comment if provided and user is a registered supporter
+    if (comment && comment.trim() && poll.allow_comments && isAuthenticated) {
+      const displayName = getUserDisplayName(supporter);
       const commentRecord = {
         poll_id: id,
         content: comment.trim(),
         status: 'pending',
+        supporter_id: voterId,
+        name: voterName,
+        email: voterEmail,
+        display_name: displayName,
       };
-
-      if (isAuthenticated) {
-        commentRecord.supporter_id = voterId;
-        commentRecord.name = voterName;
-        commentRecord.email = voterEmail;
-      } else {
-        commentRecord.name = voterName;
-        commentRecord.email = voterEmail;
-      }
 
       const { error: commentError } = await supabase
         .from('comments')
@@ -195,10 +204,9 @@ export async function POST(request, { params }) {
       if (commentError) {
         console.error('Error saving comment:', commentError);
       } else {
-        // Log comment creation
         await logAudit({
           eventType: AuditEvents.COMMENT_CREATED,
-          supporterId: isAuthenticated ? voterId : null,
+          supporterId: voterId,
           targetId: id,
           targetType: 'poll',
           details: {
@@ -230,6 +238,7 @@ export async function POST(request, { params }) {
         voterName,
         voterEmail,
         isAuthenticated,
+        otherText: other_text?.trim() || null,
       },
       request,
       responseStatus: 201,

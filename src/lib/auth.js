@@ -329,3 +329,21 @@ export function isAdmin(supporter) {
 export function isSuperAdmin(supporter) {
   return supporter?.role === 'super_admin';
 }
+
+// Get verified voter from cookie (lightweight email-verified user for polls)
+export async function getVerifiedVoter() {
+  const cookieStore = await cookies();
+  const voterId = cookieStore.get('verified_voter_id')?.value;
+  if (!voterId) return null;
+
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from('verified_voters')
+    .select('*')
+    .eq('id', voterId)
+    .not('verified_at', 'is', null)
+    .single();
+
+  if (error || !data) return null;
+  return data;
+}
