@@ -223,7 +223,7 @@ function VerifyContent() {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-navy mb-2">Create Your Password</h1>
           <p className="text-gray-600">
-            Welcome, {supporter?.firstName}! Set a secure password for your account.
+            Welcome, {supporter?.first_name}! Set a secure password for your account.
           </p>
         </div>
 

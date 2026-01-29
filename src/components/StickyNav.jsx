@@ -186,7 +186,7 @@ export default function StickyNav() {
                   aria-controls="user-dropdown-menu"
                 >
                   <User className="w-5 h-5" />
-                  <span>{supporter?.firstName}</span>
+                  <span>{supporter?.first_name}</span>
                 </button>
                 {userMenuOpen && (
                   <div id="user-dropdown-menu" role="menu" className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
@@ -278,7 +278,7 @@ export default function StickyNav() {
               isAuthenticated ? (
                 <>
                   <div className="px-4 py-2 text-sm text-gray-500 bg-gray-50 rounded-lg">
-                    Signed in as <span className="font-medium text-navy">{supporter?.firstName} {supporter?.lastName}</span>
+                    Signed in as <span className="font-medium text-navy">{supporter?.first_name} {supporter?.last_name}</span>
                   </div>
                   <Link
                     href="/settings"

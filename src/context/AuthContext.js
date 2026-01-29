@@ -40,7 +40,7 @@ export function AuthProvider({ children }) {
   };
 
   const refreshAuth = () => {
-    checkAuth();
+    return checkAuth();
   };
 
   return (
