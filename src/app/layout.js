@@ -55,7 +55,6 @@ export const metadata = {
     index: true,
     follow: true,
   },
-  themeColor: '#1B3A5D',
   twitter: {
     card: 'summary_large_image',
     title: 'Doug Charles for Prosper Town Council - Place 5',
@@ -67,6 +66,7 @@ export const metadata = {
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
+  themeColor: '#1B3A5D',
 };
 
 const KEY_DATES = [
