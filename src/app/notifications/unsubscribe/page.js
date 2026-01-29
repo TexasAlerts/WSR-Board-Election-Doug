@@ -14,7 +14,7 @@ export default function UnsubscribePage() {
 
 function UnsubscribeContent() {
   const searchParams = useSearchParams();
-  const success = searchParams.get('success') === 'true';
+  const success = searchParams.get('success');
   const type = searchParams.get('type') || 'all';
 
   const typeLabels = {
@@ -25,10 +25,12 @@ function UnsubscribeContent() {
     all: 'all',
   };
 
+  const hasResult = success !== null;
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
-        {success ? (
+        {hasResult && success === 'true' ? (
           <>
             <div className="text-green-500 text-5xl mb-4">&#10003;</div>
             <h1 className="text-xl font-semibold text-[#1e3a5f] mb-2">Unsubscribed</h1>
@@ -36,11 +38,19 @@ function UnsubscribeContent() {
               You have been unsubscribed from {typeLabels[type] || type} notifications.
             </p>
           </>
-        ) : (
+        ) : hasResult ? (
           <>
             <div className="text-red-500 text-5xl mb-4">&#10007;</div>
             <h1 className="text-xl font-semibold text-[#1e3a5f] mb-2">Something Went Wrong</h1>
             <p className="text-gray-600">The unsubscribe link may be invalid or expired.</p>
+          </>
+        ) : (
+          <>
+            <div className="text-[#1e3a5f] text-5xl mb-4">&#9993;</div>
+            <h1 className="text-xl font-semibold text-[#1e3a5f] mb-2">Notification Preferences</h1>
+            <p className="text-gray-600">
+              To manage your notification preferences, use the unsubscribe link in any notification email you have received.
+            </p>
           </>
         )}
         <div className="mt-6">

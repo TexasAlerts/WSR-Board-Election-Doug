@@ -29,8 +29,7 @@ function VerifyVoterContent() {
 
   useEffect(() => {
     if (!token) {
-      setStatus('error');
-      setError('No verification token provided.');
+      setStatus('no-token');
       return;
     }
 
@@ -91,12 +90,12 @@ function VerifyVoterContent() {
         )}
 
         {status === 'success' && (
-          <>
+          <div aria-live="polite">
             <div className="text-green-500 text-5xl mb-4">&#10003;</div>
             <h1 className="text-xl font-semibold text-[#1e3a5f]">Email Verified!</h1>
             <p className="text-gray-600 mt-2">Your email has been verified. You can now vote on community polls.</p>
             <p className="text-gray-400 text-sm mt-4">Redirecting to polls...</p>
-          </>
+          </div>
         )}
 
         {status === 'expired' && (
@@ -105,7 +104,9 @@ function VerifyVoterContent() {
             <h1 className="text-xl font-semibold text-[#1e3a5f]">Link Expired</h1>
             <p className="text-gray-600 mt-2">{error}</p>
             <div className="mt-6">
+              <label htmlFor="resend-email" className="sr-only">Email address</label>
               <input
+                id="resend-email"
                 type="email"
                 placeholder="Enter your email"
                 value={resendEmail}
@@ -123,11 +124,15 @@ function VerifyVoterContent() {
           </>
         )}
 
-        {status === 'error' && !token && (
+        {status === 'no-token' && (
           <>
-            <div className="text-red-500 text-5xl mb-4">&#10007;</div>
-            <h1 className="text-xl font-semibold text-[#1e3a5f]">Invalid Link</h1>
-            <p className="text-gray-600 mt-2">{error}</p>
+            <div className="text-[#1e3a5f] text-5xl mb-4">&#9993;</div>
+            <h1 className="text-xl font-semibold text-[#1e3a5f]">Email Verification</h1>
+            <p className="text-gray-600 mt-2">
+              To vote on community polls, you need to verify your email address.
+              Visit the <a href="/polls" className="text-[#1e3a5f] font-medium hover:underline">Polls page</a> and
+              click on a poll to start the verification process.
+            </p>
           </>
         )}
 
