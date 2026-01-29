@@ -60,17 +60,7 @@ export async function POST(request) {
       );
     }
 
-    const smsResult = await sendVerificationSMS(validation.formatted, smsVerification);
-    if (!smsResult.success) {
-      console.error('SMS send error:', smsResult.error);
-      // Phone is updated but SMS failed — user can try resending
-      return NextResponse.json({
-        ok: true,
-        smsSent: false,
-        message: 'Phone updated but verification code could not be sent. Please try again.',
-      });
-    }
-
+    // Log phone update before attempting SMS (so it's always recorded)
     await logAudit({
       eventType: AuditEvents.PHONE_UPDATED,
       supporterId: supporter.id,
@@ -79,6 +69,24 @@ export async function POST(request) {
       request,
       responseStatus: 200,
     });
+
+    const smsResult = await sendVerificationSMS(validation.formatted, smsVerification);
+    if (!smsResult.success) {
+      console.error('SMS send error:', smsResult.error);
+      await logError({
+        errorType: ErrorTypes.EXTERNAL_SERVICE,
+        errorMessage: `SMS send failed for phone update: ${smsResult.error || 'unknown'}`,
+        endpoint: '/api/auth/update-phone',
+        method: 'POST',
+        request,
+      });
+      // Phone is updated but SMS failed — user can try resending
+      return NextResponse.json({
+        ok: true,
+        smsSent: false,
+        message: 'Phone updated but verification code could not be sent. Please try again.',
+      });
+    }
 
     return NextResponse.json({
       ok: true,

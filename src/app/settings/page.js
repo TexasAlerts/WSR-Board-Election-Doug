@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   User, Phone, Mail, MapPin, CheckCircle, AlertCircle,
-  Loader2, Bell, MessageSquare, Vote, Lightbulb, Save,
+  Loader2, Bell, MessageSquare, Vote, Lightbulb, Save, Pencil, X,
 } from 'lucide-react';
 
 const NOTIFICATION_TYPES = [
@@ -31,6 +31,10 @@ export default function SettingsPage() {
   const [profile, setProfile] = useState({ firstName: '', lastName: '', streetAddress: '', city: '', state: '', zipCode: '' });
   const [profileMsg, setProfileMsg] = useState({ type: '', text: '' });
   const [profileLoading, setProfileLoading] = useState(false);
+
+  // Edit mode toggles
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [editingPhone, setEditingPhone] = useState(false);
 
   // Phone state
   const [phone, setPhone] = useState('');
@@ -110,6 +114,7 @@ export default function SettingsPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to update');
       setProfileMsg({ type: 'success', text: 'Profile updated successfully!' });
+      setEditingProfile(false);
       refreshAuth();
     } catch (err) {
       setProfileMsg({ type: 'error', text: err.message });
@@ -155,6 +160,7 @@ export default function SettingsPage() {
       if (!res.ok) throw new Error(data.error || 'Verification failed');
       setPhoneMsg({ type: 'success', text: 'Phone number verified successfully!' });
       setShowPhoneVerify(false);
+      setEditingPhone(false);
       setSmsCode('');
       refreshAuth();
     } catch (err) {
@@ -218,77 +224,135 @@ export default function SettingsPage() {
 
       {/* Section 1: Profile */}
       <section className="card">
-        <h2 className="text-xl font-bold text-navy mb-6 flex items-center gap-2">
-          <User className="w-5 h-5" />
-          Profile Information
-        </h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-navy flex items-center gap-2">
+            <User className="w-5 h-5" />
+            Profile Information
+          </h2>
+          {!editingProfile && (
+            <button
+              type="button"
+              onClick={() => setEditingProfile(true)}
+              className="text-navy text-sm font-medium hover:underline flex items-center gap-1"
+            >
+              <Pencil className="w-4 h-4" /> Edit
+            </button>
+          )}
+        </div>
 
         <StatusMessage msg={profileMsg} />
 
-        <form onSubmit={handleProfileSave} className="space-y-4">
-          {/* Email (read-only) */}
-          <div>
-            <label className="form-label flex items-center gap-2">
-              <Mail className="w-4 h-4" /> Email
-            </label>
-            <div className="flex items-center gap-2">
-              <p className="text-gray-900 py-2">{supporter?.email}</p>
-              {supporter?.email_verified_at && (
-                <span className="text-xs text-green-600 flex items-center gap-1 bg-green-50 px-2 py-0.5 rounded-full">
-                  <CheckCircle className="w-3 h-3" /> Verified
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {!editingProfile ? (
+          /* Display mode */
+          <div className="space-y-4">
             <div>
-              <label htmlFor="settings-firstName" className="form-label">First Name</label>
-              <input id="settings-firstName" type="text" value={profile.firstName} onChange={(e) => setProfile({ ...profile, firstName: e.target.value })} required className="form-input" />
+              <span className="form-label flex items-center gap-2">
+                <Mail className="w-4 h-4" /> Email
+              </span>
+              <div className="flex items-center gap-2">
+                <p className="text-gray-900">{supporter?.email}</p>
+                {supporter?.email_verified_at && (
+                  <span className="text-xs text-green-600 flex items-center gap-1 bg-green-50 px-2 py-0.5 rounded-full">
+                    <CheckCircle className="w-3 h-3" /> Verified
+                  </span>
+                )}
+              </div>
             </div>
             <div>
-              <label htmlFor="settings-lastName" className="form-label">Last Name</label>
-              <input id="settings-lastName" type="text" value={profile.lastName} onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} required className="form-input" />
+              <span className="form-label">Name</span>
+              <p className="text-gray-900">{supporter?.first_name} {supporter?.last_name}</p>
+            </div>
+            <div>
+              <span className="form-label flex items-center gap-2">
+                <MapPin className="w-4 h-4" /> Address
+              </span>
+              <p className="text-gray-900">{supporter?.street_address}</p>
+              <p className="text-gray-900">{supporter?.city}, {supporter?.state} {supporter?.zip_code}</p>
             </div>
           </div>
-
-          <div>
-            <label htmlFor="settings-address" className="form-label flex items-center gap-2">
-              <MapPin className="w-4 h-4" /> Street Address
-            </label>
-            <input id="settings-address" type="text" value={profile.streetAddress} onChange={(e) => setProfile({ ...profile, streetAddress: e.target.value })} required className="form-input" />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
-            <div className="col-span-1 sm:col-span-3">
-              <label htmlFor="settings-city" className="form-label">City</label>
-              <input id="settings-city" type="text" value={profile.city} onChange={(e) => setProfile({ ...profile, city: e.target.value })} required className="form-input" />
+        ) : (
+          /* Edit mode */
+          <form onSubmit={handleProfileSave} className="space-y-4">
+            {/* Email (always read-only) */}
+            <div>
+              <span className="form-label flex items-center gap-2">
+                <Mail className="w-4 h-4" /> Email
+              </span>
+              <div className="flex items-center gap-2">
+                <p className="text-gray-900 py-2">{supporter?.email}</p>
+                {supporter?.email_verified_at && (
+                  <span className="text-xs text-green-600 flex items-center gap-1 bg-green-50 px-2 py-0.5 rounded-full">
+                    <CheckCircle className="w-3 h-3" /> Verified
+                  </span>
+                )}
+              </div>
             </div>
-            <div className="col-span-1">
-              <label htmlFor="settings-state" className="form-label">State</label>
-              <input id="settings-state" type="text" value={profile.state} onChange={(e) => setProfile({ ...profile, state: e.target.value })} maxLength={2} className="form-input" />
-            </div>
-            <div className="col-span-1 sm:col-span-2">
-              <label htmlFor="settings-zip" className="form-label">ZIP Code</label>
-              <input id="settings-zip" type="text" value={profile.zipCode} onChange={(e) => setProfile({ ...profile, zipCode: e.target.value })} required className="form-input" />
-            </div>
-          </div>
 
-          <button type="submit" disabled={profileLoading} className="btn-primary flex items-center gap-2">
-            {profileLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-            Save Profile
-          </button>
-        </form>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="settings-firstName" className="form-label">First Name</label>
+                <input id="settings-firstName" type="text" value={profile.firstName} onChange={(e) => setProfile({ ...profile, firstName: e.target.value })} required className="form-input" />
+              </div>
+              <div>
+                <label htmlFor="settings-lastName" className="form-label">Last Name</label>
+                <input id="settings-lastName" type="text" value={profile.lastName} onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} required className="form-input" />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="settings-address" className="form-label flex items-center gap-2">
+                <MapPin className="w-4 h-4" /> Street Address
+              </label>
+              <input id="settings-address" type="text" value={profile.streetAddress} onChange={(e) => setProfile({ ...profile, streetAddress: e.target.value })} required className="form-input" />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
+              <div className="col-span-1 sm:col-span-3">
+                <label htmlFor="settings-city" className="form-label">City</label>
+                <input id="settings-city" type="text" value={profile.city} onChange={(e) => setProfile({ ...profile, city: e.target.value })} required className="form-input" />
+              </div>
+              <div className="col-span-1">
+                <label htmlFor="settings-state" className="form-label">State</label>
+                <input id="settings-state" type="text" value={profile.state} onChange={(e) => setProfile({ ...profile, state: e.target.value })} maxLength={2} className="form-input" />
+              </div>
+              <div className="col-span-1 sm:col-span-2">
+                <label htmlFor="settings-zip" className="form-label">ZIP Code</label>
+                <input id="settings-zip" type="text" value={profile.zipCode} onChange={(e) => setProfile({ ...profile, zipCode: e.target.value })} required className="form-input" />
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button type="submit" disabled={profileLoading} className="btn-primary flex items-center gap-2">
+                {profileLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                Save Profile
+              </button>
+              <button type="button" onClick={() => { setEditingProfile(false); setProfileMsg({ type: '', text: '' }); if (supporter) { setProfile({ firstName: supporter.first_name || '', lastName: supporter.last_name || '', streetAddress: supporter.street_address || '', city: supporter.city || '', state: supporter.state || '', zipCode: supporter.zip_code || '' }); } }} className="btn-outline flex items-center gap-2">
+                <X className="w-4 h-4" /> Cancel
+              </button>
+            </div>
+          </form>
+        )}
       </section>
 
       {/* Section 2: Phone */}
       <section className="card">
-        <h2 className="text-xl font-bold text-navy mb-4 flex items-center gap-2">
-          <Phone className="w-5 h-5" />
-          Cell Phone Number
-        </h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold text-navy flex items-center gap-2">
+            <Phone className="w-5 h-5" />
+            Cell Phone Number
+          </h2>
+          {!editingPhone && !showPhoneVerify && (
+            <button
+              type="button"
+              onClick={() => setEditingPhone(true)}
+              className="text-navy text-sm font-medium hover:underline flex items-center gap-1"
+            >
+              <Pencil className="w-4 h-4" /> Edit
+            </button>
+          )}
+        </div>
 
-        {!phoneVerified && (
+        {!phoneVerified && !editingPhone && !showPhoneVerify && (
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
             <p className="text-yellow-800 text-sm font-medium">
               Your phone is not verified. Update to a cell phone number and verify it to receive text message alerts.
@@ -298,37 +362,23 @@ export default function SettingsPage() {
 
         <StatusMessage msg={phoneMsg} />
 
-        {!showPhoneVerify ? (
-          <form onSubmit={handlePhoneUpdate} className="space-y-4">
-            <div>
-              <label htmlFor="settings-phone" className="form-label">
-                Cell Phone Number
-                {phoneVerified && (
-                  <span className="text-xs text-green-600 ml-2 inline-flex items-center gap-1">
-                    <CheckCircle className="w-3 h-3" /> Verified
-                  </span>
-                )}
-              </label>
-              <input
-                id="settings-phone"
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-                className="form-input"
-                placeholder="(972) 555-1234"
-                autoComplete="tel"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Must be a cell phone that can receive text messages.
-              </p>
+        {!editingPhone && !showPhoneVerify ? (
+          /* Display mode */
+          <div>
+            <div className="flex items-center gap-2">
+              <p className="text-gray-900">{supporter?.phone || 'No phone number on file'}</p>
+              {phoneVerified ? (
+                <span className="text-xs text-green-600 flex items-center gap-1 bg-green-50 px-2 py-0.5 rounded-full">
+                  <CheckCircle className="w-3 h-3" /> Verified
+                </span>
+              ) : supporter?.phone ? (
+                <span className="text-xs text-yellow-600 flex items-center gap-1 bg-yellow-50 px-2 py-0.5 rounded-full">
+                  <AlertCircle className="w-3 h-3" /> Not Verified
+                </span>
+              ) : null}
             </div>
-            <button type="submit" disabled={phoneLoading} className="btn-secondary flex items-center gap-2">
-              {phoneLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Phone className="w-4 h-4" />}
-              Update & Verify Phone
-            </button>
-          </form>
-        ) : (
+          </div>
+        ) : showPhoneVerify ? (
           <form onSubmit={handlePhoneVerify} className="space-y-4">
             <div>
               <label htmlFor="settings-sms-code" className="form-label">Verification Code</label>
@@ -347,12 +397,41 @@ export default function SettingsPage() {
               <p className="text-xs text-gray-500 mt-1 text-center">Enter the 6-digit code sent to your phone</p>
             </div>
             <div className="flex gap-3">
-              <button type="button" onClick={() => { setShowPhoneVerify(false); setSmsCode(''); setPhoneMsg({ type: '', text: '' }); }} className="btn-outline flex-1">
+              <button type="button" onClick={() => { setShowPhoneVerify(false); setEditingPhone(false); setSmsCode(''); setPhoneMsg({ type: '', text: '' }); }} className="btn-outline flex-1">
                 Cancel
               </button>
               <button type="submit" disabled={phoneLoading || smsCode.length !== 6} className="btn-secondary flex-1 flex items-center justify-center gap-2">
                 {phoneLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                 Verify Code
+              </button>
+            </div>
+          </form>
+        ) : (
+          /* Edit mode */
+          <form onSubmit={handlePhoneUpdate} className="space-y-4">
+            <div>
+              <label htmlFor="settings-phone" className="form-label">Cell Phone Number</label>
+              <input
+                id="settings-phone"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                className="form-input"
+                placeholder="(972) 555-1234"
+                autoComplete="tel"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Must be a cell phone that can receive text messages.
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <button type="submit" disabled={phoneLoading} className="btn-secondary flex items-center gap-2">
+                {phoneLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Phone className="w-4 h-4" />}
+                Update & Verify Phone
+              </button>
+              <button type="button" onClick={() => { setEditingPhone(false); setPhoneMsg({ type: '', text: '' }); setPhone(supporter?.phone || ''); }} className="btn-outline flex items-center gap-2">
+                <X className="w-4 h-4" /> Cancel
               </button>
             </div>
           </form>
