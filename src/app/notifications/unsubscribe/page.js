@@ -33,7 +33,7 @@ function UnsubscribeContent() {
         {hasResult && success === 'true' ? (
           <>
             <div className="text-green-500 text-5xl mb-4">&#10003;</div>
-            <h1 className="text-xl font-semibold text-[#1e3a5f] mb-2">Unsubscribed</h1>
+            <h1 className="text-xl font-semibold text-navy mb-2">Unsubscribed</h1>
             <p className="text-gray-600">
               You have been unsubscribed from {typeLabels[type] || type} notifications.
             </p>
@@ -41,20 +41,20 @@ function UnsubscribeContent() {
         ) : hasResult ? (
           <>
             <div className="text-red-500 text-5xl mb-4">&#10007;</div>
-            <h1 className="text-xl font-semibold text-[#1e3a5f] mb-2">Something Went Wrong</h1>
+            <h1 className="text-xl font-semibold text-navy mb-2">Something Went Wrong</h1>
             <p className="text-gray-600">The unsubscribe link may be invalid or expired.</p>
           </>
         ) : (
           <>
-            <div className="text-[#1e3a5f] text-5xl mb-4">&#9993;</div>
-            <h1 className="text-xl font-semibold text-[#1e3a5f] mb-2">Notification Preferences</h1>
+            <div className="text-navy text-5xl mb-4">&#9993;</div>
+            <h1 className="text-xl font-semibold text-navy mb-2">Notification Preferences</h1>
             <p className="text-gray-600">
               To manage your notification preferences, use the unsubscribe link in any notification email you have received.
             </p>
           </>
         )}
         <div className="mt-6">
-          <Link href="/polls" className="text-[#1e3a5f] font-medium hover:underline">
+          <Link href="/polls" className="text-navy font-medium hover:underline">
             Back to Polls
           </Link>
         </div>

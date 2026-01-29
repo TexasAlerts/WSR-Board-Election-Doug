@@ -8,8 +8,8 @@ export default function VerifyVoterPage() {
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1e3a5f] mx-auto mb-4" />
-          <h1 className="text-xl font-semibold text-[#1e3a5f]">Loading...</h1>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-navy mx-auto mb-4" />
+          <h1 className="text-xl font-semibold text-navy">Loading...</h1>
         </div>
       </div>
     }>
@@ -83,8 +83,8 @@ function VerifyVoterContent() {
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
         {status === 'verifying' && (
           <>
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1e3a5f] mx-auto mb-4" />
-            <h1 className="text-xl font-semibold text-[#1e3a5f]">Verifying your email...</h1>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-navy mx-auto mb-4" />
+            <h1 className="text-xl font-semibold text-navy">Verifying your email...</h1>
             <p className="text-gray-500 mt-2">Please wait a moment.</p>
           </>
         )}
@@ -92,7 +92,7 @@ function VerifyVoterContent() {
         {status === 'success' && (
           <div aria-live="polite">
             <div className="text-green-500 text-5xl mb-4">&#10003;</div>
-            <h1 className="text-xl font-semibold text-[#1e3a5f]">Email Verified!</h1>
+            <h1 className="text-xl font-semibold text-navy">Email Verified!</h1>
             <p className="text-gray-600 mt-2">Your email has been verified. You can now vote on community polls.</p>
             <p className="text-gray-400 text-sm mt-4">Redirecting to polls...</p>
           </div>
@@ -101,7 +101,7 @@ function VerifyVoterContent() {
         {status === 'expired' && (
           <>
             <div className="text-yellow-500 text-5xl mb-4">&#9888;</div>
-            <h1 className="text-xl font-semibold text-[#1e3a5f]">Link Expired</h1>
+            <h1 className="text-xl font-semibold text-navy">Link Expired</h1>
             <p className="text-gray-600 mt-2">{error}</p>
             <div className="mt-6">
               <label htmlFor="resend-email" className="sr-only">Email address</label>
@@ -116,7 +116,7 @@ function VerifyVoterContent() {
               <button
                 onClick={handleResend}
                 disabled={resending || !resendEmail}
-                className="w-full bg-[#c41e3a] text-white py-2 px-4 rounded-md hover:bg-[#a01830] disabled:opacity-50"
+                className="w-full bg-prosper-red text-white py-2 px-4 rounded-md hover:bg-red-dark disabled:opacity-50"
               >
                 {resending ? 'Sending...' : 'Resend Verification Email'}
               </button>
@@ -126,11 +126,11 @@ function VerifyVoterContent() {
 
         {status === 'no-token' && (
           <>
-            <div className="text-[#1e3a5f] text-5xl mb-4">&#9993;</div>
-            <h1 className="text-xl font-semibold text-[#1e3a5f]">Email Verification</h1>
+            <div className="text-navy text-5xl mb-4">&#9993;</div>
+            <h1 className="text-xl font-semibold text-navy">Email Verification</h1>
             <p className="text-gray-600 mt-2">
               To vote on community polls, you need to verify your email address.
-              Visit the <a href="/polls" className="text-[#1e3a5f] font-medium hover:underline">Polls page</a> and
+              Visit the <a href="/polls" className="text-navy font-medium hover:underline">Polls page</a> and
               click on a poll to start the verification process.
             </p>
           </>
@@ -139,7 +139,7 @@ function VerifyVoterContent() {
         {status === 'error' && token && (
           <>
             <div className="text-red-500 text-5xl mb-4">&#10007;</div>
-            <h1 className="text-xl font-semibold text-[#1e3a5f]">Verification Failed</h1>
+            <h1 className="text-xl font-semibold text-navy">Verification Failed</h1>
             <p className="text-gray-600 mt-2">{error}</p>
           </>
         )}

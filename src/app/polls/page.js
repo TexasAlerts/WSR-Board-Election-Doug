@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import VerifiedVoterModal from '../../components/VerifiedVoterModal';
 
@@ -49,6 +49,39 @@ export default function PollsPage() {
       // ignore
     }
   }, []);
+
+  const voteModalRef = useRef(null);
+
+  // Close modal on Escape key and trap focus
+  useEffect(() => {
+    if (!selectedPoll) return;
+    function handleKeyDown(e) {
+      if (e.key === 'Escape') {
+        setSelectedPoll(null);
+        setSubmitMsg('');
+      }
+      // Focus trap
+      if (e.key === 'Tab' && voteModalRef.current) {
+        const focusable = voteModalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    // Focus the modal on open
+    voteModalRef.current?.focus();
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPoll]);
 
   function handleVoteClick(poll) {
     if (verifiedVoter) {
@@ -261,12 +294,23 @@ export default function PollsPage() {
 
       {/* Voting Modal */}
       {selectedPoll && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelectedPoll(null)}>
-          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto pb-safe" onClick={e => e.stopPropagation()}>
+        <div
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedPoll(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="vote-modal-title"
+        >
+          <div
+            ref={voteModalRef}
+            tabIndex={-1}
+            className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto pb-safe outline-none"
+            onClick={e => e.stopPropagation()}
+          >
             <div className="p-4 sm:p-6">
               <div className="flex justify-between items-start mb-6">
-                <h2 className="text-2xl font-bold text-navy">{selectedPoll.title}</h2>
-                <button onClick={() => setSelectedPoll(null)} className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center">×</button>
+                <h2 id="vote-modal-title" className="text-2xl font-bold text-navy">{selectedPoll.title}</h2>
+                <button onClick={() => setSelectedPoll(null)} aria-label="Close vote form" className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center">×</button>
               </div>
 
               {selectedPoll.description && (
@@ -362,7 +406,10 @@ export default function PollsPage() {
                               </div>
                             </button>
                             {isOther && isSelected && (
+                              <>
+                              <label htmlFor="poll-other-text" className="sr-only">Specify your other option</label>
                               <input
+                                id="poll-other-text"
                                 type="text"
                                 value={voteForm.otherText}
                                 onChange={e => setVoteForm({ ...voteForm, otherText: e.target.value })}
@@ -371,6 +418,7 @@ export default function PollsPage() {
                                 maxLength={500}
                                 required
                               />
+                              </>
                             )}
                           </div>
                         );
@@ -416,6 +464,7 @@ export default function PollsPage() {
                                       onClick={(e) => { e.stopPropagation(); moveRanking(choice.id, 'up'); }}
                                       disabled={rank === 1}
                                       className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg disabled:opacity-30"
+                                      aria-label={`Move ${choice.text || choice.choice_text} up`}
                                       title="Move up"
                                     >
                                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -427,6 +476,7 @@ export default function PollsPage() {
                                       onClick={(e) => { e.stopPropagation(); moveRanking(choice.id, 'down'); }}
                                       disabled={rank === voteForm.rankings.length}
                                       className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg disabled:opacity-30"
+                                      aria-label={`Move ${choice.text || choice.choice_text} down`}
                                       title="Move down"
                                     >
                                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -464,7 +514,7 @@ export default function PollsPage() {
                 )}
 
                 {submitMsg && (
-                  <div className={`p-4 rounded-lg ${submitMsg.includes('Thank') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                  <div role="alert" aria-live="polite" className={`p-4 rounded-lg ${submitMsg.includes('Thank') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
                     {submitMsg}
                   </div>
                 )}

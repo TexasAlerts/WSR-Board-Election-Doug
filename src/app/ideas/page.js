@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 
 const CATEGORIES = [
@@ -42,6 +42,39 @@ export default function IdeasPage() {
   const [supportIdeaId, setSupportIdeaId] = useState(null);
   const [supportEmail, setSupportEmail] = useState('');
   const [supportMsg, setSupportMsg] = useState('');
+  const submitModalRef = useRef(null);
+  const supportModalRef = useRef(null);
+
+  // Escape key and focus trap for modals
+  useEffect(() => {
+    const isOpen = showSubmitForm || showSupportModal;
+    if (!isOpen) return;
+    const modalRef = showSubmitForm ? submitModalRef : supportModalRef;
+    function handleKeyDown(e) {
+      if (e.key === 'Escape') {
+        if (showSupportModal) setShowSupportModal(false);
+        else if (showSubmitForm) setShowSubmitForm(false);
+      }
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    modalRef.current?.focus();
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [showSubmitForm, showSupportModal]);
 
   const loadIdeas = useCallback(async () => {
     setLoading(true);
@@ -303,7 +336,7 @@ export default function IdeasPage() {
           aria-modal="true"
           aria-labelledby="modal-title"
         >
-          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+          <div ref={submitModalRef} tabIndex={-1} className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto outline-none" onClick={e => e.stopPropagation()}>
             <div className="p-4 sm:p-6">
               <div className="flex justify-between items-start mb-6">
                 <h2 id="modal-title" className="text-2xl font-bold text-navy">Submit Your Idea</h2>
@@ -426,7 +459,7 @@ export default function IdeasPage() {
           aria-modal="true"
           aria-labelledby="support-modal-title"
         >
-          <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full" onClick={e => e.stopPropagation()}>
+          <div ref={supportModalRef} tabIndex={-1} className="bg-white rounded-xl shadow-2xl max-w-sm w-full outline-none" onClick={e => e.stopPropagation()}>
             <div className="p-4 sm:p-6">
               <div className="flex justify-between items-start mb-4">
                 <h2 id="support-modal-title" className="text-xl font-bold text-navy">Support This Idea</h2>
