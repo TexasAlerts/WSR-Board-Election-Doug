@@ -241,7 +241,7 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="settings-firstName" className="form-label">First Name</label>
               <input id="settings-firstName" type="text" value={profile.firstName} onChange={(e) => setProfile({ ...profile, firstName: e.target.value })} required className="form-input" />
@@ -259,8 +259,8 @@ export default function SettingsPage() {
             <input id="settings-address" type="text" value={profile.streetAddress} onChange={(e) => setProfile({ ...profile, streetAddress: e.target.value })} required className="form-input" />
           </div>
 
-          <div className="grid grid-cols-6 gap-4">
-            <div className="col-span-3">
+          <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
+            <div className="col-span-1 sm:col-span-3">
               <label htmlFor="settings-city" className="form-label">City</label>
               <input id="settings-city" type="text" value={profile.city} onChange={(e) => setProfile({ ...profile, city: e.target.value })} required className="form-input" />
             </div>
@@ -268,7 +268,7 @@ export default function SettingsPage() {
               <label htmlFor="settings-state" className="form-label">State</label>
               <input id="settings-state" type="text" value={profile.state} onChange={(e) => setProfile({ ...profile, state: e.target.value })} maxLength={2} className="form-input" />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1 sm:col-span-2">
               <label htmlFor="settings-zip" className="form-label">ZIP Code</label>
               <input id="settings-zip" type="text" value={profile.zipCode} onChange={(e) => setProfile({ ...profile, zipCode: e.target.value })} required className="form-input" />
             </div>

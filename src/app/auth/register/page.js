@@ -1,10 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { User, Mail, Phone, MapPin, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function RegisterPage() {
+  useEffect(() => {
+    document.title = 'Register | Doug Charles for Prosper Town Council';
+  }, []);
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -96,7 +100,7 @@ export default function RegisterPage() {
         )}
 
         {/* Name */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label htmlFor="reg-firstName" className="block text-sm font-medium text-gray-700 mb-1">
               First Name *
@@ -202,8 +206,8 @@ export default function RegisterPage() {
               />
             </div>
           </div>
-          <div className="grid grid-cols-6 gap-4">
-            <div className="col-span-3">
+          <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
+            <div className="col-span-1 sm:col-span-3">
               <label htmlFor="reg-city" className="block text-sm font-medium text-gray-700 mb-1">
                 City *
               </label>
@@ -233,7 +237,7 @@ export default function RegisterPage() {
                 autoComplete="address-level1"
               />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1 sm:col-span-2">
               <label htmlFor="reg-zipCode" className="block text-sm font-medium text-gray-700 mb-1">
                 ZIP Code *
               </label>
@@ -289,7 +293,7 @@ export default function RegisterPage() {
         >
           {loading ? (
             <>
-              <Loader2 className="w-5 h-5 animate-spin" />
+              <Loader2 className="w-5 h-5 animate-spin" aria-hidden="true" />
               Creating Account...
             </>
           ) : (

@@ -63,6 +63,7 @@ export default function DonatePage() {
             <h2 className="text-2xl font-bold text-navy mb-8 text-center">Choose Your Contribution</h2>
 
               {/* Amount Buttons */}
+              <div role="group" aria-label="Donation amount options">
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
                 {DONATION_AMOUNTS.map((amount) => (
                   <button
@@ -82,6 +83,7 @@ export default function DonatePage() {
                     ${amount}
                   </button>
                 ))}
+              </div>
               </div>
 
               {/* Custom Amount */}

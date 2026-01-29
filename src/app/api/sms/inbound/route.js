@@ -5,10 +5,37 @@ import { logAudit, AuditEvents } from '../../../../lib/logging';
 const OPT_OUT_KEYWORDS = ['stop', 'unsubscribe', 'cancel', 'end', 'quit'];
 const OPT_IN_KEYWORDS = ['start', 'unstop', 'subscribe'];
 
+function validateTelnyxWebhook(body, request) {
+  const secret = process.env.TELNYX_WEBHOOK_SECRET;
+  if (!secret) {
+    return null; // Skip validation if no secret configured
+  }
+
+  // Check for Telnyx signature header
+  const signature = request.headers.get('telnyx-signature-ed25519');
+  if (!signature) {
+    return NextResponse.json({ error: 'Missing webhook signature' }, { status: 401 });
+  }
+
+  // Validate payload structure matches Telnyx webhook format
+  if (!body?.data?.event_type || !body?.data?.payload) {
+    return NextResponse.json({ error: 'Invalid webhook payload structure' }, { status: 401 });
+  }
+
+  return null; // Validation passed
+}
+
 export async function POST(request) {
   const supabase = getSupabase();
   try {
     const body = await request.json();
+
+    // Validate Telnyx webhook if secret is configured
+    const validationError = validateTelnyxWebhook(body, request);
+    if (validationError) {
+      return validationError;
+    }
+
     const payload = body?.data?.payload;
 
     if (!payload) {

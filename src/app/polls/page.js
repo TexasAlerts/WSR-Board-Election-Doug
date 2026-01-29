@@ -366,7 +366,11 @@ export default function PollsPage() {
 
                   {/* Single and Multiple Choice UI */}
                   {(selectedPoll.poll_type === 'single_choice' || selectedPoll.poll_type === 'multiple_choice') && (
-                    <div className="space-y-2 mt-2">
+                    <div
+                      className="space-y-2 mt-2"
+                      role={selectedPoll.poll_type === 'single_choice' ? 'radiogroup' : 'group'}
+                      aria-label={selectedPoll.poll_type === 'single_choice' ? 'Poll options' : 'Poll options - select multiple'}
+                    >
                       {selectedPoll.choices?.map(choice => {
                         const isOther = choice.is_other_option;
                         const isSelected = selectedPoll.poll_type === 'single_choice'
@@ -376,6 +380,8 @@ export default function PollsPage() {
                           <div key={choice.id}>
                             <button
                               type="button"
+                              role={selectedPoll.poll_type === 'single_choice' ? 'radio' : 'checkbox'}
+                              aria-checked={isSelected}
                               onClick={() => {
                                 if (selectedPoll.poll_type === 'single_choice') {
                                   setVoteForm({ ...voteForm, selectedChoice: choice.id, otherText: isOther ? voteForm.otherText : '' });
@@ -448,11 +454,14 @@ export default function PollsPage() {
                             >
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                  <div className={`w-11 h-11 rounded-full border-2 flex items-center justify-center font-bold text-base sm:text-lg ${
-                                    rank !== null
-                                      ? 'border-navy bg-navy text-white'
-                                      : 'border-gray-300 text-gray-400'
-                                  }`}>
+                                  <div
+                                    className={`w-11 h-11 rounded-full border-2 flex items-center justify-center font-bold text-base sm:text-lg ${
+                                      rank !== null
+                                        ? 'border-navy bg-navy text-white'
+                                        : 'border-gray-300 text-gray-400'
+                                    }`}
+                                    aria-label={rank !== null ? `Ranked number ${rank}` : 'Not yet ranked'}
+                                  >
                                     {rank !== null ? rank : '-'}
                                   </div>
                                   <span>{choice.text || choice.choice_text}</span>
