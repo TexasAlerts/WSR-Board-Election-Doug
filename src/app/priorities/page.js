@@ -12,7 +12,7 @@ export default function PrioritiesPage() {
           <div className="absolute bottom-10 left-20 w-48 h-48 bg-prosper-red/5 rounded-full blur-3xl"></div>
         </div>
         <Image
-          src="/wsr-logo.webp"
+          src="/campaign-logo.webp"
           alt="Doug Charles for Prosper Town Council Place 5"
           width={96}
           height={64}

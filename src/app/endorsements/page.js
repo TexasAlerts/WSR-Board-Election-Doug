@@ -81,7 +81,7 @@ export default function EndorsementsPage() {
       <section className="hero-pattern hero-gradient text-center py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         {/* Logo accent */}
         <Image
-          src="/wsr-logo.webp"
+          src="/campaign-logo.webp"
           alt="Doug Charles for Prosper Town Council Place 5"
           width={96}
           height={64}

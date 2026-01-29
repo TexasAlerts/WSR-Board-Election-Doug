@@ -187,7 +187,7 @@ function GetInvolvedContent() {
         </div>
         {/* Logo accent */}
         <Image
-          src="/wsr-logo.webp"
+          src="/campaign-logo.webp"
           alt="Doug Charles for Prosper Town Council Place 5"
           width={96}
           height={64}

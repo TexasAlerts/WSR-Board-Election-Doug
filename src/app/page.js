@@ -40,8 +40,8 @@ export default function Home() {
           <div className="animate-fade-in-down">
             <h1 className="sr-only">Doug Charles for Prosper Town Council Place 5</h1>
             <Image
-              src="/wsr-logo.webp"
-              alt="Doug Charles for Town Council Place 5 - A Common Sense Leader for All of Prosper"
+              src="/campaign-logo.webp"
+              alt="Doug Charles for Prosper Town Council Place 5 - A Common Sense Leader for All of Prosper"
               width={800}
               height={533}
               priority
