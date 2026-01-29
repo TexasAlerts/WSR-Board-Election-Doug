@@ -9,7 +9,7 @@ let telnyxClient = null;
 
 function getTelnyxClient() {
   if (!telnyxClient && process.env.TELNYX_API_KEY) {
-    telnyxClient = Telnyx(process.env.TELNYX_API_KEY);
+    telnyxClient = new Telnyx(process.env.TELNYX_API_KEY);
   }
   return telnyxClient;
 }

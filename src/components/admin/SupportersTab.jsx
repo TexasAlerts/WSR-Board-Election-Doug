@@ -1,9 +1,9 @@
 'use client';
 
-import { CheckCircle, XCircle, Loader2, Mail, Phone } from 'lucide-react';
+import { CheckCircle, XCircle, Trash2, Loader2, Mail, Phone } from 'lucide-react';
 
 export default function SupportersTab({
-  supporters, loading, filter, setFilter, updateSupporter, formatDate, statusColors,
+  supporters, loading, filter, setFilter, updateSupporter, deleteSupporter, formatDate, statusColors,
 }) {
   return (
     <div>
@@ -83,6 +83,15 @@ export default function SupportersTab({
                           title="Suspend"
                         >
                           <XCircle className="w-5 h-5" />
+                        </button>
+                      )}
+                      {s.role !== 'admin' && s.role !== 'super_admin' && (
+                        <button
+                          onClick={() => deleteSupporter(s.id)}
+                          className="text-red-700 hover:text-red-900"
+                          title="Delete permanently"
+                        >
+                          <Trash2 className="w-5 h-5" />
                         </button>
                       )}
                     </div>

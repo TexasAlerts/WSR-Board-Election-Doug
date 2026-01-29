@@ -148,3 +148,132 @@ export async function PUT(request) {
     return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
   }
 }
+
+export async function DELETE(request) {
+  const supporter = await getCurrentSupporter();
+  if (!supporter || !isAdmin(supporter)) {
+    return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const supabase = getSupabase();
+
+  try {
+    const body = await request.json();
+    const { id, reason } = body;
+
+    if (!id) {
+      return NextResponse.json({ ok: false, error: 'Supporter ID required' }, { status: 400 });
+    }
+
+    if (!reason || reason.trim().length < 3) {
+      return NextResponse.json({ ok: false, error: 'Deletion reason required (min 3 characters)' }, { status: 400 });
+    }
+
+    // Prevent self-deletion
+    if (id === supporter.id) {
+      return NextResponse.json({ ok: false, error: 'Cannot delete your own account' }, { status: 400 });
+    }
+
+    // Fetch target supporter
+    const { data: target, error: fetchError } = await supabase
+      .from('supporters')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (fetchError || !target) {
+      return NextResponse.json({ ok: false, error: 'Supporter not found' }, { status: 404 });
+    }
+
+    // Prevent deleting admins/super_admins
+    if (target.role === 'admin' || target.role === 'super_admin') {
+      return NextResponse.json({ ok: false, error: 'Cannot delete admin users' }, { status: 400 });
+    }
+
+    // Count related records for audit snapshot
+    const [votes, comments, ideas] = await Promise.all([
+      supabase.from('poll_votes').select('id', { count: 'exact', head: true }).eq('supporter_id', id),
+      supabase.from('comments').select('id', { count: 'exact', head: true }).eq('supporter_id', id),
+      supabase.from('ideas').select('id', { count: 'exact', head: true }).eq('supporter_id', id),
+    ]);
+
+    // Nullify non-CASCADE foreign keys to preserve content
+    await Promise.all([
+      supabase.from('poll_votes').update({ supporter_id: null }).eq('supporter_id', id),
+      supabase.from('comments').update({ supporter_id: null }).eq('supporter_id', id),
+      supabase.from('comments').update({ moderated_by: null }).eq('moderated_by', id),
+      supabase.from('ideas').update({ supporter_id: null }).eq('supporter_id', id),
+      supabase.from('broadcasts').update({ sent_by: null }).eq('sent_by', id),
+      supabase.from('audit_logs').update({ supporter_id: null }).eq('supporter_id', id),
+      supabase.from('error_logs').update({ user_id: null }).eq('user_id', id),
+      supabase.from('error_logs').update({ assigned_to: null }).eq('assigned_to', id),
+      supabase.from('error_logs').update({ resolved_by: null }).eq('resolved_by', id),
+      supabase.from('polls').update({ created_by: null }).eq('created_by', id),
+    ]);
+
+    // Delete supporter (CASCADE handles sessions, verifications, comment_votes, idea_votes, thread_subscriptions, notification_preferences)
+    const { error: deleteError } = await supabase
+      .from('supporters')
+      .delete()
+      .eq('id', id);
+
+    if (deleteError) {
+      await logError({
+        errorType: ErrorTypes.DATABASE_ERROR,
+        errorMessage: deleteError.message,
+        endpoint: '/api/admin/supporters',
+        method: 'DELETE',
+        userId: supporter.id,
+        userEmail: supporter.email,
+        request,
+      });
+      return NextResponse.json({ ok: false, error: 'Failed to delete supporter' }, { status: 500 });
+    }
+
+    // Log deletion with full snapshot
+    await logAudit({
+      eventType: AuditEvents.SUPPORTER_DELETED,
+      supporterId: supporter.id,
+      targetId: id,
+      targetType: 'supporter',
+      oldValues: {
+        email: target.email,
+        first_name: target.first_name,
+        last_name: target.last_name,
+        phone: target.phone,
+        status: target.status,
+        role: target.role,
+        street_address: target.street_address,
+        city: target.city,
+        state: target.state,
+        zip_code: target.zip_code,
+        created_at: target.created_at,
+      },
+      details: {
+        reason: reason.trim(),
+        deletedBy: `${supporter.first_name} ${supporter.last_name}`,
+        relatedRecords: {
+          votes: votes.count || 0,
+          comments: comments.count || 0,
+          ideas: ideas.count || 0,
+        },
+      },
+      request,
+      responseStatus: 200,
+    });
+
+    return NextResponse.json({ ok: true, message: 'Supporter deleted successfully' });
+  } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/admin/supporters',
+      method: 'DELETE',
+      userId: supporter.id,
+      userEmail: supporter.email,
+      request,
+    });
+    return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
+  }
+}

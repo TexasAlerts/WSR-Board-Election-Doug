@@ -181,6 +181,28 @@ export default function AdminDashboard() {
     }
   };
 
+  const deleteSupporter = async (id) => {
+    const reason = await showPrompt('Delete Supporter', 'Reason for deletion', '', false);
+    if (!reason) return;
+    const confirmed = await showConfirm(
+      'Confirm Permanent Deletion',
+      'This will permanently delete this supporter and cannot be undone. Their votes, comments, and ideas will be preserved but disassociated. Continue?'
+    );
+    if (!confirmed) return;
+    try {
+      const res = await fetch('/api/admin/supporters', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, reason }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      loadData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   const moderateComment = async (id, status, rejection_reason = null) => {
     try {
       const res = await fetch('/api/admin/comments', {
@@ -379,7 +401,7 @@ export default function AdminDashboard() {
         {activeTab === 'supporters' && (
           <SupportersTab
             supporters={supporters} loading={loading} filter={supporterFilter}
-            setFilter={setSupporterFilter} updateSupporter={updateSupporter}
+            setFilter={setSupporterFilter} updateSupporter={updateSupporter} deleteSupporter={deleteSupporter}
             formatDate={formatDate} statusColors={statusColors}
           />
         )}
