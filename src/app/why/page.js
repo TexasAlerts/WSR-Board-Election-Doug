@@ -12,7 +12,7 @@ export default function WhyPage() {
         </div>
         <Image
           src="/wsr-logo.webp"
-          alt="Windsong Ranch - Doug Charles for Prosper"
+          alt="Doug Charles for Prosper Town Council Place 5"
           width={96}
           height={64}
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"
