@@ -1,9 +1,17 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
+import { sendSMS } from '../../../../lib/smsService';
 import { logAudit, AuditEvents } from '../../../../lib/logging';
 
 const OPT_OUT_KEYWORDS = ['stop', 'unsubscribe', 'cancel', 'end', 'quit'];
 const OPT_IN_KEYWORDS = ['start', 'unstop', 'subscribe'];
+const HELP_KEYWORDS = ['help', 'info'];
+
+const AUTO_RESPONSES = {
+  optOut: 'You have been unsubscribed from Doug Charles for Prosper Town Council SMS messages. No further messages will be sent. Reply START to re-subscribe.',
+  optIn: 'Thank you for opting in to Doug Charles for Prosper Town Council SMS updates! Msg freq may vary. Std msg & data rates apply. Donations may be solicited. Reply STOP to opt out, HELP for help.',
+  help: 'Doug Charles for Prosper Town Council SMS Program. Campaign updates, alerts & donation solicitations. Msg freq varies. Msg & data rates apply. Reply STOP to opt out. Contact: doug@dougcharles.com Website: https://www.dougcharles.com',
+};
 
 function validateTelnyxWebhook(body, request) {
   const secret = process.env.TELNYX_WEBHOOK_SECRET;
@@ -51,8 +59,15 @@ export async function POST(request) {
 
     const isOptOut = OPT_OUT_KEYWORDS.includes(messageText);
     const isOptIn = OPT_IN_KEYWORDS.includes(messageText);
+    const isHelp = HELP_KEYWORDS.includes(messageText);
 
-    if (!isOptOut && !isOptIn) {
+    if (!isOptOut && !isOptIn && !isHelp) {
+      return NextResponse.json({ ok: true });
+    }
+
+    // Send HELP response even if supporter not found
+    if (isHelp) {
+      await sendSMS(fromPhone, AUTO_RESPONSES.help);
       return NextResponse.json({ ok: true });
     }
 
@@ -64,6 +79,9 @@ export async function POST(request) {
       .single();
 
     if (!supporter) {
+      // Still send auto-response even if no matching supporter
+      if (isOptOut) await sendSMS(fromPhone, AUTO_RESPONSES.optOut);
+      if (isOptIn) await sendSMS(fromPhone, AUTO_RESPONSES.optIn);
       return NextResponse.json({ ok: true });
     }
 
@@ -83,6 +101,8 @@ export async function POST(request) {
       if (error) {
         console.error('SMS opt-out update error:', error);
       }
+
+      await sendSMS(fromPhone, AUTO_RESPONSES.optOut);
 
       await logAudit({
         eventType: AuditEvents.SMS_OPT_OUT,
@@ -107,6 +127,8 @@ export async function POST(request) {
       if (error) {
         console.error('SMS opt-in update error:', error);
       }
+
+      await sendSMS(fromPhone, AUTO_RESPONSES.optIn);
 
       await logAudit({
         eventType: AuditEvents.SMS_OPT_IN,

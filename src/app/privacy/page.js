@@ -61,6 +61,25 @@ export default function PrivacyPolicy() {
       </section>
 
       <section className="space-y-4">
+        <h2 className="text-xl font-bold text-navy">SMS/Text Messaging</h2>
+        <p>
+          If you provide your phone number and opt in to receive text messages, you agree to receive SMS campaign updates, alerts, verification codes, and donation solicitations from Doug Charles for Prosper Town Council at the phone number you provided.
+        </p>
+        <ul className="list-disc pl-6 space-y-2">
+          <li><strong>Program name:</strong> Doug Charles for Prosper Town Council</li>
+          <li><strong>Message frequency:</strong> May vary based on campaign activity</li>
+          <li><strong>Message and data rates:</strong> Standard message and data rates may apply</li>
+          <li><strong>Opt-out:</strong> Reply STOP to any message to unsubscribe. You will receive a confirmation and no further messages will be sent.</li>
+          <li><strong>Help:</strong> Reply HELP to any message for assistance, or contact <a href="mailto:doug@dougcharles.com" className="text-navy underline">doug@dougcharles.com</a></li>
+          <li><strong>Consent:</strong> Consent to receive SMS messages is not a condition of purchase or registration</li>
+          <li><strong>Customer care:</strong> Email <a href="mailto:doug@dougcharles.com" className="text-navy underline">doug@dougcharles.com</a> for support</li>
+        </ul>
+        <p>
+          For questions about text messaging, contact us at <a href="mailto:doug@dougcharles.com" className="text-navy underline">doug@dougcharles.com</a>.
+        </p>
+      </section>
+
+      <section className="space-y-4">
         <h2 className="text-xl font-bold text-navy">Information Sharing and Disclosure</h2>
         <p>We do not sell, rent, or trade your personal information to third parties for their marketing purposes.</p>
         <p>We may share your information in the following limited circumstances:</p>
@@ -70,6 +89,13 @@ export default function PrivacyPolicy() {
           <li><strong>Legal Requirements:</strong> We may disclose information when required by law, legal process, or government request.</li>
           <li><strong>Public Endorsements:</strong> If you submit an endorsement and it is approved for publication, your name and endorsement message may be displayed publicly on the Site.</li>
         </ul>
+        <h3 className="text-lg font-semibold text-navy">SMS Opt-In Data</h3>
+        <p>
+          We will not share your opt-in to an SMS campaign with any third party for purposes unrelated to providing you with the services of that campaign. We may share your Personal Data, including your SMS opt-in or consent status, with third parties that help us provide our messaging services, including but not limited to platform providers, phone companies, and any other vendors who assist us in the delivery of text messages.
+        </p>
+        <p>
+          All of the above categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties.
+        </p>
       </section>
 
       <section className="space-y-4">

@@ -424,6 +424,11 @@ export default function SettingsPage() {
               <p className="text-xs text-gray-500 mt-1">
                 Must be a cell phone that can receive text messages.
               </p>
+              <p className="text-xs text-gray-500 mt-2">
+                By updating your phone number, you consent to receive SMS verification codes, campaign updates, and donation solicitations from Doug Charles for Prosper Town Council. Message frequency may vary. Msg &amp; data rates may apply. Reply STOP to opt out. Reply HELP for help. Consent is not a condition of purchase or registration.{' '}
+                <Link href="/privacy" className="text-navy underline">Privacy Policy</Link> &{' '}
+                <Link href="/terms" className="text-navy underline">Terms</Link>.
+              </p>
             </div>
             <div className="flex gap-3">
               <button type="submit" disabled={phoneLoading} className="btn-secondary flex items-center gap-2">

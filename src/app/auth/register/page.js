@@ -162,7 +162,7 @@ export default function RegisterPage() {
         {/* Phone */}
         <div>
           <label htmlFor="reg-phone" className="block text-sm font-medium text-gray-700 mb-1">
-            Cell Phone Number *
+            Cell Phone Number (optional)
           </label>
           <div className="relative">
             <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
@@ -172,7 +172,6 @@ export default function RegisterPage() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              required
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
               placeholder="(972) 555-1234"
               autoComplete="tel"
@@ -180,7 +179,7 @@ export default function RegisterPage() {
             />
           </div>
           <p id="phone-verification-hint" className="text-xs text-gray-500 mt-1">
-            Please provide a cell phone that can receive text messages for verification.
+            By providing your phone number, you consent to receive SMS verification messages. Standard message and data rates may apply. You can add or update your phone later in Settings.
           </p>
         </div>
 
@@ -280,7 +279,9 @@ export default function RegisterPage() {
               className="mt-0.5 w-5 h-5 min-w-[20px] text-navy rounded focus:ring-navy focus:ring-2"
             />
             <span className="text-sm text-gray-600">
-              I agree to receive text message alerts (standard rates may apply)
+              By checking this box, you consent to receive SMS campaign updates, alerts, and donation solicitations from Doug Charles for Prosper Town Council at the number provided, including messages sent by autodialer. Message frequency may vary. Standard message and data rates may apply. Carriers are not liable for delayed or undelivered messages. Reply STOP to opt out. Reply HELP for help. Consent is not a condition of purchase or registration.{' '}
+              <Link href="/privacy" className="text-navy underline">Privacy Policy</Link> &{' '}
+              <Link href="/terms" className="text-navy underline">Terms</Link>.
             </span>
           </label>
         </fieldset>
