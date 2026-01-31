@@ -48,7 +48,7 @@ export default function AboutPage() {
                   I moved to <strong className="text-navy">Prosper 20 years ago</strong> for the same reasons you probably did—great schools, safe neighborhoods, and room to raise a family.
                 </p>
                 <p>
-                  I've served on the <strong className="text-navy">Planning & Zoning Commission</strong>, the <strong className="text-navy">2020 Bond Committee</strong>, and currently serve on the <strong className="text-navy">Windsong Ranch HOA Board</strong>.
+                  I&apos;ve served on the <strong className="text-navy">Planning & Zoning Commission</strong>, the <strong className="text-navy">2020 Bond Committee</strong>, and led the <strong className="text-navy">Windsong Ranch PISD annexation effort</strong> that will bring $6.5M in annual tax revenue to Prosper ISD.
                 </p>
                 <p className="text-prosper-red font-semibold">
                   Whether you've been here 20 years or 2 months, you deserve a voice at the table.
@@ -100,8 +100,18 @@ export default function AboutPage() {
               <div className="flex items-start gap-4">
                 <div className="w-4 h-4 bg-gradient-to-br from-prosper-red to-red-dark rounded-full mt-1 flex-shrink-0 shadow-sm"></div>
                 <div>
-                  <h3 className="text-xl font-bold text-navy mb-2">Windsong Ranch Board Member</h3>
-                  <p className="text-gray-600">Elected · Serving on the board of one of Prosper's largest communities. I understand the issues residents face every day.</p>
+                  <h3 className="text-xl font-bold text-navy mb-2">Elected Windsong Ranch Board Member</h3>
+                  <p className="text-gray-600">Oct 2025 · Elected to the board of one of Prosper&apos;s largest communities. I understand the issues residents face every day.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="card h-full">
+              <div className="flex items-start gap-4">
+                <div className="w-4 h-4 bg-gradient-to-br from-prosper-red to-red-dark rounded-full mt-1 flex-shrink-0 shadow-sm"></div>
+                <div>
+                  <h3 className="text-xl font-bold text-navy mb-2">PISD Annexation Lead Petitioner</h3>
+                  <p className="text-gray-600">Organized 585 residents, retained legal counsel, and led the effort to annex Windsong Ranch into Prosper ISD—bringing <strong className="text-navy">$6.5M</strong> in annual tax revenue.</p>
                 </div>
               </div>
             </div>

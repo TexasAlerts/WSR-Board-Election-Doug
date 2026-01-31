@@ -93,21 +93,21 @@ export default function Home() {
             </div>
             <div className="h-full">
               <div className="stat-card h-full flex flex-col justify-center">
-                <div className="stat-number">3</div>
-                <div className="stat-label">Years Planning & Zoning</div>
+                <div className="stat-number">P&Z</div>
+                <div className="stat-label">Commissioner (3 yrs)</div>
               </div>
             </div>
             <div className="h-full">
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">$210M</div>
-                <div className="stat-label">2020 Bond Committee</div>
+                <div className="stat-label">Bond Committee Member</div>
               </div>
             </div>
             <div className="h-full">
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">$6.5M</div>
-                <div className="stat-label">Annual Tax Revenue</div>
-                <div className="text-xs text-gray-500 mt-1">PISD Annexation · Approved by Prosper ISD</div>
+                <div className="stat-label">New Annual Tax Revenue</div>
+                <div className="text-xs text-gray-500 mt-1">Lead Petitioner · PISD Annexation</div>
               </div>
             </div>
           </div>
@@ -132,6 +132,11 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold mb-3 text-navy">Listen</h3>
               <p className="text-gray-600">Good decisions start with hearing from residents—not as an afterthought, but from the beginning. Your voice should shape outcomes before votes are taken.</p>
+              <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
+                <Link href="/qna" className="text-navy font-medium hover:underline">Ask a question</Link>
+                <span className="text-gray-400">·</span>
+                <Link href="/get-involved#meeting" className="text-navy font-medium hover:underline">Request a meeting</Link>
+              </div>
             </div>
 
             <div className="card text-center h-full">
@@ -179,10 +184,10 @@ export default function Home() {
             <div className="md:col-span-3 space-y-6">
               <h2 className="section-title">About Doug</h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                I moved to <strong className="text-navy">Prosper</strong> <strong>20 years ago</strong> for the same reasons you probably did—great schools, safe neighborhoods, and room to raise a family. I've served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and was elected to the Windsong Ranch HOA Board.
+                I moved to <strong className="text-navy">Prosper</strong> <strong>20 years ago</strong> for the same reasons you probably did—great schools, safe neighborhoods, and room to raise a family. I&apos;ve served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and led the Windsong Ranch PISD annexation effort.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
-                I'm running because <strong className="text-prosper-red">Prosper is at a crossroads</strong>. The decisions we make now will shape our community for decades.
+                Prosper has grown from a small town to one of the fastest-growing communities in Texas. Thousands of new families have settled here—but too many decisions are still being made by a small group without meaningful input from the residents they affect. <strong className="text-prosper-red">Whether you&apos;ve been here 20 years or 2, you deserve a voice.</strong> That&apos;s why I&apos;m running.
               </p>
               <div className="pt-2">
                 <Link href="/about" className="btn-outline">
