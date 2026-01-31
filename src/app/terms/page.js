@@ -72,6 +72,27 @@ export default function TermsOfUse() {
       </section>
 
       <section className="space-y-4">
+        <h2 className="text-xl font-bold text-navy">SMS/Text Messaging Terms</h2>
+        <p>
+          By opting in to receive SMS messages from Doug Charles for Prosper Town Council, you agree to the following:
+        </p>
+        <ul className="list-disc pl-6 space-y-2">
+          <li><strong>Program name:</strong> Doug Charles for Prosper Town Council</li>
+          <li><strong>Product description:</strong> Campaign updates, alerts, event notifications, donation solicitations, and verification codes related to the Doug Charles for Prosper Town Council Place 5 campaign</li>
+          <li><strong>Message frequency:</strong> May vary based on campaign activity</li>
+          <li><strong>Message and data rates:</strong> Standard message and data rates may apply depending on your carrier and plan. Carriers are not liable for delayed or undelivered messages.</li>
+          <li><strong>Opt-out:</strong> You may opt out at any time by replying STOP to any message. You will receive confirmation that you have been unsubscribed and no further messages will be sent.</li>
+          <li><strong>Help:</strong> Reply HELP to any message or contact <a href="mailto:doug@dougcharles.com" className="text-navy underline">doug@dougcharles.com</a> for support</li>
+          <li><strong>Consent:</strong> Consent to receive text messages is not a condition of purchase or registration</li>
+          <li><strong>Donations:</strong> Donation solicitations will be included in campaign messages. Donations are secured through the campaign&apos;s designated payment processor.</li>
+          <li><strong>Privacy:</strong> Your mobile information will not be sold or shared with third parties for promotional or marketing purposes. See our <a href="/privacy" className="text-navy underline">Privacy Policy</a>.</li>
+        </ul>
+        <p>
+          Supported carriers include major US carriers. Service may not be available on all carriers.
+        </p>
+      </section>
+
+      <section className="space-y-4">
         <h2 className="text-xl font-bold text-navy">Intellectual Property</h2>
         <p>
           All content on this Site, including text, graphics, logos, images, and software, is the property of the Campaign or its licensors and is protected by copyright, trademark, and other intellectual property laws. You may not reproduce, distribute, modify, or create derivative works from any content on this Site without our express written permission.

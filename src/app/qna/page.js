@@ -61,8 +61,8 @@ export default function QnAPage() {
         </div>
         {/* Logo accent */}
         <Image
-          src="/wsr-logo.webp"
-          alt=""
+          src="/campaign-logo.webp"
+          alt="Doug Charles for Prosper Town Council Place 5"
           width={96}
           height={64}
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"
@@ -84,7 +84,7 @@ export default function QnAPage() {
             <h2 className="text-xl font-bold text-navy mb-6">Ask Doug a Question</h2>
 
             {submitted ? (
-              <div className="p-6 bg-green-50 border border-green-200 rounded-lg">
+              <div className="p-6 bg-green-50 border border-green-200 rounded-lg" role="status" aria-live="polite">
                 <p className="text-green-800 font-semibold">
                   Thank you for your question! I'll review it and post an answer soon.
                 </p>
@@ -141,7 +141,7 @@ export default function QnAPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn-secondary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-secondary w-full min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? 'Submitting...' : 'Submit Question'}
                 </button>
@@ -158,7 +158,7 @@ export default function QnAPage() {
           <h2 className="section-title text-center mb-12">Published Answers</h2>
 
           {loading ? (
-            <div className="text-center text-gray-500">Loading questions...</div>
+            <div className="text-center text-gray-500" role="status" aria-live="polite">Loading questions...</div>
           ) : questions.length > 0 ? (
             <div className="space-y-6">
               {questions.map((q) => (

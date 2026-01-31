@@ -101,7 +101,7 @@ export async function PUT(request) {
 
     // Log the action
     await logAudit({
-      eventType: 'ERROR_STATUS_UPDATED',
+      eventType: AuditEvents.ERROR_STATUS_UPDATED,
       supporterId: supporter.id,
       targetId: id,
       targetType: 'error_log',

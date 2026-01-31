@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { z } from 'zod';
-import { logAudit, logError, ErrorTypes } from '../../../../lib/logging';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 // GET - List all polls for admin
 export async function GET(request) {
@@ -159,7 +159,7 @@ export async function POST(request) {
     }
 
     await logAudit({
-      eventType: 'POLL_CREATED',
+      eventType: AuditEvents.POLL_CREATED,
       supporterId: supporter.id,
       targetId: poll.id,
       targetType: 'poll',

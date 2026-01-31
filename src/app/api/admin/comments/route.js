@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { sendCommentApprovedEmail, sendCommentRejectedEmail } from '../../../../lib/emailService';
+import { notifyParticipantsOfNewComment, notifyParentCommentAuthor } from '../../../../lib/notifications';
 
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
@@ -180,6 +182,42 @@ export async function PUT(request) {
       requestBody: body,
       responseStatus: 200,
     });
+
+    // Send notifications (fire-and-forget)
+    if (status === 'approved' && oldComment) {
+      const contextTitle = oldComment.poll_id
+        ? (await supabase.from('polls').select('title').eq('id', oldComment.poll_id).single()).data?.title
+        : (await supabase.from('ideas').select('title').eq('id', oldComment.idea_id).single()).data?.title;
+      const contextUrl = oldComment.poll_id
+        ? `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dougcharles.com'}/polls/${oldComment.poll_id}`
+        : `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dougcharles.com'}/ideas/${oldComment.idea_id}`;
+
+      // Notify author of approval
+      sendCommentApprovedEmail(
+        oldComment.email, oldComment.name,
+        oldComment.content.substring(0, 200),
+        contextTitle || 'a discussion', contextUrl
+      ).catch(err => console.error('Approval email failed:', err));
+
+      // Notify other participants
+      const fullComment = { ...oldComment, id, display_name: oldComment.name };
+      notifyParticipantsOfNewComment(fullComment)
+        .catch(err => console.error('Participant notification failed:', err));
+
+      // If it's a reply, notify parent author
+      const { data: commentWithParent } = await supabase
+        .from('comments')
+        .select('parent_id')
+        .eq('id', id)
+        .single();
+      if (commentWithParent?.parent_id) {
+        notifyParentCommentAuthor({ ...fullComment, parent_id: commentWithParent.parent_id })
+          .catch(err => console.error('Reply notification failed:', err));
+      }
+    } else if (status === 'rejected' && oldComment) {
+      sendCommentRejectedEmail(oldComment.email, oldComment.name, rejection_reason || '')
+        .catch(err => console.error('Rejection email failed:', err));
+    }
 
     return NextResponse.json({ ok: true });
   } catch (err) {

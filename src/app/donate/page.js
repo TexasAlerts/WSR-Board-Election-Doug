@@ -40,8 +40,8 @@ export default function DonatePage() {
         </div>
         {/* Logo accent */}
         <Image
-          src="/wsr-logo.webp"
-          alt=""
+          src="/campaign-logo.webp"
+          alt="Doug Charles for Prosper Town Council Place 5"
           width={96}
           height={64}
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-40 pointer-events-none brightness-200"
@@ -63,6 +63,7 @@ export default function DonatePage() {
             <h2 className="text-2xl font-bold text-navy mb-8 text-center">Choose Your Contribution</h2>
 
               {/* Amount Buttons */}
+              <div role="group" aria-label="Donation amount options">
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
                 {DONATION_AMOUNTS.map((amount) => (
                   <button
@@ -72,6 +73,7 @@ export default function DonatePage() {
                       setSelectedAmount(amount);
                       setCustomAmount('');
                     }}
+                    aria-pressed={selectedAmount === amount}
                     className={`px-4 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ${
                       selectedAmount === amount
                         ? 'bg-gradient-red text-white shadow-lg scale-105'
@@ -81,6 +83,7 @@ export default function DonatePage() {
                     ${amount}
                   </button>
                 ))}
+              </div>
               </div>
 
               {/* Custom Amount */}

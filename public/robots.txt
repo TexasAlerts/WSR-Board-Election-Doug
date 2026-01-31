@@ -1,3 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /auth/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /notifications/
 Sitemap: https://www.dougcharles.com/sitemap.xml

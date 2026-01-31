@@ -1,10 +1,14 @@
 export const metadata = {
+  alternates: { canonical: '/donate' },
   title: 'Donate | Doug Charles for Prosper Town Council',
-  description: 'Support Doug Charles for Prosper Town Council Place 5. Local elections are decided by a few hundred votes. Your contribution helps reach every voter with our Common Sense message.',
+  description: 'Support Doug Charles for Prosper Town Council Place 5. Local elections are decided by a few hundred votes. Your contribution helps reach every voter.',
   openGraph: {
     title: 'Donate | Doug Charles for Prosper Town Council',
-    description: 'Support Doug Charles for Prosper Town Council Place 5. Local elections are decided by a few hundred votes. Your contribution helps reach every voter with our Common Sense message.',
+    description: 'Support Doug Charles for Prosper Town Council Place 5. Local elections are decided by a few hundred votes. Your contribution helps reach every voter.',
     url: 'https://www.dougcharles.com/donate',
+    type: 'website',
+    siteName: 'Doug Charles for Prosper',
+    locale: 'en_US',
     images: [{
       url: 'https://www.dougcharles.com/campaign-preview.png',
       width: 1200,
@@ -14,6 +18,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    title: 'Donate | Doug Charles for Prosper Town Council',
+    description: 'Support Doug Charles for Prosper Town Council Place 5. Your contribution helps reach every voter.',
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };

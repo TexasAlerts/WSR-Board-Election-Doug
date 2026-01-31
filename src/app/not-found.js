@@ -1,5 +1,11 @@
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'Page Not Found | Doug Charles for Prosper Town Council',
+  description: 'The page you are looking for does not exist.',
+  robots: { index: false, follow: true },
+};
+
 export default function NotFound() {
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">

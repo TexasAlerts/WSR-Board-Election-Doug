@@ -1,10 +1,14 @@
 export const metadata = {
+  alternates: { canonical: '/priorities' },
   title: 'Priorities | Doug Charles for Prosper Town Council',
   description: "Doug Charles's priorities: Listen to residents, Plan for long-term success, Protect Prosper's character. Common sense leadership for all of Prosper.",
   openGraph: {
     title: 'Priorities | Doug Charles for Prosper Town Council',
     description: "Doug Charles's priorities: Listen to residents, Plan for long-term success, Protect Prosper's character. Common sense leadership for all of Prosper.",
     url: 'https://www.dougcharles.com/priorities',
+    type: 'website',
+    siteName: 'Doug Charles for Prosper',
+    locale: 'en_US',
     images: [{
       url: 'https://www.dougcharles.com/campaign-preview.png',
       width: 1200,
@@ -14,6 +18,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    title: 'Priorities | Doug Charles for Prosper Town Council',
+    description: "Listen to residents, Plan for long-term success, Protect Prosper's character.",
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };

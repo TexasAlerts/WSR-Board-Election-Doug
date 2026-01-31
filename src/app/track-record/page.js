@@ -11,8 +11,8 @@ export default function TrackRecordPage() {
           <div className="absolute bottom-10 left-20 w-48 h-48 bg-prosper-red/5 rounded-full blur-3xl"></div>
         </div>
         <Image
-          src="/wsr-logo.webp"
-          alt=""
+          src="/campaign-logo.webp"
+          alt="Doug Charles for Prosper Town Council Place 5"
           width={96}
           height={64}
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"
@@ -102,8 +102,8 @@ export default function TrackRecordPage() {
                 <div className="text-sm font-bold text-navy whitespace-nowrap bg-navy/5 px-3 py-1 rounded-full self-start">Apr 2025</div>
                 <div>
                   <h3 className="text-lg font-bold text-navy mb-2">Filed Ethics Complaint on Outside PAC Spending</h3>
-                  <p className="text-gray-600 mb-2">I pay attention to the details and <strong className="text-navy">follow the money</strong> to ensure voters know who is supporting candidates making decisions in our town and ISD. When a Washington D.C.-based PAC spent <strong className="text-prosper-red">$50,000</strong> on Prosper ISD races without transparency, I filed a formal complaint with the <strong className="text-navy">Texas Ethics Commission</strong>. The Dallas Morning News Editorial Board noted my transparency, contrasting it with secretive outside groups.</p>
-                  <p className="text-gray-500 italic text-sm">"$50,000 just didn't randomly show up from Washington, D.C., into Prosper ISD. There's an agenda." — Dallas Morning News</p>
+                  <p className="text-gray-600 mb-2">I pay attention to the details and <strong className="text-navy">follow the money</strong> to ensure voters know who is supporting candidates making decisions in our town and ISD. When a Washington D.C.-based PAC spent <strong className="text-prosper-red">$115,000</strong> on Prosper ISD races without transparency, I filed a formal complaint with the <strong className="text-navy">Texas Ethics Commission</strong>. The Dallas Morning News Editorial Board noted my transparency, contrasting it with secretive outside groups.</p>
+                  <p className="text-gray-500 italic text-sm">"$115,000 just didn't randomly show up from Washington, D.C., into Prosper ISD. There's an agenda." — Dallas Morning News</p>
                 </div>
               </div>
             </div>

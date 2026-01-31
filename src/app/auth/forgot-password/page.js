@@ -46,8 +46,8 @@ export default function ForgotPasswordPage() {
           <div className="absolute bottom-10 left-20 w-48 h-48 bg-prosper-red/5 rounded-full blur-3xl"></div>
         </div>
         <Image
-          src="/wsr-logo.webp"
-          alt=""
+          src="/campaign-logo.webp"
+          alt="Doug Charles for Prosper Town Council Place 5"
           width={96}
           height={64}
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"

@@ -22,10 +22,15 @@ const oswald = Oswald({
 });
 
 export const metadata = {
+  metadataBase: new URL('https://www.dougcharles.com'),
+  alternates: {
+    canonical: '/',
+  },
   title: 'Doug Charles for Prosper Town Council - Place 5',
   description: 'Doug Charles for Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. Election May 2, 2026.',
   icons: {
     icon: [
+      { url: '/favicon.ico', sizes: '32x32' },
       { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
       { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
       { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
@@ -46,6 +51,10 @@ export const metadata = {
       alt: 'Doug Charles for Prosper Town Council Place 5 - A Common Sense Leader for ALL of Prosper',
     }],
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
   twitter: {
     card: 'summary_large_image',
     title: 'Doug Charles for Prosper Town Council - Place 5',
@@ -57,6 +66,7 @@ export const metadata = {
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
+  themeColor: '#1B3A5D',
 };
 
 const KEY_DATES = [
@@ -72,7 +82,7 @@ export default function RootLayout({ children }) {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
         {/* Preload hero image to improve LCP */}
-        <link rel="preload" href="/wsr-logo.webp" as="image" type="image/webp" />
+        <link rel="preload" href="/campaign-logo.webp" as="image" type="image/webp" />
       </head>
       <body>
         <AuthProvider>
@@ -121,7 +131,7 @@ export default function RootLayout({ children }) {
                   "@id": "https://www.dougcharles.com/#person",
                   "name": "Doug Charles",
                   "jobTitle": "Candidate for Prosper Town Council Place 5",
-                  "description": "20-year Prosper resident, former Planning & Zoning Commissioner (2021-2023), 2020 Bond Election Committee member, Windsong Ranch HOA Board member. Candidate for Prosper Town Council Place 5.",
+                  "description": "20-year Prosper resident, former Planning & Zoning Commissioner (2021-2023), 2020 Bond Election Committee member, PISD annexation lead petitioner. Candidate for Prosper Town Council Place 5.",
                   "address": {
                     "@type": "PostalAddress",
                     "addressLocality": "Prosper",

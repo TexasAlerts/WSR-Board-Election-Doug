@@ -7,7 +7,7 @@ import {
   updateSupporter,
   deleteAllSessions,
 } from '../../../../lib/auth';
-import { logAudit, logError, ErrorTypes } from '../../../../lib/logging';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 // GET - Validate token (for page load)
 export async function GET(req) {
@@ -104,7 +104,7 @@ export async function POST(req) {
 
     // Log the password reset
     await logAudit({
-      eventType: 'PASSWORD_RESET_COMPLETED',
+      eventType: AuditEvents.PASSWORD_RESET_COMPLETED,
       supporterId: supporter.id,
       targetType: 'supporter',
       targetId: supporter.id,

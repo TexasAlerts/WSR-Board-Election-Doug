@@ -54,7 +54,7 @@ export default function EndorsementsCarousel({ endorsements }) {
   }
 
   return (
-    <div className="relative w-full overflow-hidden" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+    <div className="relative w-full overflow-hidden" aria-live="polite" aria-atomic="true" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       {/* Wrapper for all slides; translate based on index */}
       <div
         className="flex transition-transform duration-700"

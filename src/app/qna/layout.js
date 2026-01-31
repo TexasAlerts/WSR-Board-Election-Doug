@@ -1,10 +1,14 @@
 export const metadata = {
+  alternates: { canonical: '/qna' },
   title: 'Q&A | Doug Charles for Prosper Town Council',
   description: 'Questions for Doug Charles? Ask here and get answers about his positions and priorities for Prosper Town Council Place 5.',
   openGraph: {
     title: 'Q&A | Doug Charles for Prosper Town Council',
     description: 'Questions for Doug Charles? Ask here and get answers about his positions and priorities for Prosper Town Council Place 5.',
     url: 'https://www.dougcharles.com/qna',
+    type: 'website',
+    siteName: 'Doug Charles for Prosper',
+    locale: 'en_US',
     images: [{
       url: 'https://www.dougcharles.com/campaign-preview.png',
       width: 1200,
@@ -14,6 +18,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    title: 'Q&A | Doug Charles for Prosper Town Council',
+    description: 'Ask Doug Charles questions about his positions and priorities for Prosper Town Council Place 5.',
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };

@@ -81,8 +81,8 @@ export default function EndorsementsPage() {
       <section className="hero-pattern hero-gradient text-center py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         {/* Logo accent */}
         <Image
-          src="/wsr-logo.webp"
-          alt=""
+          src="/campaign-logo.webp"
+          alt="Doug Charles for Prosper Town Council Place 5"
           width={96}
           height={64}
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"
@@ -132,7 +132,7 @@ export default function EndorsementsPage() {
                 </div>
 
                 {submitMsg && submitMsg.includes('Thank you') ? (
-                  <div className="p-6 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="p-6 bg-green-50 border border-green-200 rounded-lg" role="status" aria-live="polite">
                     <p className="text-green-800 font-semibold">{submitMsg}</p>
                     <button
                       type="button"

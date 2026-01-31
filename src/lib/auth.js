@@ -1,6 +1,7 @@
 import { getSupabase } from './supabase';
 import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
+import { validateAdminSession } from './admin-session';
 
 // Generate secure random token
 export function generateToken(length = 32) {
@@ -84,13 +85,25 @@ export async function validateSession(token) {
 }
 
 // Get current session from cookies
+// Checks session_token (supporter login) and admin_session (password-based admin login)
 export async function getCurrentSupporter() {
   const cookieStore = await cookies();
+
+  // Check supporter session first
   const sessionToken = cookieStore.get('session_token')?.value;
+  if (sessionToken) {
+    const supporter = await validateSession(sessionToken);
+    if (supporter) return supporter;
+  }
 
-  if (!sessionToken) return null;
+  // Fallback: check password-based admin session
+  const adminToken = cookieStore.get('admin_session')?.value;
+  if (adminToken && await validateAdminSession(adminToken)) {
+    // Return a synthetic admin supporter object
+    return { id: 'admin', role: 'super_admin', first_name: 'Admin', last_name: '' };
+  }
 
-  return validateSession(sessionToken);
+  return null;
 }
 
 // Delete session (logout)
@@ -315,4 +328,22 @@ export function isAdmin(supporter) {
 // Check if user is super admin
 export function isSuperAdmin(supporter) {
   return supporter?.role === 'super_admin';
+}
+
+// Get verified voter from cookie (lightweight email-verified user for polls)
+export async function getVerifiedVoter() {
+  const cookieStore = await cookies();
+  const voterId = cookieStore.get('verified_voter_id')?.value;
+  if (!voterId) return null;
+
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from('verified_voters')
+    .select('*')
+    .eq('id', voterId)
+    .not('verified_at', 'is', null)
+    .single();
+
+  if (error || !data) return null;
+  return data;
 }

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../../lib/auth';
 import { z } from 'zod';
-import { logAudit, logError, ErrorTypes } from '../../../../../lib/logging';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../../lib/logging';
 
 // GET - Get single poll with details
 export async function GET(request, { params }) {
@@ -212,7 +212,7 @@ export async function PUT(request, { params }) {
     }
 
     await logAudit({
-      eventType: 'POLL_UPDATED',
+      eventType: AuditEvents.POLL_UPDATED,
       supporterId: supporter.id,
       targetId: id,
       targetType: 'poll',
@@ -282,7 +282,7 @@ export async function DELETE(request, { params }) {
     }
 
     await logAudit({
-      eventType: 'POLL_DELETED',
+      eventType: AuditEvents.POLL_DELETED,
       supporterId: supporter.id,
       targetId: id,
       targetType: 'poll',

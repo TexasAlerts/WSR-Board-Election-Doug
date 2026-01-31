@@ -12,7 +12,7 @@ const registerSchema = z.object({
   firstName: z.string().min(1, 'First name is required').max(50),
   lastName: z.string().min(1, 'Last name is required').max(50),
   email: z.string().email('Valid email is required'),
-  phone: z.string().min(10, 'Valid phone number is required'),
+  phone: z.string().min(10, 'Valid phone number is required').optional().or(z.literal('')),
   streetAddress: z.string().min(5, 'Street address is required').max(100),
   city: z.string().min(2, 'City is required').max(50),
   state: z.string().length(2, 'State must be 2 letters').default('TX'),
@@ -75,13 +75,17 @@ export async function POST(request) {
       );
     }
 
-    // Validate phone number
-    const phoneValidation = validatePhoneNumber(phone);
-    if (!phoneValidation.valid) {
-      return NextResponse.json(
-        { ok: false, error: phoneValidation.error },
-        { status: 400 }
-      );
+    // Validate phone number (optional)
+    let phoneFormatted = null;
+    if (phone) {
+      const phoneValidation = validatePhoneNumber(phone);
+      if (!phoneValidation.valid) {
+        return NextResponse.json(
+          { ok: false, error: phoneValidation.error },
+          { status: 400 }
+        );
+      }
+      phoneFormatted = phoneValidation.formatted;
     }
 
     // Validate address with USPS
@@ -106,7 +110,7 @@ export async function POST(request) {
         first_name: firstName.trim(),
         last_name: lastName.trim(),
         email: email.toLowerCase().trim(),
-        phone: phoneValidation.formatted,
+        phone: phoneFormatted,
         street_address: streetAddress.trim(),
         street_address_standardized: addressValidation.standardized?.street || streetAddress.trim(),
         city: addressValidation.standardized?.city || city.trim(),

@@ -1,10 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { User, Mail, Phone, MapPin, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function RegisterPage() {
+  useEffect(() => {
+    document.title = 'Register | Doug Charles for Prosper Town Council';
+  }, []);
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -64,6 +68,11 @@ export default function RegisterPage() {
           <p className="text-green-700 mb-4">
             We&apos;ve sent a verification link to <strong>{formData.email}</strong>.
           </p>
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+            <p className="text-yellow-800 text-sm font-medium">
+              ⚠️ <strong>Check your spam/junk folder!</strong> Verification emails sometimes get filtered. If you don&apos;t see it in your inbox, look in your junk or spam folder.
+            </p>
+          </div>
           <p className="text-green-600 text-sm">
             Click the link in your email to verify your address and create your password.
             The link expires in 24 hours.
@@ -91,7 +100,7 @@ export default function RegisterPage() {
         )}
 
         {/* Name */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label htmlFor="reg-firstName" className="block text-sm font-medium text-gray-700 mb-1">
               First Name *
@@ -153,7 +162,7 @@ export default function RegisterPage() {
         {/* Phone */}
         <div>
           <label htmlFor="reg-phone" className="block text-sm font-medium text-gray-700 mb-1">
-            Phone Number *
+            Cell Phone Number (optional)
           </label>
           <div className="relative">
             <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
@@ -163,7 +172,6 @@ export default function RegisterPage() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              required
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
               placeholder="(972) 555-1234"
               autoComplete="tel"
@@ -171,7 +179,7 @@ export default function RegisterPage() {
             />
           </div>
           <p id="phone-verification-hint" className="text-xs text-gray-500 mt-1">
-            We&apos;ll send a verification code to confirm your number.
+            By providing your phone number, you consent to receive SMS verification messages. Standard message and data rates may apply. You can add or update your phone later in Settings.
           </p>
         </div>
 
@@ -197,8 +205,8 @@ export default function RegisterPage() {
               />
             </div>
           </div>
-          <div className="grid grid-cols-6 gap-4">
-            <div className="col-span-3">
+          <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
+            <div className="col-span-1 sm:col-span-3">
               <label htmlFor="reg-city" className="block text-sm font-medium text-gray-700 mb-1">
                 City *
               </label>
@@ -228,7 +236,7 @@ export default function RegisterPage() {
                 autoComplete="address-level1"
               />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1 sm:col-span-2">
               <label htmlFor="reg-zipCode" className="block text-sm font-medium text-gray-700 mb-1">
                 ZIP Code *
               </label>
@@ -271,7 +279,9 @@ export default function RegisterPage() {
               className="mt-0.5 w-5 h-5 min-w-[20px] text-navy rounded focus:ring-navy focus:ring-2"
             />
             <span className="text-sm text-gray-600">
-              I agree to receive text message alerts (standard rates may apply)
+              By checking this box, you consent to receive SMS campaign updates, alerts, and donation solicitations from Doug Charles for Prosper Town Council at the number provided, including messages sent by autodialer. Message frequency may vary. Standard message and data rates may apply. Carriers are not liable for delayed or undelivered messages. Reply STOP to opt out. Reply HELP for help. Consent is not a condition of purchase or registration.{' '}
+              <Link href="/privacy" className="text-navy underline">Privacy Policy</Link> &{' '}
+              <Link href="/terms" className="text-navy underline">Terms</Link>.
             </span>
           </label>
         </fieldset>
@@ -284,7 +294,7 @@ export default function RegisterPage() {
         >
           {loading ? (
             <>
-              <Loader2 className="w-5 h-5 animate-spin" />
+              <Loader2 className="w-5 h-5 animate-spin" aria-hidden="true" />
               Creating Account...
             </>
           ) : (

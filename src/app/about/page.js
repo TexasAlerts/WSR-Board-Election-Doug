@@ -11,8 +11,8 @@ export default function AboutPage() {
           <div className="absolute bottom-10 left-20 w-48 h-48 bg-prosper-red/5 rounded-full blur-3xl"></div>
         </div>
         <Image
-          src="/wsr-logo.webp"
-          alt=""
+          src="/campaign-logo.webp"
+          alt="Doug Charles for Prosper Town Council Place 5"
           width={96}
           height={64}
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"
@@ -45,10 +45,10 @@ export default function AboutPage() {
             <div className="w-full md:w-3/5">
               <div className="space-y-4 text-base md:text-lg text-gray-700 leading-relaxed">
                 <p>
-                  I moved to <strong className="text-navy">Prosper 20 years ago</strong> for the same reasons you probably did—great schools, safe neighborhoods, and room to raise a family.
+                  I moved to <strong className="text-navy">Prosper 20 years ago</strong> for the same reasons you probably did—<strong className="text-navy">great schools</strong>, <strong className="text-navy">safe neighborhoods</strong>, and room to raise a family. Back then, everybody knew your name, <strong className="text-navy">Friday night football</strong> was the center of town, and <strong className="text-prosper-red">Small Town, Big Heart</strong> wasn&apos;t just a slogan—it was how we lived. We&apos;ve grown fast, and somewhere along the way, we started losing that feel. I&apos;m running to make sure we <strong className="text-navy">get it back</strong>.
                 </p>
                 <p>
-                  I've served on the <strong className="text-navy">Planning & Zoning Commission</strong>, the <strong className="text-navy">2020 Bond Committee</strong>, and currently serve on the <strong className="text-navy">Windsong Ranch HOA Board</strong>.
+                  I&apos;ve served on the <strong className="text-navy">Planning & Zoning Commission</strong>, the <strong className="text-navy">2020 Bond Committee</strong>, and led the <strong className="text-navy">Windsong Ranch PISD annexation effort</strong> that will bring $6.5M in annual tax revenue to Prosper ISD.
                 </p>
                 <p className="text-prosper-red font-semibold">
                   Whether you've been here 20 years or 2 months, you deserve a voice at the table.
@@ -100,8 +100,18 @@ export default function AboutPage() {
               <div className="flex items-start gap-4">
                 <div className="w-4 h-4 bg-gradient-to-br from-prosper-red to-red-dark rounded-full mt-1 flex-shrink-0 shadow-sm"></div>
                 <div>
-                  <h3 className="text-xl font-bold text-navy mb-2">Windsong Ranch Board Member</h3>
-                  <p className="text-gray-600">Elected · Serving on the board of one of Prosper's largest communities. I understand the issues residents face every day.</p>
+                  <h3 className="text-xl font-bold text-navy mb-2">Elected Windsong Ranch Board Member</h3>
+                  <p className="text-gray-600">Oct 2025 · Elected to the board of one of Prosper&apos;s largest communities. I understand the issues residents face every day.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="card h-full">
+              <div className="flex items-start gap-4">
+                <div className="w-4 h-4 bg-gradient-to-br from-prosper-red to-red-dark rounded-full mt-1 flex-shrink-0 shadow-sm"></div>
+                <div>
+                  <h3 className="text-xl font-bold text-navy mb-2">PISD Annexation Lead Petitioner</h3>
+                  <p className="text-gray-600">Organized 585 residents, retained legal counsel, and led the effort to annex Windsong Ranch into Prosper ISD—bringing <strong className="text-navy">$6.5M</strong> in annual tax revenue.</p>
                 </div>
               </div>
             </div>

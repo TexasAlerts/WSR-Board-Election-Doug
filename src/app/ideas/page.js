@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 
 const CATEGORIES = [
@@ -42,15 +42,41 @@ export default function IdeasPage() {
   const [supportIdeaId, setSupportIdeaId] = useState(null);
   const [supportEmail, setSupportEmail] = useState('');
   const [supportMsg, setSupportMsg] = useState('');
+  const submitModalRef = useRef(null);
+  const supportModalRef = useRef(null);
 
+  // Escape key and focus trap for modals
   useEffect(() => {
-    loadIdeas();
-    // Load supported ideas from localStorage
-    const supported = JSON.parse(localStorage.getItem('supportedIdeas') || '{}');
-    setSupportedIdeas(supported);
-  }, [category]);
+    const isOpen = showSubmitForm || showSupportModal;
+    if (!isOpen) return;
+    const modalRef = showSubmitForm ? submitModalRef : supportModalRef;
+    function handleKeyDown(e) {
+      if (e.key === 'Escape') {
+        if (showSupportModal) setShowSupportModal(false);
+        else if (showSubmitForm) setShowSubmitForm(false);
+      }
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    modalRef.current?.focus();
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [showSubmitForm, showSupportModal]);
 
-  async function loadIdeas() {
+  const loadIdeas = useCallback(async () => {
     setLoading(true);
     try {
       const url = category === 'all' ? '/api/ideas' : `/api/ideas?category=${category}`;
@@ -64,7 +90,18 @@ export default function IdeasPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [category]);
+
+  useEffect(() => {
+    loadIdeas();
+    // Load supported ideas from localStorage
+    try {
+      const supported = JSON.parse(localStorage.getItem('supportedIdeas') || '{}');
+      setSupportedIdeas(supported);
+    } catch {
+      setSupportedIdeas({});
+    }
+  }, [loadIdeas]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -167,8 +204,8 @@ export default function IdeasPage() {
         </div>
         {/* Logo accent */}
         <Image
-          src="/wsr-logo.webp"
-          alt=""
+          src="/campaign-logo.webp"
+          alt="Doug Charles for Prosper Town Council Place 5"
           width={96}
           height={64}
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-40 pointer-events-none brightness-200"
@@ -197,6 +234,7 @@ export default function IdeasPage() {
               <button
                 key={cat.value}
                 onClick={() => setCategory(cat.value)}
+                aria-pressed={category === cat.value}
                 className={`px-4 py-2 min-h-[44px] rounded-full text-sm font-medium transition-all ${
                   category === cat.value
                     ? 'bg-navy text-white shadow-lg'
@@ -214,7 +252,7 @@ export default function IdeasPage() {
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {loading ? (
-            <div className="text-center py-12 text-gray-500">Loading ideas...</div>
+            <div className="text-center py-12 text-gray-500" role="status" aria-live="polite">Loading ideas...</div>
           ) : ideas.length === 0 ? (
             <div className="card text-center py-12">
               <div className="text-4xl mb-4">💡</div>
@@ -258,6 +296,8 @@ export default function IdeasPage() {
                     <div className="flex items-center gap-4">
                       <button
                         onClick={() => handleSupport(idea.id)}
+                        aria-label={supportedIdeas[idea.id] ? `Remove support for ${idea.title}` : `Support ${idea.title}`}
+                        aria-pressed={!!supportedIdeas[idea.id]}
                         className={`flex items-center gap-2 px-4 py-3 min-h-[44px] rounded-lg font-medium transition-all ${
                           supportedIdeas[idea.id]
                             ? 'bg-prosper-red text-white'
@@ -296,7 +336,7 @@ export default function IdeasPage() {
           aria-modal="true"
           aria-labelledby="modal-title"
         >
-          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+          <div ref={submitModalRef} tabIndex={-1} className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto outline-none" onClick={e => e.stopPropagation()}>
             <div className="p-4 sm:p-6">
               <div className="flex justify-between items-start mb-6">
                 <h2 id="modal-title" className="text-2xl font-bold text-navy">Submit Your Idea</h2>
@@ -382,21 +422,21 @@ export default function IdeasPage() {
                   <p id="content-hint" className="text-xs text-gray-500 mt-1">At least 20 characters</p>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <label htmlFor="is_public" className="flex items-center gap-3 cursor-pointer min-h-[44px]">
                   <input
                     type="checkbox"
                     id="is_public"
                     checked={submitForm.is_public}
                     onChange={e => setSubmitForm({ ...submitForm, is_public: e.target.checked })}
-                    className="w-5 h-5 rounded border-gray-300"
+                    className="w-5 h-5 min-w-[20px] rounded border-gray-300"
                   />
-                  <label htmlFor="is_public" className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600">
                     Make this idea public for others to see and support
-                  </label>
-                </div>
+                  </span>
+                </label>
 
                 {submitMsg && (
-                  <div className={`p-4 rounded-lg ${submitMsg.includes('Thank') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                  <div role="alert" aria-live="polite" className={`p-4 rounded-lg ${submitMsg.includes('Thank') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
                     {submitMsg}
                   </div>
                 )}
@@ -419,7 +459,7 @@ export default function IdeasPage() {
           aria-modal="true"
           aria-labelledby="support-modal-title"
         >
-          <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full" onClick={e => e.stopPropagation()}>
+          <div ref={supportModalRef} tabIndex={-1} className="bg-white rounded-xl shadow-2xl max-w-sm w-full outline-none" onClick={e => e.stopPropagation()}>
             <div className="p-4 sm:p-6">
               <div className="flex justify-between items-start mb-4">
                 <h2 id="support-modal-title" className="text-xl font-bold text-navy">Support This Idea</h2>
@@ -445,7 +485,7 @@ export default function IdeasPage() {
                   />
                 </div>
                 {supportMsg && (
-                  <div className="p-3 bg-red-50 text-red-700 rounded-lg text-sm">
+                  <div role="alert" aria-live="polite" className="p-3 bg-red-50 text-red-700 rounded-lg text-sm">
                     {supportMsg}
                   </div>
                 )}

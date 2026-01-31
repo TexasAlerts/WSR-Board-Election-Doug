@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -42,11 +42,7 @@ export default function AdminPollsPage() {
     choices: [{ choice_text: '' }, { choice_text: '' }],
   });
 
-  useEffect(() => {
-    loadPolls();
-  }, [statusFilter]);
-
-  const loadPolls = async () => {
+  const loadPolls = useCallback(async () => {
     setLoading(true);
     setError('');
 
@@ -71,7 +67,11 @@ export default function AdminPollsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusFilter, router]);
+
+  useEffect(() => {
+    loadPolls();
+  }, [loadPolls]);
 
   const resetForm = () => {
     setFormData({
@@ -269,10 +269,11 @@ export default function AdminPollsPage() {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="poll-title" className="block text-sm font-medium text-gray-700 mb-1">
                     Title *
                   </label>
                   <input
+                    id="poll-title"
                     type="text"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
@@ -283,10 +284,11 @@ export default function AdminPollsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="poll-description" className="block text-sm font-medium text-gray-700 mb-1">
                     Description
                   </label>
                   <textarea
+                    id="poll-description"
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={3}
@@ -297,10 +299,11 @@ export default function AdminPollsPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="poll-type" className="block text-sm font-medium text-gray-700 mb-1">
                       Poll Type
                     </label>
                     <select
+                      id="poll-type"
                       value={formData.poll_type}
                       onChange={(e) => setFormData({ ...formData, poll_type: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
@@ -312,10 +315,11 @@ export default function AdminPollsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="poll-visibility" className="block text-sm font-medium text-gray-700 mb-1">
                       Visibility
                     </label>
                     <select
+                      id="poll-visibility"
                       value={formData.visibility}
                       onChange={(e) => setFormData({ ...formData, visibility: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
@@ -329,10 +333,11 @@ export default function AdminPollsPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="poll-status" className="block text-sm font-medium text-gray-700 mb-1">
                       Status
                     </label>
                     <select
+                      id="poll-status"
                       value={formData.status}
                       onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
@@ -344,10 +349,11 @@ export default function AdminPollsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="poll-closes-at" className="block text-sm font-medium text-gray-700 mb-1">
                       Closes At (optional)
                     </label>
                     <input
+                      id="poll-closes-at"
                       type="datetime-local"
                       value={formData.closes_at}
                       onChange={(e) => setFormData({ ...formData, closes_at: e.target.value })}
@@ -357,22 +363,22 @@ export default function AdminPollsPage() {
                 </div>
 
                 <div className="flex gap-6">
-                  <label className="flex items-center gap-2">
+                  <label className="flex items-center gap-2 cursor-pointer min-h-[44px]">
                     <input
                       type="checkbox"
                       checked={formData.allow_comments}
                       onChange={(e) => setFormData({ ...formData, allow_comments: e.target.checked })}
-                      className="rounded border-gray-300 text-navy focus:ring-navy"
+                      className="w-5 h-5 min-w-[20px] rounded border-gray-300 text-navy focus:ring-navy"
                     />
                     <span className="text-sm text-gray-700">Allow comments</span>
                   </label>
 
-                  <label className="flex items-center gap-2">
+                  <label className="flex items-center gap-2 cursor-pointer min-h-[44px]">
                     <input
                       type="checkbox"
                       checked={formData.show_results_before_vote}
                       onChange={(e) => setFormData({ ...formData, show_results_before_vote: e.target.checked })}
-                      className="rounded border-gray-300 text-navy focus:ring-navy"
+                      className="w-5 h-5 min-w-[20px] rounded border-gray-300 text-navy focus:ring-navy"
                     />
                     <span className="text-sm text-gray-700">Show results before voting</span>
                   </label>
@@ -380,9 +386,9 @@ export default function AdminPollsPage() {
 
                 {/* Choices */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <span className="block text-sm font-medium text-gray-700 mb-2" id="poll-choices-label">
                     Choices * (minimum 2)
-                  </label>
+                  </span>
                   <div className="space-y-2">
                     {formData.choices.map((choice, index) => (
                       <div key={index} className="flex gap-2">
@@ -391,6 +397,8 @@ export default function AdminPollsPage() {
                           value={choice.choice_text}
                           onChange={(e) => updateChoice(index, e.target.value)}
                           placeholder={`Choice ${index + 1}`}
+                          aria-label={`Choice ${index + 1}`}
+                          aria-describedby="poll-choices-label"
                           className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                         />
                         {formData.choices.length > 2 && (

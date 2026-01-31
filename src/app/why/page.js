@@ -11,8 +11,8 @@ export default function WhyPage() {
           <div className="absolute bottom-10 left-20 w-48 h-48 bg-prosper-red/5 rounded-full blur-3xl"></div>
         </div>
         <Image
-          src="/wsr-logo.webp"
-          alt=""
+          src="/campaign-logo.webp"
+          alt="Doug Charles for Prosper Town Council Place 5"
           width={96}
           height={64}
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"
@@ -38,7 +38,10 @@ export default function WhyPage() {
               I've been <strong className="text-navy">in the room where these decisions get made</strong>. I've read the development applications, asked the hard questions, and seen what happens when we plan well—and when we don't.
             </p>
             <p>
-              I'm running to bring that <strong className="text-prosper-red">experience to the Town Council</strong>, and to make sure <strong className="text-navy">every resident's voice is heard</strong>.
+              Prosper&apos;s explosive growth has brought <strong className="text-navy">thousands of new families</strong> who chose this community for the same reasons longtime residents love it. But as these families settle in and look around, many are realizing that critical decisions about their neighborhoods, their roads, and their quality of life are being made <strong className="text-prosper-red">without their input</strong>. They don&apos;t have a representative voice at the table—and that needs to change.
+            </p>
+            <p>
+              I&apos;m running to bring that <strong className="text-prosper-red">experience to the Town Council</strong>, and to make sure <strong className="text-navy">every resident&apos;s voice is heard</strong>—whether you&apos;ve been here for decades or just moved in last year.
             </p>
           </div>
         </div>

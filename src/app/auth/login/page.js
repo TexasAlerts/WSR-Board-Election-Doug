@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Mail, Lock, AlertCircle, Loader2 } from 'lucide-react';
@@ -10,6 +10,10 @@ import { useAuth } from '../../../context/AuthContext';
 export default function LoginPage() {
   const router = useRouter();
   const { refreshAuth } = useAuth();
+
+  useEffect(() => {
+    document.title = 'Sign In | Doug Charles for Prosper Town Council';
+  }, []);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -61,8 +65,8 @@ export default function LoginPage() {
         </div>
         {/* Logo accent */}
         <Image
-          src="/wsr-logo.webp"
-          alt=""
+          src="/campaign-logo.webp"
+          alt="Doug Charles for Prosper Town Council Place 5"
           width={96}
           height={64}
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"
@@ -138,7 +142,7 @@ export default function LoginPage() {
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <Loader2 className="w-5 h-5 animate-spin" aria-hidden="true" />
                   Signing in...
                 </>
               ) : (

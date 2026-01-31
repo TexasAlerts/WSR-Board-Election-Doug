@@ -187,8 +187,8 @@ function GetInvolvedContent() {
         </div>
         {/* Logo accent */}
         <Image
-          src="/wsr-logo.webp"
-          alt=""
+          src="/campaign-logo.webp"
+          alt="Doug Charles for Prosper Town Council Place 5"
           width={96}
           height={64}
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-40 pointer-events-none brightness-200"
@@ -319,7 +319,7 @@ function GetInvolvedContent() {
                 </div>
 
                 {submitMsg && submitMsg.includes('Thank you') ? (
-                  <div className="p-6 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="p-6 bg-green-50 border border-green-200 rounded-lg" role="status" aria-live="polite">
                     <p className="text-green-800 font-semibold">{submitMsg}</p>
                     <button
                       type="button"

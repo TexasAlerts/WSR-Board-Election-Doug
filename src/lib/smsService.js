@@ -1,30 +1,19 @@
 /**
- * SMS Service using Telnyx
+ * SMS Service using Telnyx REST API
  * Requires TELNYX_API_KEY and TELNYX_PHONE_NUMBER environment variables
  */
 
-import Telnyx from 'telnyx';
-
-let telnyxClient = null;
-
-function getTelnyxClient() {
-  if (!telnyxClient && process.env.TELNYX_API_KEY) {
-    telnyxClient = Telnyx(process.env.TELNYX_API_KEY);
-  }
-  return telnyxClient;
-}
-
 /**
- * Send an SMS message
+ * Send an SMS message via Telnyx REST API
  * @param {string} to - Recipient phone number in E.164 format
  * @param {string} message - Message content (160 char limit for single SMS)
  * @returns {Promise<{ success: boolean, messageId: string | null, error: string | null }>}
  */
 export async function sendSMS(to, message) {
-  const client = getTelnyxClient();
+  const apiKey = process.env.TELNYX_API_KEY;
   const fromNumber = process.env.TELNYX_PHONE_NUMBER;
 
-  if (!client || !fromNumber) {
+  if (!apiKey || !fromNumber) {
     console.error('Telnyx not configured. TELNYX_API_KEY or TELNYX_PHONE_NUMBER missing.');
     return {
       success: false,
@@ -34,15 +23,34 @@ export async function sendSMS(to, message) {
   }
 
   try {
-    const response = await client.messages.create({
-      from: fromNumber,
-      to: to,
-      text: message,
+    const response = await fetch('https://api.telnyx.com/v2/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        from: fromNumber,
+        to: to,
+        text: message,
+      }),
     });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      const errorDetail = data.errors?.[0]?.detail || data.errors?.[0]?.title || JSON.stringify(data);
+      console.error('Telnyx API error:', response.status, errorDetail);
+      return {
+        success: false,
+        messageId: null,
+        error: `Telnyx API ${response.status}: ${errorDetail}`,
+      };
+    }
 
     return {
       success: true,
-      messageId: response.data?.id || null,
+      messageId: data.data?.id || null,
       error: null,
     };
   } catch (err) {

@@ -165,6 +165,6 @@ export async function POST(request, { params }) {
       userEmail: supporter?.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }

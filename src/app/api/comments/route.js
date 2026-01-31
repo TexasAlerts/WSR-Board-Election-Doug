@@ -5,6 +5,8 @@ import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail } from '../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
+import { sanitizeText } from '../../../lib/sanitize';
+import { getUserDisplayName } from '../../../lib/formatDisplayName';
 
 // GET: Fetch comments for a poll or idea
 export async function GET(request) {
@@ -24,7 +26,7 @@ export async function GET(request) {
     .from('comments')
     .select(`
       id,
-      name,
+      display_name,
       content,
       created_at,
       upvotes,
@@ -131,7 +133,8 @@ export async function POST(request) {
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 
-    const { poll_id, idea_id, parent_id, content } = parsed.data;
+    const { poll_id, idea_id, parent_id, content: rawContent } = parsed.data;
+    const content = sanitizeText(rawContent);
 
     // Verify parent comment exists if replying
     if (parent_id) {
@@ -156,6 +159,7 @@ export async function POST(request) {
     }
 
     // Insert comment
+    const displayName = getUserDisplayName(supporter);
     const { data: comment, error } = await supabase
       .from('comments')
       .insert({
@@ -165,6 +169,7 @@ export async function POST(request) {
         supporter_id: supporter.id,
         name: `${supporter.first_name} ${supporter.last_name}`,
         email: supporter.email,
+        display_name: displayName,
         content: content.trim(),
         status: 'pending', // Requires moderation
         upvotes: 0,
@@ -227,6 +232,6 @@ export async function POST(request) {
       userEmail: supporter?.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }

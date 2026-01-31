@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
+import { sanitizeText } from '../../../lib/sanitize';
 
 export async function GET() {
   const supabase = getSupabaseAnon();
@@ -39,14 +40,16 @@ export async function POST(req) {
       const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
-    const { name, email, phone, message, consentEmail, consentSms } = parsed.data;
+    const { name: rawName, email, phone, message: rawMessage, consentEmail, consentSms } = parsed.data;
+    const name = sanitizeText(rawName);
+    const message = rawMessage ? sanitizeText(rawMessage) : null;
     const { data: endorsement, error } = await supabase
       .from('endorsements')
       .insert({
         name,
         email,
         phone: phone ?? null,
-        message: message ?? null,
+        message,
         status: 'pending',
         consent_email: consentEmail,
         consent_sms: consentSms,
@@ -104,6 +107,6 @@ export async function POST(req) {
       method: 'POST',
       request: req,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }
