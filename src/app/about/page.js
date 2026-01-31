@@ -45,7 +45,7 @@ export default function AboutPage() {
             <div className="w-full md:w-3/5">
               <div className="space-y-4 text-base md:text-lg text-gray-700 leading-relaxed">
                 <p>
-                  I moved to <strong className="text-navy">Prosper 20 years ago</strong> for the same reasons you probably did—great schools, safe neighborhoods, and room to raise a family.
+                  I moved to <strong className="text-navy">Prosper 20 years ago</strong> for the same reasons you probably did—<strong className="text-navy">great schools</strong>, <strong className="text-navy">safe neighborhoods</strong>, and room to raise a family. Back then, everybody knew your name, <strong className="text-navy">Friday night football</strong> was the center of town, and <strong className="text-prosper-red">Small Town, Big Heart</strong> wasn&apos;t just a slogan—it was how we lived. We&apos;ve grown fast, and somewhere along the way, we started losing that feel. I&apos;m running to make sure we <strong className="text-navy">get it back</strong>.
                 </p>
                 <p>
                   I&apos;ve served on the <strong className="text-navy">Planning & Zoning Commission</strong>, the <strong className="text-navy">2020 Bond Committee</strong>, and led the <strong className="text-navy">Windsong Ranch PISD annexation effort</strong> that will bring $6.5M in annual tax revenue to Prosper ISD.

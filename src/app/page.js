@@ -89,25 +89,28 @@ export default function Home() {
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">20</div>
                 <div className="stat-label">Years in Prosper</div>
+                <div className="text-xs text-gray-500 mt-1 leading-snug">Steady resident & <strong className="text-navy">voter advocate</strong> since 2019</div>
               </div>
             </div>
             <div className="h-full">
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">P&Z</div>
-                <div className="stat-label">Commissioner (3 yrs)</div>
+                <div className="stat-label">Planning & Zoning</div>
+                <div className="text-xs text-gray-500 mt-1 leading-snug"><strong className="text-navy">Commissioner</strong> for 3 years</div>
               </div>
             </div>
             <div className="h-full">
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">$210M</div>
-                <div className="stat-label">Bond Committee Member</div>
+                <div className="stat-label">Bond Committee</div>
+                <div className="text-xs text-gray-500 mt-1 leading-snug">2020 Election — <strong className="text-navy">all bonds passed</strong></div>
               </div>
             </div>
             <div className="h-full">
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">$6.5M</div>
                 <div className="stat-label">New Annual Tax Revenue</div>
-                <div className="text-xs text-gray-500 mt-1">Lead Petitioner · PISD Annexation</div>
+                <div className="text-xs text-gray-500 mt-1 leading-snug">Lead <strong className="text-navy">Windsong Annexation</strong> Petitioner · Passed PISD, now with <strong className="text-navy">TEA</strong></div>
               </div>
             </div>
           </div>
@@ -136,6 +139,8 @@ export default function Home() {
                 <Link href="/qna" className="text-navy font-medium hover:underline">Ask a question</Link>
                 <span className="text-gray-400">·</span>
                 <Link href="/get-involved#meeting" className="text-navy font-medium hover:underline">Request a meeting</Link>
+                <span className="text-gray-400">·</span>
+                <Link href="/qna" className="text-navy font-medium hover:underline">Submit an idea</Link>
               </div>
             </div>
 
@@ -145,6 +150,11 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold mb-3 text-navy">Plan</h3>
               <p className="text-gray-600">Build it right the first time. Size projects correctly from the start. Think long-term so we're not fixing mistakes or asking for more money later.</p>
+              <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
+                <Link href="/polls" className="text-navy font-medium hover:underline">Participate in a poll</Link>
+                <span className="text-gray-400">·</span>
+                <Link href="/priorities" className="text-navy font-medium hover:underline">See my priorities</Link>
+              </div>
             </div>
 
             <div className="card text-center h-full">
@@ -153,6 +163,11 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold mb-3 text-navy">Protect</h3>
               <p className="text-gray-600">Prosper isn't just another suburb—it's Friday night football under the lights, Small Town, Big Heart, and downtown festivals that bring neighbors together.</p>
+              <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
+                <Link href="/track-record" className="text-navy font-medium hover:underline">See my track record</Link>
+                <span className="text-gray-400">·</span>
+                <Link href="/qna" className="text-navy font-medium hover:underline">Submit an idea</Link>
+              </div>
             </div>
           </div>
 
