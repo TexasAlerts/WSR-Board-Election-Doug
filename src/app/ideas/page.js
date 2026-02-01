@@ -211,15 +211,15 @@ export default function IdeasPage() {
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-40 pointer-events-none brightness-200"
         />
         <div className="max-w-3xl mx-auto text-center relative z-10">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 animate-fade-in-down">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
             Community Ideas
           </h1>
-          <p className="text-xl text-white/90 animate-fade-in mb-8">
+          <p className="text-xl text-white/90 mb-8">
             Share your ideas for making Prosper better
           </p>
           <button
             onClick={() => setShowSubmitForm(true)}
-            className="btn-white animate-fade-in-up"
+            className="btn-white"
           >
             Submit Your Idea
           </button>

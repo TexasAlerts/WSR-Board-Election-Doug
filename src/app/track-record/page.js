@@ -18,10 +18,10 @@ export default function TrackRecordPage() {
           className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"
         />
         <div className="relative z-10">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-4 animate-fade-in-down">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-4">
             Track Record
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
             <strong className="text-navy">Results</strong>, not just promises
           </p>
         </div>
