@@ -1,10 +1,10 @@
 export const metadata = {
   alternates: { canonical: '/privacy' },
   title: 'Privacy Policy | Doug Charles for Prosper Town Council',
-  description: 'Privacy policy for the Doug Charles for Prosper Town Council Place 5 campaign website.',
+  description: 'Privacy policy for the Doug Charles for Prosper Town Council Place 5 campaign website. Learn how we collect, use, and protect your personal information.',
   openGraph: {
     title: 'Privacy Policy | Doug Charles for Prosper Town Council',
-    description: 'Privacy policy for the Doug Charles for Prosper Town Council Place 5 campaign website.',
+    description: 'Privacy policy for the Doug Charles for Prosper Town Council Place 5 campaign website. Learn how we collect, use, and protect your personal information.',
     url: 'https://www.dougcharles.com/privacy',
     type: 'website',
     siteName: 'Doug Charles for Prosper',

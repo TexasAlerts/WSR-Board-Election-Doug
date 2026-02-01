@@ -120,7 +120,6 @@ export async function POST(request) {
     if (smsRecipients.length > 0) {
       // TODO: Integrate Telnyx for SMS broadcasts
       // For now, just count as 0 until Telnyx is configured
-      console.log(`Would send SMS to ${smsRecipients.length} recipients`);
     }
 
     // Log the broadcast to database

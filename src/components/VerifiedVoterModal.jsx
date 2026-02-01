@@ -86,7 +86,7 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
       >
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-xl"
+          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-label="Close verification form"
         >
           &times;
@@ -107,7 +107,8 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
                 onChange={e => setName(e.target.value)}
                 placeholder="First and Last Name"
                 required
-                className="w-full border rounded-md px-3 py-2 mb-3 text-sm"
+                className="w-full border rounded-md px-3 py-2.5 mb-3 text-sm min-h-[44px]"
+                aria-required="true"
               />
               <label htmlFor="voter-email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
               <input
@@ -117,16 +118,17 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
                 onChange={e => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full border rounded-md px-3 py-2 mb-4 text-sm"
+                aria-required="true"
+                className="w-full border rounded-md px-3 py-2.5 mb-4 text-sm min-h-[44px]"
               />
               <button
                 type="submit"
-                className="w-full bg-prosper-red text-white py-2 px-4 rounded-md hover:bg-red-dark font-medium"
+                className="w-full bg-prosper-red text-white py-2.5 px-4 rounded-md hover:bg-red-dark font-medium min-h-[44px]"
               >
                 Send Verification Email
               </button>
             </form>
-            <p className="text-xs text-gray-400 mt-3 text-center">
+            <p className="text-xs text-gray-500 mt-3 text-center">
               Already a registered supporter? <a href="/auth/login" className="text-navy underline">Sign in</a>
             </p>
           </>
@@ -146,7 +148,7 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
             <p className="text-gray-600 text-sm">
               We sent a verification link to <strong>{email}</strong>. Click the link to verify and then return here to vote.
             </p>
-            <p className="text-gray-400 text-xs mt-4">
+            <p className="text-gray-500 text-xs mt-4">
               Didn&apos;t receive it? Check your spam folder or{' '}
               <button
                 onClick={() => { setStep('form'); }}
@@ -164,7 +166,7 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
             <p className="text-gray-600 mb-4">{error}</p>
             <button
               onClick={() => setStep('form')}
-              className="bg-navy text-white py-2 px-4 rounded-md hover:bg-navy/80"
+              className="bg-navy text-white py-2.5 px-4 rounded-md hover:bg-navy/80 min-h-[44px]"
             >
               Try Again
             </button>

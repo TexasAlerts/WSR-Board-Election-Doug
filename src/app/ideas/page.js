@@ -354,6 +354,7 @@ export default function IdeasPage() {
                     id="idea-name"
                     type="text"
                     required
+                    aria-required="true"
                     value={submitForm.name}
                     onChange={e => setSubmitForm({ ...submitForm, name: e.target.value })}
                     className="form-input"
@@ -367,6 +368,7 @@ export default function IdeasPage() {
                     id="idea-email"
                     type="email"
                     required
+                    aria-required="true"
                     value={submitForm.email}
                     onChange={e => setSubmitForm({ ...submitForm, email: e.target.value })}
                     className="form-input"
@@ -396,6 +398,7 @@ export default function IdeasPage() {
                     id="idea-title"
                     type="text"
                     required
+                    aria-required="true"
                     minLength={5}
                     value={submitForm.title}
                     onChange={e => setSubmitForm({ ...submitForm, title: e.target.value })}
@@ -411,6 +414,7 @@ export default function IdeasPage() {
                   <textarea
                     id="idea-content"
                     required
+                    aria-required="true"
                     minLength={20}
                     rows={5}
                     value={submitForm.content}

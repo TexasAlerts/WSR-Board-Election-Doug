@@ -69,7 +69,7 @@ export default function PrioritiesPage() {
             </div>
             <h2 className="text-2xl font-bold mb-4 text-navy">Protect</h2>
             <p className="text-gray-600 leading-relaxed">
-              Prosper isn't just another suburb—it's <strong className="text-navy">Friday night football under the lights</strong>, <strong className="text-prosper-red">Small Town Big Heart</strong>, and downtown festivals that bring neighbors together. Growth should <strong className="text-navy">add to that story</strong>, not erase it.
+              Prosper isn't just another suburb—it's <strong className="text-navy">Friday night football under the lights</strong>, <strong className="text-prosper-red">Small Town, Big Heart</strong>, and downtown festivals that bring neighbors together. Growth should <strong className="text-navy">add to that story</strong>, not erase it.
             </p>
             <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
               <Link href="/track-record" className="text-navy font-medium hover:underline">See track record</Link>

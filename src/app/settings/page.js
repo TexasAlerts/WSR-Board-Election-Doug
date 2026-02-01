@@ -291,11 +291,11 @@ export default function SettingsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="settings-firstName" className="form-label">First Name</label>
-                <input id="settings-firstName" type="text" value={profile.firstName} onChange={(e) => setProfile({ ...profile, firstName: e.target.value })} required className="form-input" />
+                <input id="settings-firstName" type="text" value={profile.firstName} onChange={(e) => setProfile({ ...profile, firstName: e.target.value })} required aria-required="true" className="form-input" />
               </div>
               <div>
                 <label htmlFor="settings-lastName" className="form-label">Last Name</label>
-                <input id="settings-lastName" type="text" value={profile.lastName} onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} required className="form-input" />
+                <input id="settings-lastName" type="text" value={profile.lastName} onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} required aria-required="true" className="form-input" />
               </div>
             </div>
 
@@ -303,13 +303,13 @@ export default function SettingsPage() {
               <label htmlFor="settings-address" className="form-label flex items-center gap-2">
                 <MapPin className="w-4 h-4" /> Street Address
               </label>
-              <input id="settings-address" type="text" value={profile.streetAddress} onChange={(e) => setProfile({ ...profile, streetAddress: e.target.value })} required className="form-input" />
+              <input id="settings-address" type="text" value={profile.streetAddress} onChange={(e) => setProfile({ ...profile, streetAddress: e.target.value })} required aria-required="true" className="form-input" />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
               <div className="col-span-1 sm:col-span-3">
                 <label htmlFor="settings-city" className="form-label">City</label>
-                <input id="settings-city" type="text" value={profile.city} onChange={(e) => setProfile({ ...profile, city: e.target.value })} required className="form-input" />
+                <input id="settings-city" type="text" value={profile.city} onChange={(e) => setProfile({ ...profile, city: e.target.value })} required aria-required="true" className="form-input" />
               </div>
               <div className="col-span-1">
                 <label htmlFor="settings-state" className="form-label">State</label>
@@ -486,7 +486,7 @@ export default function SettingsPage() {
                         label={`${type.label} text notifications`}
                       />
                     ) : (
-                      <span className="text-xs text-gray-400" title="Verify your phone to enable text notifications">—</span>
+                      <span className="text-xs text-gray-500" title="Verify your phone to enable text notifications">—</span>
                     )}
                   </div>
                 </div>
