@@ -102,18 +102,7 @@
     }
   }
 
-  /* Staggered animation delays */
-  .animate-delay-100 { animation-delay: 100ms; }
-  .animate-delay-200 { animation-delay: 200ms; }
-  .animate-delay-300 { animation-delay: 300ms; }
-  .animate-delay-400 { animation-delay: 400ms; }
-  .animate-delay-500 { animation-delay: 500ms; }
-  .animate-delay-600 { animation-delay: 600ms; }
 
-  /* Animation initial state */
-  .animate-on-load {
-    opacity: 0;
-  }
 
   /* Gradient text utility */
   .text-gradient-navy {

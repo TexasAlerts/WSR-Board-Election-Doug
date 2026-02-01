@@ -197,7 +197,7 @@ function GetInvolvedContent() {
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 animate-fade-in-down">
             Get Involved
           </h1>
-          <p className="text-xl text-white/90 animate-fade-in animate-delay-200">
+          <p className="text-xl text-white/90 animate-fade-in">
             Join the movement for <strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper
           </p>
         </div>
@@ -306,7 +306,7 @@ function GetInvolvedContent() {
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">{getFormIcon()}</span>
-                    <h2 className="text-xl font-bold text-navy">{getFormTitle()}</h2>
+                    {getFormTitle() && <h2 className="text-xl font-bold text-navy">{getFormTitle()}</h2>}
                   </div>
                   <button
                     type="button"

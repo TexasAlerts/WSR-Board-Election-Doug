@@ -21,7 +21,7 @@ export default function WhyPage() {
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-4 animate-fade-in-down">
             Why I'm Running
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in">
             <strong className="text-navy">Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper
           </p>
         </div>

@@ -223,7 +223,7 @@ export default function PollsPage() {
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 animate-fade-in-down">
             Community Polls
           </h1>
-          <p className="text-xl text-white/90 animate-fade-in animate-delay-200">
+          <p className="text-xl text-white/90 animate-fade-in">
             Share your voice on issues that matter to Prosper
           </p>
         </div>

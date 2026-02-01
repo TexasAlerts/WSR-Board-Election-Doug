@@ -71,7 +71,7 @@ export default function QnAPage() {
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-4 animate-fade-in-down">
             Questions & Answers
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in">
             Have a question about my positions or priorities? Ask here and I'll respond publicly.
           </p>
         </div>

@@ -75,7 +75,7 @@ export default function LoginPage() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy mb-4 animate-fade-in-down">
             Welcome Back
           </h1>
-          <p className="text-lg text-gray-600 animate-fade-in animate-delay-200">
+          <p className="text-lg text-gray-600 animate-fade-in">
             Sign in to your supporter account
           </p>
         </div>

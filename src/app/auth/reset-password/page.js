@@ -187,7 +187,7 @@ function ResetPasswordContent() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy mb-4 animate-fade-in-down">
             Create New Password
           </h1>
-          <p className="text-lg text-gray-600 animate-fade-in animate-delay-200">
+          <p className="text-lg text-gray-600 animate-fade-in">
             Enter your new password below
           </p>
         </div>

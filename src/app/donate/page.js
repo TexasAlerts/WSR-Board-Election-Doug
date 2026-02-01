@@ -50,7 +50,7 @@ export default function DonatePage() {
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 animate-fade-in-down">
             Support the Campaign
           </h1>
-          <p className="text-xl text-white/90 animate-fade-in animate-delay-200">
+          <p className="text-xl text-white/90 animate-fade-in">
             Your contribution helps us reach every voter in Prosper with a message of <strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper.
           </p>
         </div>
