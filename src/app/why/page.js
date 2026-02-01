@@ -22,7 +22,7 @@ export default function WhyPage() {
             Why I'm Running
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
-            <strong>Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper
+            <strong className="text-navy">Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper
           </p>
         </div>
       </section>
@@ -66,7 +66,7 @@ export default function WhyPage() {
       <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <h2 className="section-title text-center mb-4">What I'll Do Differently</h2>
-          <p className="section-subtitle text-center"><strong>Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper</p>
+          <p className="section-subtitle text-center"><strong className="text-navy">Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper</p>
 
           <div className="grid gap-6 md:grid-cols-2 mt-10">
             <div className="card h-full">

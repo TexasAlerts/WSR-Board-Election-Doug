@@ -3,7 +3,6 @@ import { getSupabase } from '../../../lib/supabase';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
-import { sanitizeText } from '../../../lib/sanitize';
 
 export async function GET() {
   const supabase = getSupabase();
@@ -38,9 +37,7 @@ export async function POST(req) {
       const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
-      const { name: rawName, email, question: rawQuestion } = parsed.data;
-      const name = sanitizeText(rawName);
-      const question = sanitizeText(rawQuestion);
+      const { name, email, question } = parsed.data;
       const { error } = await supabase
         .from('questions')
         .insert({ name, email, question, status: 'pending' });
@@ -60,6 +57,6 @@ export async function POST(req) {
       ]);
       return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
-    return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
+    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
   }
 }

@@ -172,7 +172,7 @@ export default function DonatePage() {
                 <span className="text-2xl">🏠</span>
               </div>
               <h3 className="text-xl font-bold text-navy mb-3">Yard Signs</h3>
-              <p className="text-gray-600">Help spread the message across Prosper neighborhoods.</p>
+              <p className="text-gray-600">Help <strong className="text-navy">spread the message</strong> across <strong className="text-prosper-red">Prosper neighborhoods</strong>.</p>
             </div>
 
             <div className="card text-center h-full">
@@ -180,7 +180,7 @@ export default function DonatePage() {
                 <span className="text-2xl">📬</span>
               </div>
               <h3 className="text-xl font-bold text-navy mb-3">Voter Outreach</h3>
-              <p className="text-gray-600">Connect with voters through mailers, door-to-door, and digital campaigns.</p>
+              <p className="text-gray-600">Connect with voters through <strong className="text-navy">mailers, door-to-door, and digital campaigns</strong>.</p>
             </div>
 
             <div className="card text-center h-full">
@@ -188,7 +188,7 @@ export default function DonatePage() {
                 <span className="text-2xl">🤝</span>
               </div>
               <h3 className="text-xl font-bold text-navy mb-3">Community Events</h3>
-              <p className="text-gray-600">Host meet-and-greets and town halls to hear from residents.</p>
+              <p className="text-gray-600">Host <strong className="text-navy">meet-and-greets and town halls</strong> to <strong className="text-prosper-red">hear from residents</strong>.</p>
             </div>
           </div>
         </div>
@@ -201,7 +201,7 @@ export default function DonatePage() {
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-navy mb-2">Spread the Word</h2>
               <p className="text-gray-600">
-                Can't donate right now? Help us reach more Prosper residents by sharing with friends and neighbors!
+                Can't donate right now? Help us <strong className="text-navy">reach more Prosper residents</strong> by sharing with friends and neighbors!
               </p>
             </div>
 

@@ -125,7 +125,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="section-title">My Priorities</h2>
-            <p className="section-subtitle"><strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper</p>
+            <p className="section-subtitle"><strong className="text-navy">Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper</p>
           </div>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -134,7 +134,7 @@ export default function Home() {
                 <Ear className="w-8 h-8 text-navy" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-bold mb-3 text-navy">Listen</h3>
-              <p className="text-gray-600">Good decisions start with hearing from residents—not as an afterthought, but from the beginning. Your voice should shape outcomes before votes are taken.</p>
+              <p className="text-gray-600">Good decisions start with <strong className="text-navy">hearing from residents</strong>—not as an afterthought, but <strong className="text-prosper-red">from the beginning</strong>. Your voice should shape outcomes <strong className="text-navy">before votes are taken</strong>.</p>
               <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
                 <Link href="/qna" className="text-navy font-medium hover:underline">Ask a question</Link>
                 <span className="text-gray-400">·</span>
@@ -149,7 +149,7 @@ export default function Home() {
                 <ClipboardList className="w-8 h-8 text-navy" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-bold mb-3 text-navy">Plan</h3>
-              <p className="text-gray-600">Build it right the first time. Size projects correctly from the start. Think long-term so we're not fixing mistakes or asking for more money later.</p>
+              <p className="text-gray-600"><strong className="text-navy">Build it right the first time.</strong> Size projects correctly <strong className="text-navy">from the start</strong>. <strong className="text-prosper-red">Think long-term</strong> so we're not fixing mistakes or asking for more money later.</p>
               <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
                 <Link href="/polls" className="text-navy font-medium hover:underline">Participate in a poll</Link>
                 <span className="text-gray-400">·</span>
@@ -162,7 +162,7 @@ export default function Home() {
                 <ShieldCheck className="w-8 h-8 text-navy" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-bold mb-3 text-navy">Protect</h3>
-              <p className="text-gray-600">Prosper isn't just another suburb—it's Friday night football under the lights, Small Town, Big Heart, and downtown festivals that bring neighbors together.</p>
+              <p className="text-gray-600">Prosper isn't just another suburb—it's <strong className="text-navy">Friday night football under the lights</strong>, <strong className="text-prosper-red">Small Town, Big Heart</strong>, and downtown festivals that bring neighbors together.</p>
               <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
                 <Link href="/track-record" className="text-navy font-medium hover:underline">See my track record</Link>
                 <span className="text-gray-400">·</span>
