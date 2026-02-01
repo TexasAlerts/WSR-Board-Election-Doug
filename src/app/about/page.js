@@ -22,7 +22,7 @@ export default function AboutPage() {
             Meet Doug Charles
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in animate-delay-200">
-            <strong>Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper
+            <strong className="text-navy">Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper
           </p>
         </div>
       </section>
@@ -34,7 +34,7 @@ export default function AboutPage() {
             <div className="w-full md:w-2/5 flex-shrink-0">
               <div className="relative max-w-[280px] md:max-w-[320px] mx-auto">
                 <Image
-                  src="/headshot.jpg"
+                  src="/headshot.webp"
                   alt="Doug Charles"
                   width={320}
                   height={400}
@@ -71,7 +71,7 @@ export default function AboutPage() {
                 <div className="w-4 h-4 bg-gradient-to-br from-prosper-red to-red-dark rounded-full mt-1 flex-shrink-0 shadow-sm"></div>
                 <div>
                   <h3 className="text-xl font-bold text-navy mb-2">20-Year Prosper Resident</h3>
-                  <p className="text-gray-600">Deep roots in this community. I've watched Prosper grow from a small town to a thriving suburb, and I understand what we need to preserve.</p>
+                  <p className="text-gray-600"><strong className="text-navy">Deep roots</strong> in this community. I've watched Prosper grow from a <strong className="text-navy">small town to a thriving suburb</strong>, and I understand <strong className="text-prosper-red">what we need to preserve</strong>.</p>
                 </div>
               </div>
             </div>
@@ -81,7 +81,7 @@ export default function AboutPage() {
                 <div className="w-4 h-4 bg-gradient-to-br from-prosper-red to-red-dark rounded-full mt-1 flex-shrink-0 shadow-sm"></div>
                 <div>
                   <h3 className="text-xl font-bold text-navy mb-2">Planning & Zoning Commissioner</h3>
-                  <p className="text-gray-600">2021-2023 · Reviewed hundreds of development applications. I know how land use decisions impact neighborhoods.</p>
+                  <p className="text-gray-600">2021-2023 · Reviewed <strong className="text-navy">hundreds of development applications</strong>. I know how land use decisions <strong className="text-prosper-red">impact neighborhoods</strong>.</p>
                 </div>
               </div>
             </div>
@@ -101,7 +101,7 @@ export default function AboutPage() {
                 <div className="w-4 h-4 bg-gradient-to-br from-prosper-red to-red-dark rounded-full mt-1 flex-shrink-0 shadow-sm"></div>
                 <div>
                   <h3 className="text-xl font-bold text-navy mb-2">Elected Windsong Ranch Board Member</h3>
-                  <p className="text-gray-600">Oct 2025 · Elected to the board of one of Prosper&apos;s largest communities. I understand the issues residents face every day.</p>
+                  <p className="text-gray-600">Oct 2025 · Elected to the board of <strong className="text-navy">one of Prosper&apos;s largest communities</strong>. I understand the <strong className="text-prosper-red">issues residents face every day</strong>.</p>
                 </div>
               </div>
             </div>
@@ -111,7 +111,7 @@ export default function AboutPage() {
                 <div className="w-4 h-4 bg-gradient-to-br from-prosper-red to-red-dark rounded-full mt-1 flex-shrink-0 shadow-sm"></div>
                 <div>
                   <h3 className="text-xl font-bold text-navy mb-2">PISD Annexation Lead Petitioner</h3>
-                  <p className="text-gray-600">Organized 585 residents, retained legal counsel, and led the effort to annex Windsong Ranch into Prosper ISD—bringing <strong className="text-navy">$6.5M</strong> in annual tax revenue.</p>
+                  <p className="text-gray-600">Organized <strong className="text-navy">585 residents</strong>, retained legal counsel, and led the effort to annex Windsong Ranch into Prosper ISD—bringing <strong className="text-navy">$6.5M</strong> in annual tax revenue.</p>
                 </div>
               </div>
             </div>
@@ -126,7 +126,7 @@ export default function AboutPage() {
           <h2 className="section-title text-center mb-8">Professional Background</h2>
           <div className="card">
             <p className="text-lg text-gray-700 leading-relaxed mb-4">
-              In my professional career, I'm a Senior Vice President focused on business innovation and transformation. I lead teams that solve complex problems, manage budgets, and deliver results.
+              In my professional career, I'm a <strong className="text-navy">Senior Vice President</strong> focused on business innovation and transformation. I lead teams that solve complex problems, manage budgets, and <strong className="text-navy">deliver results</strong>.
             </p>
             <p className="text-lg text-gray-700 leading-relaxed">
               I bring that same <strong className="text-navy">common sense</strong> approach to local government—for <strong className="text-prosper-red">ALL</strong> of Prosper: understand the problem, gather input, develop solutions, and execute. No grandstanding, no games—just get it done, and done right.

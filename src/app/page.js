@@ -53,7 +53,7 @@ export default function Home() {
           <div className="space-y-6">
 
             {/* Tagline with gradient accent lines */}
-            <div className="flex items-center justify-center gap-4 py-6 animate-fade-in animate-on-load animate-delay-400">
+            <div className="flex items-center justify-center gap-4 py-6 animate-fade-in animate-on-load animate-delay-100">
               <span className="h-0.5 w-12 md:w-20 bg-gradient-to-r from-transparent to-navy/50"></span>
               <p className="text-xl sm:text-2xl md:text-3xl font-bold tracking-wide">
                 <span className="text-navy">Listen.</span>{' '}
@@ -63,13 +63,13 @@ export default function Home() {
               <span className="h-0.5 w-12 md:w-20 bg-gradient-to-l from-transparent to-prosper-red/50"></span>
             </div>
 
-            <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto animate-fade-in animate-on-load animate-delay-500">
+            <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto animate-fade-in animate-on-load animate-delay-200">
               A <strong className="text-navy">Common Sense</strong> leader for <strong className="text-prosper-red">ALL</strong> of Prosper—committed to thoughtful growth, fiscal responsibility,
               and preserving what makes our community special.
             </p>
 
             {/* Enhanced CTAs */}
-            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-8 animate-fade-in-up animate-on-load animate-delay-600 px-4 sm:px-0">
+            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-8 animate-fade-in-up animate-on-load animate-delay-300 px-4 sm:px-0">
               <Link href="/get-involved" className="btn-primary text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto text-center">
                 Get Involved
               </Link>
@@ -89,7 +89,7 @@ export default function Home() {
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">20</div>
                 <div className="stat-label">Years in Prosper</div>
-                <div className="text-xs text-gray-500 mt-1 leading-snug">Steady resident & <strong className="text-navy">voter advocate</strong> since 2019</div>
+                <div className="text-xs text-gray-500 mt-1 leading-snug">20-year resident · <strong className="text-navy">Active advocate</strong> since 2019</div>
               </div>
             </div>
             <div className="h-full">
@@ -125,7 +125,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="section-title">My Priorities</h2>
-            <p className="section-subtitle"><strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper</p>
+            <p className="section-subtitle"><strong className="text-navy">Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper</p>
           </div>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -134,12 +134,12 @@ export default function Home() {
                 <Ear className="w-8 h-8 text-navy" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-bold mb-3 text-navy">Listen</h3>
-              <p className="text-gray-600">Good decisions start with hearing from residents—not as an afterthought, but from the beginning. Your voice should shape outcomes before votes are taken.</p>
+              <p className="text-gray-600">Good decisions start with <strong className="text-navy">hearing from residents</strong>—not as an afterthought, but <strong className="text-prosper-red">from the beginning</strong>. Your voice should shape outcomes <strong className="text-navy">before votes are taken</strong>.</p>
               <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
                 <Link href="/qna" className="text-navy font-medium hover:underline">Ask a question</Link>
-                <span className="text-gray-400">·</span>
+                <span className="text-gray-500" aria-hidden="true">·</span>
                 <Link href="/get-involved#meeting" className="text-navy font-medium hover:underline">Request a meeting</Link>
-                <span className="text-gray-400">·</span>
+                <span className="text-gray-500" aria-hidden="true">·</span>
                 <Link href="/qna" className="text-navy font-medium hover:underline">Submit an idea</Link>
               </div>
             </div>
@@ -149,10 +149,10 @@ export default function Home() {
                 <ClipboardList className="w-8 h-8 text-navy" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-bold mb-3 text-navy">Plan</h3>
-              <p className="text-gray-600">Build it right the first time. Size projects correctly from the start. Think long-term so we're not fixing mistakes or asking for more money later.</p>
+              <p className="text-gray-600"><strong className="text-navy">Build it right the first time.</strong> Size projects correctly <strong className="text-navy">from the start</strong>. <strong className="text-prosper-red">Think long-term</strong> so we're not fixing mistakes or asking for more money later.</p>
               <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
                 <Link href="/polls" className="text-navy font-medium hover:underline">Participate in a poll</Link>
-                <span className="text-gray-400">·</span>
+                <span className="text-gray-500" aria-hidden="true">·</span>
                 <Link href="/priorities" className="text-navy font-medium hover:underline">See my priorities</Link>
               </div>
             </div>
@@ -162,10 +162,10 @@ export default function Home() {
                 <ShieldCheck className="w-8 h-8 text-navy" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-bold mb-3 text-navy">Protect</h3>
-              <p className="text-gray-600">Prosper isn't just another suburb—it's Friday night football under the lights, Small Town, Big Heart, and downtown festivals that bring neighbors together.</p>
+              <p className="text-gray-600">Prosper isn't just another suburb—it's <strong className="text-navy">Friday night football under the lights</strong>, <strong className="text-prosper-red">Small Town, Big Heart</strong>, and downtown festivals that bring neighbors together.</p>
               <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
                 <Link href="/track-record" className="text-navy font-medium hover:underline">See my track record</Link>
-                <span className="text-gray-400">·</span>
+                <span className="text-gray-500" aria-hidden="true">·</span>
                 <Link href="/qna" className="text-navy font-medium hover:underline">Submit an idea</Link>
               </div>
             </div>
@@ -187,7 +187,7 @@ export default function Home() {
               <div className="relative">
                 <div className="absolute -inset-4 bg-gradient-to-br from-navy/10 to-prosper-red/10 rounded-2xl blur-xl"></div>
                 <Image
-                  src="/headshot.jpg"
+                  src="/headshot.webp"
                   alt="Doug Charles"
                   width={400}
                   height={500}

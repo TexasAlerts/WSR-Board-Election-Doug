@@ -82,7 +82,7 @@ export default function RootLayout({ children }) {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
         {/* Preload hero image to improve LCP */}
-        <link rel="preload" href="/campaign-logo.webp" as="image" type="image/webp" />
+        <link rel="preload" href="/campaign-logo.webp" as="image" type="image/webp" imageSizes="(max-width: 640px) 320px, (max-width: 768px) 520px, (max-width: 1024px) 680px, 800px" />
       </head>
       <body>
         <AuthProvider>
@@ -140,7 +140,7 @@ export default function RootLayout({ children }) {
                   },
                   "email": "doug@dougcharles.com",
                   "url": "https://www.dougcharles.com",
-                  "image": "https://www.dougcharles.com/headshot.jpg"
+                  "image": "https://www.dougcharles.com/headshot.webp"
                 },
                 {
                   "@type": "Event",
