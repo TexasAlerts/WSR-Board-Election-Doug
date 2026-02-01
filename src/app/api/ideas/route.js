@@ -27,7 +27,7 @@ export async function GET(request) {
   const { data, error } = await query;
 
   if (error) {
-    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 
   // Get user's votes if authenticated
@@ -120,7 +120,7 @@ export async function POST(request) {
         userEmail: email,
         request,
       });
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     // Log idea creation
@@ -145,11 +145,11 @@ export async function POST(request) {
         email,
         'Thanks for your idea',
         `Hi ${name},\n\nThank you for sharing your idea: "${title}"\n\nWe'll review it and get back to you soon.\n\n--\nDoug Charles`
-      ).catch(err => console.error('User email failed:', err)),
+      ).catch(() => {}),
       sendNotificationEmail(
         'New idea submitted',
         `Name: ${name}\nEmail: ${email}\nCategory: ${category}\nTitle: ${title}\nContent: ${content}`
-      ).catch(err => console.error('Admin email failed:', err)),
+      ).catch(() => {}),
     ]);
 
     return NextResponse.json({ ok: true }, { status: 201 });

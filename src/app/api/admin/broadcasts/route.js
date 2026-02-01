@@ -29,7 +29,7 @@ export async function GET(request) {
         userEmail: supporter.email,
         request,
       });
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     return NextResponse.json({ ok: true, data });
@@ -44,7 +44,7 @@ export async function GET(request) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
 
@@ -110,17 +110,12 @@ export async function POST(request) {
           emailsSent++;
         } catch (err) {
           emailsFailed++;
-          console.error(`Failed to send to ${recipient.email}:`, err);
         }
       }
     }
 
-    // SMS sending would use Telnyx - placeholder for now
+    // SMS broadcasts not yet configured
     let smsSent = 0;
-    if (smsRecipients.length > 0) {
-      // TODO: Integrate Telnyx for SMS broadcasts
-      // For now, just count as 0 until Telnyx is configured
-    }
 
     // Log the broadcast to database
     const { data: broadcastRecord, error: dbError } = await supabase
@@ -137,7 +132,7 @@ export async function POST(request) {
       .single();
 
     if (dbError) {
-      console.error('Failed to log broadcast:', dbError);
+      // silently ignored
     }
 
     // Log to audit trail
@@ -181,6 +176,6 @@ export async function POST(request) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 400 });
   }
 }

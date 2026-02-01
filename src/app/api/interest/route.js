@@ -53,7 +53,7 @@ export async function POST(req) {
           userEmail: email,
           request: req,
         });
-        return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+        return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
       }
 
       // Log interest submission
@@ -70,11 +70,11 @@ export async function POST(req) {
           email,
           'Thanks for getting involved',
           `Hi ${name},\n\nThanks for your interest in ${type}.\n${message ? `Message: ${message}\n\n` : ''}We will be in touch and you can check back for updates.\n\n--\nDoug Charles`
-        ).catch((err) => console.error('User email failed', err)),
+        ).catch(() => {}),
         sendNotificationEmail(
           'New interest submission',
           `Type: ${type}\nName: ${name}\nEmail: ${email}\nPhone: ${phone || ''}\nMessage: ${message || ''}`
-        ).catch((err) => console.error('Admin email failed', err))
+        ).catch(() => {})
       ]);
       return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {

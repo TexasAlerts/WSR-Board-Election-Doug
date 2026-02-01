@@ -52,7 +52,7 @@ export async function GET(request) {
         userEmail: supporter.email,
         request,
       });
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     // Get poll and idea titles for context
@@ -100,7 +100,7 @@ export async function GET(request) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
 
@@ -157,7 +157,7 @@ export async function PUT(request) {
         userEmail: supporter.email,
         request,
       });
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     // Log the moderation action
@@ -197,12 +197,12 @@ export async function PUT(request) {
         oldComment.email, oldComment.name,
         oldComment.content.substring(0, 200),
         contextTitle || 'a discussion', contextUrl
-      ).catch(err => console.error('Approval email failed:', err));
+      ).catch(() => {});
 
       // Notify other participants
       const fullComment = { ...oldComment, id, display_name: oldComment.name };
       notifyParticipantsOfNewComment(fullComment)
-        .catch(err => console.error('Participant notification failed:', err));
+        .catch(() => {});
 
       // If it's a reply, notify parent author
       const { data: commentWithParent } = await supabase
@@ -212,11 +212,11 @@ export async function PUT(request) {
         .single();
       if (commentWithParent?.parent_id) {
         notifyParentCommentAuthor({ ...fullComment, parent_id: commentWithParent.parent_id })
-          .catch(err => console.error('Reply notification failed:', err));
+          .catch(() => {});
       }
     } else if (status === 'rejected' && oldComment) {
       sendCommentRejectedEmail(oldComment.email, oldComment.name, rejection_reason || '')
-        .catch(err => console.error('Rejection email failed:', err));
+        .catch(() => {});
     }
 
     return NextResponse.json({ ok: true });
@@ -231,6 +231,6 @@ export async function PUT(request) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 400 });
   }
 }

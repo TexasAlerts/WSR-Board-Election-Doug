@@ -45,7 +45,6 @@ export async function POST(request) {
       .eq('id', supporter.id);
 
     if (updateError) {
-      console.error('Update phone verification error:', updateError);
       return NextResponse.json({ ok: false, error: 'Failed to verify phone' }, { status: 500 });
     }
 
@@ -59,7 +58,6 @@ export async function POST(request) {
 
     return NextResponse.json({ ok: true, message: 'Phone verified successfully!' });
   } catch (err) {
-    console.error('Verify phone update error:', err);
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,
       errorMessage: err.message,

@@ -220,7 +220,7 @@ export async function validateSMSCode(supporterId, code) {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('sms_verifications')
-    .select('*')
+    .select('id, supporter_id, code, attempts, expires_at, verified_at')
     .eq('supporter_id', supporterId)
     .eq('code', code)
     .is('verified_at', null)
@@ -339,7 +339,7 @@ export async function getVerifiedVoter() {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('verified_voters')
-    .select('*')
+    .select('id, first_name, last_name, address, verified_at')
     .eq('id', voterId)
     .not('verified_at', 'is', null)
     .single();

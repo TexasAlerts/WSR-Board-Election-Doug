@@ -53,7 +53,7 @@ export async function GET(request) {
   const { data: comments, error } = await query;
 
   if (error) {
-    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 
   // Get user's votes on these comments
@@ -179,7 +179,6 @@ export async function POST(request) {
       .single();
 
     if (error) {
-      console.error('Comment insert error:', error);
       await logError({
         errorType: ErrorTypes.DATABASE_ERROR,
         errorMessage: error.message,
@@ -213,7 +212,7 @@ export async function POST(request) {
     sendNotificationEmail(
       `New ${parent_id ? 'reply' : 'comment'} pending approval`,
       `From: ${supporter.first_name} ${supporter.last_name} (${supporter.email})\nOn: ${targetType}\nContent: ${content.trim()}`
-    ).catch(err => console.error('Admin email failed:', err));
+    ).catch(() => {});
 
     return NextResponse.json({
       ok: true,
@@ -221,7 +220,6 @@ export async function POST(request) {
       data: comment,
     }, { status: 201 });
   } catch (err) {
-    console.error('Comment error:', err);
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,
       errorMessage: err.message,

@@ -56,7 +56,6 @@ export async function POST(request) {
 
     return NextResponse.json({ ok: true, message: 'Verification email sent.' });
   } catch (err) {
-    console.error('Resend verification error:', err);
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

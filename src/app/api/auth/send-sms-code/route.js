@@ -63,7 +63,6 @@ export async function POST(request) {
     const smsResult = await sendVerificationSMS(supporter.phone, code);
 
     if (!smsResult.success) {
-      console.error('SMS send error:', smsResult.error);
       return NextResponse.json(
         { ok: false, error: 'Failed to send verification code. Please try again.' },
         { status: 500 }
@@ -75,7 +74,6 @@ export async function POST(request) {
       message: 'Verification code sent to your phone.',
     });
   } catch (err) {
-    console.error('Send SMS code error:', err);
     return NextResponse.json(
       { ok: false, error: 'An unexpected error occurred' },
       { status: 500 }

@@ -52,8 +52,8 @@ export async function GET(request, { params }) {
     .eq('poll_id', id);
 
   if (votesError) {
-    console.error('Error fetching votes:', votesError);
-  }
+      // silently ignored
+    }
 
   // Calculate vote counts per choice
   const choiceVotes = {};
@@ -93,8 +93,8 @@ export async function GET(request, { params }) {
     .order('created_at', { ascending: false });
 
   if (commentsError) {
-    console.error('Error fetching comments:', commentsError);
-  }
+      // silently ignored
+    }
 
   // Build response
   const choices = poll.poll_choices

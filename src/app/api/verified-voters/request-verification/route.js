@@ -92,7 +92,6 @@ export async function POST(request) {
     // Send verification email
     const emailResult = await sendVoterVerificationEmail(normalizedEmail, name, token);
     if (!emailResult.success) {
-      console.error('Failed to send voter verification email:', emailResult.error);
       return NextResponse.json({ ok: false, error: 'Failed to send verification email' }, { status: 500 });
     }
 
@@ -101,7 +100,6 @@ export async function POST(request) {
       message: 'Verification email sent. Please check your inbox.',
     });
   } catch (err) {
-    console.error('Request verification error:', err);
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

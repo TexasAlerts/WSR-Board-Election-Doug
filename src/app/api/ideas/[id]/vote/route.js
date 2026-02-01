@@ -99,7 +99,6 @@ export async function POST(request, { params }) {
         if (voteError.code === '23505') {
           return NextResponse.json({ ok: false, error: 'Already voted' }, { status: 400 });
         }
-        console.error('Vote insert error:', voteError);
         return NextResponse.json({ ok: false, error: 'Failed to record vote' }, { status: 500 });
       }
 
@@ -117,7 +116,7 @@ export async function POST(request, { params }) {
       .eq('id', ideaId);
 
     if (updateError) {
-      console.error('Vote count update error:', updateError);
+      // silently ignored
     }
 
     // Get new user vote status
@@ -154,7 +153,6 @@ export async function POST(request, { params }) {
       user_vote: newVote?.vote_type || null,
     });
   } catch (err) {
-    console.error('Vote error:', err);
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,
       errorMessage: err.message,

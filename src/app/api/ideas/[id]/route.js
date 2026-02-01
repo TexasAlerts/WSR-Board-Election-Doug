@@ -44,8 +44,8 @@ export async function GET(request, { params }) {
     .order('created_at', { ascending: false });
 
   if (commentsError) {
-    console.error('Error fetching comments:', commentsError);
-  }
+      // silently ignored
+    }
 
   // Get user's comment votes and reply counts if authenticated
   let userCommentVotes = {};

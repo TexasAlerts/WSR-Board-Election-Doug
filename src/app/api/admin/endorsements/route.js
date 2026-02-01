@@ -36,7 +36,7 @@ export async function GET(request) {
         userEmail: supporter.email,
         request,
       });
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     return NextResponse.json({ ok: true, data });
@@ -51,7 +51,7 @@ export async function GET(request) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
 
@@ -97,7 +97,7 @@ export async function POST(request) {
           userEmail: supporter.email,
           request,
         });
-        return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+        return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
       }
 
       // Log approval
@@ -124,7 +124,7 @@ export async function POST(request) {
           data.email,
           'Your endorsement has been published',
           `Hi ${data.name || ''},\n\nYour endorsement is now live: ${site}/endorsements\n\nThank you for your support!\n\n--\nDoug Charles`
-        ).catch((err) => console.error('User email failed', err));
+        ).catch(() => {});
       }
     } else if (action === 'reject') {
       const { data, error } = await supabase
@@ -145,7 +145,7 @@ export async function POST(request) {
           userEmail: supporter.email,
           request,
         });
-        return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+        return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
       }
 
       // Log rejection
@@ -176,7 +176,7 @@ export async function POST(request) {
           data.email,
           'Update on your endorsement submission',
           `Hi ${data.name || ''},\n\nThank you for submitting an endorsement. Unfortunately, we are unable to publish it at this time.${reasonText}\n\nIf you have questions, please feel free to reach out.\n\n--\nDoug Charles`
-        ).catch((err) => console.error('User email failed', err));
+        ).catch(() => {});
       }
     } else {
       return NextResponse.json({ ok: false, error: 'Invalid action' }, { status: 400 });
@@ -194,6 +194,6 @@ export async function POST(request) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 400 });
   }
 }

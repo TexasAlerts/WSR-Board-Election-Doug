@@ -43,7 +43,7 @@ export async function GET(request) {
   const { data: polls, error } = await query;
 
   if (error) {
-    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 
   // Get vote counts for each poll
@@ -59,8 +59,8 @@ export async function GET(request) {
     .in('poll_id', pollIds);
 
   if (voteError) {
-    console.error('Error fetching vote counts:', voteError);
-  }
+      // silently ignored
+    }
 
   // Count votes per poll
   const voteCountMap = {};

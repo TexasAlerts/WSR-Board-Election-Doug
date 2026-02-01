@@ -26,7 +26,7 @@ export async function POST(request) {
     // Get supporter
     const { data: supporter, error: fetchError } = await supabase
       .from('supporters')
-      .select('*')
+      .select('id, email, first_name, last_name, phone, status, phone_verified')
       .eq('id', supporterId)
       .single();
 
@@ -62,7 +62,6 @@ export async function POST(request) {
       .eq('id', supporterId);
 
     if (updateError) {
-      console.error('Update supporter error:', updateError);
       return NextResponse.json({ ok: false, error: 'Failed to update account' }, { status: 500 });
     }
 
@@ -121,7 +120,6 @@ export async function POST(request) {
 
     return response;
   } catch (err) {
-    console.error('SMS verify error:', err);
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,
       errorMessage: err.message,

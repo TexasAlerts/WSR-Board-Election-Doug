@@ -96,7 +96,6 @@ export async function POST(request) {
       .eq('id', supporter.id);
 
     if (updateError) {
-      console.error('Update supporter error:', updateError);
       return NextResponse.json(
         { ok: false, error: 'Failed to update account' },
         { status: 500 }
@@ -111,8 +110,8 @@ export async function POST(request) {
     if (smsCode) {
       const smsResult = await sendVerificationSMS(supporter.phone, smsCode);
       if (!smsResult.success) {
-        console.error('Failed to send SMS:', smsResult.error);
-      }
+      // silently ignored
+    }
     }
 
     // Log event
@@ -139,7 +138,6 @@ export async function POST(request) {
       requiresPhoneVerification: true,
     });
   } catch (err) {
-    console.error('Verify error:', err);
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,
       errorMessage: err.message,
