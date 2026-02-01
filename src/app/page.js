@@ -53,7 +53,7 @@ export default function Home() {
           <div className="space-y-6">
 
             {/* Tagline with gradient accent lines */}
-            <div className="flex items-center justify-center gap-4 py-6 animate-fade-in animate-on-load animate-delay-400">
+            <div className="flex items-center justify-center gap-4 py-6 animate-fade-in animate-on-load animate-delay-100">
               <span className="h-0.5 w-12 md:w-20 bg-gradient-to-r from-transparent to-navy/50"></span>
               <p className="text-xl sm:text-2xl md:text-3xl font-bold tracking-wide">
                 <span className="text-navy">Listen.</span>{' '}
@@ -63,13 +63,13 @@ export default function Home() {
               <span className="h-0.5 w-12 md:w-20 bg-gradient-to-l from-transparent to-prosper-red/50"></span>
             </div>
 
-            <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto animate-fade-in animate-on-load animate-delay-500">
+            <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto animate-fade-in animate-on-load animate-delay-200">
               A <strong className="text-navy">Common Sense</strong> leader for <strong className="text-prosper-red">ALL</strong> of Prosper—committed to thoughtful growth, fiscal responsibility,
               and preserving what makes our community special.
             </p>
 
             {/* Enhanced CTAs */}
-            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-8 animate-fade-in-up animate-on-load animate-delay-600 px-4 sm:px-0">
+            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-8 animate-fade-in-up animate-on-load animate-delay-300 px-4 sm:px-0">
               <Link href="/get-involved" className="btn-primary text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto text-center">
                 Get Involved
               </Link>
@@ -187,7 +187,7 @@ export default function Home() {
               <div className="relative">
                 <div className="absolute -inset-4 bg-gradient-to-br from-navy/10 to-prosper-red/10 rounded-2xl blur-xl"></div>
                 <Image
-                  src="/headshot.jpg"
+                  src="/headshot.webp"
                   alt="Doug Charles"
                   width={400}
                   height={500}

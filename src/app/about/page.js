@@ -34,7 +34,7 @@ export default function AboutPage() {
             <div className="w-full md:w-2/5 flex-shrink-0">
               <div className="relative max-w-[280px] md:max-w-[320px] mx-auto">
                 <Image
-                  src="/headshot.jpg"
+                  src="/headshot.webp"
                   alt="Doug Charles"
                   width={320}
                   height={400}
