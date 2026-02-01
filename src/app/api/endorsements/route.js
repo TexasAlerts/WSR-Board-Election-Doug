@@ -104,6 +104,6 @@ export async function POST(req) {
       method: 'POST',
       request: req,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'Something went wrong. Please try again.' }, { status: 400 });
   }
 }
