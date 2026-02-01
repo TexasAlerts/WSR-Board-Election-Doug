@@ -89,7 +89,7 @@ export default function Home() {
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">20</div>
                 <div className="stat-label">Years in Prosper</div>
-                <div className="text-xs text-gray-500 mt-1 leading-snug">Steady resident & <strong className="text-navy">voter advocate</strong> since 2019</div>
+                <div className="text-xs text-gray-500 mt-1 leading-snug">20-year resident · <strong className="text-navy">Active advocate</strong> since 2019</div>
               </div>
             </div>
             <div className="h-full">
