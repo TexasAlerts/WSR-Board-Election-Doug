@@ -315,6 +315,7 @@ function GetInvolvedDynamicContent() {
                         id="name"
                         type="text"
                         required
+                        aria-required="true"
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
                         className="form-input"
@@ -328,6 +329,7 @@ function GetInvolvedDynamicContent() {
                         id="email"
                         type="email"
                         required
+                        aria-required="true"
                         value={form.email}
                         onChange={(e) => setForm({ ...form, email: e.target.value })}
                         className="form-input"
@@ -360,6 +362,7 @@ function GetInvolvedDynamicContent() {
                           id="address"
                           type="text"
                           required
+                          aria-required="true"
                           value={form.message}
                           onChange={(e) => setForm({ ...form, message: e.target.value })}
                           className="form-input"

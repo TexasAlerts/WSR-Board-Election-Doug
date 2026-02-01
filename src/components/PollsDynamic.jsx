@@ -309,6 +309,7 @@ export default function PollsDynamic() {
                         id="poll-vote-name"
                         type="text"
                         required
+                        aria-required="true"
                         value={voteForm.name}
                         onChange={e => setVoteForm({ ...voteForm, name: e.target.value })}
                         className="form-input"
@@ -321,6 +322,7 @@ export default function PollsDynamic() {
                         id="poll-vote-email"
                         type="email"
                         required
+                        aria-required="true"
                         value={voteForm.email}
                         onChange={e => setVoteForm({ ...voteForm, email: e.target.value })}
                         className="form-input"

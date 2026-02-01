@@ -72,6 +72,7 @@ export default function QnaDynamic() {
                     id="name"
                     type="text"
                     required
+                    aria-required="true"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     className="form-input"
@@ -85,6 +86,7 @@ export default function QnaDynamic() {
                     id="email"
                     type="email"
                     required
+                    aria-required="true"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     className="form-input"
@@ -99,6 +101,7 @@ export default function QnaDynamic() {
                   <textarea
                     id="question"
                     required
+                    aria-required="true"
                     rows={4}
                     value={form.question}
                     onChange={(e) => setForm({ ...form, question: e.target.value })}
