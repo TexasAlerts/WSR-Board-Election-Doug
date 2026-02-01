@@ -92,7 +92,7 @@ export default function RootLayout({ children }) {
           Skip to main content
         </a>
         {/* Key dates banner */}
-        <header className="bg-navy text-white text-sm py-2 px-3 sm:px-4 sticky top-0 z-50 shadow-md">
+        <header aria-label="Election dates" className="bg-navy text-white text-sm py-2 px-3 sm:px-4 sticky top-0 z-50 shadow-md">
           <div className="flex items-center justify-between gap-2 max-w-6xl mx-auto">
             {/* Mobile: Compact single line | Desktop: Full dates */}
             <div className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm min-w-0">
@@ -112,7 +112,7 @@ export default function RootLayout({ children }) {
         {/* Navigation */}
         <StickyNav />
         {/* SEO: JSON-LD structured data */}
-        <Script id="structured-data" type="application/ld+json" strategy="afterInteractive">
+        <Script id="structured-data" type="application/ld+json" strategy="beforeInteractive">
           {`
             {
               "@context": "https://schema.org",
@@ -174,7 +174,7 @@ export default function RootLayout({ children }) {
             {children}
           </ErrorBoundary>
         </main>
-        <footer className="bg-navy text-white py-6 mt-16 pb-24 sm:pb-6">
+        <footer aria-label="Site footer" className="bg-navy text-white py-6 mt-16 pb-24 sm:pb-6">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-center space-y-2">
             <p>Political advertising paid for by Doug Charles for Prosper Town Council Place 5.</p>
             <p>Questions? Email <a href="mailto:doug@dougcharles.com" className="text-white underline hover:text-gray-300">doug@dougcharles.com</a></p>

@@ -43,7 +43,7 @@ export async function POST(request) {
     let userEmail = null;
     try {
       const cookieStore = await cookies();
-      const sessionCookie = cookieStore.get('campaign_session');
+      const sessionCookie = cookieStore.get('session_token');
       if (sessionCookie?.value) {
         const sessionData = JSON.parse(atob(sessionCookie.value));
         userEmail = sessionData?.email || null;

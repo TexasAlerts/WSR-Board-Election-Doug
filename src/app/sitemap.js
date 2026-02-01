@@ -19,7 +19,7 @@ export default function sitemap() {
 
   return routes.map(({ path, priority, changeFrequency }) => ({
     url: `${baseUrl}${path}`,
-    lastModified: new Date(),
+    lastModified: new Date('2026-02-01'),
     changeFrequency,
     priority,
   }));

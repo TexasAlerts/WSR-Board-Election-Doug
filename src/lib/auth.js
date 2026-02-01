@@ -73,7 +73,7 @@ export async function validateSession(token) {
     .from('sessions')
     .select(`
       *,
-      supporter:supporters(*)
+      supporter:supporters(id, first_name, last_name, email, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at)
     `)
     .eq('token', token)
     .gt('expires_at', new Date().toISOString())
@@ -159,7 +159,7 @@ export async function validateEmailVerification(token, purpose = 'verify') {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('email_verifications')
-    .select('*, supporter:supporters(*)')
+    .select('*, supporter:supporters(id, first_name, last_name, email, status, role)')
     .eq('token', token)
     .eq('purpose', purpose)
     .is('used_at', null)
@@ -282,7 +282,7 @@ export async function getSupporterByEmail(email) {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('supporters')
-    .select('*')
+    .select('id, first_name, last_name, email, password_hash, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at')
     .eq('email', email.toLowerCase())
     .single();
 
@@ -295,7 +295,7 @@ export async function getSupporterById(id) {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('supporters')
-    .select('*')
+    .select('id, first_name, last_name, email, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at')
     .eq('id', id)
     .single();
 

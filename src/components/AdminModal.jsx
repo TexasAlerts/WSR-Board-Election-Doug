@@ -34,13 +34,13 @@ export function ConfirmModal({ open, title, message, onConfirm, onCancel }) {
           <button
             ref={cancelRef}
             onClick={onCancel}
-            className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium"
+            className="px-4 py-2.5 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium min-h-[44px]"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 text-white bg-prosper-red rounded-lg hover:bg-red-700 font-medium"
+            className="px-4 py-2.5 text-white bg-prosper-red rounded-lg hover:bg-red-700 font-medium min-h-[44px]"
           >
             Confirm
           </button>
@@ -80,7 +80,7 @@ export function PromptModal({ open, title, label, defaultValue, onSubmit, onCanc
       <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 id="prompt-title" className="text-lg font-bold text-navy">{title}</h2>
-          <button type="button" onClick={onCancel} className="p-1 hover:bg-gray-100 rounded" aria-label="Close">
+          <button type="button" onClick={onCancel} className="p-2 hover:bg-gray-100 rounded min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Close">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -106,13 +106,13 @@ export function PromptModal({ open, title, label, defaultValue, onSubmit, onCanc
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium"
+            className="px-4 py-2.5 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium min-h-[44px]"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 text-white bg-navy rounded-lg hover:bg-navy-dark font-medium"
+            className="px-4 py-2.5 text-white bg-navy rounded-lg hover:bg-navy-dark font-medium min-h-[44px]"
           >
             Submit
           </button>

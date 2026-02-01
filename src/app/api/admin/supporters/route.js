@@ -70,6 +70,15 @@ export async function PUT(request) {
       return NextResponse.json({ ok: false, error: 'Supporter ID required' }, { status: 400 });
     }
 
+    const VALID_STATUSES = ['pending', 'approved', 'suspended'];
+    const VALID_ROLES = ['supporter', 'admin', 'super_admin'];
+    if (status && !VALID_STATUSES.includes(status)) {
+      return NextResponse.json({ ok: false, error: 'Invalid status value' }, { status: 400 });
+    }
+    if (role && !VALID_ROLES.includes(role)) {
+      return NextResponse.json({ ok: false, error: 'Invalid role value' }, { status: 400 });
+    }
+
     // Get old values for audit
     const { data: oldSupporter } = await supabase
       .from('supporters')

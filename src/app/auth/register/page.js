@@ -114,7 +114,8 @@ export default function RegisterPage() {
                 value={formData.firstName}
                 onChange={handleChange}
                 required
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
+                aria-required="true"
+                className="w-full pl-10 pr-4 py-2.5 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                 placeholder="John"
                 autoComplete="given-name"
               />
@@ -131,7 +132,8 @@ export default function RegisterPage() {
               value={formData.lastName}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
+              aria-required="true"
+              className="w-full px-4 py-2.5 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
               placeholder="Doe"
               autoComplete="family-name"
             />
@@ -152,7 +154,8 @@ export default function RegisterPage() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
+              aria-required="true"
+              className="w-full pl-10 pr-4 py-2.5 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
               placeholder="john@example.com"
               autoComplete="email"
             />
@@ -172,7 +175,7 @@ export default function RegisterPage() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
+              className="w-full pl-10 pr-4 py-2.5 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
               placeholder="(972) 555-1234"
               autoComplete="tel"
               aria-describedby="phone-verification-hint"
@@ -199,7 +202,8 @@ export default function RegisterPage() {
                 value={formData.streetAddress}
                 onChange={handleChange}
                 required
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
+                aria-required="true"
+                className="w-full pl-10 pr-4 py-2.5 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                 placeholder="123 Main Street"
                 autoComplete="street-address"
               />
@@ -217,7 +221,8 @@ export default function RegisterPage() {
                 value={formData.city}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
+                aria-required="true"
+                className="w-full px-4 py-2.5 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                 autoComplete="address-level2"
               />
             </div>
@@ -232,7 +237,7 @@ export default function RegisterPage() {
                 value={formData.state}
                 onChange={handleChange}
                 maxLength={2}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
+                className="w-full px-4 py-2.5 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                 autoComplete="address-level1"
               />
             </div>
@@ -247,7 +252,8 @@ export default function RegisterPage() {
                 value={formData.zipCode}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
+                aria-required="true"
+                className="w-full px-4 py-2.5 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                 placeholder="75078"
                 autoComplete="postal-code"
               />

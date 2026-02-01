@@ -178,7 +178,7 @@ export default function Home() {
                 I moved to <strong className="text-navy">Prosper</strong> <strong>20 years ago</strong> for the same reasons you probably did—great schools, safe neighborhoods, and room to raise a family. I&apos;ve served on the Planning & Zoning Commission, worked on the 2020 Bond Committee, and led the Windsong Ranch PISD annexation effort.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Prosper has grown from a small town to one of the fastest-growing communities in Texas. Thousands of new families have settled here—but too many decisions are still being made by a small group without meaningful input from the residents they affect. <strong className="text-prosper-red">Whether you&apos;ve been here 20 years or 2, you deserve a voice.</strong> That&apos;s why I&apos;m running.
+                Prosper has grown from a small town to one of the fastest-growing communities in Texas. Thousands of new families have settled here—but too many decisions are still being made by a small group without meaningful input from the residents they affect. <strong className="text-prosper-red">Whether you&apos;ve been here 20 years or 2 months, you deserve a voice.</strong> That&apos;s why I&apos;m running.
               </p>
               <div className="pt-2">
                 <Link href="/about" className="btn-outline">

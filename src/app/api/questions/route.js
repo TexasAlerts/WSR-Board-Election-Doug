@@ -8,7 +8,7 @@ export async function GET() {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('questions')
-    .select('*')
+    .select('id, name, question, answer, created_at')
     .eq('status', 'approved')
     .not('answer', 'is', null)
     .neq('answer', '')
