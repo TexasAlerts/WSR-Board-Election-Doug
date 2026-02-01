@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import { AuthProvider } from '../context/AuthContext';
 import { Open_Sans, Oswald } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
 
 const openSans = Open_Sans({
   subsets: ['latin'],
@@ -207,6 +208,7 @@ export default function RootLayout({ children }) {
           </div>
         </div>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
