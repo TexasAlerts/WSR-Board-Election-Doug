@@ -137,9 +137,9 @@ export default function Home() {
               <p className="text-gray-600">Good decisions start with <strong className="text-navy">hearing from residents</strong>—not as an afterthought, but <strong className="text-prosper-red">from the beginning</strong>. Your voice should shape outcomes <strong className="text-navy">before votes are taken</strong>.</p>
               <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
                 <Link href="/qna" className="text-navy font-medium hover:underline">Ask a question</Link>
-                <span className="text-gray-400">·</span>
+                <span className="text-gray-500" aria-hidden="true">·</span>
                 <Link href="/get-involved#meeting" className="text-navy font-medium hover:underline">Request a meeting</Link>
-                <span className="text-gray-400">·</span>
+                <span className="text-gray-500" aria-hidden="true">·</span>
                 <Link href="/qna" className="text-navy font-medium hover:underline">Submit an idea</Link>
               </div>
             </div>
@@ -152,7 +152,7 @@ export default function Home() {
               <p className="text-gray-600"><strong className="text-navy">Build it right the first time.</strong> Size projects correctly <strong className="text-navy">from the start</strong>. <strong className="text-prosper-red">Think long-term</strong> so we're not fixing mistakes or asking for more money later.</p>
               <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
                 <Link href="/polls" className="text-navy font-medium hover:underline">Participate in a poll</Link>
-                <span className="text-gray-400">·</span>
+                <span className="text-gray-500" aria-hidden="true">·</span>
                 <Link href="/priorities" className="text-navy font-medium hover:underline">See my priorities</Link>
               </div>
             </div>
@@ -165,7 +165,7 @@ export default function Home() {
               <p className="text-gray-600">Prosper isn't just another suburb—it's <strong className="text-navy">Friday night football under the lights</strong>, <strong className="text-prosper-red">Small Town, Big Heart</strong>, and downtown festivals that bring neighbors together.</p>
               <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
                 <Link href="/track-record" className="text-navy font-medium hover:underline">See my track record</Link>
-                <span className="text-gray-400">·</span>
+                <span className="text-gray-500" aria-hidden="true">·</span>
                 <Link href="/qna" className="text-navy font-medium hover:underline">Submit an idea</Link>
               </div>
             </div>

@@ -41,9 +41,9 @@ export default function PrioritiesPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
               <Link href="/qna" className="text-navy font-medium hover:underline">Ask a question</Link>
-              <span className="text-gray-400">·</span>
+              <span className="text-gray-500" aria-hidden="true">·</span>
               <Link href="/get-involved#meeting" className="text-navy font-medium hover:underline">Request a meeting</Link>
-              <span className="text-gray-400">·</span>
+              <span className="text-gray-500" aria-hidden="true">·</span>
               <Link href="/qna" className="text-navy font-medium hover:underline">Submit an idea</Link>
             </div>
           </div>
@@ -58,7 +58,7 @@ export default function PrioritiesPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
               <Link href="/polls" className="text-navy font-medium hover:underline">Participate in a poll</Link>
-              <span className="text-gray-400">·</span>
+              <span className="text-gray-500" aria-hidden="true">·</span>
               <Link href="/track-record" className="text-navy font-medium hover:underline">See fiscal track record</Link>
             </div>
           </div>
@@ -73,7 +73,7 @@ export default function PrioritiesPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
               <Link href="/track-record" className="text-navy font-medium hover:underline">See track record</Link>
-              <span className="text-gray-400">·</span>
+              <span className="text-gray-500" aria-hidden="true">·</span>
               <Link href="/endorsements" className="text-navy font-medium hover:underline">Hear from neighbors</Link>
             </div>
           </div>
