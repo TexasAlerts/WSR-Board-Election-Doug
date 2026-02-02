@@ -6,6 +6,12 @@ import { rateLimit } from '../../../../../lib/rateLimit';
 import { sendNotificationEmail } from '../../../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../../lib/logging';
 import { getUserDisplayName } from '../../../../../lib/formatDisplayName';
+import {
+  generateAnonymousVoterFingerprint,
+  generateAnonymousVoterToken,
+  ANONYMOUS_VOTER_COOKIE,
+  ANONYMOUS_VOTER_COOKIE_OPTIONS,
+} from '../../../../../lib/anonymousVoting';
 
 export async function POST(request, { params }) {
   const supabase = getSupabase();
@@ -23,7 +29,7 @@ export async function POST(request, { params }) {
 
     const body = await request.json();
 
-    // Schema depends on whether user is authenticated
+    // Schema for voting - email/name optional for anonymous voting
     const schema = isAuthenticated
       ? z.object({
           choice_id: z.string().uuid().optional(),
@@ -33,8 +39,8 @@ export async function POST(request, { params }) {
           other_text: z.string().max(500).optional(),
         })
       : z.object({
-          email: z.string().email('Valid email required'),
-          name: z.string().min(1, 'Name required').max(200),
+          email: z.string().email('Valid email required').optional(),
+          name: z.string().min(1, 'Name required').max(200).optional(),
           choice_id: z.string().uuid().optional(),
           choice_ids: z.array(z.string().uuid()).optional(),
           rankings: z.array(z.string().uuid()).optional(),
@@ -76,17 +82,21 @@ export async function POST(request, { params }) {
       );
     }
 
-    // Determine voter identity
+    // Determine voter identity and voting mode
     let voterId;
     let voterEmail;
     let voterName;
+    let isAnonymous = false;
+    let anonymousVoterToken = null;
+    let anonymousVoterFingerprint = null;
 
     if (isAuthenticated) {
+      // Fully registered supporter
       voterId = supporter.id;
       voterEmail = supporter.email;
       voterName = `${supporter.first_name} ${supporter.last_name}`;
-    } else {
-      // Public poll - require verified email
+    } else if (email && name) {
+      // Has provided email/name - check if verified voter
       voterEmail = email.toLowerCase();
       voterName = name;
 
@@ -97,11 +107,24 @@ export async function POST(request, { params }) {
         .single();
 
       if (!verifiedVoter || !verifiedVoter.verified_at) {
+        // Email not verified yet
         return NextResponse.json(
           { ok: false, error: 'Please verify your email first', requiresVerification: true },
           { status: 400 }
         );
       }
+    } else {
+      // Anonymous voting - no email/name provided
+      isAnonymous = true;
+
+      // Get or generate anonymous voter token from cookie
+      const cookies = request.headers.get('cookie') || '';
+      const cookieMatch = cookies.match(new RegExp(`${ANONYMOUS_VOTER_COOKIE}=([^;]+)`));
+      anonymousVoterToken = cookieMatch ? cookieMatch[1] : generateAnonymousVoterToken();
+
+      // Generate browser fingerprint for additional duplicate prevention
+      const userAgent = request.headers.get('user-agent') || '';
+      anonymousVoterFingerprint = generateAnonymousVoterFingerprint(ip, userAgent);
     }
 
     // Check if already voted
@@ -111,8 +134,13 @@ export async function POST(request, { params }) {
       .eq('poll_id', id);
 
     if (isAuthenticated) {
+      // Check by supporter_id
       existingVoteQuery = existingVoteQuery.eq('supporter_id', voterId);
+    } else if (isAnonymous) {
+      // Check by anonymous token OR fingerprint (either match = already voted)
+      existingVoteQuery = existingVoteQuery.or(`anonymous_voter_token.eq.${anonymousVoterToken},anonymous_voter_fingerprint.eq.${anonymousVoterFingerprint}`);
     } else {
+      // Check by verified voter email
       existingVoteQuery = existingVoteQuery.eq('voter_email', voterEmail);
     }
 
@@ -168,7 +196,12 @@ export async function POST(request, { params }) {
     if (isAuthenticated) {
       voteRecord.supporter_id = voterId;
       voteRecord.voter_email = voterEmail;
+    } else if (isAnonymous) {
+      // Anonymous vote - store token and fingerprint for duplicate prevention
+      voteRecord.anonymous_voter_token = anonymousVoterToken;
+      voteRecord.anonymous_voter_fingerprint = anonymousVoterFingerprint;
     } else {
+      // Verified voter (has email but not fully registered)
       voteRecord.voter_email = voterEmail;
     }
 
@@ -181,6 +214,12 @@ export async function POST(request, { params }) {
         return NextResponse.json({ ok: false, error: 'You have already voted' }, { status: 400 });
       }
       return NextResponse.json({ ok: false, error: 'Failed to record vote' }, { status: 500 });
+    }
+
+    // Set anonymous voter cookie if this was an anonymous vote
+    const response = NextResponse.json({ ok: true }, { status: 201 });
+    if (isAnonymous) {
+      response.cookies.set(ANONYMOUS_VOTER_COOKIE, anonymousVoterToken, ANONYMOUS_VOTER_COOKIE_OPTIONS);
     }
 
     // Insert comment if provided and user is a registered supporter
@@ -234,16 +273,17 @@ export async function POST(request, { params }) {
       details: {
         pollTitle: poll.title,
         pollType: poll.poll_type,
-        voterName,
-        voterEmail,
+        voterName: voterName || 'Anonymous',
+        voterEmail: voterEmail || null,
         isAuthenticated,
+        isAnonymous,
         otherText: other_text?.trim() || null,
       },
       request,
       responseStatus: 201,
     });
 
-    return NextResponse.json({ ok: true }, { status: 201 });
+    return response;
   } catch (err) {
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,
