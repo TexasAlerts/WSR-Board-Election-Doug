@@ -47,9 +47,24 @@ export default function PollsDynamic() {
             email: data.data.email,
             name: data.data.name
           });
+          return; // Stop here if authenticated
         }
       } catch (err) {
-        // Not authenticated, that's fine
+        // Not authenticated, check for verified voter
+      }
+
+      // If not authenticated, check for verified voter cookie
+      try {
+        const voterRes = await fetch('/api/verified-voters/me');
+        const voterData = await voterRes.json();
+        if (voterData.ok && voterData.data) {
+          setVerifiedVoter({
+            email: voterData.data.email,
+            name: voterData.data.name
+          });
+        }
+      } catch (err) {
+        // Not a verified voter either, that's fine
       }
     }
     checkAuth();

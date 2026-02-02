@@ -113,9 +113,21 @@ export default function IdeasPage() {
             email: data.data.email
           }));
           setSupportEmail(data.data.email);
+          return; // Stop here if authenticated
         }
       } catch (err) {
-        // Not authenticated, that's fine
+        // Not authenticated, check for verified voter
+      }
+
+      // If not authenticated, check for verified voter cookie (for pre-filling support email)
+      try {
+        const voterRes = await fetch('/api/verified-voters/me');
+        const voterData = await voterRes.json();
+        if (voterData.ok && voterData.data) {
+          setSupportEmail(voterData.data.email);
+        }
+      } catch (err) {
+        // Not a verified voter either, that's fine
       }
     }
     checkAuth();
