@@ -50,9 +50,17 @@ export default function PollsDynamic() {
 
   const voteModalRef = useRef(null);
 
-  // Close modal on Escape key and trap focus
+  // Close modal on Escape key, trap focus, and lock body scroll
   useEffect(() => {
     if (!selectedPoll) return;
+
+    // Prevent body scroll when modal is open
+    const originalOverflow = document.body.style.overflow;
+    const originalPaddingRight = document.body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+
     function handleKeyDown(e) {
       if (e.key === 'Escape') {
         setSelectedPoll(null);
@@ -78,7 +86,12 @@ export default function PollsDynamic() {
     document.addEventListener('keydown', handleKeyDown);
     // Focus the modal on open
     voteModalRef.current?.focus();
-    return () => document.removeEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      document.body.style.paddingRight = originalPaddingRight;
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, [selectedPoll]);
 
   function handleVoteClick(poll) {

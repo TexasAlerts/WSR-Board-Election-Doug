@@ -1,5 +1,43 @@
 import Image from 'next/image';
 import PollDetailDynamic from '../../../components/PollDetailDynamic';
+import { getSupabase } from '../../../lib/supabase';
+
+/**
+ * Generate metadata for individual poll pages
+ * Fetches poll data server-side to create unique SEO tags
+ */
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const supabase = getSupabase();
+
+  try {
+    const { data: poll } = await supabase
+      .from('polls')
+      .select('title, description')
+      .eq('id', id)
+      .eq('status', 'active')
+      .single();
+
+    if (poll) {
+      return {
+        title: `${poll.title} | Community Polls`,
+        description: poll.description || `Vote on this community poll: ${poll.title}. Share your voice on issues that matter to Prosper.`,
+        openGraph: {
+          title: `${poll.title} | Doug Charles for Prosper Town Council`,
+          description: poll.description || `Vote on this community poll: ${poll.title}`,
+          url: `https://www.dougcharles.com/polls/${id}`,
+        },
+      };
+    }
+  } catch (error) {
+    // Fall back to default metadata
+  }
+
+  return {
+    title: 'Community Poll | Doug Charles for Prosper Town Council',
+    description: 'Share your voice on issues that matter to Prosper through community polls.',
+  };
+}
 
 export default function PollDetailPage({ params }) {
   return (

@@ -23,6 +23,16 @@ export default function PollDetailDynamic({ pollId }) {
 
   useEffect(() => {
     loadPoll();
+
+    // Reload poll data when window regains focus (e.g., after signing in)
+    const handleFocus = () => {
+      loadPoll();
+    };
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pollId]);
 

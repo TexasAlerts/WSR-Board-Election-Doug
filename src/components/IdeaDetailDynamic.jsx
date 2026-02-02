@@ -40,6 +40,16 @@ export default function IdeaDetailDynamic({ ideaId }) {
 
   useEffect(() => {
     loadIdea();
+
+    // Reload idea data when window regains focus (e.g., after signing in)
+    const handleFocus = () => {
+      loadIdea();
+    };
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ideaId]);
 

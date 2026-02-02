@@ -1,5 +1,53 @@
 import Image from 'next/image';
 import IdeaDetailDynamic from '../../../components/IdeaDetailDynamic';
+import { getSupabase } from '../../../lib/supabase';
+
+/**
+ * Generate metadata for individual idea pages
+ * Fetches idea data server-side to create unique SEO tags
+ */
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const supabase = getSupabase();
+
+  try {
+    const { data: idea } = await supabase
+      .from('ideas')
+      .select('title, content, category')
+      .eq('id', id)
+      .in('status', ['published', 'under_review', 'planned', 'completed'])
+      .eq('is_public', true)
+      .single();
+
+    if (idea) {
+      const categoryEmoji = {
+        infrastructure: '🛣️',
+        community: '🏘️',
+        safety: '🛡️',
+        environment: '🌳',
+        general: '📝',
+        question: '❓',
+      }[idea.category] || '💡';
+
+      return {
+        title: `${idea.title} | Community Ideas`,
+        description: idea.content?.substring(0, 155) || `${categoryEmoji} Community idea: ${idea.title}. Join the discussion and share your thoughts.`,
+        openGraph: {
+          title: `${idea.title} | Doug Charles for Prosper Town Council`,
+          description: idea.content?.substring(0, 155) || `Community idea: ${idea.title}`,
+          url: `https://www.dougcharles.com/ideas/${id}`,
+        },
+      };
+    }
+  } catch (error) {
+    // Fall back to default metadata
+  }
+
+  return {
+    title: 'Community Idea | Doug Charles for Prosper Town Council',
+    description: 'Submit your ideas for making Prosper better. Join the discussion and help shape our community.',
+  };
+}
 
 export default function IdeaDetailPage({ params }) {
   return (

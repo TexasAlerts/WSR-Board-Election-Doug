@@ -16,11 +16,24 @@ export function ConfirmModal({ open, title, message, onConfirm, onCancel }) {
 
   useEffect(() => {
     if (!open) return;
+
+    // Lock body scroll
+    const originalOverflow = document.body.style.overflow;
+    const originalPaddingRight = document.body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+
     const handleKey = (e) => {
       if (e.key === 'Escape') onCancel();
     };
     document.addEventListener('keydown', handleKey);
-    return () => document.removeEventListener('keydown', handleKey);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      document.body.style.paddingRight = originalPaddingRight;
+      document.removeEventListener('keydown', handleKey);
+    };
   }, [open, onCancel]);
 
   if (!open) return null;
@@ -61,11 +74,24 @@ export function PromptModal({ open, title, label, defaultValue, onSubmit, onCanc
 
   useEffect(() => {
     if (!open) return;
+
+    // Lock body scroll
+    const originalOverflow = document.body.style.overflow;
+    const originalPaddingRight = document.body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+
     const handleKey = (e) => {
       if (e.key === 'Escape') onCancel();
     };
     document.addEventListener('keydown', handleKey);
-    return () => document.removeEventListener('keydown', handleKey);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      document.body.style.paddingRight = originalPaddingRight;
+      document.removeEventListener('keydown', handleKey);
+    };
   }, [open, onCancel]);
 
   const handleSubmit = (e) => {

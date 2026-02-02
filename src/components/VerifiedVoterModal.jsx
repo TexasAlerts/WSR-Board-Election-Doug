@@ -9,8 +9,17 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
   const [error, setError] = useState('');
   const modalRef = useRef(null);
 
-  // Escape key and focus trap
+  // Escape key, focus trap, and scroll lock
   useEffect(() => {
+    // Prevent body scroll when modal is open
+    const originalOverflow = document.body.style.overflow;
+    const originalPaddingRight = document.body.style.paddingRight;
+
+    // Calculate scrollbar width to prevent layout shift
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+
     function handleKeyDown(e) {
       if (e.key === 'Escape') {
         onClose();
@@ -33,7 +42,13 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
     }
     document.addEventListener('keydown', handleKeyDown);
     modalRef.current?.focus();
-    return () => document.removeEventListener('keydown', handleKeyDown);
+
+    return () => {
+      // Restore original body overflow and padding
+      document.body.style.overflow = originalOverflow;
+      document.body.style.paddingRight = originalPaddingRight;
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, [onClose]);
 
   async function handleSubmit(e) {
