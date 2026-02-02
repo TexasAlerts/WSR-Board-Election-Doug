@@ -178,12 +178,8 @@ export default function RegisterPage() {
               className="w-full pl-10 pr-4 py-2.5 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
               placeholder="(972) 555-1234"
               autoComplete="tel"
-              aria-describedby="phone-verification-hint"
             />
           </div>
-          <p id="phone-verification-hint" className="text-xs text-gray-500 mt-1">
-            By providing your phone number, you consent to receive SMS verification messages. Standard message and data rates may apply. You can add or update your phone later in Settings.
-          </p>
         </div>
 
         {/* Address */}
