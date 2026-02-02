@@ -23,7 +23,6 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dougcharles.co
 export async function sendVerificationEmail(email, name, token) {
   const client = getResendClient();
   if (!client) {
-    console.error('Resend not configured');
     return { success: false, error: 'Email service not configured' };
   }
 
@@ -56,13 +55,11 @@ export async function sendVerificationEmail(email, name, token) {
     });
 
     if (error) {
-      console.error('Resend error:', error);
       return { success: false, error: error.message };
     }
 
     return { success: true, id: data?.id };
   } catch (err) {
-    console.error('Email send error:', err);
     return { success: false, error: err.message };
   }
 }

@@ -14,7 +14,7 @@ export async function GET() {
     .neq('answer', '')
     .order('created_at', { ascending: false });
   if (error) {
-    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
   return NextResponse.json({ ok: true, data });
 }
@@ -42,7 +42,7 @@ export async function POST(req) {
         .from('questions')
         .insert({ name, email, question, status: 'pending' });
       if (error) {
-        return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+        return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
       }
       await Promise.all([
         sendEmail(

@@ -41,7 +41,7 @@ export async function GET(request) {
         userEmail: supporter.email,
         request,
       });
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     // Add vote count to each poll
@@ -63,7 +63,7 @@ export async function GET(request) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
 
@@ -128,7 +128,7 @@ export async function POST(request) {
         userEmail: supporter.email,
         request,
       });
-      return NextResponse.json({ ok: false, error: pollError.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     // Create choices
@@ -155,7 +155,7 @@ export async function POST(request) {
         userEmail: supporter.email,
         request,
       });
-      return NextResponse.json({ ok: false, error: choicesError.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     await logAudit({
@@ -187,6 +187,6 @@ export async function POST(request) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }

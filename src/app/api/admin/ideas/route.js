@@ -36,7 +36,7 @@ export async function GET(request) {
         userEmail: supporter.email,
         request,
       });
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     return NextResponse.json({ ok: true, data });
@@ -51,7 +51,7 @@ export async function GET(request) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
 
@@ -99,7 +99,7 @@ export async function POST(request) {
           userEmail: supporter.email,
           request,
         });
-        return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+        return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
       }
 
       await logAudit({
@@ -147,7 +147,7 @@ export async function POST(request) {
           userEmail: supporter.email,
           request,
         });
-        return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+        return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
       }
 
       await logAudit({
@@ -187,7 +187,7 @@ export async function POST(request) {
         .single();
 
       if (error) {
-        return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+        return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
       }
 
       if (data?.email && admin_response) {
@@ -213,6 +213,6 @@ export async function POST(request) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 400 });
   }
 }

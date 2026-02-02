@@ -27,7 +27,7 @@ export async function GET(request) {
   const { data, error } = await query;
 
   if (error) {
-    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 
   // Get user's votes if authenticated
@@ -120,7 +120,7 @@ export async function POST(request) {
         userEmail: email,
         request,
       });
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     // Log idea creation

@@ -25,7 +25,7 @@ export async function GET(request) {
     if (status && status !== 'all') query = query.eq('status', status);
 
     const { data: ideas, error } = await query;
-    if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    if (error) return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
 
     // Get comment counts per idea
     const ideaIds = (ideas || []).map(i => i.id);
@@ -67,6 +67,6 @@ export async function GET(request) {
 
     return NextResponse.json({ ok: true, data: enriched });
   } catch (err) {
-    return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }

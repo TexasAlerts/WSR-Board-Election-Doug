@@ -13,7 +13,7 @@ export async function GET() {
     .eq('status', 'approved')
     .order('created_at', { ascending: false });
   if (error) {
-    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
   return NextResponse.json({ ok: true, data });
 }
@@ -63,7 +63,7 @@ export async function POST(req) {
         userEmail: email,
         request: req,
       });
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     // Log endorsement submission

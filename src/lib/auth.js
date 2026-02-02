@@ -57,7 +57,6 @@ export async function createSession(supporterId, request) {
     .single();
 
   if (error) {
-    console.error('Create session error:', error);
     return null;
   }
 
@@ -147,7 +146,6 @@ export async function createEmailVerification(supporterId, purpose = 'verify') {
     .single();
 
   if (error) {
-    console.error('Create email verification error:', error);
     return null;
   }
 
@@ -208,7 +206,6 @@ export async function createSMSVerification(supporterId, phone) {
     .single();
 
   if (error) {
-    console.error('Create SMS verification error:', error);
     return null;
   }
 
@@ -314,7 +311,6 @@ export async function updateSupporter(id, updates) {
     .single();
 
   if (error) {
-    console.error('Update supporter error:', error);
     return null;
   }
   return data;

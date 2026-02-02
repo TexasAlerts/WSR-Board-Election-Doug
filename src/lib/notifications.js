@@ -73,7 +73,7 @@ export async function notifyParticipantsOfNewComment(comment) {
 
     const token = pref?.unsubscribe_token || '';
     sendNewCommentNotificationEmail(email, commenterName, preview, contextTitle, contextUrl, token)
-      .catch(err => console.error(`Failed to notify ${email}:`, err));
+      .catch(() => {});
   }
 }
 
@@ -112,5 +112,5 @@ export async function notifyParentCommentAuthor(replyComment) {
   const token = pref?.unsubscribe_token || '';
 
   sendNewReplyNotificationEmail(parent.email, replierName, replyPreview, parentPreview, contextUrl, token)
-    .catch(err => console.error(`Failed to notify reply to ${parent.email}:`, err));
+    .catch(() => {});
 }

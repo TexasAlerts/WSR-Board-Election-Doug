@@ -19,7 +19,6 @@ function getResend() {
 export async function sendEmail(to, subject, text) {
   const resend = getResend();
   if (!resend) {
-    console.error('Resend not configured');
     return;
   }
   const from = process.env.SMTP_FROM;

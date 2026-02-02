@@ -53,7 +53,7 @@ export async function POST(req) {
           userEmail: email,
           request: req,
         });
-        return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+        return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
       }
 
       // Log interest submission

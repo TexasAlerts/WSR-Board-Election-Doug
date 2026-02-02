@@ -26,7 +26,6 @@ export async function createAdminSession(request) {
     });
 
   if (error) {
-    console.error('Create admin session error:', error);
     return null;
   }
 

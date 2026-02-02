@@ -64,7 +64,7 @@ export async function POST(request, { params }) {
       if (supportError.code === '23505') {
         return NextResponse.json({ ok: false, error: 'Already supported' }, { status: 400 });
       }
-      return NextResponse.json({ ok: false, error: supportError.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     // Increment support count
@@ -127,7 +127,7 @@ export async function DELETE(request, { params }) {
       .eq('supporter_email', email);
 
     if (deleteError) {
-      return NextResponse.json({ ok: false, error: deleteError.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     // Decrement support count
