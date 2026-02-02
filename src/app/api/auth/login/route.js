@@ -155,7 +155,6 @@ export async function POST(request) {
 
     return response;
   } catch (err) {
-    console.error('Login error:', err);
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,
       errorMessage: err.message,

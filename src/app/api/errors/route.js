@@ -80,7 +80,6 @@ export async function POST(request) {
       message: 'Error logged successfully'
     });
   } catch (err) {
-    console.error('Failed to process error report:', err);
     return NextResponse.json(
       { ok: false, error: 'Failed to process error report' },
       { status: 500 }

@@ -74,12 +74,10 @@ export async function POST(request, { params }) {
       .eq('id', id);
 
     if (updateError) {
-      console.error('Error updating support count:', updateError);
     }
 
     return NextResponse.json({ ok: true, support_count: idea.support_count + 1 }, { status: 201 });
   } catch (err) {
-    console.error('Support error:', err);
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }
@@ -138,12 +136,10 @@ export async function DELETE(request, { params }) {
       .eq('id', id);
 
     if (updateError) {
-      console.error('Error updating support count:', updateError);
     }
 
     return NextResponse.json({ ok: true, support_count: newCount });
   } catch (err) {
-    console.error('Unsupport error:', err);
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }

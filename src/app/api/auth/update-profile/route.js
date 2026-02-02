@@ -53,7 +53,6 @@ export async function PATCH(request) {
       .eq('id', supporter.id);
 
     if (updateError) {
-      console.error('Update profile error:', updateError);
       return NextResponse.json({ ok: false, error: 'Failed to update profile' }, { status: 500 });
     }
 
@@ -68,7 +67,6 @@ export async function PATCH(request) {
 
     return NextResponse.json({ ok: true, message: 'Profile updated successfully' });
   } catch (err) {
-    console.error('Update profile error:', err);
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,
       errorMessage: err.message,

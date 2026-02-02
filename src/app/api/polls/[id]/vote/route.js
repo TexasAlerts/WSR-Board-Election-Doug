@@ -180,7 +180,6 @@ export async function POST(request, { params }) {
       if (voteError.code === '23505') {
         return NextResponse.json({ ok: false, error: 'You have already voted' }, { status: 400 });
       }
-      console.error('Vote insert error:', voteError);
       return NextResponse.json({ ok: false, error: 'Failed to record vote' }, { status: 500 });
     }
 
@@ -202,7 +201,6 @@ export async function POST(request, { params }) {
         .insert(commentRecord);
 
       if (commentError) {
-        console.error('Error saving comment:', commentError);
       } else {
         await logAudit({
           eventType: AuditEvents.COMMENT_CREATED,
@@ -222,7 +220,7 @@ export async function POST(request, { params }) {
         sendNotificationEmail(
           'New poll comment submitted',
           `Poll: ${poll.title}\nName: ${voterName}\nEmail: ${voterEmail}\nComment: ${comment.trim()}`
-        ).catch(err => console.error('Admin email failed:', err));
+        ).catch(() => {});
       }
     }
 
@@ -246,7 +244,6 @@ export async function POST(request, { params }) {
 
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
-    console.error('Vote error:', err);
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,
       errorMessage: err.message,

@@ -31,7 +31,6 @@ export async function GET() {
       },
     });
   } catch (err) {
-    console.error('Get current user error:', err);
     return NextResponse.json(
       { ok: false, error: 'An unexpected error occurred' },
       { status: 500 }

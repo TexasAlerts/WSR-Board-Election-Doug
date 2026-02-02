@@ -88,11 +88,11 @@ export async function POST(req) {
         email,
         'Thanks for your endorsement',
         `Hi ${name},\n\nThank you for endorsing Doug.\n${message ? `Your message: ${message}\n\n` : ''}We will notify you once it is published.\n\n--\nDoug Charles`
-      ).catch((err) => console.error('User email failed', err)),
+      ).catch(() => {}),
       sendNotificationEmail(
         'New endorsement submitted',
         `Name: ${name}\nEmail: ${email}\nMessage: ${message || ''}`
-      ).catch((err) => console.error('Admin email failed', err))
+      ).catch(() => {})
     ]);
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {

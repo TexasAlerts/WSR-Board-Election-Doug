@@ -99,7 +99,6 @@ export async function POST(request) {
         .eq('email', supporter.email);
 
       if (error) {
-        console.error('SMS opt-out update error:', error);
       }
 
       await sendSMS(fromPhone, AUTO_RESPONSES.optOut);
@@ -125,7 +124,6 @@ export async function POST(request) {
         .eq('email', supporter.email);
 
       if (error) {
-        console.error('SMS opt-in update error:', error);
       }
 
       await sendSMS(fromPhone, AUTO_RESPONSES.optIn);
@@ -141,7 +139,6 @@ export async function POST(request) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error('Inbound SMS webhook error:', err);
     return NextResponse.json({ ok: true });
   }
 }

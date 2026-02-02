@@ -383,4 +383,5 @@ export const ErrorTypes = {
   VALIDATION_ERROR: 'validation_error',
   AUTH_ERROR: 'auth_error',
   DATABASE_ERROR: 'database_error',
+  EXTERNAL_SERVICE: 'external_service',
 };
