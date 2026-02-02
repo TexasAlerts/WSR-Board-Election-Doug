@@ -14,6 +14,8 @@ export default function PollsDynamic() {
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [pendingPoll, setPendingPoll] = useState(null);
   const [verifiedVoter, setVerifiedVoter] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authenticatedSupporter, setAuthenticatedSupporter] = useState(null);
 
   useEffect(() => {
     async function loadPolls() {
@@ -22,14 +24,35 @@ export default function PollsDynamic() {
         const data = await res.json();
         if (data.ok) {
           setPolls(data.data || []);
+          setIsAuthenticated(data.isAuthenticated || false);
         }
       } catch (err) {
-        console.error('Error loading polls:', err);
+        // Silent fail
       } finally {
         setLoading(false);
       }
     }
     loadPolls();
+
+    // Check for authenticated supporter
+    async function checkAuth() {
+      try {
+        const res = await fetch('/api/supporter/me');
+        const data = await res.json();
+        if (data.ok && data.data) {
+          setIsAuthenticated(true);
+          setAuthenticatedSupporter(data.data);
+          // Use authenticated supporter info as verified voter
+          setVerifiedVoter({
+            email: data.data.email,
+            name: data.data.name
+          });
+        }
+      } catch (err) {
+        // Not authenticated, that's fine
+      }
+    }
+    checkAuth();
 
     // Check localStorage for voted polls
     try {
@@ -41,12 +64,24 @@ export default function PollsDynamic() {
 
     // Check if user is already a verified voter (cookie set by server)
     // We check by looking for voter info in localStorage as a client-side cache
+    // But only if they're not authenticated (authenticated users don't need this)
     try {
       const voter = JSON.parse(localStorage.getItem('verifiedVoter') || 'null');
-      if (voter) setVerifiedVoter(voter);
+      if (voter && !isAuthenticated) setVerifiedVoter(voter);
     } catch {
       // ignore
     }
+
+    // Reload authentication when window regains focus (e.g., after signing in)
+    const handleFocus = () => {
+      checkAuth();
+      loadPolls();
+    };
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
   }, []);
 
   const voteModalRef = useRef(null);
@@ -83,7 +118,15 @@ export default function PollsDynamic() {
   }, [selectedPoll]);
 
   function handleVoteClick(poll) {
-    if (verifiedVoter) {
+    if (isAuthenticated && authenticatedSupporter) {
+      // Authenticated user, open vote modal directly with their info
+      setSelectedPoll(poll);
+      setVoteForm({
+        ...voteForm,
+        email: authenticatedSupporter.email,
+        name: authenticatedSupporter.name
+      });
+    } else if (verifiedVoter) {
       // Already verified, open vote modal directly
       setSelectedPoll(poll);
       setVoteForm({ ...voteForm, email: verifiedVoter.email, name: verifiedVoter.name });
@@ -293,7 +336,16 @@ export default function PollsDynamic() {
               )}
 
               <form onSubmit={handleVote} className="space-y-6">
-                {verifiedVoter ? (
+                {isAuthenticated && authenticatedSupporter ? (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-green-700 font-medium">Voting as: {authenticatedSupporter.name}</p>
+                      <p className="text-xs text-green-600">{authenticatedSupporter.email}</p>
+                      <p className="text-xs text-green-500 mt-1">✓ Authenticated</p>
+                    </div>
+                    <span className="text-green-500 text-lg">&#10003;</span>
+                  </div>
+                ) : verifiedVoter ? (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center justify-between">
                     <div>
                       <p className="text-sm text-green-700 font-medium">Voting as: {verifiedVoter.name}</p>
