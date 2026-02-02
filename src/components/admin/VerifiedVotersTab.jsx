@@ -99,7 +99,7 @@ export default function VerifiedVotersTab({
                 <div className="flex gap-2">
                   {!voter.suspended_at ? (
                     <button
-                      onClick={() => handleSuspendVoter(voter.id, voter.email)}
+                      onClick={() => handleSuspendVoter(voter.id, 'suspend')}
                       className="btn-secondary text-sm flex items-center gap-2"
                       title="Suspend voter"
                     >
@@ -108,7 +108,7 @@ export default function VerifiedVotersTab({
                     </button>
                   ) : (
                     <button
-                      onClick={() => handleSuspendVoter(voter.id, voter.email)}
+                      onClick={() => handleSuspendVoter(voter.id, 'unsuspend')}
                       className="btn-primary text-sm flex items-center gap-2"
                       title="Unsuspend voter"
                     >
