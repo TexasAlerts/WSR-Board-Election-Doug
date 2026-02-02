@@ -1,8 +1,9 @@
 import { sanitizeText, sanitizeObject } from '../lib/sanitize';
 
 describe('sanitizeText', () => {
-  it('strips HTML tags from input', () => {
-    expect(sanitizeText('<script>alert("xss")</script>Hello')).toBe('alert("xss")Hello');
+  it('strips HTML tags and script content from input', () => {
+    // DOMPurify removes script tags AND their content for security
+    expect(sanitizeText('<script>alert("xss")</script>Hello')).toBe('Hello');
   });
 
   it('strips nested HTML tags', () => {
