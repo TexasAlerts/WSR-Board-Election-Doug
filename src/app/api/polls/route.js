@@ -59,7 +59,8 @@ export async function GET(request) {
     .in('poll_id', pollIds);
 
   if (voteError) {
-  }
+      // silently ignored
+    }
 
   // Count votes per poll
   const voteCountMap = {};

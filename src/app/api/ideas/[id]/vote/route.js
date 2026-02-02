@@ -116,6 +116,7 @@ export async function POST(request, { params }) {
       .eq('id', ideaId);
 
     if (updateError) {
+      // silently ignored
     }
 
     // Get new user vote status

@@ -121,6 +121,7 @@ export async function POST(request, { params }) {
       .eq('id', commentId);
 
     if (updateError) {
+      // silently ignored
     }
 
     // Get new user vote status

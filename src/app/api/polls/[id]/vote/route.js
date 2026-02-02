@@ -201,7 +201,8 @@ export async function POST(request, { params }) {
         .insert(commentRecord);
 
       if (commentError) {
-      } else {
+      // silently ignored
+    } else {
         await logAudit({
           eventType: AuditEvents.COMMENT_CREATED,
           supporterId: voterId,

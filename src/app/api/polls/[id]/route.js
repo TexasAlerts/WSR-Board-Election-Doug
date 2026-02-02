@@ -52,7 +52,8 @@ export async function GET(request, { params }) {
     .eq('poll_id', id);
 
   if (votesError) {
-  }
+      // silently ignored
+    }
 
   // Calculate vote counts per choice
   const choiceVotes = {};
@@ -86,13 +87,14 @@ export async function GET(request, { params }) {
   // Get approved comments
   const { data: comments, error: commentsError } = await supabase
     .from('comments')
-    .select('id, name, content, created_at, upvotes, downvotes')
+    .select('id, name, display_name, content, created_at, upvotes, downvotes')
     .eq('poll_id', id)
     .eq('status', 'approved')
     .order('created_at', { ascending: false });
 
   if (commentsError) {
-  }
+      // silently ignored
+    }
 
   // Build response
   const choices = poll.poll_choices

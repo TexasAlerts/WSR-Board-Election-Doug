@@ -1,12 +1,34 @@
+'use client';
+
+import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'Page Not Found | Doug Charles for Prosper Town Council',
-  description: 'The page you are looking for does not exist.',
-  robots: { index: false, follow: true },
-};
-
 export default function NotFound() {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    // Log 404 error to database
+    async function log404() {
+      try {
+        await fetch('/api/errors', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            error_type: 'client_error',
+            error_message: `404 Not Found: ${pathname}`,
+            endpoint: pathname,
+            error_stack: null,
+          }),
+        });
+      } catch (err) {
+        // Silently fail - don't block 404 page rendering
+      }
+    }
+
+    log404();
+  }, [pathname]);
+
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
       <h1 className="text-6xl font-bold text-navy mb-4">404</h1>

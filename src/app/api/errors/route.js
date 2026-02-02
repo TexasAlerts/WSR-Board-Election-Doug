@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { logError, ErrorTypes } from '../../../lib/logging';
 import { rateLimit } from '../../../lib/rateLimit';
 import { cookies } from 'next/headers';
+import { getSupabase } from '../../../lib/supabase';
 
 /**
  * POST /api/errors
@@ -45,11 +46,24 @@ export async function POST(request) {
       const cookieStore = await cookies();
       const sessionCookie = cookieStore.get('session_token');
       if (sessionCookie?.value) {
-        const sessionData = JSON.parse(atob(sessionCookie.value));
-        userEmail = sessionData?.email || null;
+        const supabase = getSupabase();
+        const { data: session } = await supabase
+          .from('sessions')
+          .select('supporter_id')
+          .eq('token', sessionCookie.value)
+          .gt('expires_at', new Date().toISOString())
+          .single();
+        if (session?.supporter_id) {
+          const { data: supporter } = await supabase
+            .from('supporters')
+            .select('email')
+            .eq('id', session.supporter_id)
+            .single();
+          userEmail = supporter?.email || null;
+        }
       }
     } catch {
-      // Session parsing failed, continue without user info
+      // Session lookup failed, continue without user info
     }
 
     // Build enhanced stack trace with component info
