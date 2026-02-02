@@ -62,7 +62,7 @@ async function getDataCounts() {
     'comments',
     'comment_votes',
     'idea_votes',
-    'idea_support',
+    'idea_supports',
     'ideas',
     'questions',
     'endorsements',
@@ -168,7 +168,7 @@ async function clearData(superuserId, superuserEmail) {
 
   // 7. Ideas system (votes and support only, keep idea structure)
   await deleteFrom('idea_votes', 'idea votes');
-  await deleteFrom('idea_support', 'idea support');
+  await deleteFrom('idea_supports', 'idea support');
 
   // 8. Public submissions
   await deleteFrom('questions', 'questions');

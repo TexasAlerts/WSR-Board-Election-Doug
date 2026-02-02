@@ -74,7 +74,7 @@ DELETE FROM poll_votes;
 DELETE FROM idea_votes;
 
 -- Clear idea support
-DELETE FROM idea_support;
+DELETE FROM idea_supports;
 
 -- Optionally clear ideas themselves
 -- Uncomment if you want to remove all ideas:
@@ -149,7 +149,7 @@ SELECT 'comment_votes', COUNT(*) FROM comment_votes
 UNION ALL
 SELECT 'idea_votes', COUNT(*) FROM idea_votes
 UNION ALL
-SELECT 'idea_support', COUNT(*) FROM idea_support
+SELECT 'idea_supports', COUNT(*) FROM idea_supports
 UNION ALL
 SELECT 'ideas', COUNT(*) FROM ideas
 UNION ALL
