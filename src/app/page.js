@@ -22,8 +22,8 @@ export default function Home() {
               width={800}
               height={533}
               priority
-              className="mx-auto w-full max-w-[320px] sm:max-w-[520px] md:max-w-[680px] lg:max-w-[800px] h-auto mb-8 drop-shadow-xl"
-              sizes="(max-width: 640px) 320px, (max-width: 768px) 520px, (max-width: 1024px) 680px, 800px"
+              className="mx-auto w-full max-w-[420px] sm:max-w-[640px] md:max-w-[800px] lg:max-w-[900px] h-auto mb-8 drop-shadow-xl"
+              sizes="(max-width: 640px) 420px, (max-width: 768px) 640px, (max-width: 1024px) 800px, 900px"
             />
           </div>
 
