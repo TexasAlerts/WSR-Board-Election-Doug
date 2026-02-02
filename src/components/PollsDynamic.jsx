@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { MessageSquare } from 'lucide-react';
 import VerifiedVoterModal from './VerifiedVoterModal';
 
 export default function PollsDynamic() {
@@ -299,9 +300,23 @@ export default function PollsDynamic() {
                   )}
 
                   <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <span className="text-prosper-red font-semibold">
-                      {poll.vote_count} vote{poll.vote_count !== 1 ? 's' : ''}
-                    </span>
+                    <div className="flex items-center gap-4">
+                      <span className="text-prosper-red font-semibold">
+                        {poll.vote_count} vote{poll.vote_count !== 1 ? 's' : ''}
+                      </span>
+                      {poll.allow_comments && (
+                        <Link
+                          href={`/polls/${poll.id}#comments`}
+                          className="flex items-center gap-1.5 text-gray-600 hover:text-navy transition-colors"
+                          title="View comments"
+                        >
+                          <MessageSquare className="w-4 h-4" />
+                          <span className="text-sm font-medium">
+                            {poll.comment_count || 0}
+                          </span>
+                        </Link>
+                      )}
+                    </div>
                     {hasVoted[poll.id] ? (
                       <Link
                         href={`/polls/${poll.id}`}

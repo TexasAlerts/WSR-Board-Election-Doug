@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { ThumbsUp, ThumbsDown, MessageSquare } from 'lucide-react';
 
 export default function PollDetailPage() {
   const params = useParams();
@@ -17,6 +18,7 @@ export default function PollDetailPage() {
   const [verifiedVoter, setVerifiedVoter] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authenticatedSupporter, setAuthenticatedSupporter] = useState(null);
+  const [votingComment, setVotingComment] = useState(null);
 
   useEffect(() => {
     async function loadPoll() {
@@ -167,6 +169,166 @@ export default function PollDetailPage() {
     }
   }
 
+  async function handleCommentVote(commentId, voteType) {
+    if (!isAuthenticated) {
+      setCommentMsg('Please sign in to vote on comments.');
+      return;
+    }
+
+    setVotingComment(commentId);
+
+    try {
+      const res = await fetch(`/api/comments/${commentId}/vote`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ vote_type: voteType }),
+      });
+
+      const result = await res.json();
+
+      if (result.ok) {
+        // Update the comment in poll.comments
+        const updatedComments = poll.comments.map(c => {
+          if (c.id === commentId) {
+            return {
+              ...c,
+              upvotes: result.upvotes,
+              downvotes: result.downvotes,
+              user_vote: result.user_vote,
+            };
+          }
+          return c;
+        });
+        setPoll({ ...poll, comments: updatedComments });
+      } else {
+        setCommentMsg(result.error || 'Error voting on comment');
+        setTimeout(() => setCommentMsg(''), 3000);
+      }
+    } catch (err) {
+      setCommentMsg('Error voting on comment');
+      setTimeout(() => setCommentMsg(''), 3000);
+    } finally {
+      setVotingComment(null);
+    }
+  }
+
+  // Helper function to organize comments into a tree structure
+  function organizeComments(comments) {
+    if (!comments) return [];
+
+    const commentMap = new Map();
+    const rootComments = [];
+
+    // First pass: create map of all comments
+    comments.forEach(comment => {
+      commentMap.set(comment.id, { ...comment, replies: [] });
+    });
+
+    // Second pass: organize into tree
+    comments.forEach(comment => {
+      const commentNode = commentMap.get(comment.id);
+      if (comment.parent_id) {
+        const parent = commentMap.get(comment.parent_id);
+        if (parent) {
+          parent.replies.push(commentNode);
+        } else {
+          // Parent not found, treat as root
+          rootComments.push(commentNode);
+        }
+      } else {
+        rootComments.push(commentNode);
+      }
+    });
+
+    return rootComments;
+  }
+
+  // Recursive component for rendering nested comments
+  function CommentThread({ comment, depth = 0 }) {
+    const [showReplies, setShowReplies] = useState(true);
+    const hasReplies = comment.replies && comment.replies.length > 0;
+    const isVoting = votingComment === comment.id;
+    const userVote = comment.user_vote;
+
+    return (
+      <div className={`${depth > 0 ? 'ml-8 pl-4 border-l-2 border-gray-200' : ''}`}>
+        <div className="bg-gray-50 rounded-lg p-4 mb-3">
+          <div className="flex justify-between items-start mb-2">
+            <span className="font-medium text-gray-800">{comment.display_name || comment.name}</span>
+            <span className="text-sm text-gray-500">
+              {new Date(comment.created_at).toLocaleDateString()}
+            </span>
+          </div>
+          <p className="text-gray-700 whitespace-pre-wrap mb-3">{comment.content}</p>
+
+          {/* Voting and Reply buttons */}
+          <div className="flex items-center gap-3 flex-wrap">
+            {/* Thumbs up */}
+            <button
+              onClick={() => handleCommentVote(comment.id, 'up')}
+              disabled={!isAuthenticated || isVoting}
+              className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
+                userVote === 'up'
+                  ? 'bg-green-100 text-green-700'
+                  : 'text-gray-600 hover:bg-gray-100'
+              } disabled:opacity-50`}
+              title={!isAuthenticated ? 'Sign in to vote' : 'Upvote'}
+            >
+              <ThumbsUp className="w-4 h-4" />
+              <span className="text-sm font-medium">{comment.upvotes || 0}</span>
+            </button>
+
+            {/* Thumbs down */}
+            <button
+              onClick={() => handleCommentVote(comment.id, 'down')}
+              disabled={!isAuthenticated || isVoting}
+              className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
+                userVote === 'down'
+                  ? 'bg-red-100 text-red-700'
+                  : 'text-gray-600 hover:bg-gray-100'
+              } disabled:opacity-50`}
+              title={!isAuthenticated ? 'Sign in to vote' : 'Downvote'}
+            >
+              <ThumbsDown className="w-4 h-4" />
+              <span className="text-sm font-medium">{comment.downvotes || 0}</span>
+            </button>
+
+            {/* Reply button */}
+            {isAuthenticated && (
+              <button
+                onClick={() => setReplyTo(comment)}
+                className="text-sm text-navy hover:underline ml-2"
+              >
+                Reply
+              </button>
+            )}
+
+            {/* Toggle replies button */}
+            {hasReplies && (
+              <button
+                onClick={() => setShowReplies(!showReplies)}
+                className="text-sm text-gray-600 hover:text-navy ml-auto flex items-center gap-1"
+              >
+                <MessageSquare className="w-4 h-4" />
+                {comment.replies.length} {comment.replies.length === 1 ? 'reply' : 'replies'}
+                <span className="ml-1">{showReplies ? '▼' : '▶'}</span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Nested replies */}
+        {hasReplies && showReplies && (
+          <div className="space-y-3 mb-3">
+            {comment.replies.map(reply => (
+              <CommentThread key={reply.id} comment={reply} depth={depth + 1} />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16">
@@ -247,29 +409,15 @@ export default function PollDetailPage() {
       {/* Comments section */}
       {poll.allow_comments && (
         <div className="card">
-          <h2 className="text-2xl font-bold text-navy mb-6">Comments</h2>
+          <h2 className="text-2xl font-bold text-navy mb-6">
+            Comments {poll.comments?.length > 0 && `(${poll.comments.length})`}
+          </h2>
 
           {/* Comments are visible to everyone - no verification check here */}
           {poll.comments && poll.comments.length > 0 ? (
             <div className="space-y-4 mb-8">
-              {poll.comments.map((comment) => (
-                <div key={comment.id} className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="font-medium text-gray-800">{comment.display_name || comment.name}</span>
-                    <span className="text-sm text-gray-500">
-                      {new Date(comment.created_at).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <p className="text-gray-700 whitespace-pre-wrap">{comment.content}</p>
-                  {isAuthenticated && (
-                    <button
-                      onClick={() => setReplyTo(comment)}
-                      className="text-sm text-navy hover:underline mt-2"
-                    >
-                      Reply
-                    </button>
-                  )}
-                </div>
+              {organizeComments(poll.comments).map((comment) => (
+                <CommentThread key={comment.id} comment={comment} depth={0} />
               ))}
             </div>
           ) : (

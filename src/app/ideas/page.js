@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
+import { MessageSquare } from 'lucide-react';
 
 const CATEGORIES = [
   { value: 'all', label: 'All Ideas', icon: '💡' },
@@ -363,6 +364,12 @@ export default function IdeasPage() {
                         </svg>
                         <span>{idea.support_count}</span>
                       </button>
+                      {idea.comment_count !== undefined && idea.comment_count > 0 && (
+                        <div className="flex items-center gap-1.5 text-gray-600">
+                          <MessageSquare className="w-4 h-4" />
+                          <span className="text-sm font-medium">{idea.comment_count}</span>
+                        </div>
+                      )}
                       <span className="text-sm text-gray-500">by {idea.name}</span>
                     </div>
                   </div>
