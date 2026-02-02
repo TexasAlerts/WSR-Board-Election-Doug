@@ -335,7 +335,7 @@ export async function getVerifiedVoter() {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('verified_voters')
-    .select('id, first_name, last_name, address, verified_at')
+    .select('id, email, name, first_name, last_name, address, verified_at')
     .eq('id', voterId)
     .not('verified_at', 'is', null)
     .single();

@@ -168,6 +168,23 @@ export default function AdminDashboard() {
       }
     } catch (err) {
       setError(err.message);
+
+      // Log error to database
+      try {
+        await fetch('/api/errors', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: `Admin Dashboard Error: ${err.message}`,
+            stack: err.stack || '',
+            component: 'AdminDashboard',
+            action: `Loading ${activeTab} tab`,
+            url: window.location.href,
+          }),
+        });
+      } catch (logErr) {
+        // Silent fail on logging error
+      }
     } finally {
       setLoading(false);
     }

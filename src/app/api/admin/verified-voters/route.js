@@ -38,19 +38,20 @@ export async function GET(request) {
       return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
-    // Get vote counts for each voter
-    const voterIds = voters.map(v => v.id);
+    // Get vote counts for each voter by email
+    const voterEmails = voters.map(v => v.email);
     let voteCounts = {};
 
-    if (voterIds.length > 0) {
+    if (voterEmails.length > 0) {
       const { data: votes } = await supabase
         .from('poll_votes')
-        .select('verified_voter_id')
-        .in('verified_voter_id', voterIds);
+        .select('voter_email')
+        .in('voter_email', voterEmails)
+        .is('supporter_id', null); // Only count votes where they weren't fully registered
 
       if (votes) {
         votes.forEach(v => {
-          voteCounts[v.verified_voter_id] = (voteCounts[v.verified_voter_id] || 0) + 1;
+          voteCounts[v.voter_email] = (voteCounts[v.voter_email] || 0) + 1;
         });
       }
     }
@@ -58,7 +59,7 @@ export async function GET(request) {
     // Add vote counts to voters
     const votersWithCounts = voters.map(v => ({
       ...v,
-      vote_count: voteCounts[v.id] || 0,
+      vote_count: voteCounts[v.email] || 0,
     }));
 
     return NextResponse.json({ ok: true, data: votersWithCounts });
