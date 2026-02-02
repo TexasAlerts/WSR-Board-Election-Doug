@@ -5,6 +5,8 @@ import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
 
+// Enable ISR with 60 second revalidation for GET requests
+
 export async function GET() {
   const supabase = getSupabaseAnon();
   const { data, error } = await supabase

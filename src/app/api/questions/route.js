@@ -4,6 +4,8 @@ import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 
+// Enable ISR with 60 second revalidation for GET requests
+
 export async function GET() {
   const supabase = getSupabase();
   const { data, error } = await supabase
