@@ -23,15 +23,18 @@ class ErrorBoundary extends Component {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          category: 'client',
-          message: error.message,
-          stack: error.stack,
-          component_stack: errorInfo?.componentStack,
-          url: typeof window !== 'undefined' ? window.location.href : '',
-          user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+          error_type: 'client_error',
+          error_message: `React Error: ${error.message}`,
+          error_stack: error.stack,
+          endpoint: typeof window !== 'undefined' ? window.location.pathname : '',
+          context: JSON.stringify({
+            componentStack: errorInfo?.componentStack?.substring(0, 500),
+            url: typeof window !== 'undefined' ? window.location.href : '',
+          }),
         }),
       });
     } catch (logError) {
+      // Silently fail
     }
   }
 

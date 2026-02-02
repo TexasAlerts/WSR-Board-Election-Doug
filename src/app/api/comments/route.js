@@ -130,6 +130,17 @@ export async function POST(request) {
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
       const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
+
+      // Log validation errors to admin dashboard
+      await logError({
+        errorType: ErrorTypes.VALIDATION_ERROR,
+        errorMessage: `Comment validation failed: ${errorMessage}`,
+        endpoint: '/api/comments',
+        method: 'POST',
+        requestBody: body, // This will be sanitized by logError
+        request,
+      });
+
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 

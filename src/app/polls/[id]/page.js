@@ -122,10 +122,46 @@ export default function PollDetailPage() {
           setPoll(pollData.data);
         }
       } else {
-        setCommentMsg(result.error || 'Error submitting comment');
+        const errorMsg = result.error || 'Error submitting comment';
+        setCommentMsg(errorMsg);
+
+        // Log the error to admin dashboard
+        await fetch('/api/errors', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            error_type: 'validation_error',
+            error_message: `Comment submission failed: ${errorMsg}`,
+            endpoint: `/polls/${params.id}`,
+            context: JSON.stringify({
+              pollId: params.id,
+              hasContent: !!commentForm.content,
+              contentLength: commentForm.content?.length,
+              isReply: !!replyTo,
+              statusCode: res.status,
+            }),
+          }),
+        }).catch(() => {}); // Silently fail error logging
       }
     } catch (err) {
-      setCommentMsg('Error submitting comment');
+      const errorMsg = 'Error submitting comment';
+      setCommentMsg(errorMsg);
+
+      // Log the exception to admin dashboard
+      await fetch('/api/errors', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          error_type: 'client_error',
+          error_message: `Comment submission exception: ${err.message}`,
+          error_stack: err.stack,
+          endpoint: `/polls/${params.id}`,
+          context: JSON.stringify({
+            pollId: params.id,
+            errorType: err.name,
+          }),
+        }),
+      }).catch(() => {}); // Silently fail error logging
     } finally {
       setSubmittingComment(false);
     }

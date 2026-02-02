@@ -25,10 +25,16 @@ export async function POST(request) {
 
   try {
     const body = await request.json();
-    const { category, message, stack, component_stack, url, user_agent } = body;
+
+    // Support both old format (category, message) and new format (error_type, error_message)
+    const errorType = body.error_type || (body.category === 'client' ? 'client_error' : ErrorTypes.CLIENT_ERROR);
+    const errorMessage = body.error_message || body.message;
+    const errorStack = body.error_stack || body.stack;
+    const endpoint = body.endpoint || body.url;
+    const context = body.context || (body.component_stack ? JSON.stringify({ componentStack: body.component_stack }) : null);
 
     // Basic validation
-    if (!message) {
+    if (!errorMessage) {
       return NextResponse.json(
         { ok: false, error: 'Error message is required' },
         { status: 400 }
@@ -66,26 +72,20 @@ export async function POST(request) {
       // Session lookup failed, continue without user info
     }
 
-    // Build enhanced stack trace with component info
-    const fullStack = component_stack
-      ? `${stack}\n\nComponent Stack:${component_stack}`
-      : stack;
+    // Build enhanced stack trace with context info
+    const fullStack = errorStack || null;
 
     // Log the error using the existing logging infrastructure
     const errorId = await logError({
-      errorType: category === 'client' ? ErrorTypes.CLIENT_ERROR : ErrorTypes.API_ERROR,
-      errorMessage: message,
+      errorType,
+      errorMessage,
       errorStack: fullStack,
-      endpoint: url || 'unknown',
-      method: 'CLIENT',
-      requestBody: {
-        url,
-        user_agent,
-        component_stack: component_stack ? '[included in stack]' : null,
-      },
+      endpoint: endpoint || 'unknown',
+      method: body.method || 'CLIENT',
+      requestBody: context ? JSON.parse(context) : null,
       userEmail,
       request,
-      notifySuperusers: true,
+      notifySuperusers: true, // Always notify for client errors
     });
 
     return NextResponse.json({
