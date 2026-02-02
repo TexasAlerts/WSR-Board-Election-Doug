@@ -8,9 +8,9 @@ import { getSupabase } from '../../../lib/supabase';
  */
 export async function generateMetadata({ params }) {
   const { id } = await params;
-  const supabase = getSupabase();
 
   try {
+    const supabase = getSupabase();
     const { data: poll } = await supabase
       .from('polls')
       .select('title, description')
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }) {
       };
     }
   } catch (error) {
-    // Fall back to default metadata
+    // Supabase not configured or poll not found, fall back to default metadata
   }
 
   return {

@@ -286,7 +286,7 @@ function GetInvolvedDynamicContent() {
                     type="button"
                     onClick={() => setSelectedAction(null)}
                     className="text-gray-400 hover:text-gray-600 text-xl font-bold min-w-[44px] min-h-[44px] flex items-center justify-center"
-                    aria-label="Close form"
+                    aria-label="Close"
                   >
                     ×
                   </button>

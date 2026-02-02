@@ -8,9 +8,9 @@ import { getSupabase } from '../../../lib/supabase';
  */
 export async function generateMetadata({ params }) {
   const { id } = await params;
-  const supabase = getSupabase();
 
   try {
+    const supabase = getSupabase();
     const { data: idea } = await supabase
       .from('ideas')
       .select('title, content, category')

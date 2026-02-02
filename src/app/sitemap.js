@@ -3,10 +3,10 @@ import { getSupabase } from '../lib/supabase';
 /**
  * Generate sitemap including static pages and dynamic poll/idea routes
  * Fetches active polls and published ideas to include in search engine indexing
+ * Gracefully handles missing Supabase configuration during build
  */
 export default async function sitemap() {
   const baseUrl = 'https://www.dougcharles.com';
-  const supabase = getSupabase();
 
   // Static routes
   const staticRoutes = [
@@ -32,34 +32,45 @@ export default async function sitemap() {
     priority,
   }));
 
-  // Fetch active polls
-  const { data: polls } = await supabase
-    .from('polls')
-    .select('id, updated_at')
-    .eq('status', 'active')
-    .order('created_at', { ascending: false });
+  // Try to fetch dynamic routes if Supabase is configured
+  let pollSitemap = [];
+  let ideaSitemap = [];
 
-  const pollSitemap = (polls || []).map((poll) => ({
-    url: `${baseUrl}/polls/${poll.id}`,
-    lastModified: poll.updated_at ? new Date(poll.updated_at) : new Date('2026-02-01'),
-    changeFrequency: 'weekly',
-    priority: 0.6,
-  }));
+  try {
+    const supabase = getSupabase();
 
-  // Fetch published ideas
-  const { data: ideas } = await supabase
-    .from('ideas')
-    .select('id, updated_at')
-    .in('status', ['published', 'under_review', 'planned', 'completed'])
-    .eq('is_public', true)
-    .order('created_at', { ascending: false });
+    // Fetch active polls
+    const { data: polls } = await supabase
+      .from('polls')
+      .select('id, updated_at')
+      .eq('status', 'active')
+      .order('created_at', { ascending: false });
 
-  const ideaSitemap = (ideas || []).map((idea) => ({
-    url: `${baseUrl}/ideas/${idea.id}`,
-    lastModified: idea.updated_at ? new Date(idea.updated_at) : new Date('2026-02-01'),
-    changeFrequency: 'weekly',
-    priority: 0.6,
-  }));
+    pollSitemap = (polls || []).map((poll) => ({
+      url: `${baseUrl}/polls/${poll.id}`,
+      lastModified: poll.updated_at ? new Date(poll.updated_at) : new Date('2026-02-01'),
+      changeFrequency: 'weekly',
+      priority: 0.6,
+    }));
+
+    // Fetch published ideas
+    const { data: ideas } = await supabase
+      .from('ideas')
+      .select('id, updated_at')
+      .in('status', ['published', 'under_review', 'planned', 'completed'])
+      .eq('is_public', true)
+      .order('created_at', { ascending: false });
+
+    ideaSitemap = (ideas || []).map((idea) => ({
+      url: `${baseUrl}/ideas/${idea.id}`,
+      lastModified: idea.updated_at ? new Date(idea.updated_at) : new Date('2026-02-01'),
+      changeFrequency: 'weekly',
+      priority: 0.6,
+    }));
+  } catch (error) {
+    // Supabase not configured (e.g., during build), return static routes only
+    console.warn('Supabase not available for sitemap generation:', error.message);
+  }
 
   return [...staticSitemap, ...pollSitemap, ...ideaSitemap];
 }

@@ -297,7 +297,7 @@ export default function PollsDynamic() {
             <div className="p-4 sm:p-6">
               <div className="flex justify-between items-start mb-6">
                 <h2 id="vote-modal-title" className="text-2xl font-bold text-navy">{selectedPoll.title}</h2>
-                <button onClick={() => setSelectedPoll(null)} aria-label="Close vote form" className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center">×</button>
+                <button onClick={() => setSelectedPoll(null)} aria-label="Close" className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center">×</button>
               </div>
 
               {selectedPoll.description && (
