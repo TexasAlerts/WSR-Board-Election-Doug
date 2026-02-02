@@ -23,7 +23,6 @@ export default function EndorsementsDynamic() {
         const data = await res.json();
         setEndorsements(Array.isArray(data.data) ? data.data : []);
       } catch (err) {
-        console.error(err);
       }
     }
     load();
@@ -67,7 +66,6 @@ export default function EndorsementsDynamic() {
         setSubmitMsg(data.error || 'Something went wrong. Please try again.');
       }
     } catch (err) {
-      console.error(err);
       setSubmitMsg('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);

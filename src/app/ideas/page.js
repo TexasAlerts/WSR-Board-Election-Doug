@@ -86,7 +86,6 @@ export default function IdeasPage() {
         setIdeas(data.data || []);
       }
     } catch (err) {
-      console.error('Error loading ideas:', err);
     } finally {
       setLoading(false);
     }
@@ -154,7 +153,6 @@ export default function IdeasPage() {
           loadIdeas();
         }
       } catch (err) {
-        console.error('Error removing support:', err);
       }
     } else {
       // Show support modal instead of prompt
@@ -189,7 +187,6 @@ export default function IdeasPage() {
         setSupportMsg(result.error || 'Error supporting idea');
       }
     } catch (err) {
-      console.error('Error supporting idea:', err);
       setSupportMsg('Error supporting idea. Please try again.');
     }
   }

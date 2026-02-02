@@ -114,12 +114,8 @@ export async function POST(request) {
       }
     }
 
-    // SMS sending would use Telnyx - placeholder for now
+    // SMS broadcasts not yet configured
     let smsSent = 0;
-    if (smsRecipients.length > 0) {
-      // TODO: Integrate Telnyx for SMS broadcasts
-      // For now, just count as 0 until Telnyx is configured
-    }
 
     // Log the broadcast to database
     const { data: broadcastRecord, error: dbError } = await supabase

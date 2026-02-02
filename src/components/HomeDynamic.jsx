@@ -20,7 +20,6 @@ export default function HomeDynamic() {
         setEndorsements(Array.isArray(endorseData.data) ? endorseData.data : []);
         setQuestions(Array.isArray(qnaData.data) ? qnaData.data : []);
       } catch (err) {
-        console.error('Error loading data', err);
       }
     }
     loadData();

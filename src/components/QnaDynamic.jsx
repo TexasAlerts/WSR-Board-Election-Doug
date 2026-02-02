@@ -17,7 +17,6 @@ export default function QnaDynamic() {
         const data = await res.json();
         setQuestions(Array.isArray(data.data) ? data.data : []);
       } catch (err) {
-        console.error('Error loading questions', err);
       } finally {
         setLoading(false);
       }
@@ -43,7 +42,6 @@ export default function QnaDynamic() {
         setError(data.error || 'Something went wrong. Please try again.');
       }
     } catch (err) {
-      console.error(err);
       setError('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
