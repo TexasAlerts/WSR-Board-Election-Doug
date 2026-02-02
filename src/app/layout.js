@@ -1,6 +1,7 @@
 import './globals.css';
 import StickyNav from '../components/StickyNav';
 import ErrorBoundary from '../components/ErrorBoundary';
+import GlobalErrorHandler from '../components/GlobalErrorHandler';
 import ScrollToTop from '../components/ScrollToTop';
 import Link from 'next/link';
 import Script from 'next/script';
@@ -211,6 +212,7 @@ export default function RootLayout({ children }) {
           </div>
         </div>
         </AuthProvider>
+        <GlobalErrorHandler />
         <Analytics />
         <SpeedInsights />
       </body>
