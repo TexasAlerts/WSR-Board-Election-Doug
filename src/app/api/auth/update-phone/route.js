@@ -47,7 +47,6 @@ export async function POST(request) {
       .eq('id', supporter.id);
 
     if (updateError) {
-      console.error('Update phone error:', updateError);
       return NextResponse.json({ ok: false, error: 'Failed to update phone' }, { status: 500 });
     }
 
@@ -72,7 +71,6 @@ export async function POST(request) {
 
     const smsResult = await sendVerificationSMS(validation.formatted, smsVerification);
     if (!smsResult.success) {
-      console.error('SMS send error:', smsResult.error);
       await logError({
         errorType: ErrorTypes.EXTERNAL_SERVICE,
         errorMessage: `SMS send failed for phone update: ${smsResult.error || 'unknown'}`,
@@ -94,7 +92,6 @@ export async function POST(request) {
       message: 'Phone updated. Verification code sent.',
     });
   } catch (err) {
-    console.error('Update phone error:', err);
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,
       errorMessage: err.message,

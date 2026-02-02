@@ -49,11 +49,11 @@ export async function POST(req) {
           email,
           'Thanks for your question',
           `Hi ${name},\n\nThanks for your question:\n${question}\n\nWe will follow up once it has been answered.\n\n--\nDoug Charles`
-        ).catch((err) => console.error('User email failed', err)),
+        ).catch(() => {}),
         sendNotificationEmail(
           'New question submitted',
           `Name: ${name}\nEmail: ${email}\nQuestion: ${question}`
-        ).catch((err) => console.error('Admin email failed', err))
+        ).catch(() => {})
       ]);
       return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {

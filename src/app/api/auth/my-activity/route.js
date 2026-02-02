@@ -37,7 +37,6 @@ export async function GET(request) {
         .range(offset, offset + limit - 1);
 
       if (error) {
-        console.error('Fetch votes error:', error);
         return NextResponse.json({ ok: false, error: 'Failed to fetch votes' }, { status: 500 });
       }
 
@@ -83,7 +82,6 @@ export async function GET(request) {
         .range(offset, offset + limit - 1);
 
       if (error) {
-        console.error('Fetch ideas error:', error);
         return NextResponse.json({ ok: false, error: 'Failed to fetch ideas' }, { status: 500 });
       }
 
@@ -111,7 +109,6 @@ export async function GET(request) {
         .range(offset, offset + limit - 1);
 
       if (error) {
-        console.error('Fetch comments error:', error);
         return NextResponse.json({ ok: false, error: 'Failed to fetch comments' }, { status: 500 });
       }
 
@@ -120,7 +117,6 @@ export async function GET(request) {
 
     return NextResponse.json({ ok: false, error: 'Invalid type. Use: votes, ideas, or comments' }, { status: 400 });
   } catch (err) {
-    console.error('My activity error:', err);
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

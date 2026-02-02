@@ -495,7 +495,7 @@ export default function SettingsPage() {
 
             {!phoneVerified && (
               <p className="text-xs text-gray-500 mt-2">
-                Text message notifications require a verified cell phone number. <a href="#" onClick={(e) => { e.preventDefault(); document.getElementById('settings-phone')?.focus(); }} className="text-navy underline">Update your phone above</a> to enable them.
+                Text message notifications require a verified cell phone number. <button type="button" onClick={() => document.getElementById('settings-phone')?.focus()} className="text-navy underline hover:text-navy-dark">Update your phone above</button> to enable them.
               </p>
             )}
 

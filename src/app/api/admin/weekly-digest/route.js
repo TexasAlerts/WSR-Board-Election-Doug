@@ -158,7 +158,6 @@ export async function POST(request) {
 
     return NextResponse.json({ ok: true, sent });
   } catch (err) {
-    console.error('Weekly digest error:', err);
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }

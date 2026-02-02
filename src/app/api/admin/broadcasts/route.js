@@ -110,7 +110,6 @@ export async function POST(request) {
           emailsSent++;
         } catch (err) {
           emailsFailed++;
-          console.error(`Failed to send to ${recipient.email}:`, err);
         }
       }
     }
@@ -137,7 +136,6 @@ export async function POST(request) {
       .single();
 
     if (dbError) {
-      console.error('Failed to log broadcast:', dbError);
     }
 
     // Log to audit trail

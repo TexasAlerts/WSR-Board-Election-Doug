@@ -126,7 +126,7 @@ export async function POST(request) {
           data.email,
           'Your idea has been published',
           `Hi ${data.name || ''},\n\nYour idea "${data.title}" has been published: ${site}/ideas${responseText}\n\nThank you for sharing!\n\n--\nDoug Charles`
-        ).catch((err) => console.error('User email failed', err));
+        ).catch(() => {});
       }
     } else if (action === 'reject') {
       const { data, error } = await supabase
@@ -175,7 +175,7 @@ export async function POST(request) {
           data.email,
           'Update on your idea submission',
           `Hi ${data.name || ''},\n\nThank you for submitting your idea "${data.title}". Unfortunately, we are unable to publish it at this time.${reasonText}\n\nIf you have questions, please feel free to reach out.\n\n--\nDoug Charles`
-        ).catch((err) => console.error('User email failed', err));
+        ).catch(() => {});
       }
     } else if (action === 'respond') {
       // Add admin response without changing status
@@ -195,7 +195,7 @@ export async function POST(request) {
           data.email,
           'Response to your idea',
           `Hi ${data.name || ''},\n\nDoug has responded to your idea "${data.title}":\n\n${admin_response}\n\nView your idea: ${site}/ideas\n\n--\nDoug Charles`
-        ).catch((err) => console.error('User email failed', err));
+        ).catch(() => {});
       }
     } else {
       return NextResponse.json({ ok: false, error: 'Invalid action' }, { status: 400 });

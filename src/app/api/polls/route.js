@@ -59,7 +59,6 @@ export async function GET(request) {
     .in('poll_id', pollIds);
 
   if (voteError) {
-    console.error('Error fetching vote counts:', voteError);
   }
 
   // Count votes per poll

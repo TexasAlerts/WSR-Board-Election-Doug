@@ -78,7 +78,6 @@ export async function POST(request) {
 
     return response;
   } catch (err) {
-    console.error('Verify voter error:', err);
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

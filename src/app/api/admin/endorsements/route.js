@@ -124,7 +124,7 @@ export async function POST(request) {
           data.email,
           'Your endorsement has been published',
           `Hi ${data.name || ''},\n\nYour endorsement is now live: ${site}/endorsements\n\nThank you for your support!\n\n--\nDoug Charles`
-        ).catch((err) => console.error('User email failed', err));
+        ).catch(() => {});
       }
     } else if (action === 'reject') {
       const { data, error } = await supabase
@@ -176,7 +176,7 @@ export async function POST(request) {
           data.email,
           'Update on your endorsement submission',
           `Hi ${data.name || ''},\n\nThank you for submitting an endorsement. Unfortunately, we are unable to publish it at this time.${reasonText}\n\nIf you have questions, please feel free to reach out.\n\n--\nDoug Charles`
-        ).catch((err) => console.error('User email failed', err));
+        ).catch(() => {});
       }
     } else {
       return NextResponse.json({ ok: false, error: 'Invalid action' }, { status: 400 });

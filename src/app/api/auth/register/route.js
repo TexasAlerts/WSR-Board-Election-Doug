@@ -126,7 +126,6 @@ export async function POST(request) {
       .single();
 
     if (createError) {
-      console.error('Create supporter error:', createError);
       if (createError.code === '23505') {
         return NextResponse.json(
           { ok: false, error: 'An account with this email already exists.' },
@@ -156,7 +155,6 @@ export async function POST(request) {
     );
 
     if (!emailResult.success) {
-      console.error('Failed to send verification email:', emailResult.error);
       // Don't fail registration, just log the error
     }
 
@@ -182,7 +180,6 @@ export async function POST(request) {
       supporterId: supporter.id,
     });
   } catch (err) {
-    console.error('Registration error:', err);
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,
       errorMessage: err.message,

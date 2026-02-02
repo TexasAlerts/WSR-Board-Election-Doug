@@ -40,7 +40,6 @@ export async function POST(request) {
 
     return response;
   } catch (err) {
-    console.error('Logout error:', err);
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,
       errorMessage: err.message,

@@ -124,7 +124,7 @@ export async function POST(req) {
           data.email,
           'Your question has been answered',
           `Hi ${data.name || ''},\n\nYour question has been published: ${site}/qna${answerText}\n\nThanks for reaching out!\n\n--\nDoug Charles`
-        ).catch((err) => console.error('User email failed', err));
+        ).catch(() => {});
       }
     } else if (action === 'reject') {
       const { data, error } = await supabase
@@ -173,7 +173,7 @@ export async function POST(req) {
           data.email,
           'Update on your question',
           `Hi ${data.name || ''},\n\nThank you for submitting your question. Unfortunately, we are unable to publish it at this time.${reasonText}\n\nIf you have other questions, please feel free to reach out.\n\n--\nDoug Charles`
-        ).catch((err) => console.error('User email failed', err));
+        ).catch(() => {});
       }
     } else {
       return NextResponse.json({ ok: false, error: 'Invalid action' }, { status: 400 });
