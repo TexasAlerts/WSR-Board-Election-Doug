@@ -7,9 +7,9 @@
 -- ============================================
 -- First, let's identify the superuser (you)
 -- Run this first to confirm who will be preserved:
-SELECT id, email, first_name, last_name, role, is_superuser
+SELECT id, email, first_name, last_name, role
 FROM supporters
-WHERE is_superuser = true;
+WHERE role = 'super_admin';
 
 -- ============================================
 -- STEP 2: Clear all poll-related data
@@ -62,7 +62,7 @@ DELETE FROM error_logs;
 -- Delete all verified voters who are NOT the superuser supporter
 DELETE FROM verified_voters
 WHERE email NOT IN (
-  SELECT email FROM supporters WHERE is_superuser = true
+  SELECT email FROM supporters WHERE role = 'super_admin'
 );
 
 -- ============================================
@@ -71,7 +71,7 @@ WHERE email NOT IN (
 
 -- Delete all supporters except the superuser
 DELETE FROM supporters
-WHERE is_superuser = false OR is_superuser IS NULL;
+WHERE role != 'super_admin' OR role IS NULL;
 
 -- ============================================
 -- STEP 8: Clear questions

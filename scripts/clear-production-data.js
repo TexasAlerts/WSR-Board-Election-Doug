@@ -39,8 +39,8 @@ function ask(question) {
 async function getSuperuser() {
   const { data, error } = await supabase
     .from('supporters')
-    .select('id, email, first_name, last_name, role, is_superuser')
-    .eq('is_superuser', true)
+    .select('id, email, first_name, last_name, role')
+    .eq('role', 'super_admin')
     .single();
 
   if (error) {
@@ -145,7 +145,7 @@ async function clearData(superuserEmail) {
 
   // Clear supporters (except superuser)
   console.log('Clearing supporters (except superuser)...');
-  ({ error } = await supabase.from('supporters').delete().eq('is_superuser', false));
+  ({ error } = await supabase.from('supporters').delete().neq('role', 'super_admin'));
   if (error) results.errors.push(`supporters: ${error.message}`);
   else results.success.push('supporters');
 
