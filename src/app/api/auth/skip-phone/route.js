@@ -1,3 +1,12 @@
+/**
+ * API Route: Skip Phone Verification
+ *
+ * Allows users to skip phone verification during registration and proceed with account.
+ * Creates session, sends welcome emails, and notifies admin.
+ * Authentication: None (uses supporter ID from request)
+ * Rate Limit: None
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { z } from 'zod';
@@ -9,6 +18,33 @@ const skipSchema = z.object({
   supporterId: z.string().uuid('Invalid supporter ID'),
 });
 
+/**
+ * POST /api/auth/skip-phone
+ * Skips phone verification and approves account without phone verification.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response with session cookie
+ *   - 200: { ok: true, message: "Account approved! You can update your phone number later in settings." }
+ *   - 400: { ok: false, error: "Phone verification not required for this account" }
+ *   - 404: { ok: false, error: "Account not found" }
+ *   - 500: { ok: false, error: "Failed to update account" | "Failed to create session" }
+ * @throws {Error} When database update or session creation fails
+ *
+ * Request body:
+ *   - supporterId: string (required) - UUID of supporter account
+ *
+ * Process:
+ *   1. Updates supporter status from 'pending_phone' to 'approved'
+ *   2. Sets phone_verified to false
+ *   3. Creates session for automatic login
+ *   4. Sends welcome email to user
+ *   5. Sends phone update reminder email
+ *   6. Notifies admin of new registration
+ *   7. Logs skip event and approval to audit trail
+ *
+ * Response cookies:
+ *   - session_token: HttpOnly session token for automatic login
+ */
 export async function POST(request) {
   const supabase = getSupabase();
   try {

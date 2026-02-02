@@ -1,13 +1,29 @@
 /**
- * SMS Service using Telnyx REST API
- * Requires TELNYX_API_KEY, TELNYX_PHONE_NUMBER, TELNYX_CAMPAIGN_ID, and TELNYX_TCR_ID environment variables
+ * SMS messaging service using Telnyx REST API.
+ * Handles SMS verification codes and broadcast messaging with A2P 10DLC compliance.
+ * Supports batched sending for bulk operations.
+ *
+ * @module smsService
+ * @requires TELNYX_API_KEY environment variable
+ * @requires TELNYX_PHONE_NUMBER environment variable
+ * @requires TELNYX_CAMPAIGN_ID environment variable (optional, for A2P 10DLC)
+ * @requires TELNYX_TCR_ID environment variable (optional, for A2P 10DLC)
  */
 
 /**
- * Send an SMS message via Telnyx REST API
- * @param {string} to - Recipient phone number in E.164 format
- * @param {string} message - Message content (160 char limit for single SMS)
- * @returns {Promise<{ success: boolean, messageId: string | null, error: string | null }>}
+ * Send an SMS message via Telnyx REST API.
+ * Automatically includes A2P 10DLC compliance fields if configured.
+ * Messages longer than 160 characters will be sent as concatenated SMS.
+ *
+ * @param {string} to - Recipient phone number in E.164 format (e.g., '+19725551234')
+ * @param {string} message - Message content (160 chars for single SMS, auto-concatenates if longer)
+ * @returns {Promise<{success: boolean, messageId: string|null, error: string|null}>} Result with success status and message ID
+ *
+ * @example
+ * const result = await sendSMS('+19725551234', 'Your verification code is 123456');
+ * if (!result.success) {
+ *   console.error('SMS failed:', result.error);
+ * }
  */
 export async function sendSMS(to, message) {
   const apiKey = process.env.TELNYX_API_KEY;
@@ -70,9 +86,16 @@ export async function sendSMS(to, message) {
 }
 
 /**
- * Send verification code via SMS
- * @param {string} phone - Phone number in E.164 format
- * @param {string} code - 6-digit verification code
+ * Send a verification code via SMS.
+ * Sends a formatted message with the code and expiration notice.
+ *
+ * @param {string} phone - Recipient phone number in E.164 format (e.g., '+19725551234')
+ * @param {string} code - 6-digit verification code to send
+ * @returns {Promise<{success: boolean, messageId: string|null, error: string|null}>} Result with success status and message ID
+ *
+ * @example
+ * const code = generateSMSCode(); // from auth.js
+ * const result = await sendVerificationSMS(supporter.phone, code);
  */
 export async function sendVerificationSMS(phone, code) {
   const message = `Your Doug Charles for Prosper verification code is: ${code}\n\nThis code expires in 10 minutes.`;
@@ -80,10 +103,18 @@ export async function sendVerificationSMS(phone, code) {
 }
 
 /**
- * Send broadcast SMS to multiple recipients
- * @param {string[]} phones - Array of phone numbers in E.164 format
- * @param {string} message - Message content
- * @returns {Promise<{ sent: number, failed: number, errors: string[] }>}
+ * Send a broadcast SMS to multiple recipients in batches.
+ * Automatically adds STOP instructions for compliance.
+ * Sends in batches of 10 with small delays to avoid rate limits.
+ *
+ * @param {string[]} phones - Array of recipient phone numbers in E.164 format
+ * @param {string} message - Message content to broadcast
+ * @returns {Promise<{sent: number, failed: number, errors: string[]}>} Delivery results summary
+ *
+ * @example
+ * const phones = supporters.map(s => s.phone).filter(Boolean);
+ * const result = await sendBroadcastSMS(phones, 'Campaign update: Vote tomorrow!');
+ * console.log(`Success: ${result.sent}, Failed: ${result.failed}`);
  */
 export async function sendBroadcastSMS(phones, message) {
   const results = {

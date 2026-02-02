@@ -1,9 +1,34 @@
+/**
+ * API Route: Admin Idea Moderation
+ *
+ * Handles idea submission retrieval and moderation actions (publish/reject/respond).
+ * Sends notification emails and allows admin responses without changing status.
+ * Authentication: Required (admin only)
+ * Rate Limit: None
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { sendEmail } from '../../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
+/**
+ * GET /api/admin/ideas
+ * Retrieves idea submissions for moderation.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, data: Idea[] }
+ *   - 401: { ok: false, error: "Unauthorized" }
+ *   - 500: { ok: false, error: "Server error" }
+ * @throws {Error} When database query fails
+ *
+ * Query parameters:
+ *   - status: string (optional) - Filter by idea status
+ *     Valid values: 'pending', 'published', 'declined', 'all'
+ *     Default: 'pending'
+ */
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
@@ -55,6 +80,40 @@ export async function GET(request) {
   }
 }
 
+/**
+ * POST /api/admin/ideas
+ * Publishes, rejects, or adds admin response to an idea submission.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true }
+ *   - 400: { ok: false, error: "Missing parameters" | "Invalid action" }
+ *   - 401: { ok: false, error: "Unauthorized" }
+ *   - 500: { ok: false, error: "Server error" }
+ * @throws {Error} When database update fails
+ *
+ * Request body:
+ *   - id: string (required) - Idea UUID
+ *   - action: string (required) - Action to perform ('publish', 'reject', or 'respond')
+ *   - admin_response: string (optional) - Admin's response/feedback
+ *   - rejection_reason: string (optional) - Reason for rejection
+ *
+ * Behavior on publish:
+ *   - Updates status to 'published'
+ *   - Stores optional admin response
+ *   - Sends publication email with response
+ *   - Logs action to audit trail
+ *
+ * Behavior on reject:
+ *   - Updates status to 'declined'
+ *   - Stores rejection reason as admin_response
+ *   - Sends rejection email
+ *   - Logs action to audit trail
+ *
+ * Behavior on respond:
+ *   - Adds admin response without changing status
+ *   - Sends notification email with response
+ */
 export async function POST(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {

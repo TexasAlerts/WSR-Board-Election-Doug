@@ -1,9 +1,34 @@
+/**
+ * API Route: Admin Endorsement Moderation
+ *
+ * Handles endorsement submission retrieval and approval/rejection actions.
+ * Sends notification emails to endorsers based on moderation decisions.
+ * Authentication: Required (admin only)
+ * Rate Limit: None
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { sendEmail } from '../../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
+/**
+ * GET /api/admin/endorsements
+ * Retrieves endorsement submissions for moderation.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, data: Endorsement[] }
+ *   - 401: { ok: false, error: "Unauthorized" }
+ *   - 500: { ok: false, error: "Server error" }
+ * @throws {Error} When database query fails
+ *
+ * Query parameters:
+ *   - status: string (optional) - Filter by endorsement status
+ *     Valid values: 'pending', 'approved', 'rejected', 'all'
+ *     Default: 'pending'
+ */
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
@@ -55,6 +80,35 @@ export async function GET(request) {
   }
 }
 
+/**
+ * POST /api/admin/endorsements
+ * Approves or rejects an endorsement submission.
+ * Sends notification email to the endorser and logs the action.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true }
+ *   - 400: { ok: false, error: "Missing parameters" | "Invalid action" }
+ *   - 401: { ok: false, error: "Unauthorized" }
+ *   - 500: { ok: false, error: "Server error" }
+ * @throws {Error} When database update fails
+ *
+ * Request body:
+ *   - id: string (required) - Endorsement UUID
+ *   - action: string (required) - Action to perform ('approve' or 'reject')
+ *   - rejection_reason: string (optional) - Reason for rejection
+ *
+ * Behavior on approve:
+ *   - Updates status to 'approved'
+ *   - Sends success email to endorser with link to public page
+ *   - Logs approval to audit trail
+ *
+ * Behavior on reject:
+ *   - Updates status to 'rejected'
+ *   - Stores rejection reason
+ *   - Sends rejection email with optional reason
+ *   - Logs rejection to audit trail
+ */
 export async function POST(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {

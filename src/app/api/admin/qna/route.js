@@ -1,9 +1,34 @@
+/**
+ * API Route: Admin Q&A Moderation
+ *
+ * Handles question submission retrieval and moderation (approve/reject with answers).
+ * Sends notification emails to question submitters.
+ * Authentication: Required (admin only)
+ * Rate Limit: None
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { sendEmail } from '../../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
+/**
+ * GET /api/admin/qna
+ * Retrieves Q&A submissions for moderation.
+ *
+ * @param {Request} req - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, data: Question[] }
+ *   - 401: { ok: false, error: "Unauthorized" }
+ *   - 500: { ok: false, error: "Server error" }
+ * @throws {Error} When database query fails
+ *
+ * Query parameters:
+ *   - status: string (optional) - Filter by question status
+ *     Valid values: 'pending', 'approved', 'rejected', 'all'
+ *     Default: 'pending'
+ */
 export async function GET(req) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
@@ -53,6 +78,36 @@ export async function GET(req) {
   }
 }
 
+/**
+ * POST /api/admin/qna
+ * Approves or rejects a question submission with optional answer.
+ *
+ * @param {Request} req - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true }
+ *   - 400: { ok: false, error: "Missing parameters" | "Invalid action" }
+ *   - 401: { ok: false, error: "Unauthorized" }
+ *   - 500: { ok: false, error: "Server error" }
+ * @throws {Error} When database update fails
+ *
+ * Request body:
+ *   - id: string (required) - Question UUID
+ *   - action: string (required) - Action to perform ('approve' or 'reject')
+ *   - answer: string (optional) - Admin's answer to the question
+ *   - rejection_reason: string (optional) - Reason for rejection
+ *
+ * Behavior on approve:
+ *   - Updates status to 'approved'
+ *   - Stores answer if provided
+ *   - Sends email with answer and link to Q&A page
+ *   - Logs action to audit trail
+ *
+ * Behavior on reject:
+ *   - Updates status to 'rejected'
+ *   - Stores rejection reason
+ *   - Sends rejection email
+ *   - Logs action to audit trail
+ */
 export async function POST(req) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {

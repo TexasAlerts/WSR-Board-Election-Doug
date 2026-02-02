@@ -1,12 +1,23 @@
 /**
- * Email Service using Resend
- * Requires RESEND_API_KEY environment variable
+ * Email service module using Resend API.
+ * Handles transactional emails including verification, notifications, and broadcasts.
+ * Uses lazy initialization of the Resend client to avoid build-time errors.
+ *
+ * @module emailService
+ * @requires RESEND_API_KEY environment variable
  */
 
 import { Resend } from 'resend';
 
 let resendClient = null;
 
+/**
+ * Get the singleton Resend client instance.
+ * Lazily initializes the client on first use.
+ *
+ * @private
+ * @returns {Resend|null} Resend client if API key is configured, null otherwise
+ */
 function getResendClient() {
   if (!resendClient && process.env.RESEND_API_KEY) {
     resendClient = new Resend(process.env.RESEND_API_KEY);
@@ -18,7 +29,20 @@ const FROM_EMAIL = 'Doug Charles Campaign <noreply@dougcharles.com>';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dougcharles.com';
 
 /**
- * Send email verification
+ * Send an email verification message to a new supporter.
+ * Includes a link to verify email and create password.
+ *
+ * @param {string} email - Recipient email address
+ * @param {string} name - Recipient's first name for personalization
+ * @param {string} token - Verification token to include in the link
+ * @returns {Promise<{success: boolean, error?: string, id?: string}>} Result with success status and message ID
+ *
+ * @example
+ * const result = await sendVerificationEmail(
+ *   supporter.email,
+ *   supporter.first_name,
+ *   verificationToken
+ * );
  */
 export async function sendVerificationEmail(email, name, token) {
   const client = getResendClient();
@@ -65,7 +89,19 @@ export async function sendVerificationEmail(email, name, token) {
 }
 
 /**
- * Send password reset email
+ * Send a password reset email with a time-limited reset link.
+ *
+ * @param {string} email - Recipient email address
+ * @param {string} name - Recipient's first name for personalization
+ * @param {string} token - Password reset token to include in the link
+ * @returns {Promise<{success: boolean, error?: string, id?: string}>} Result with success status and message ID
+ *
+ * @example
+ * const result = await sendPasswordResetEmail(
+ *   supporter.email,
+ *   supporter.first_name,
+ *   resetToken
+ * );
  */
 export async function sendPasswordResetEmail(email, name, token) {
   const client = getResendClient();
@@ -102,7 +138,15 @@ export async function sendPasswordResetEmail(email, name, token) {
 }
 
 /**
- * Send welcome email after account is approved
+ * Send a welcome email after a supporter account is approved.
+ * Includes information about supporter benefits and next steps.
+ *
+ * @param {string} email - Recipient email address
+ * @param {string} name - Recipient's first name for personalization
+ * @returns {Promise<{success: boolean, error?: string, id?: string}>} Result with success status and message ID
+ *
+ * @example
+ * await sendWelcomeEmail(supporter.email, supporter.first_name);
  */
 export async function sendWelcomeEmail(email, name) {
   const client = getResendClient();
@@ -143,7 +187,23 @@ export async function sendWelcomeEmail(email, name) {
 }
 
 /**
- * Send comment approved notification
+ * Notify a user that their comment has been approved and is now visible.
+ *
+ * @param {string} email - Recipient email address
+ * @param {string} name - Recipient's first name for personalization
+ * @param {string} commentPreview - Preview of the approved comment (truncated)
+ * @param {string} contextTitle - Title of the poll or idea commented on
+ * @param {string} contextUrl - URL to view the comment in context
+ * @returns {Promise<{success: boolean, error?: string, id?: string}>} Result with success status and message ID
+ *
+ * @example
+ * await sendCommentApprovedEmail(
+ *   comment.email,
+ *   comment.name,
+ *   comment.content.substring(0, 100),
+ *   poll.title,
+ *   `/polls/${poll.id}`
+ * );
  */
 export async function sendCommentApprovedEmail(email, name, commentPreview, contextTitle, contextUrl) {
   const client = getResendClient();
@@ -176,7 +236,19 @@ export async function sendCommentApprovedEmail(email, name, commentPreview, cont
 }
 
 /**
- * Send comment rejected notification
+ * Notify a user that their comment was not approved for posting.
+ *
+ * @param {string} email - Recipient email address
+ * @param {string} name - Recipient's first name for personalization
+ * @param {string} reason - Optional reason for rejection
+ * @returns {Promise<{success: boolean, error?: string, id?: string}>} Result with success status and message ID
+ *
+ * @example
+ * await sendCommentRejectedEmail(
+ *   comment.email,
+ *   comment.name,
+ *   'Comment contained inappropriate content'
+ * );
  */
 export async function sendCommentRejectedEmail(email, name, reason) {
   const client = getResendClient();
@@ -498,10 +570,26 @@ export async function sendWeeklyDigestEmail(email, name, digestData, unsubscribe
 }
 
 /**
- * Send broadcast email to multiple recipients
- * @param {string} subject - Email subject
- * @param {string} htmlBody - HTML content
- * @param {Array<{email: string, name: string}>} recipients - Array of recipients
+ * Send a broadcast email to multiple recipients in batches.
+ * Uses Resend's batch API for efficient delivery (max 100 per request).
+ * Automatically includes unsubscribe link in each email.
+ *
+ * @param {string} subject - Email subject line
+ * @param {string} htmlBody - HTML content of the email body
+ * @param {Array<{email: string, name: string}>} recipients - Array of recipient objects
+ * @returns {Promise<{sent: number, failed: number, errors: string[]}>} Delivery results
+ *
+ * @example
+ * const recipients = supporters.map(s => ({
+ *   email: s.email,
+ *   name: s.first_name
+ * }));
+ * const result = await sendBroadcastEmail(
+ *   'Campaign Update',
+ *   '<h1>Important News</h1><p>Details here...</p>',
+ *   recipients
+ * );
+ * console.log(`Sent: ${result.sent}, Failed: ${result.failed}`);
  */
 export async function sendBroadcastEmail(subject, htmlBody, recipients) {
   const client = getResendClient();

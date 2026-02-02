@@ -1,3 +1,12 @@
+/**
+ * API Route: Update Phone Number
+ *
+ * Updates user's phone number and sends SMS verification code.
+ * Marks phone as unverified until code is confirmed.
+ * Authentication: Required (session token)
+ * Rate Limit: None (but SMS sending has its own limits)
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, createSMSVerification } from '../../../../lib/auth';
@@ -10,6 +19,33 @@ const updatePhoneSchema = z.object({
   phone: z.string().min(10, 'Phone number is required'),
 });
 
+/**
+ * POST /api/auth/update-phone
+ * Updates authenticated user's phone number and initiates verification.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, smsSent: true, message: "Phone updated. Verification code sent." }
+ *   - 200: { ok: true, smsSent: false, message: "Phone updated but verification code could not be sent..." }
+ *   - 400: { ok: false, error: "Validation error" }
+ *   - 401: { ok: false, error: "Not authenticated" }
+ *   - 500: { ok: false, error: "Failed to update phone" | "Failed to create verification code" }
+ * @throws {Error} When database update or SMS sending fails
+ *
+ * Request body:
+ *   - phone: string (required, min 10 chars) - New phone number
+ *
+ * Process:
+ *   1. Validates phone number format
+ *   2. Updates phone number in database
+ *   3. Sets phone_verified to false
+ *   4. Clears phone_verified_at timestamp
+ *   5. Creates SMS verification code
+ *   6. Sends verification SMS
+ *   7. Logs phone update to audit trail
+ *
+ * Note: Phone is updated even if SMS fails, allowing user to retry verification
+ */
 export async function POST(request) {
   const supabase = getSupabase();
   try {

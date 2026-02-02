@@ -1,8 +1,42 @@
+/**
+ * API Route: Admin Authentication
+ *
+ * Handles admin login authentication using password-based verification.
+ * Creates secure admin session cookie on successful authentication.
+ * Authentication: None (public endpoint for admin login)
+ * Rate Limit: 3 attempts per 5 minutes per IP
+ */
+
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { createAdminSession } from '../../../../lib/admin-session';
 import { rateLimit } from '../../../../lib/rateLimit';
 
+/**
+ * POST /api/admin/login
+ * Authenticates admin user and creates a secure session.
+ *
+ * @param {Request} req - Next.js request object
+ * @returns {Promise<Response>} JSON response with session cookie
+ *   - 200: { ok: true } (with admin_session cookie set)
+ *   - 401: { ok: false } (invalid credentials)
+ *   - 429: { ok: false, error: "Too many login attempts..." }
+ *   - 500: { ok: false, error: "Admin login not configured" }
+ * @throws {Error} When admin password hash is not configured
+ *
+ * Request body:
+ *   - password: string (required) - Admin password
+ *
+ * Response cookies:
+ *   - admin_session: HttpOnly session token (8 hour expiry)
+ *     - Secure flag enabled in production
+ *     - SameSite: lax
+ *
+ * Security features:
+ *   - Rate limited to prevent brute force attacks
+ *   - Password compared against bcrypt hash
+ *   - Session token stored in HttpOnly cookie
+ */
 export async function POST(req) {
   // Rate limit: 3 attempts per 5 minutes per IP
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';

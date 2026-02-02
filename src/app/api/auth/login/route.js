@@ -1,3 +1,12 @@
+/**
+ * API Route: User Login
+ *
+ * Handles user authentication with email and password.
+ * Validates account status, creates session, and logs authentication events.
+ * Authentication: None (public endpoint)
+ * Rate Limit: 10 attempts per 15 minutes per IP
+ */
+
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { rateLimit } from '../../../../lib/rateLimit';
@@ -9,6 +18,43 @@ const loginSchema = z.object({
   password: z.string().min(1, 'Password is required'),
 });
 
+/**
+ * POST /api/auth/login
+ * Authenticates a user with email and password.
+ * Validates account status and creates a secure session.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response with session cookie
+ *   - 200: { ok: true, message: "Login successful", supporter: {...} }
+ *   - 400: { ok: false, error: "Validation error" }
+ *   - 401: { ok: false, error: "Invalid email or password" }
+ *   - 403: { ok: false, error: "Account status issue" }
+ *   - 429: { ok: false, error: "Too many login attempts..." }
+ *   - 500: { ok: false, error: "Failed to create session" }
+ * @throws {Error} When session creation or database operations fail
+ *
+ * Request body:
+ *   - email: string (required) - User email address
+ *   - password: string (required) - User password
+ *
+ * Response cookies:
+ *   - session_token: HttpOnly session token
+ *     - Secure in production
+ *     - SameSite: lax
+ *     - Expires based on session expiry
+ *
+ * Account status handling:
+ *   - suspended: Returns 403 with suspension message
+ *   - pending_email: Returns 403 requiring email verification
+ *   - pending_phone: Returns 403 with requiresPhoneVerification flag
+ *   - active: Proceeds with login
+ *
+ * Security features:
+ *   - Rate limited to prevent brute force attacks
+ *   - Password verified using bcrypt
+ *   - All login attempts logged to audit trail
+ *   - Failed attempts logged with reasons
+ */
 export async function POST(request) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
@@ -31,11 +77,11 @@ export async function POST(request) {
 
     const { email, password } = parsed.data;
 
-    // Get supporter
+    // Get supporter by email (case-insensitive)
     const supporter = await getSupporterByEmail(email);
 
     if (!supporter) {
-      // Log failed attempt
+      // Log failed attempt (invalid user)
       await logAudit({
         eventType: AuditEvents.LOGIN_FAILED,
         details: { email, reason: 'User not found' },

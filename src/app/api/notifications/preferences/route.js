@@ -1,3 +1,12 @@
+/**
+ * API Route: Notification Preferences Management
+ *
+ * Handles retrieval and updating of user notification preferences for email and SMS.
+ * Supports both authenticated supporters and verified voters.
+ * Authentication: Required (supporter or verified voter session)
+ * Rate Limit: None
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, getVerifiedVoter } from '../../../../lib/auth';
@@ -22,6 +31,30 @@ const ALL_PREF_FIELDS = [
 
 const DEFAULTS = Object.fromEntries(ALL_PREF_FIELDS.map((f) => [f, true]));
 
+/**
+ * GET /api/notifications/preferences
+ * Retrieves the current notification preferences for the authenticated user.
+ * Returns default preferences (all enabled) if no custom preferences exist.
+ *
+ * @param {Request} req - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, data: NotificationPreferences }
+ *   - 401: { ok: false, error: "Not authenticated" }
+ *
+ * Response data includes:
+ *   - email_on_comment_moderation: boolean
+ *   - email_on_new_comment: boolean
+ *   - email_on_new_reply: boolean
+ *   - email_on_weekly_digest: boolean
+ *   - email_on_new_poll: boolean
+ *   - email_on_broadcast: boolean
+ *   - email_on_system: boolean
+ *   - sms_on_new_poll: boolean
+ *   - sms_on_comment_activity: boolean
+ *   - sms_on_new_idea: boolean
+ *   - sms_on_broadcast: boolean
+ *   - sms_on_system: boolean
+ */
 export async function GET() {
   const supabase = getSupabase();
   const supporter = await getCurrentSupporter();
@@ -39,14 +72,42 @@ export async function GET() {
     .single();
 
   if (error || !data) {
+    // Return defaults if no preferences record exists yet
     return NextResponse.json({ ok: true, data: DEFAULTS });
   }
 
-  // Fill in defaults for any missing columns (backward compat)
+  // Fill in defaults for any missing columns (backward compatibility)
   const merged = { ...DEFAULTS, ...data };
   return NextResponse.json({ ok: true, data: merged });
 }
 
+/**
+ * PATCH /api/notifications/preferences
+ * Updates notification preferences for the authenticated user.
+ * Uses upsert to create preferences record if it doesn't exist.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true }
+ *   - 400: { ok: false, error: "No valid fields to update" }
+ *   - 401: { ok: false, error: "Not authenticated" }
+ *   - 500: { ok: false, error: "Failed to update preferences" }
+ * @throws {Error} When database update fails
+ *
+ * Request body (all fields optional, only booleans accepted):
+ *   - email_on_comment_moderation: boolean
+ *   - email_on_new_comment: boolean
+ *   - email_on_new_reply: boolean
+ *   - email_on_weekly_digest: boolean
+ *   - email_on_new_poll: boolean
+ *   - email_on_broadcast: boolean
+ *   - email_on_system: boolean
+ *   - sms_on_new_poll: boolean
+ *   - sms_on_comment_activity: boolean
+ *   - sms_on_new_idea: boolean
+ *   - sms_on_broadcast: boolean
+ *   - sms_on_system: boolean
+ */
 export async function PATCH(request) {
   const supabase = getSupabase();
   const supporter = await getCurrentSupporter();
@@ -60,6 +121,7 @@ export async function PATCH(request) {
   try {
     const body = await request.json();
     const updates = {};
+    // Only accept boolean values for preference fields
     for (const field of ALL_PREF_FIELDS) {
       if (typeof body[field] === 'boolean') {
         updates[field] = body[field];

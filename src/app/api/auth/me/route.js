@@ -1,6 +1,44 @@
+/**
+ * API Route: Current User Profile
+ *
+ * Returns the currently authenticated user's profile information.
+ * Used by client to check authentication status and get user data.
+ * Authentication: Optional (returns authenticated: false if not logged in)
+ * Rate Limit: None
+ */
+
 import { NextResponse } from 'next/server';
 import { getCurrentSupporter } from '../../../../lib/auth';
 
+/**
+ * GET /api/auth/me
+ * Retrieves the current user's profile data.
+ * Returns authenticated: false if no valid session exists (200 status to avoid console errors).
+ *
+ * @param {Request} req - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, authenticated: true, supporter: {...} }
+ *   - 200: { ok: true, authenticated: false } (no session)
+ *   - 500: { ok: false, error: "An unexpected error occurred" }
+ *
+ * Response supporter object includes:
+ *   - id: string
+ *   - first_name: string
+ *   - last_name: string
+ *   - email: string
+ *   - email_verified_at: timestamp | null
+ *   - phone: string | null
+ *   - phone_verified: boolean
+ *   - street_address: string
+ *   - city: string
+ *   - state: string
+ *   - zip_code: string
+ *   - role: string
+ *   - status: string
+ *
+ * Note: Returns 200 (not 401) for unauthenticated requests to prevent
+ * browser console errors. Client checks 'authenticated' field.
+ */
 export async function GET() {
   try {
     const supporter = await getCurrentSupporter();

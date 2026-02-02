@@ -1,3 +1,12 @@
+/**
+ * API Route: Comments Management
+ *
+ * Handles comment retrieval and submission for polls and ideas.
+ * Supports threaded replies, vote counts, and moderation workflow.
+ * Authentication: Optional for GET (shows user votes), Required for POST
+ * Rate Limit: 10 comments per minute per IP for POST
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../lib/supabase';
 import { getCurrentSupporter } from '../../../lib/auth';
@@ -8,7 +17,29 @@ import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/loggin
 import { sanitizeText } from '../../../lib/sanitize';
 import { getUserDisplayName } from '../../../lib/formatDisplayName';
 
-// GET: Fetch comments for a poll or idea
+/**
+ * GET /api/comments
+ * Retrieves approved comments for a poll or idea with threading support.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, data: Comment[] }
+ *   - 400: { ok: false, error: "poll_id or idea_id required" }
+ *   - 500: { ok: false, error: "Server error" }
+ *
+ * Query parameters:
+ *   - poll_id: string (optional) - Poll UUID (required if no idea_id)
+ *   - idea_id: string (optional) - Idea UUID (required if no poll_id)
+ *   - parent_id: string (optional) - Parent comment UUID for replies
+ *
+ * Response data includes:
+ *   - Comment fields (id, display_name, content, created_at, upvotes, downvotes, parent_id)
+ *   - user_vote: 'up' | 'down' | null (if authenticated)
+ *   - reply_count: number of direct replies
+ *   - is_own: boolean (if user is comment author)
+ *
+ * Note: Only returns approved comments. Ordered chronologically ascending.
+ */
 export async function GET(request) {
   const supabase = getSupabase();
   const { searchParams } = new URL(request.url);
@@ -101,7 +132,41 @@ export async function GET(request) {
   return NextResponse.json({ ok: true, data: commentsWithVotes });
 }
 
-// POST: Create a new comment (supporters only)
+/**
+ * POST /api/comments
+ * Creates a new comment on a poll or idea (requires moderation approval).
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 201: { ok: true, message: "Comment submitted for approval", data: Comment }
+ *   - 400: { ok: false, error: "Validation error" }
+ *   - 401: { ok: false, error: "Please sign in to comment" }
+ *   - 404: { ok: false, error: "Parent comment not found" }
+ *   - 429: { ok: false, error: "Too many comments. Please wait." }
+ *   - 500: { ok: false, error: "Failed to post comment" }
+ * @throws {Error} When database insertion fails
+ *
+ * Request body:
+ *   - poll_id: string (optional) - Poll UUID (required if no idea_id)
+ *   - idea_id: string (optional) - Idea UUID (required if no poll_id)
+ *   - parent_id: string (optional) - Parent comment UUID for replies
+ *   - content: string (required, 1-2000 chars) - Comment text
+ *
+ * Process:
+ *   1. Validates supporter is authenticated
+ *   2. Sanitizes comment content
+ *   3. Verifies parent comment exists (if replying)
+ *   4. Creates comment with status='pending'
+ *   5. Generates display name from user info
+ *   6. Sends admin notification email
+ *   7. Logs comment creation to audit trail
+ *
+ * Security features:
+ *   - Rate limited to 10 comments per minute
+ *   - Content sanitized to prevent XSS
+ *   - Requires moderation before display
+ *   - Validates parent comment on same poll/idea
+ */
 export async function POST(request) {
   const supabase = getSupabase();
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';

@@ -1,3 +1,12 @@
+/**
+ * API Route: Verify Phone Number Update
+ *
+ * Verifies SMS code after phone number update from user settings.
+ * Marks phone as verified upon successful code validation.
+ * Authentication: Required (session token)
+ * Rate Limit: None (but tracks attempts for security)
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, validateSMSCode, incrementSMSAttempt } from '../../../../lib/auth';
@@ -8,6 +17,34 @@ const verifySchema = z.object({
   code: z.string().length(6, 'Code must be 6 digits').regex(/^\d+$/, 'Code must be numeric'),
 });
 
+/**
+ * POST /api/auth/verify-phone-update
+ * Verifies SMS code to confirm phone number update.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, message: "Phone verified successfully!" }
+ *   - 400: { ok: false, error: "Invalid code or validation error" }
+ *   - 401: { ok: false, error: "Not authenticated" }
+ *   - 500: { ok: false, error: "Failed to verify phone" }
+ * @throws {Error} When database update fails
+ *
+ * Request body:
+ *   - code: string (required, exactly 6 numeric digits)
+ *
+ * Process:
+ *   1. Validates SMS code against stored verification
+ *   2. Checks code expiry and attempt limits
+ *   3. Updates phone_verified to true
+ *   4. Sets phone_verified_at timestamp
+ *   5. Logs verification to audit trail
+ *   6. Increments attempt counter on failed validation
+ *
+ * Code validation checks:
+ *   - Code matches stored value
+ *   - Code has not expired (typically 10 minutes)
+ *   - Attempt limit not exceeded
+ */
 export async function POST(request) {
   const supabase = getSupabase();
   try {

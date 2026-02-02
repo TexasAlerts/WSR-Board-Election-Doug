@@ -1,9 +1,29 @@
+/**
+ * Phone number validation and formatting module using libphonenumber-js.
+ * Validates and formats US phone numbers to E.164 international format.
+ *
+ * @module phoneValidation
+ */
+
 import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js';
 
 /**
- * Validate a US phone number
- * @param {string} phone - The phone number to validate
- * @returns {{ valid: boolean, formatted: string | null, error: string | null }}
+ * Validate and format a US phone number to E.164 format.
+ * Checks if the number is a valid US phone number and returns it in standardized format.
+ *
+ * @param {string} phone - The phone number to validate (any common format accepted)
+ * @returns {{valid: boolean, formatted: string|null, error: string|null}} Validation result
+ * @returns {boolean} return.valid - Whether the phone number is valid
+ * @returns {string|null} return.formatted - Phone in E.164 format (+1XXXXXXXXXX) if valid
+ * @returns {string|null} return.error - Error message if validation failed
+ *
+ * @example
+ * const result = validatePhoneNumber('(972) 555-1234');
+ * if (result.valid) {
+ *   console.log(result.formatted); // '+19725551234'
+ * } else {
+ *   console.error(result.error);
+ * }
  */
 export function validatePhoneNumber(phone) {
   if (!phone || typeof phone !== 'string') {
@@ -30,9 +50,15 @@ export function validatePhoneNumber(phone) {
 }
 
 /**
- * Format phone number for display
- * @param {string} e164Phone - Phone in E.164 format
- * @returns {string} Formatted phone like (972) 555-1234
+ * Format a phone number in E.164 format to a human-readable display format.
+ * Converts international format to national format for better readability.
+ *
+ * @param {string} e164Phone - Phone number in E.164 format (e.g., '+19725551234')
+ * @returns {string} Formatted phone in national format (e.g., '(972) 555-1234'), or original input if parsing fails
+ *
+ * @example
+ * const display = formatPhoneForDisplay('+19725551234');
+ * console.log(display); // '(972) 555-1234'
  */
 export function formatPhoneForDisplay(e164Phone) {
   if (!e164Phone) return '';

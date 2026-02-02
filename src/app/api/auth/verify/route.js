@@ -1,3 +1,12 @@
+/**
+ * API Route: Email Verification and Password Setup
+ *
+ * Handles email verification during registration, sets initial password, and initiates SMS verification.
+ * GET validates token, POST completes verification and advances to phone verification step.
+ * Authentication: None (uses token from email)
+ * Rate Limit: None (tokens are time-limited and single-use)
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { z } from 'zod';
@@ -10,7 +19,21 @@ import {
 import { sendVerificationSMS } from '../../../../lib/smsService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
-// GET: Check if token is valid
+/**
+ * GET /api/auth/verify
+ * Validates email verification token to ensure it's still valid.
+ * Called when verification page loads.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, supporter: {...} }
+ *   - 400: { ok: false, error: "Token required" | "Invalid or expired verification link" }
+ *
+ * Query parameters:
+ *   - token: string (required) - Email verification token from registration email
+ *
+ * Response supporter object includes id, email, firstName, status
+ */
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const token = searchParams.get('token');
@@ -39,7 +62,34 @@ export async function GET(request) {
   });
 }
 
-// POST: Verify email and set password
+/**
+ * POST /api/auth/verify
+ * Completes email verification by setting password and advancing to phone verification.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, message: "Email verified! Please check your phone...", supporterId, requiresPhoneVerification: true }
+ *   - 400: { ok: false, error: "Validation error or token invalid" }
+ *   - 500: { ok: false, error: "Failed to update account" }
+ * @throws {Error} When database update fails
+ *
+ * Request body:
+ *   - token: string (required) - Email verification token
+ *   - password: string (required) - Initial password
+ *     - Minimum 8 characters
+ *     - Must contain uppercase letter
+ *     - Must contain lowercase letter
+ *     - Must contain number
+ *
+ * Process:
+ *   1. Validates email verification token
+ *   2. Checks account is in 'pending_email' status
+ *   3. Hashes password using bcrypt
+ *   4. Updates account: sets password, marks email verified, status='pending_phone'
+ *   5. Marks verification token as used
+ *   6. Creates and sends SMS verification code
+ *   7. Logs email verification and password creation events
+ */
 const verifySchema = z.object({
   token: z.string().min(1, 'Token required'),
   password: z

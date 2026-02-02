@@ -1,3 +1,12 @@
+/**
+ * API Route: Password Reset Completion
+ *
+ * Handles password reset token validation and password update operations.
+ * Provides both token validation (GET) and password reset completion (POST).
+ * Authentication: None (uses reset token for authentication)
+ * Rate Limit: None (tokens are time-limited and single-use)
+ */
+
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import {
@@ -9,7 +18,20 @@ import {
 } from '../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
-// GET - Validate token (for page load)
+/**
+ * GET /api/auth/reset-password
+ * Validates a password reset token to ensure it's valid and not expired.
+ * Called when the password reset page loads.
+ *
+ * @param {Request} req - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true }
+ *   - 400: { ok: false, error: "Invalid or expired reset link..." }
+ *   - 500: { ok: false, error: "Failed to validate token" }
+ *
+ * Query parameters:
+ *   - token: string (required) - Password reset token from email
+ */
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const token = searchParams.get('token');
@@ -47,7 +69,32 @@ export async function GET(req) {
   }
 }
 
-// POST - Reset password
+/**
+ * POST /api/auth/reset-password
+ * Completes the password reset by updating the user's password.
+ * Validates the reset token, updates the password, and invalidates all existing sessions.
+ *
+ * @param {Request} req - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, message: "Password has been reset successfully..." }
+ *   - 400: { ok: false, error: "Validation error or invalid token" }
+ *   - 500: { ok: false, error: "Failed to reset password. Please try again." }
+ * @throws {Error} When password update fails or database errors occur
+ *
+ * Request body:
+ *   - token: string (required) - Password reset token
+ *   - password: string (required) - New password
+ *     - Minimum 8 characters
+ *     - Must contain uppercase letter
+ *     - Must contain lowercase letter
+ *     - Must contain number
+ *
+ * Security features:
+ *   - Token is marked as used after successful reset
+ *   - All existing sessions are deleted for security
+ *   - Password is hashed before storage
+ *   - Action is logged to audit trail
+ */
 export async function POST(req) {
   try {
     const schema = z.object({
@@ -72,7 +119,7 @@ export async function POST(req) {
 
     const { token, password } = parsed.data;
 
-    // Validate token
+    // Validate token and ensure it hasn't been used
     const verification = await validateEmailVerification(token, 'password_reset');
 
     if (!verification) {

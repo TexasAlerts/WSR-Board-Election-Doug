@@ -1,3 +1,12 @@
+/**
+ * API Route: Admin Comment Moderation
+ *
+ * Handles comment moderation queue retrieval and approval/rejection actions.
+ * Supports filtering by status and includes contextual information (poll/idea titles).
+ * Authentication: Required (admin only)
+ * Rate Limit: None
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
@@ -5,6 +14,28 @@ import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/log
 import { sendCommentApprovedEmail, sendCommentRejectedEmail } from '../../../../lib/emailService';
 import { notifyParticipantsOfNewComment, notifyParentCommentAuthor } from '../../../../lib/notifications';
 
+/**
+ * GET /api/admin/comments
+ * Retrieves comments for moderation with contextual information.
+ * Returns poll and idea titles for each comment to provide context.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, data: Comment[] }
+ *   - 401: { ok: false, error: "Unauthorized" }
+ *   - 500: { ok: false, error: "Server error" }
+ * @throws {Error} When database query fails
+ *
+ * Query parameters:
+ *   - status: string (optional) - Filter by comment status
+ *     Valid values: 'pending', 'approved', 'rejected', 'all'
+ *     Default: 'pending'
+ *
+ * Response data includes:
+ *   - Comment fields (id, name, email, content, status, upvotes, downvotes, etc.)
+ *   - poll_title: string (if comment is on a poll)
+ *   - idea_title: string (if comment is on an idea)
+ */
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
@@ -55,7 +86,7 @@ export async function GET(request) {
       return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
-    // Get poll and idea titles for context
+    // Get poll and idea titles for context to display in moderation interface
     const pollIds = [...new Set(data.filter(c => c.poll_id).map(c => c.poll_id))];
     const ideaIds = [...new Set(data.filter(c => c.idea_id).map(c => c.idea_id))];
 
@@ -104,6 +135,37 @@ export async function GET(request) {
   }
 }
 
+/**
+ * PUT /api/admin/comments
+ * Approves or rejects a comment and sends notification emails.
+ * Triggers participant notifications on approval.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true }
+ *   - 400: { ok: false, error: "Validation error message" }
+ *   - 401: { ok: false, error: "Unauthorized" }
+ *   - 500: { ok: false, error: "Server error" }
+ * @throws {Error} When database update fails
+ *
+ * Request body:
+ *   - id: string (required) - Comment UUID
+ *   - status: string (required) - New status ('approved' or 'rejected')
+ *   - rejection_reason: string (optional) - Reason for rejection (used if status='rejected')
+ *
+ * Behavior on approval:
+ *   - Updates comment status to 'approved'
+ *   - Sends approval email to comment author
+ *   - Notifies other participants in the discussion
+ *   - Notifies parent comment author if it's a reply
+ *   - Logs action to audit trail
+ *
+ * Behavior on rejection:
+ *   - Updates comment status to 'rejected'
+ *   - Stores rejection reason
+ *   - Sends rejection email to comment author
+ *   - Logs action to audit trail
+ */
 export async function PUT(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
@@ -124,7 +186,7 @@ export async function PUT(request) {
       return NextResponse.json({ ok: false, error: 'Invalid status' }, { status: 400 });
     }
 
-    // Get old comment for audit
+    // Get old comment for audit trail and notification emails
     const { data: oldComment } = await supabase
       .from('comments')
       .select('status, name, email, content, poll_id, idea_id')

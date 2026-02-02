@@ -1,7 +1,48 @@
+/**
+ * API Route: User Activity History
+ *
+ * Retrieves a user's activity history including votes, ideas, and comments.
+ * Supports pagination and filtering by activity type.
+ * Authentication: Required (session token)
+ * Rate Limit: None
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter } from '../../../../lib/auth';
 
+/**
+ * GET /api/auth/my-activity
+ * Retrieves the authenticated user's activity history.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, data: Activity[], type: string }
+ *   - 400: { ok: false, error: "Invalid type..." }
+ *   - 401: { ok: false, error: "Not authenticated" }
+ *   - 500: { ok: false, error: "Failed to fetch..." }
+ * @throws {Error} When database query fails
+ *
+ * Query parameters:
+ *   - type: string (optional) - Type of activity to retrieve
+ *     Valid values: 'votes', 'ideas', 'comments'
+ *     Default: 'votes'
+ *   - limit: number (optional) - Max number of results (max 100)
+ *     Default: 50
+ *   - offset: number (optional) - Pagination offset
+ *     Default: 0
+ *
+ * Response data by type:
+ *   - votes: Poll votes with poll details
+ *     - Includes both supporter_id and voter_email matches
+ *     - Deduplicates by poll_id
+ *     - Includes vote_data, other_text, poll title/status/type
+ *   - ideas: Ideas submitted by user
+ *     - Includes title, category, status, admin_response, vote counts
+ *   - comments: Comments posted by user
+ *     - Includes content, status, upvotes/downvotes, parent_id
+ *     - Includes associated poll or idea titles
+ */
 export async function GET(request) {
   const supabase = getSupabase();
   try {
@@ -40,7 +81,7 @@ export async function GET(request) {
         return NextResponse.json({ ok: false, error: 'Failed to fetch votes' }, { status: 500 });
       }
 
-      // Also check voter_email for legacy votes
+      // Also check voter_email for legacy votes (from before supporter accounts)
       const { data: emailVotes, error: emailError } = await supabase
         .from('poll_votes')
         .select(`
@@ -62,7 +103,7 @@ export async function GET(request) {
         .range(offset, offset + limit - 1);
 
       const allVotes = [...(data || []), ...(emailError ? [] : emailVotes || [])];
-      // Deduplicate by poll_id
+      // Deduplicate by poll_id to avoid showing same poll twice
       const seen = new Set();
       const unique = allVotes.filter((v) => {
         if (seen.has(v.poll_id)) return false;

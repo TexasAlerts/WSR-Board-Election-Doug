@@ -1,7 +1,11 @@
 /**
- * Notification trigger helpers.
- * Called from admin moderation and comment creation routes.
+ * Notification orchestration module.
+ * Handles triggering email notifications for comments, replies, and participant updates.
+ * Respects user notification preferences and unsubscribe tokens.
+ *
+ * @module notifications
  */
+
 import { getSupabase } from './supabase';
 import { sendNewCommentNotificationEmail, sendNewReplyNotificationEmail } from './emailService';
 import { getUserDisplayName } from './formatDisplayName';
@@ -9,7 +13,22 @@ import { getUserDisplayName } from './formatDisplayName';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dougcharles.com';
 
 /**
- * Notify participants when a comment is approved on a poll or idea.
+ * Notify all participants when a new comment is approved on a poll or idea.
+ * Finds voters and commenters, checks their notification preferences, and sends emails.
+ * Excludes the comment author from notifications.
+ *
+ * @param {Object} comment - The approved comment object
+ * @param {string} comment.poll_id - Poll ID if comment is on a poll
+ * @param {string} comment.idea_id - Idea ID if comment is on an idea
+ * @param {string} comment.email - Email of comment author (excluded from notifications)
+ * @param {string} comment.display_name - Display name of commenter
+ * @param {string} comment.name - Full name of commenter
+ * @param {string} comment.content - Comment content
+ * @returns {Promise<void>}
+ *
+ * @example
+ * // After approving a comment
+ * await notifyParticipantsOfNewComment(approvedComment);
  */
 export async function notifyParticipantsOfNewComment(comment) {
   const supabase = getSupabase();
@@ -78,7 +97,21 @@ export async function notifyParticipantsOfNewComment(comment) {
 }
 
 /**
- * Notify parent comment author when their comment gets a reply (after approval).
+ * Notify the author of a parent comment when someone replies to it.
+ * Checks notification preferences and only sends if user hasn't opted out.
+ * Does not notify if replier is the same as parent author.
+ *
+ * @param {Object} replyComment - The approved reply comment object
+ * @param {string} replyComment.parent_id - ID of parent comment being replied to
+ * @param {string} replyComment.email - Email of reply author
+ * @param {string} replyComment.display_name - Display name of replier
+ * @param {string} replyComment.name - Full name of replier
+ * @param {string} replyComment.content - Reply content
+ * @returns {Promise<void>}
+ *
+ * @example
+ * // After approving a reply comment
+ * await notifyParentCommentAuthor(replyComment);
  */
 export async function notifyParentCommentAuthor(replyComment) {
   if (!replyComment.parent_id) return;

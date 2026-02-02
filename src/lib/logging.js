@@ -1,8 +1,23 @@
+/**
+ * Comprehensive logging and audit module.
+ * Handles audit logging, error tracking, user agent parsing, and superuser notifications.
+ * Captures detailed request metadata including device info, IP, and user agent.
+ *
+ * @module logging
+ */
+
 import { getSupabase } from './supabase';
 import { sendEmail } from './sendEmail';
 
 /**
- * Parse user agent to determine device type
+ * Determine device type from user agent string.
+ * Categorizes into mobile, tablet, desktop, or unknown.
+ *
+ * @param {string} userAgent - User agent string from HTTP headers
+ * @returns {string} Device type: 'mobile', 'tablet', 'desktop', or 'unknown'
+ *
+ * @example
+ * const deviceType = getDeviceType(request.headers.get('user-agent'));
  */
 export function getDeviceType(userAgent) {
   if (!userAgent || userAgent === 'unknown') return 'unknown';
@@ -41,7 +56,15 @@ export function getDeviceType(userAgent) {
 }
 
 /**
- * Parse user agent to get browser and OS info
+ * Parse user agent string to extract browser, OS, and device information.
+ * Uses pattern matching to identify common browsers and operating systems.
+ *
+ * @param {string} userAgent - User agent string from HTTP headers
+ * @returns {{browser: string, os: string, device: string}} Parsed user agent components
+ *
+ * @example
+ * const ua = parseUserAgent(request.headers.get('user-agent'));
+ * console.log(`${ua.browser} on ${ua.os} (${ua.device})`);
  */
 export function parseUserAgent(userAgent) {
   if (!userAgent || userAgent === 'unknown') {
@@ -75,7 +98,15 @@ export function parseUserAgent(userAgent) {
 }
 
 /**
- * Extract request metadata
+ * Extract comprehensive metadata from an HTTP request.
+ * Captures IP address, user agent, request method, path, and parsed device info.
+ *
+ * @param {Request} request - HTTP request object
+ * @returns {{ip: string, userAgent: string, method: string, path: string, browser: string, os: string, device: string}} Request metadata
+ *
+ * @example
+ * const meta = getRequestMeta(request);
+ * console.log(`${meta.method} ${meta.path} from ${meta.ip}`);
  */
 export function getRequestMeta(request) {
   const ip = request?.headers?.get('x-forwarded-for')?.split(',')[0]?.trim() ||
@@ -91,7 +122,12 @@ export function getRequestMeta(request) {
 }
 
 /**
- * Sanitize request body - remove sensitive fields
+ * Sanitize request body by redacting sensitive fields.
+ * Removes passwords, tokens, codes, and other secrets before logging.
+ *
+ * @private
+ * @param {Object} body - Request body object to sanitize
+ * @returns {Object|null} Sanitized copy with sensitive fields redacted
  */
 function sanitizeBody(body) {
   if (!body) return null;
@@ -106,7 +142,34 @@ function sanitizeBody(body) {
 }
 
 /**
- * Log an audit event with full details
+ * Log a comprehensive audit event to the database.
+ * Records user actions with full context including device info, IP, and request details.
+ * Automatically enriches details with parsed device information.
+ *
+ * @param {Object} params - Audit event parameters
+ * @param {string} params.eventType - Type of event (use AuditEvents constants)
+ * @param {string} [params.supporterId=null] - ID of supporter performing action
+ * @param {string} [params.targetId=null] - ID of affected resource
+ * @param {string} [params.targetType=null] - Type of affected resource (e.g., 'poll', 'comment')
+ * @param {Object} [params.oldValues=null] - Previous state for update operations
+ * @param {Object} [params.newValues=null] - New state for update operations
+ * @param {Object} [params.details=null] - Additional event-specific details
+ * @param {Request} [params.request=null] - HTTP request object for metadata extraction
+ * @param {number} [params.responseStatus=null] - HTTP response status code
+ * @param {Object} [params.requestBody=null] - Request body (will be sanitized)
+ * @param {string} [params.sessionId=null] - Session ID if applicable
+ * @returns {Promise<void>}
+ *
+ * @example
+ * await logAudit({
+ *   eventType: AuditEvents.POLL_VOTE,
+ *   supporterId: supporter.id,
+ *   targetId: poll.id,
+ *   targetType: 'poll',
+ *   details: { option_id: selectedOption.id },
+ *   request,
+ *   responseStatus: 200
+ * });
  */
 export async function logAudit({
   eventType,
@@ -163,7 +226,36 @@ export async function logAudit({
 }
 
 /**
- * Log an error and optionally notify superusers
+ * Log an error to the database and optionally notify superusers.
+ * Automatically deduplicates errors by message and endpoint, tracking occurrence count.
+ * Enriches error data with device info and request metadata.
+ *
+ * @param {Object} params - Error logging parameters
+ * @param {string} params.errorType - Type of error (use ErrorTypes constants)
+ * @param {string} params.errorMessage - Error message
+ * @param {string} [params.errorStack=null] - Error stack trace
+ * @param {string} [params.endpoint=null] - API endpoint where error occurred
+ * @param {string} [params.method=null] - HTTP method (GET, POST, etc.)
+ * @param {Object} [params.requestBody=null] - Request body (will be sanitized)
+ * @param {string} [params.userId=null] - ID of user who encountered error
+ * @param {string} [params.userEmail=null] - Email of user who encountered error
+ * @param {Request} [params.request=null] - HTTP request object for metadata extraction
+ * @param {boolean} [params.notifySuperusers=true] - Whether to email superusers about the error
+ * @returns {Promise<string|null>} Error log ID if successful, null on failure
+ *
+ * @example
+ * try {
+ *   // ... operation
+ * } catch (err) {
+ *   await logError({
+ *     errorType: ErrorTypes.DATABASE_ERROR,
+ *     errorMessage: err.message,
+ *     errorStack: err.stack,
+ *     endpoint: '/api/polls/vote',
+ *     userId: supporter?.id,
+ *     request
+ *   });
+ * }
  */
 export async function logError({
   errorType,
@@ -258,7 +350,18 @@ export async function logError({
 }
 
 /**
- * Notify superusers of a new error
+ * Send email notifications to all superusers about a new error.
+ * Includes error details, device info, and affected user information.
+ *
+ * @private
+ * @param {Object} params - Notification parameters
+ * @param {string} params.errorId - ID of the error log entry
+ * @param {string} params.errorType - Type of error
+ * @param {string} params.errorMessage - Error message
+ * @param {string} params.endpoint - API endpoint where error occurred
+ * @param {string} params.userEmail - Email of affected user
+ * @param {Object} params.deviceInfo - Device information object
+ * @returns {Promise<void>}
  */
 async function notifySuperusersOfError({ errorId, errorType, errorMessage, endpoint, userEmail, deviceInfo }) {
   try {

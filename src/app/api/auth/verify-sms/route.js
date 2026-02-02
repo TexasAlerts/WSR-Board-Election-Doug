@@ -1,3 +1,12 @@
+/**
+ * API Route: Verify SMS During Registration
+ *
+ * Verifies SMS code during registration, approves account, and creates session.
+ * Sends welcome email and notifies admin of new registration.
+ * Authentication: None (uses supporter ID from request)
+ * Rate Limit: None (but tracks attempts for security)
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { z } from 'zod';
@@ -10,6 +19,36 @@ const verifySchema = z.object({
   code: z.string().length(6, 'Code must be 6 digits').regex(/^\d+$/, 'Code must be numeric'),
 });
 
+/**
+ * POST /api/auth/verify-sms
+ * Verifies SMS code, approves account, and logs user in automatically.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response with session cookie
+ *   - 200: { ok: true, message: "Account verified! Welcome aboard!" }
+ *   - 400: { ok: false, error: "Invalid code or verification not required" }
+ *   - 404: { ok: false, error: "Account not found" }
+ *   - 500: { ok: false, error: "Failed to update account" | "Failed to create session" }
+ * @throws {Error} When database update or session creation fails
+ *
+ * Request body:
+ *   - supporterId: string (required) - UUID of supporter account
+ *   - code: string (required, exactly 6 numeric digits)
+ *
+ * Process:
+ *   1. Validates SMS code
+ *   2. Updates account: phone_verified=true, status='approved'
+ *   3. Creates session for automatic login
+ *   4. Sends welcome email to user
+ *   5. Notifies admin of new registration
+ *   6. Logs phone verification and approval events
+ *   7. Increments attempt counter on failed validation
+ *
+ * Response cookies:
+ *   - session_token: HttpOnly session token for automatic login
+ *
+ * Note: This completes the registration flow and auto-approves the account
+ */
 export async function POST(request) {
   const supabase = getSupabase();
   try {

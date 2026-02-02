@@ -1,5 +1,9 @@
 /**
- * Supabase Client - Lazy initialization to avoid build-time errors
+ * Supabase client initialization module with lazy loading.
+ * Provides singleton instances of Supabase clients with different access levels.
+ * Clients are initialized on first use to avoid build-time errors.
+ *
+ * @module supabase
  */
 
 import { createClient } from '@supabase/supabase-js';
@@ -8,8 +12,19 @@ let supabaseServiceClient = null;
 let supabaseAnonClient = null;
 
 /**
- * Get Supabase client (service role)
- * Use this for server-side operations that need full access
+ * Get the singleton Supabase client with service role permissions.
+ * This client bypasses Row Level Security (RLS) and has full database access.
+ * Use this for server-side operations that require elevated privileges.
+ *
+ * @returns {import('@supabase/supabase-js').SupabaseClient} Supabase service role client
+ * @throws {Error} When SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY environment variables are missing
+ *
+ * @example
+ * const supabase = getSupabase();
+ * const { data, error } = await supabase
+ *   .from('supporters')
+ *   .select('*')
+ *   .eq('status', 'approved');
  */
 export function getSupabase() {
   if (!supabaseServiceClient) {
@@ -26,8 +41,19 @@ export function getSupabase() {
 }
 
 /**
- * Get Supabase client (anon key)
- * Use this for public API routes with RLS
+ * Get the singleton Supabase client with anonymous (public) permissions.
+ * This client respects Row Level Security (RLS) policies and is suitable for
+ * public-facing API routes that don't require elevated privileges.
+ *
+ * @returns {import('@supabase/supabase-js').SupabaseClient} Supabase anonymous client
+ * @throws {Error} When SUPABASE_URL or SUPABASE_ANON_KEY environment variables are missing
+ *
+ * @example
+ * const supabase = getSupabaseAnon();
+ * const { data, error } = await supabase
+ *   .from('polls')
+ *   .select('*')
+ *   .eq('visibility', 'public');
  */
 export function getSupabaseAnon() {
   if (!supabaseAnonClient) {
@@ -44,8 +70,16 @@ export function getSupabaseAnon() {
 }
 
 /**
- * Create a new Supabase client instance
- * Use when you need a fresh client (e.g., for testing)
+ * Create a new Supabase client instance with service role permissions.
+ * Unlike getSupabase(), this creates a new client instance each time instead
+ * of returning a singleton. Useful for testing or when you need isolated clients.
+ *
+ * @returns {import('@supabase/supabase-js').SupabaseClient} New Supabase service role client
+ * @throws {Error} When SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY environment variables are missing
+ *
+ * @example
+ * // Create a fresh client for testing
+ * const testClient = createSupabaseClient();
  */
 export function createSupabaseClient() {
   const url = process.env.SUPABASE_URL;

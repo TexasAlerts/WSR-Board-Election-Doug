@@ -1,19 +1,37 @@
 /**
- * USPS Address Validation using USPS Web Tools API
- * Requires USPS_USER_ID environment variable
- * Register at: https://www.usps.com/business/web-tools-apis/
+ * USPS address validation and standardization module.
+ * Uses USPS Web Tools API to validate and standardize US addresses.
+ * Checks Delivery Point Validation (DPV) to verify deliverability.
+ *
+ * @module uspsValidation
+ * @requires USPS_USER_ID environment variable (optional - gracefully degrades if missing)
+ * @see {@link https://www.usps.com/business/web-tools-apis/} for API registration
  */
 
 const USPS_API_URL = 'https://secure.shippingapis.com/ShippingAPI.dll';
 
 /**
- * Validate and standardize an address using USPS API
- * @param {Object} address
- * @param {string} address.street - Street address (e.g., "123 Main St")
+ * Validate and standardize a US address using the USPS API.
+ * Returns standardized address format and deliverability status.
+ * If USPS_USER_ID is not configured, performs basic validation only.
+ *
+ * @param {Object} address - Address components to validate
+ * @param {string} address.street - Street address line (e.g., "123 Main St")
  * @param {string} address.city - City name
- * @param {string} address.state - State abbreviation (e.g., "TX")
- * @param {string} address.zip - ZIP code (5 or 9 digit)
- * @returns {Promise<{ valid: boolean, standardized: Object | null, error: string | null }>}
+ * @param {string} address.state - Two-letter state abbreviation (e.g., "TX")
+ * @param {string} address.zip - ZIP code (5 or 9 digits)
+ * @returns {Promise<{valid: boolean, standardized: Object|null, error: string|null, deliverable?: boolean, skipped?: boolean}>} Validation result
+ *
+ * @example
+ * const result = await validateAddress({
+ *   street: '123 Main Street',
+ *   city: 'Prosper',
+ *   state: 'TX',
+ *   zip: '75078'
+ * });
+ * if (result.valid && result.deliverable) {
+ *   console.log('Standardized:', result.standardized);
+ * }
  */
 export async function validateAddress({ street, city, state, zip }) {
   const userId = process.env.USPS_USER_ID;
@@ -100,7 +118,12 @@ export async function validateAddress({ street, city, state, zip }) {
 }
 
 /**
- * Escape special characters for XML
+ * Escape special characters for XML formatting.
+ * Converts characters that have special meaning in XML to their entity equivalents.
+ *
+ * @private
+ * @param {string} str - String to escape
+ * @returns {string} XML-safe string
  */
 function escapeXml(str) {
   if (!str) return '';
@@ -113,7 +136,12 @@ function escapeXml(str) {
 }
 
 /**
- * Extract value from XML tag
+ * Extract the text content from an XML tag.
+ *
+ * @private
+ * @param {string} xml - XML string to parse
+ * @param {string} tag - Tag name to extract
+ * @returns {string|null} Text content of the tag, or null if not found
  */
 function extractXmlValue(xml, tag) {
   const regex = new RegExp(`<${tag}>([^<]*)</${tag}>`);
@@ -122,8 +150,16 @@ function extractXmlValue(xml, tag) {
 }
 
 /**
- * Check if ZIP code is in Prosper, TX area
- * This is a simple check for nearby ZIP codes
+ * Check if a ZIP code is in the Prosper, TX area or nearby cities.
+ * Includes Prosper and adjacent/nearby cities like Celina, Frisco, McKinney, Allen, and Aubrey.
+ *
+ * @param {string} zip - ZIP code to check (5 or 9 digit format)
+ * @returns {boolean} True if ZIP is in the Prosper area
+ *
+ * @example
+ * isProsperAreaZip('75078'); // true (Prosper)
+ * isProsperAreaZip('75033'); // true (Frisco, adjacent)
+ * isProsperAreaZip('90210'); // false (Beverly Hills)
  */
 export function isProsperAreaZip(zip) {
   const prosperZips = [

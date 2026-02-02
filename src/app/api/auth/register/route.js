@@ -1,3 +1,12 @@
+/**
+ * API Route: User Registration
+ *
+ * Handles new user account creation with address and phone validation.
+ * Creates supporter record, sends verification email, and logs registration.
+ * Authentication: None (public endpoint)
+ * Rate Limit: 5 registrations per hour per IP
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { z } from 'zod';
@@ -21,6 +30,47 @@ const registerSchema = z.object({
   smsConsent: z.boolean().default(true),
 });
 
+/**
+ * POST /api/auth/register
+ * Creates a new user account with full validation.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, message: "Registration successful...", supporterId: string }
+ *   - 400: { ok: false, error: "Validation error or duplicate email" }
+ *   - 403: { ok: false, error: "This account has been suspended" }
+ *   - 429: { ok: false, error: "Too many registration attempts..." }
+ *   - 500: { ok: false, error: "Failed to create account..." }
+ * @throws {Error} When database operations fail
+ *
+ * Request body:
+ *   - firstName: string (required, max 50 chars)
+ *   - lastName: string (required, max 50 chars)
+ *   - email: string (required, valid email format)
+ *   - phone: string (optional, min 10 chars)
+ *   - streetAddress: string (required, min 5 chars, max 100)
+ *   - city: string (required, min 2 chars, max 50)
+ *   - state: string (required, 2 letters, default: TX)
+ *   - zipCode: string (required, 5-10 chars)
+ *   - emailConsent: boolean (default: true)
+ *   - smsConsent: boolean (default: true)
+ *
+ * Validation process:
+ *   1. Checks for existing email (case-insensitive)
+ *   2. Validates and formats phone number if provided
+ *   3. Validates address with USPS API
+ *   4. Stores standardized address from USPS if available
+ *   5. Creates supporter record with status='pending_email'
+ *   6. Generates and sends email verification token
+ *   7. Logs registration to audit trail
+ *
+ * Security features:
+ *   - Rate limited to prevent spam registrations
+ *   - Email normalized to lowercase
+ *   - Phone number validated and formatted
+ *   - Address validated against USPS database
+ *   - Requires email verification before login
+ */
 export async function POST(request) {
   const supabase = getSupabase();
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';

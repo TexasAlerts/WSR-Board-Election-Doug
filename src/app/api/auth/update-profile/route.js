@@ -1,3 +1,12 @@
+/**
+ * API Route: Update User Profile
+ *
+ * Updates authenticated user's profile information (name, address).
+ * Logs changes to audit trail.
+ * Authentication: Required (session token)
+ * Rate Limit: None
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter } from '../../../../lib/auth';
@@ -13,6 +22,28 @@ const profileSchema = z.object({
   zipCode: z.string().min(5, 'ZIP code is required').max(10),
 });
 
+/**
+ * PATCH /api/auth/update-profile
+ * Updates the authenticated user's profile information.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, message: "Profile updated successfully" }
+ *   - 400: { ok: false, error: "Validation error" }
+ *   - 401: { ok: false, error: "Not authenticated" }
+ *   - 500: { ok: false, error: "Failed to update profile" }
+ * @throws {Error} When database update fails
+ *
+ * Request body:
+ *   - firstName: string (required, max 100 chars)
+ *   - lastName: string (required, max 100 chars)
+ *   - streetAddress: string (required, max 200 chars)
+ *   - city: string (required, max 100 chars)
+ *   - state: string (required, 2 chars)
+ *   - zipCode: string (required, 5-10 chars)
+ *
+ * Logs old and new values to audit trail for tracking changes
+ */
 export async function PATCH(request) {
   const supabase = getSupabase();
   try {

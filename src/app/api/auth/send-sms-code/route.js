@@ -1,3 +1,12 @@
+/**
+ * API Route: Send SMS Verification Code
+ *
+ * Sends SMS verification code during registration phone verification flow.
+ * Rate limited to prevent SMS abuse.
+ * Authentication: None (uses supporter ID from request)
+ * Rate Limit: 3 SMS per 10 minutes per IP
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { z } from 'zod';
@@ -9,6 +18,28 @@ const sendCodeSchema = z.object({
   supporterId: z.string().uuid('Invalid supporter ID'),
 });
 
+/**
+ * POST /api/auth/send-sms-code
+ * Sends SMS verification code to supporter's phone during registration.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, message: "Verification code sent to your phone." }
+ *   - 400: { ok: false, error: "Phone verification not available..." }
+ *   - 404: { ok: false, error: "Account not found" }
+ *   - 429: { ok: false, error: "Too many requests..." }
+ *   - 500: { ok: false, error: "Failed to send verification code..." }
+ * @throws {Error} When SMS sending fails
+ *
+ * Request body:
+ *   - supporterId: string (required) - UUID of supporter account
+ *
+ * Prerequisites:
+ *   - Supporter must have status='pending_phone'
+ *   - Supporter must have phone number on file
+ *
+ * Rate limit: 3 SMS per 10 minutes per IP to prevent abuse
+ */
 export async function POST(request) {
   const supabase = getSupabase();
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';

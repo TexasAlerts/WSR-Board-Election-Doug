@@ -4,9 +4,40 @@ import { sendWeeklyDigestEmail } from '../../../../lib/emailService';
 import { logAudit, AuditEvents } from '../../../../lib/logging';
 
 /**
- * Weekly digest cron endpoint.
- * Triggered by Vercel Cron (see vercel.json) or manually by admin.
- * Sends digest of poll/idea activity to participants who opted in.
+ * API Route: Weekly Digest Email Cron
+ *
+ * Automated weekly digest email sender triggered by Vercel Cron or manually.
+ * Sends activity summaries to users who opted in for weekly digest emails.
+ * Authentication: Required (cron secret bearer token)
+ * Rate Limit: None (cron-triggered)
+ */
+
+/**
+ * POST /api/admin/weekly-digest
+ * Sends weekly activity digest emails to opted-in subscribers.
+ * Includes new votes, comments, and poll/idea activity from the past week.
+ *
+ * @param {Request} request - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, sent: number } | { ok: true, message: "No subscribers", sent: 0 }
+ *   - 401: { ok: false, error: "Unauthorized" }
+ *   - 500: { ok: false, error: "Server error" }
+ * @throws {Error} When email sending or database query fails
+ *
+ * Authentication:
+ *   - Requires 'Authorization: Bearer {CRON_SECRET}' header
+ *   - CRON_SECRET must match environment variable
+ *
+ * Process:
+ *   1. Retrieves all users with email_on_weekly_digest enabled
+ *   2. For each user, finds polls/ideas they participated in
+ *   3. Calculates new votes and comments since last week
+ *   4. Sends digest email if there's activity to report
+ *   5. Logs total emails sent to audit trail
+ *
+ * Triggered by:
+ *   - Vercel Cron (see vercel.json configuration)
+ *   - Manual POST with valid cron secret
  */
 export async function POST(request) {
   // Verify cron secret or admin auth

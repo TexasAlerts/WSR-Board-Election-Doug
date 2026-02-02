@@ -1,3 +1,12 @@
+/**
+ * API Route: Password Reset Request
+ *
+ * Handles password reset requests for registered supporters.
+ * Implements security measures including rate limiting and email enumeration prevention.
+ * Authentication: None (public endpoint)
+ * Rate Limit: 3 requests per hour per IP
+ */
+
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { rateLimit } from '../../../../lib/rateLimit';
@@ -5,6 +14,27 @@ import { getSupporterByEmail, createEmailVerification } from '../../../../lib/au
 import { sendPasswordResetEmail } from '../../../../lib/emailService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
+/**
+ * POST /api/auth/forgot-password
+ * Initiates a password reset request by sending a reset link to the user's email.
+ * Always returns success to prevent email enumeration attacks.
+ *
+ * @param {Request} req - Next.js request object
+ * @returns {Promise<Response>} JSON response
+ *   - 200: { ok: true, message: "If an account exists..." }
+ *   - 400: { ok: false, error: "Validation error message" }
+ *   - 429: { ok: false, error: "Too many requests. Please try again later." }
+ * @throws {Error} Returns success response even on error to prevent information leakage
+ *
+ * Request body:
+ *   - email: string (required, valid email format)
+ *
+ * Security features:
+ *   - Rate limited to 3 requests per hour per IP
+ *   - Returns generic success message to prevent email enumeration
+ *   - Only sends email if account exists and is verified
+ *   - Logs all reset requests for audit trail
+ */
 export async function POST(req) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
@@ -34,13 +64,13 @@ export async function POST(req) {
     const { email } = parsed.data;
     const normalizedEmail = email.toLowerCase().trim();
 
-    // Look up supporter - but don't reveal if they exist or not
+    // Look up supporter - but don't reveal if they exist or not (security measure)
     const supporter = await getSupporterByEmail(normalizedEmail);
 
     if (supporter) {
       // Only send email if supporter exists and has verified their email
       if (supporter.email_verified_at) {
-        // Create password reset token
+        // Create password reset token (expires after configured time period)
         const token = await createEmailVerification(supporter.id, 'password_reset');
 
         if (token) {
