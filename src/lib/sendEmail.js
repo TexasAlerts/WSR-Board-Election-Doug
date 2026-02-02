@@ -21,7 +21,8 @@ export async function sendEmail(to, subject, text) {
   if (!resend) {
     return;
   }
-  const from = process.env.SMTP_FROM;
+  // Use hello@dougcharles.com by default, or env override
+  const from = process.env.SMTP_FROM || 'Doug Charles <hello@dougcharles.com>';
   if (!from || !to) {
     throw new Error('SMTP_FROM and recipient email must be configured');
   }

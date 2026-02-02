@@ -14,8 +14,61 @@ function getResendClient() {
   return resendClient;
 }
 
-const FROM_EMAIL = 'Doug Charles Campaign <noreply@dougcharles.com>';
+const FROM_EMAIL = 'Doug Charles <hello@dougcharles.com>';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dougcharles.com';
+const CAMPAIGN_ADDRESS = 'Doug Charles for Prosper Town Council, P.O. Box 1234, Prosper, TX 75078';
+
+/**
+ * Convert HTML to plain text
+ */
+function stripHtml(html) {
+  return html
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<a[^>]+href="([^"]+)"[^>]*>(.*?)<\/a>/gi, '$2 ($1)')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<\/div>/gi, '\n')
+    .replace(/<\/h[1-6]>/gi, '\n\n')
+    .replace(/<li[^>]*>/gi, '• ')
+    .replace(/<\/li>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/\n\s*\n\s*\n/g, '\n\n')
+    .trim();
+}
+
+/**
+ * Generate standard campaign email footer
+ */
+function getCampaignFooter(unsubscribeEmail = null, unsubscribeUrl = null) {
+  return `
+    <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+    <div style="color: #999; font-size: 12px; line-height: 1.5;">
+      <p style="margin: 5px 0;">
+        <strong>Doug Charles for Prosper Town Council</strong><br>
+        ${CAMPAIGN_ADDRESS}<br>
+        <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
+      </p>
+      ${unsubscribeEmail || unsubscribeUrl ? `
+        <p style="margin: 15px 0 5px 0;">
+          ${unsubscribeUrl ?
+            `<a href="${unsubscribeUrl}" style="color: #999;">Unsubscribe</a>` :
+            `<a href="${SITE_URL}/auth/unsubscribe?email=${encodeURIComponent(unsubscribeEmail)}" style="color: #999;">Unsubscribe</a>`
+          } |
+          <a href="${SITE_URL}/settings" style="color: #999;">Manage Preferences</a>
+        </p>
+      ` : ''}
+      <p style="margin: 5px 0; color: #ccc; font-size: 11px;">
+        Paid for by Doug Charles Campaign
+      </p>
+    </div>
+  `;
+}
 
 /**
  * Send email verification
@@ -368,29 +421,37 @@ export async function sendNewCommentNotificationEmail(email, commenterName, comm
 
   const unsubscribeUrl = `${SITE_URL}/notifications/unsubscribe?token=${unsubscribeToken}&type=email_on_new_comment`;
 
+  const htmlBody = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #1e3a5f;">New Comment</h2>
+      <p>${commenterName} commented on "${contextTitle}":</p>
+      <blockquote style="border-left: 3px solid #1e3a5f; padding-left: 15px; color: #666; margin: 20px 0;">
+        "${commentPreview}"
+      </blockquote>
+      <p>
+        <a href="${contextUrl}" style="background-color: #1e3a5f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block;">
+          View Discussion
+        </a>
+      </p>
+      ${getCampaignFooter(null, unsubscribeUrl)}
+    </div>
+  `;
+
   try {
     const { data, error } = await client.emails.send({
       from: FROM_EMAIL,
       to: email,
       subject: `New comment on "${contextTitle}"`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1e3a5f;">New Comment</h2>
-          <p>${commenterName} commented on "${contextTitle}":</p>
-          <blockquote style="border-left: 3px solid #1e3a5f; padding-left: 15px; color: #666; margin: 20px 0;">
-            "${commentPreview}"
-          </blockquote>
-          <p>
-            <a href="${contextUrl}" style="background-color: #1e3a5f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block;">
-              View Discussion
-            </a>
-          </p>
-          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
-          <p style="color: #999; font-size: 12px;">
-            <a href="${unsubscribeUrl}" style="color: #999;">Unsubscribe from comment notifications</a>
-          </p>
-        </div>
-      `,
+      html: htmlBody,
+      text: stripHtml(htmlBody),
+      headers: {
+        'List-Unsubscribe': `<${unsubscribeUrl}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      tags: [
+        { name: 'campaign', value: 'prosper-2026' },
+        { name: 'type', value: 'comment-notification' },
+      ],
     });
 
     if (error) return { success: false, error: error.message };
@@ -409,34 +470,42 @@ export async function sendNewReplyNotificationEmail(email, replierName, replyPre
 
   const unsubscribeUrl = `${SITE_URL}/notifications/unsubscribe?token=${unsubscribeToken}&type=email_on_new_reply`;
 
+  const htmlBody = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #1e3a5f;">New Reply</h2>
+      <p>${replierName} replied to your comment:</p>
+      <div style="background: #f5f5f5; padding: 15px; border-radius: 6px; margin: 15px 0;">
+        <p style="color: #999; font-size: 13px; margin: 0 0 8px 0;">Your comment:</p>
+        <p style="color: #666; margin: 0;">"${parentPreview}"</p>
+      </div>
+      <div style="background: #f0f7ff; padding: 15px; border-radius: 6px; margin: 15px 0;">
+        <p style="color: #999; font-size: 13px; margin: 0 0 8px 0;">${replierName}'s reply:</p>
+        <p style="color: #333; margin: 0;">"${replyPreview}"</p>
+      </div>
+      <p>
+        <a href="${contextUrl}" style="background-color: #1e3a5f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block;">
+          View Reply
+        </a>
+      </p>
+      ${getCampaignFooter(null, unsubscribeUrl)}
+    </div>
+  `;
+
   try {
     const { data, error } = await client.emails.send({
       from: FROM_EMAIL,
       to: email,
       subject: 'Someone replied to your comment',
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1e3a5f;">New Reply</h2>
-          <p>${replierName} replied to your comment:</p>
-          <div style="background: #f5f5f5; padding: 15px; border-radius: 6px; margin: 15px 0;">
-            <p style="color: #999; font-size: 13px; margin: 0 0 8px 0;">Your comment:</p>
-            <p style="color: #666; margin: 0;">"${parentPreview}"</p>
-          </div>
-          <div style="background: #f0f7ff; padding: 15px; border-radius: 6px; margin: 15px 0;">
-            <p style="color: #999; font-size: 13px; margin: 0 0 8px 0;">${replierName}'s reply:</p>
-            <p style="color: #333; margin: 0;">"${replyPreview}"</p>
-          </div>
-          <p>
-            <a href="${contextUrl}" style="background-color: #1e3a5f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block;">
-              View Reply
-            </a>
-          </p>
-          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
-          <p style="color: #999; font-size: 12px;">
-            <a href="${unsubscribeUrl}" style="color: #999;">Unsubscribe from reply notifications</a>
-          </p>
-        </div>
-      `,
+      html: htmlBody,
+      text: stripHtml(htmlBody),
+      headers: {
+        'List-Unsubscribe': `<${unsubscribeUrl}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      tags: [
+        { name: 'campaign', value: 'prosper-2026' },
+        { name: 'type', value: 'reply-notification' },
+      ],
     });
 
     if (error) return { success: false, error: error.message };
@@ -465,29 +534,37 @@ export async function sendWeeklyDigestEmail(email, name, digestData, unsubscribe
 
   const commentCount = digestData.newComments || 0;
 
+  const htmlBody = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #1e3a5f;">Weekly Digest</h2>
+      <p>Hi ${name}, here's what happened this week on polls and ideas you participated in:</p>
+      ${pollItems ? `<h3 style="color: #1e3a5f;">Polls</h3><ul>${pollItems}</ul>` : ''}
+      ${ideaItems ? `<h3 style="color: #1e3a5f;">Ideas</h3><ul>${ideaItems}</ul>` : ''}
+      ${commentCount > 0 ? `<p>${commentCount} new comment${commentCount !== 1 ? 's' : ''} on discussions you follow.</p>` : ''}
+      <p style="margin: 20px 0;">
+        <a href="${SITE_URL}/polls" style="background-color: #c41e3a; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block;">
+          View Polls
+        </a>
+      </p>
+      ${getCampaignFooter(null, unsubscribeUrl)}
+    </div>
+  `;
+
   try {
-    const { data, error } = await client.emails.send({
+    const { data, error} = await client.emails.send({
       from: FROM_EMAIL,
       to: email,
       subject: 'Weekly Activity Digest - Doug Charles for Prosper',
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1e3a5f;">Weekly Digest</h2>
-          <p>Hi ${name}, here's what happened this week on polls and ideas you participated in:</p>
-          ${pollItems ? `<h3 style="color: #1e3a5f;">Polls</h3><ul>${pollItems}</ul>` : ''}
-          ${ideaItems ? `<h3 style="color: #1e3a5f;">Ideas</h3><ul>${ideaItems}</ul>` : ''}
-          ${commentCount > 0 ? `<p>${commentCount} new comment${commentCount !== 1 ? 's' : ''} on discussions you follow.</p>` : ''}
-          <p style="margin: 20px 0;">
-            <a href="${SITE_URL}/polls" style="background-color: #c41e3a; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block;">
-              View Polls
-            </a>
-          </p>
-          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
-          <p style="color: #999; font-size: 12px;">
-            <a href="${unsubscribeUrl}" style="color: #999;">Unsubscribe from weekly digest</a>
-          </p>
-        </div>
-      `,
+      html: htmlBody,
+      text: stripHtml(htmlBody),
+      headers: {
+        'List-Unsubscribe': `<${unsubscribeUrl}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      tags: [
+        { name: 'campaign', value: 'prosper-2026' },
+        { name: 'type', value: 'weekly-digest' },
+      ],
     });
 
     if (error) return { success: false, error: error.message };
@@ -516,21 +593,31 @@ export async function sendBroadcastEmail(subject, htmlBody, recipients) {
     const batch = recipients.slice(i, i + batchSize);
 
     try {
-      const emails = batch.map((r) => ({
-        from: FROM_EMAIL,
-        to: r.email,
-        subject,
-        html: `
+      const emails = batch.map((r) => {
+        const unsubscribeUrl = `${SITE_URL}/auth/unsubscribe?email=${encodeURIComponent(r.email)}`;
+        const fullHtml = `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             ${htmlBody}
-            <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
-            <p style="color: #999; font-size: 12px;">
-              You're receiving this because you signed up as a supporter.<br>
-              <a href="${SITE_URL}/auth/unsubscribe?email=${encodeURIComponent(r.email)}" style="color: #999;">Unsubscribe</a>
-            </p>
+            ${getCampaignFooter(r.email)}
           </div>
-        `,
-      }));
+        `;
+
+        return {
+          from: FROM_EMAIL,
+          to: r.email,
+          subject,
+          html: fullHtml,
+          text: stripHtml(fullHtml),
+          headers: {
+            'List-Unsubscribe': `<${unsubscribeUrl}>`,
+            'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+          },
+          tags: [
+            { name: 'campaign', value: 'prosper-2026' },
+            { name: 'type', value: 'broadcast' },
+          ],
+        };
+      });
 
       const { data, error } = await client.batch.send(emails);
 
