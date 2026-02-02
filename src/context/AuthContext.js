@@ -19,7 +19,6 @@ export function AuthProvider({ children }) {
         setSupporter(null);
       }
     } catch (err) {
-      console.error('Auth check error:', err);
       setSupporter(null);
     } finally {
       setLoading(false);
@@ -35,7 +34,6 @@ export function AuthProvider({ children }) {
       await fetch('/api/auth/logout', { method: 'POST' });
       setSupporter(null);
     } catch (err) {
-      console.error('Logout error:', err);
     }
   };
 

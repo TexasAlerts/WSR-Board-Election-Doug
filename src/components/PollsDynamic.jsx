@@ -24,7 +24,6 @@ export default function PollsDynamic() {
           setPolls(data.data || []);
         }
       } catch (err) {
-        console.error('Error loading polls:', err);
       } finally {
         setLoading(false);
       }

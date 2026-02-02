@@ -43,7 +43,6 @@ export default function AdminQna() {
         setPending((prev) => prev.filter((q) => q.id !== id));
       }
     } catch (err) {
-      console.error(err);
     }
   }
 

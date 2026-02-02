@@ -148,7 +148,6 @@ function GetInvolvedDynamicContent() {
         }
       }
     } catch (err) {
-      console.error(err);
       setSubmitMsg('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);

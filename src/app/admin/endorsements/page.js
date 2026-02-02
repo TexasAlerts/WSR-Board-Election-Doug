@@ -37,7 +37,6 @@ export default function AdminEndorsements() {
         setPending((prev) => prev.filter((e) => e.id !== id));
       }
     } catch (err) {
-      console.error(err);
     }
   }
 

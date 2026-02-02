@@ -32,7 +32,6 @@ class ErrorBoundary extends Component {
         }),
       });
     } catch (logError) {
-      console.error('Failed to log error:', logError);
     }
   }
 
