@@ -317,6 +317,12 @@ export default function IdeasPage() {
                       </button>
                       <span className="text-sm text-gray-500">by {idea.name}</span>
                     </div>
+                    <Link
+                      href={`/ideas/${idea.id}`}
+                      className="text-navy font-semibold hover:underline"
+                    >
+                      View & Comment →
+                    </Link>
                   </div>
                 </div>
               ))}
