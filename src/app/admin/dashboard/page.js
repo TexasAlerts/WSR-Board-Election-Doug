@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Users, MessageSquare, Send, Loader2, FileText, AlertTriangle, ThumbsUp, Lightbulb, HelpCircle, UserPlus, BarChart3 } from 'lucide-react';
+import { Users, MessageSquare, Send, Loader2, FileText, AlertTriangle, ThumbsUp, Lightbulb, HelpCircle, UserPlus, BarChart3, UserCheck } from 'lucide-react';
 import { ConfirmModal, PromptModal } from '../../../components/AdminModal';
 
 const SupportersTab = lazy(() => import('../../../components/admin/SupportersTab'));
@@ -16,6 +16,7 @@ const QuestionsTab = lazy(() => import('../../../components/admin/QuestionsTab')
 const IdeasTab = lazy(() => import('../../../components/admin/IdeasTab'));
 const InterestTab = lazy(() => import('../../../components/admin/InterestTab'));
 const ReportsTab = lazy(() => import('../../../components/admin/ReportsTab'));
+const VerifiedVotersTab = lazy(() => import('../../../components/admin/VerifiedVotersTab'));
 
 function TabSpinner() {
   return (
@@ -38,11 +39,13 @@ export default function AdminDashboard() {
   const [questions, setQuestions] = useState([]);
   const [ideas, setIdeas] = useState([]);
   const [interest, setInterest] = useState([]);
+  const [verifiedVoters, setVerifiedVoters] = useState([]);
   const [supporterFilter, setSupporterFilter] = useState('all');
   const [endorsementFilter, setEndorsementFilter] = useState('pending');
   const [questionFilter, setQuestionFilter] = useState('pending');
   const [ideaFilter, setIdeaFilter] = useState('pending');
   const [interestFilter, setInterestFilter] = useState('all');
+  const [verifiedVoterFilter, setVerifiedVoterFilter] = useState('all');
   const [commentFilter, setCommentFilter] = useState('pending');
   const [auditFilter, setAuditFilter] = useState('all');
   const [errorFilter, setErrorFilter] = useState('new');
@@ -154,13 +157,38 @@ export default function AdminDashboard() {
         data = await res.json();
         if (!res.ok) { if (handleAuthError(res)) return; throw new Error(data.error); }
         setInterest(data.data || []);
+      } else if (activeTab === 'verified-voters') {
+        const url = verifiedVoterFilter === 'all'
+          ? '/api/admin/verified-voters?status=all'
+          : `/api/admin/verified-voters?status=${verifiedVoterFilter}`;
+        res = await fetch(url);
+        data = await res.json();
+        if (!res.ok) { if (handleAuthError(res)) return; throw new Error(data.error); }
+        setVerifiedVoters(data.data || []);
       }
     } catch (err) {
       setError(err.message);
+
+      // Log error to database
+      try {
+        await fetch('/api/errors', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: `Admin Dashboard Error: ${err.message}`,
+            stack: err.stack || '',
+            component: 'AdminDashboard',
+            action: `Loading ${activeTab} tab`,
+            url: window.location.href,
+          }),
+        });
+      } catch (logErr) {
+        // Silent fail on logging error
+      }
     } finally {
       setLoading(false);
     }
-  }, [activeTab, supporterFilter, commentFilter, auditFilter, errorFilter, endorsementFilter, questionFilter, ideaFilter, interestFilter, router]);
+  }, [activeTab, supporterFilter, commentFilter, auditFilter, errorFilter, endorsementFilter, questionFilter, ideaFilter, interestFilter, verifiedVoterFilter, router]);
 
   useEffect(() => {
     loadData();
@@ -320,6 +348,45 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleSuspendVoter = async (id, action) => {
+    const actionText = action === 'suspend' ? 'suspend' : 'unsuspend';
+    const confirmed = await showConfirm(
+      `${actionText === 'suspend' ? 'Suspend' : 'Unsuspend'} Verified Voter`,
+      `Are you sure you want to ${actionText} this verified voter?`
+    );
+    if (!confirmed) return;
+    try {
+      const res = await fetch(`/api/admin/verified-voters/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      loadData();
+    } catch (err) {
+      showConfirm('Error', err.message);
+    }
+  };
+
+  const handleDeleteVoter = async (id) => {
+    const confirmed = await showConfirm(
+      'Delete Verified Voter',
+      'This will permanently delete this verified voter and all their votes. This action cannot be undone. Continue?'
+    );
+    if (!confirmed) return;
+    try {
+      const res = await fetch(`/api/admin/verified-voters/${id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      loadData();
+    } catch (err) {
+      showConfirm('Error', err.message);
+    }
+  };
+
   const formatDate = (dateStr) => {
     if (!dateStr) return '-';
     return new Date(dateStr).toLocaleDateString('en-US', {
@@ -342,6 +409,7 @@ export default function AdminDashboard() {
 
   const tabs = [
     { id: 'supporters', label: 'Supporters', mobileLabel: 'Users', Icon: Users },
+    { id: 'verified-voters', label: 'Verified Voters', mobileLabel: 'Voters', Icon: UserCheck },
     { id: 'comments', label: 'Comments', Icon: MessageSquare },
     { id: 'broadcasts', label: 'Broadcasts', mobileLabel: 'Send', Icon: Send },
     { id: 'audit', label: 'Audit Logs', mobileLabel: 'Audit', Icon: FileText },
@@ -403,6 +471,14 @@ export default function AdminDashboard() {
             supporters={supporters} loading={loading} filter={supporterFilter}
             setFilter={setSupporterFilter} updateSupporter={updateSupporter} deleteSupporter={deleteSupporter}
             formatDate={formatDate} statusColors={statusColors}
+          />
+        )}
+
+        {activeTab === 'verified-voters' && (
+          <VerifiedVotersTab
+            voters={verifiedVoters} loading={loading} filter={verifiedVoterFilter}
+            setFilter={setVerifiedVoterFilter} handleSuspendVoter={handleSuspendVoter}
+            handleDeleteVoter={handleDeleteVoter} formatDate={formatDate}
           />
         )}
 

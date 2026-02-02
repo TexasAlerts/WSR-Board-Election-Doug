@@ -1,6 +1,7 @@
 import './globals.css';
 import StickyNav from '../components/StickyNav';
 import ErrorBoundary from '../components/ErrorBoundary';
+import GlobalErrorHandler from '../components/GlobalErrorHandler';
 import ScrollToTop from '../components/ScrollToTop';
 import Link from 'next/link';
 import Script from 'next/script';
@@ -134,8 +135,10 @@ export default function RootLayout({ children }) {
                   "description": "20-year Prosper resident, former Planning & Zoning Commissioner (2021-2023), 2020 Bond Election Committee member, PISD annexation lead petitioner. Candidate for Prosper Town Council Place 5.",
                   "address": {
                     "@type": "PostalAddress",
+                    "streetAddress": "4360 Mill Branch Drive",
                     "addressLocality": "Prosper",
                     "addressRegion": "TX",
+                    "postalCode": "75078",
                     "addressCountry": "US"
                   },
                   "email": "doug@dougcharles.com",
@@ -209,6 +212,7 @@ export default function RootLayout({ children }) {
           </div>
         </div>
         </AuthProvider>
+        <GlobalErrorHandler />
         <Analytics />
         <SpeedInsights />
       </body>

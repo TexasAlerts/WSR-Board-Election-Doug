@@ -74,6 +74,7 @@ export async function POST(request, { params }) {
       .eq('id', id);
 
     if (updateError) {
+      // silently ignored
     }
 
     return NextResponse.json({ ok: true, support_count: idea.support_count + 1 }, { status: 201 });
@@ -136,6 +137,7 @@ export async function DELETE(request, { params }) {
       .eq('id', id);
 
     if (updateError) {
+      // silently ignored
     }
 
     return NextResponse.json({ ok: true, support_count: newCount });

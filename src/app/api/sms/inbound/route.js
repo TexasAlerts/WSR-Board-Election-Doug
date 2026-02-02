@@ -98,8 +98,7 @@ export async function POST(request) {
         })
         .eq('email', supporter.email);
 
-      if (error) {
-      }
+      // error handled silently — opt-out continues regardless
 
       await sendSMS(fromPhone, AUTO_RESPONSES.optOut);
 
@@ -123,8 +122,7 @@ export async function POST(request) {
         })
         .eq('email', supporter.email);
 
-      if (error) {
-      }
+      // error handled silently — opt-in continues regardless
 
       await sendSMS(fromPhone, AUTO_RESPONSES.optIn);
 

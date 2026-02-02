@@ -1,0 +1,118 @@
+import { NextResponse } from 'next/server';
+import { getSupabase } from '../../../../../lib/supabase';
+import { getCurrentSupporter, isAdmin } from '../../../../../lib/auth';
+import { logAudit, AuditEvents } from '../../../../../lib/logging';
+
+/**
+ * PATCH /api/admin/verified-voters/[id]
+ * Suspend or unsuspend a verified voter
+ * Body: { action: 'suspend' | 'unsuspend' }
+ */
+export async function PATCH(request, { params }) {
+  const supporter = await getCurrentSupporter();
+  if (!supporter || !isAdmin(supporter)) {
+    return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { id } = await params;
+  const { action } = await request.json();
+
+  if (!['suspend', 'unsuspend'].includes(action)) {
+    return NextResponse.json({ ok: false, error: 'Invalid action' }, { status: 400 });
+  }
+
+  try {
+    const supabase = getSupabase();
+
+    // Get voter info for logging
+    const { data: voter } = await supabase
+      .from('verified_voters')
+      .select('email, name')
+      .eq('id', id)
+      .single();
+
+    if (!voter) {
+      return NextResponse.json({ ok: false, error: 'Voter not found' }, { status: 404 });
+    }
+
+    // Update suspension status
+    const { error } = await supabase
+      .from('verified_voters')
+      .update({
+        suspended_at: action === 'suspend' ? new Date().toISOString() : null,
+      })
+      .eq('id', id);
+
+    if (error) {
+      return NextResponse.json({ ok: false, error: 'Failed to update voter' }, { status: 500 });
+    }
+
+    // Log the action
+    await logAudit({
+      eventType: action === 'suspend' ? AuditEvents.VOTER_SUSPENDED : AuditEvents.VOTER_UNSUSPENDED,
+      supporterId: supporter.id,
+      targetId: id,
+      targetType: 'verified_voter',
+      details: { email: voter.email, name: voter.name },
+      request,
+      responseStatus: 200,
+    });
+
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
+  }
+}
+
+/**
+ * DELETE /api/admin/verified-voters/[id]
+ * Delete a verified voter
+ */
+export async function DELETE(request, { params }) {
+  const supporter = await getCurrentSupporter();
+  if (!supporter || !isAdmin(supporter)) {
+    return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { id } = await params;
+
+  try {
+    const supabase = getSupabase();
+
+    // Get voter info for logging
+    const { data: voter } = await supabase
+      .from('verified_voters')
+      .select('email, name')
+      .eq('id', id)
+      .single();
+
+    if (!voter) {
+      return NextResponse.json({ ok: false, error: 'Voter not found' }, { status: 404 });
+    }
+
+    // Delete the voter
+    const { error } = await supabase
+      .from('verified_voters')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      return NextResponse.json({ ok: false, error: 'Failed to delete voter' }, { status: 500 });
+    }
+
+    // Log the action
+    await logAudit({
+      eventType: AuditEvents.VOTER_DELETED,
+      supporterId: supporter.id,
+      targetId: id,
+      targetType: 'verified_voter',
+      details: { email: voter.email, name: voter.name },
+      request,
+      responseStatus: 200,
+    });
+
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
+  }
+}

@@ -17,7 +17,7 @@ export default function PollsPage() {
           aria-hidden="true"
           width={96}
           height={64}
-          className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-40 pointer-events-none brightness-200"
+          className="absolute top-4 right-4 w-20 sm:w-28 md:w-32 lg:w-36 h-auto opacity-40 pointer-events-none brightness-200"
         />
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">

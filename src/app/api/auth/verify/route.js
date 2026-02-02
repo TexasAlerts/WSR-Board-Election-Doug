@@ -109,6 +109,9 @@ export async function POST(request) {
     const smsCode = await createSMSVerification(supporter.id, supporter.phone);
     if (smsCode) {
       const smsResult = await sendVerificationSMS(supporter.phone, smsCode);
+      if (!smsResult.success) {
+      // silently ignored
+    }
     }
 
     // Log event

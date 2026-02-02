@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
+import { MessageSquare } from 'lucide-react';
 
 const CATEGORIES = [
   { value: 'all', label: 'All Ideas', icon: '💡' },
@@ -44,6 +45,9 @@ export default function IdeasPage() {
   const [supportMsg, setSupportMsg] = useState('');
   const submitModalRef = useRef(null);
   const supportModalRef = useRef(null);
+  // Authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authenticatedSupporter, setAuthenticatedSupporter] = useState(null);
 
   // Escape key and focus trap for modals
   useEffect(() => {
@@ -93,6 +97,41 @@ export default function IdeasPage() {
 
   useEffect(() => {
     loadIdeas();
+
+    // Check for authenticated supporter
+    async function checkAuth() {
+      try {
+        const res = await fetch('/api/supporter/me');
+        const data = await res.json();
+        if (data.ok && data.data) {
+          setIsAuthenticated(true);
+          setAuthenticatedSupporter(data.data);
+          // Pre-fill form with authenticated user info
+          setSubmitForm(prev => ({
+            ...prev,
+            name: data.data.name,
+            email: data.data.email
+          }));
+          setSupportEmail(data.data.email);
+          return; // Stop here if authenticated
+        }
+      } catch (err) {
+        // Not authenticated, check for verified voter
+      }
+
+      // If not authenticated, check for verified voter cookie (for pre-filling support email)
+      try {
+        const voterRes = await fetch('/api/verified-voters/me');
+        const voterData = await voterRes.json();
+        if (voterData.ok && voterData.data) {
+          setSupportEmail(voterData.data.email);
+        }
+      } catch (err) {
+        // Not a verified voter either, that's fine
+      }
+    }
+    checkAuth();
+
     // Load supported ideas from localStorage
     try {
       const supported = JSON.parse(localStorage.getItem('supportedIdeas') || '{}');
@@ -100,6 +139,16 @@ export default function IdeasPage() {
     } catch {
       setSupportedIdeas({});
     }
+
+    // Reload authentication when window regains focus (e.g., after signing in)
+    const handleFocus = () => {
+      checkAuth();
+    };
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
   }, [loadIdeas]);
 
   async function handleSubmit(e) {
@@ -206,7 +255,7 @@ export default function IdeasPage() {
           aria-hidden="true"
           width={96}
           height={64}
-          className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-40 pointer-events-none brightness-200"
+          className="absolute top-4 right-4 w-20 sm:w-28 md:w-32 lg:w-36 h-auto opacity-40 pointer-events-none brightness-200"
         />
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
@@ -315,6 +364,12 @@ export default function IdeasPage() {
                         </svg>
                         <span>{idea.support_count}</span>
                       </button>
+                      {idea.comment_count !== undefined && idea.comment_count > 0 && (
+                        <div className="flex items-center gap-1.5 text-gray-600">
+                          <MessageSquare className="w-4 h-4" />
+                          <span className="text-sm font-medium">{idea.comment_count}</span>
+                        </div>
+                      )}
                       <span className="text-sm text-gray-500">by {idea.name}</span>
                     </div>
                   </div>
@@ -346,6 +401,13 @@ export default function IdeasPage() {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
+                {isAuthenticated && authenticatedSupporter && (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
+                    <p className="text-sm text-green-700 font-medium">✓ Signed in as: {authenticatedSupporter.name}</p>
+                    <p className="text-xs text-green-600">{authenticatedSupporter.email}</p>
+                  </div>
+                )}
+
                 <div>
                   <label htmlFor="idea-name" className="form-label">Your Name *</label>
                   <input
@@ -357,6 +419,7 @@ export default function IdeasPage() {
                     onChange={e => setSubmitForm({ ...submitForm, name: e.target.value })}
                     className="form-input"
                     autoComplete="name"
+                    disabled={isAuthenticated}
                   />
                 </div>
 
@@ -371,6 +434,7 @@ export default function IdeasPage() {
                     onChange={e => setSubmitForm({ ...submitForm, email: e.target.value })}
                     className="form-input"
                     autoComplete="email"
+                    disabled={isAuthenticated}
                   />
                 </div>
 

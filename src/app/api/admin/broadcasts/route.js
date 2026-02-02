@@ -132,6 +132,7 @@ export async function POST(request) {
       .single();
 
     if (dbError) {
+      // silently ignored
     }
 
     // Log to audit trail

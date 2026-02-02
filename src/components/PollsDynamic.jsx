@@ -2,7 +2,9 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { MessageSquare } from 'lucide-react';
 import VerifiedVoterModal from './VerifiedVoterModal';
+import VotingOptionsModal from './VotingOptionsModal';
 
 export default function PollsDynamic() {
   const [polls, setPolls] = useState([]);
@@ -12,8 +14,12 @@ export default function PollsDynamic() {
   const [hasVoted, setHasVoted] = useState({});
   const [submitMsg, setSubmitMsg] = useState('');
   const [showVerifyModal, setShowVerifyModal] = useState(false);
+  const [showVotingOptionsModal, setShowVotingOptionsModal] = useState(false);
   const [pendingPoll, setPendingPoll] = useState(null);
   const [verifiedVoter, setVerifiedVoter] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authenticatedSupporter, setAuthenticatedSupporter] = useState(null);
+  const [votingMode, setVotingMode] = useState(null); // 'authenticated', 'verified', 'anonymous'
 
   useEffect(() => {
     async function loadPolls() {
@@ -22,13 +28,50 @@ export default function PollsDynamic() {
         const data = await res.json();
         if (data.ok) {
           setPolls(data.data || []);
+          setIsAuthenticated(data.isAuthenticated || false);
         }
       } catch (err) {
+        // Silent fail
       } finally {
         setLoading(false);
       }
     }
     loadPolls();
+
+    // Check for authenticated supporter
+    async function checkAuth() {
+      try {
+        const res = await fetch('/api/supporter/me');
+        const data = await res.json();
+        if (data.ok && data.data) {
+          setIsAuthenticated(true);
+          setAuthenticatedSupporter(data.data);
+          // Use authenticated supporter info as verified voter
+          setVerifiedVoter({
+            email: data.data.email,
+            name: data.data.name
+          });
+          return; // Stop here if authenticated
+        }
+      } catch (err) {
+        // Not authenticated, check for verified voter
+      }
+
+      // If not authenticated, check for verified voter cookie
+      try {
+        const voterRes = await fetch('/api/verified-voters/me');
+        const voterData = await voterRes.json();
+        if (voterData.ok && voterData.data) {
+          setVerifiedVoter({
+            email: voterData.data.email,
+            name: voterData.data.name
+          });
+        }
+      } catch (err) {
+        // Not a verified voter either, that's fine
+      }
+    }
+    checkAuth();
 
     // Check localStorage for voted polls
     try {
@@ -40,12 +83,25 @@ export default function PollsDynamic() {
 
     // Check if user is already a verified voter (cookie set by server)
     // We check by looking for voter info in localStorage as a client-side cache
+    // But only if they're not authenticated (authenticated users don't need this)
     try {
       const voter = JSON.parse(localStorage.getItem('verifiedVoter') || 'null');
-      if (voter) setVerifiedVoter(voter);
+      if (voter && !isAuthenticated) setVerifiedVoter(voter);
     } catch {
       // ignore
     }
+
+    // Reload authentication when window regains focus (e.g., after signing in)
+    const handleFocus = () => {
+      checkAuth();
+      loadPolls();
+    };
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const voteModalRef = useRef(null);
@@ -82,14 +138,42 @@ export default function PollsDynamic() {
   }, [selectedPoll]);
 
   function handleVoteClick(poll) {
-    if (verifiedVoter) {
+    if (isAuthenticated && authenticatedSupporter) {
+      // Authenticated user, open vote modal directly with their info
+      setVotingMode('authenticated');
+      setSelectedPoll(poll);
+      setVoteForm({
+        ...voteForm,
+        email: authenticatedSupporter.email,
+        name: authenticatedSupporter.name
+      });
+    } else if (verifiedVoter) {
       // Already verified, open vote modal directly
+      setVotingMode('verified');
       setSelectedPoll(poll);
       setVoteForm({ ...voteForm, email: verifiedVoter.email, name: verifiedVoter.name });
     } else {
-      // Need verification first
+      // Show voting options modal
       setPendingPoll(poll);
+      setShowVotingOptionsModal(true);
+    }
+  }
+
+  function handleVotingOption(option) {
+    setShowVotingOptionsModal(false);
+
+    if (option === 'register') {
+      // Redirect to registration page
+      window.location.href = '/auth/register';
+    } else if (option === 'verify') {
+      // Show email verification modal
       setShowVerifyModal(true);
+    } else if (option === 'anonymous') {
+      // Open vote modal without email/name requirements
+      setVotingMode('anonymous');
+      setSelectedPoll(pendingPoll);
+      setVoteForm({ email: '', name: '', selectedChoice: null, selectedChoices: [], rankings: [], comment: '', otherText: '' });
+      setPendingPoll(null);
     }
   }
 
@@ -98,6 +182,7 @@ export default function PollsDynamic() {
     localStorage.setItem('verifiedVoter', JSON.stringify(voter));
     setShowVerifyModal(false);
     if (pendingPoll) {
+      setVotingMode('verified');
       setSelectedPoll(pendingPoll);
       setVoteForm({ ...voteForm, email: voter.email, name: voter.name });
       setPendingPoll(null);
@@ -110,11 +195,15 @@ export default function PollsDynamic() {
     setSubmitMsg('');
 
     const voteData = {
-      email: voteForm.email,
-      name: voteForm.name,
       comment: voteForm.comment || undefined,
       other_text: voteForm.otherText || undefined,
     };
+
+    // Only include email/name if not voting anonymously
+    if (votingMode !== 'anonymous') {
+      voteData.email = voteForm.email;
+      voteData.name = voteForm.name;
+    }
 
     if (selectedPoll.poll_type === 'single_choice') {
       if (!voteForm.selectedChoice) {
@@ -240,9 +329,23 @@ export default function PollsDynamic() {
                   )}
 
                   <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <span className="text-prosper-red font-semibold">
-                      {poll.vote_count} vote{poll.vote_count !== 1 ? 's' : ''}
-                    </span>
+                    <div className="flex items-center gap-4">
+                      <span className="text-prosper-red font-semibold">
+                        {poll.vote_count} vote{poll.vote_count !== 1 ? 's' : ''}
+                      </span>
+                      {poll.allow_comments && (
+                        <Link
+                          href={`/polls/${poll.id}#comments`}
+                          className="flex items-center gap-1.5 text-gray-600 hover:text-navy transition-colors"
+                          title="View comments"
+                        >
+                          <MessageSquare className="w-4 h-4" />
+                          <span className="text-sm font-medium">
+                            {poll.comment_count || 0}
+                          </span>
+                        </Link>
+                      )}
+                    </div>
                     {hasVoted[poll.id] ? (
                       <Link
                         href={`/polls/${poll.id}`}
@@ -292,44 +395,34 @@ export default function PollsDynamic() {
               )}
 
               <form onSubmit={handleVote} className="space-y-6">
-                {verifiedVoter ? (
+                {votingMode === 'authenticated' && authenticatedSupporter ? (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-green-700 font-medium">Voting as: {authenticatedSupporter.name}</p>
+                      <p className="text-xs text-green-600">{authenticatedSupporter.email}</p>
+                      <p className="text-xs text-green-500 mt-1">✓ Authenticated</p>
+                    </div>
+                    <span className="text-green-500 text-lg">&#10003;</span>
+                  </div>
+                ) : votingMode === 'verified' && verifiedVoter ? (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center justify-between">
                     <div>
                       <p className="text-sm text-green-700 font-medium">Voting as: {verifiedVoter.name}</p>
                       <p className="text-xs text-green-600">{verifiedVoter.email}</p>
+                      <p className="text-xs text-green-500 mt-1">✓ Verified voter</p>
                     </div>
                     <span className="text-green-500 text-lg">&#10003;</span>
                   </div>
-                ) : (
-                  <>
+                ) : votingMode === 'anonymous' ? (
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
                     <div>
-                      <label htmlFor="poll-vote-name" className="form-label">Your Name *</label>
-                      <input
-                        id="poll-vote-name"
-                        type="text"
-                        required
-                        aria-required="true"
-                        value={voteForm.name}
-                        onChange={e => setVoteForm({ ...voteForm, name: e.target.value })}
-                        className="form-input"
-                        placeholder="Enter your name"
-                      />
+                      <p className="text-sm text-gray-700 font-medium">Voting anonymously</p>
+                      <p className="text-xs text-gray-600 mt-1">
+                        No personal information required. A cookie will be used to prevent duplicate votes.
+                      </p>
                     </div>
-                    <div>
-                      <label htmlFor="poll-vote-email" className="form-label">Your Email *</label>
-                      <input
-                        id="poll-vote-email"
-                        type="email"
-                        required
-                        aria-required="true"
-                        value={voteForm.email}
-                        onChange={e => setVoteForm({ ...voteForm, email: e.target.value })}
-                        className="form-input"
-                        placeholder="Enter your email"
-                      />
-                    </div>
-                  </>
-                )}
+                  </div>
+                ) : null}
 
                 <div>
                   <label className="form-label">
@@ -484,7 +577,7 @@ export default function PollsDynamic() {
                   )}
                 </div>
 
-                {selectedPoll.allow_comments && (
+                {selectedPoll.allow_comments && votingMode === 'authenticated' && (
                   <div>
                     <label htmlFor="poll-vote-comment" className="form-label">Comment (optional)</label>
                     <textarea
@@ -495,6 +588,9 @@ export default function PollsDynamic() {
                       className="form-input"
                       placeholder="Share your thoughts..."
                     />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Comments are only available for registered users
+                    </p>
                   </div>
                 )}
 
@@ -524,6 +620,14 @@ export default function PollsDynamic() {
           </Link>
         </div>
       </section>
+
+      {/* Voting Options Modal */}
+      {showVotingOptionsModal && (
+        <VotingOptionsModal
+          onClose={() => { setShowVotingOptionsModal(false); setPendingPoll(null); }}
+          onOptionSelected={handleVotingOption}
+        />
+      )}
 
       {/* Voter Verification Modal */}
       {showVerifyModal && (

@@ -17,7 +17,7 @@ export default function PrioritiesPage() {
           aria-hidden="true"
           width={96}
           height={64}
-          className="absolute top-4 right-4 w-16 sm:w-20 md:w-24 h-auto opacity-80 pointer-events-none"
+          className="absolute top-4 right-4 w-20 sm:w-28 md:w-32 lg:w-36 h-auto opacity-80 pointer-events-none"
         />
         <div className="relative z-10">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-4">
