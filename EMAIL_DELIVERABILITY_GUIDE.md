@@ -13,7 +13,7 @@
 - **From Address:** `Doug Charles <hello@dougcharles.com>`
 - **Email Service:** Resend
 - **Domain:** dougcharles.com
-- **Physical Address:** Doug Charles for Prosper Town Council, P.O. Box 1234, Prosper, TX 75078
+- **Physical Address:** Doug Charles for Prosper Town Council, 4360 Mill Branch Drive, Prosper, TX 75078
 
 ### Phase 1 Improvements ✅ COMPLETED
 

@@ -134,8 +134,10 @@ export default function RootLayout({ children }) {
                   "description": "20-year Prosper resident, former Planning & Zoning Commissioner (2021-2023), 2020 Bond Election Committee member, PISD annexation lead petitioner. Candidate for Prosper Town Council Place 5.",
                   "address": {
                     "@type": "PostalAddress",
+                    "streetAddress": "4360 Mill Branch Drive",
                     "addressLocality": "Prosper",
                     "addressRegion": "TX",
+                    "postalCode": "75078",
                     "addressCountry": "US"
                   },
                   "email": "doug@dougcharles.com",

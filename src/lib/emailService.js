@@ -16,7 +16,7 @@ function getResendClient() {
 
 const FROM_EMAIL = 'Doug Charles <hello@dougcharles.com>';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dougcharles.com';
-const CAMPAIGN_ADDRESS = 'Doug Charles for Prosper Town Council, P.O. Box 1234, Prosper, TX 75078';
+const CAMPAIGN_ADDRESS = 'Doug Charles for Prosper Town Council, 4360 Mill Branch Drive, Prosper, TX 75078';
 
 /**
  * Convert HTML to plain text
