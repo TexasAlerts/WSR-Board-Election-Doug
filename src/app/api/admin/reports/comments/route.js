@@ -27,7 +27,7 @@ export async function GET(request) {
     if (ideaId) query = query.eq('idea_id', ideaId);
 
     const { data: comments, error } = await query;
-    if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    if (error) return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
 
     // Get context titles
     const pollIds = [...new Set((comments || []).filter(c => c.poll_id).map(c => c.poll_id))];
@@ -74,6 +74,6 @@ export async function GET(request) {
 
     return NextResponse.json({ ok: true, data: enriched });
   } catch (err) {
-    return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }

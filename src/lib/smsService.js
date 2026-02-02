@@ -14,7 +14,6 @@ export async function sendSMS(to, message) {
   const fromNumber = process.env.TELNYX_PHONE_NUMBER;
 
   if (!apiKey || !fromNumber) {
-    console.error('Telnyx not configured. TELNYX_API_KEY or TELNYX_PHONE_NUMBER missing.');
     return {
       success: false,
       messageId: null,
@@ -40,7 +39,6 @@ export async function sendSMS(to, message) {
 
     if (!response.ok) {
       const errorDetail = data.errors?.[0]?.detail || data.errors?.[0]?.title || JSON.stringify(data);
-      console.error('Telnyx API error:', response.status, errorDetail);
       return {
         success: false,
         messageId: null,
@@ -54,7 +52,6 @@ export async function sendSMS(to, message) {
       error: null,
     };
   } catch (err) {
-    console.error('Telnyx SMS error:', err);
     return {
       success: false,
       messageId: null,

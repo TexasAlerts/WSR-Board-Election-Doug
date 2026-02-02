@@ -20,7 +20,6 @@ export async function validateAddress({ street, city, state, zip }) {
 
   // If no USPS credentials, do basic validation only
   if (!userId) {
-    console.warn('USPS_USER_ID not configured, skipping address validation');
     return {
       valid: true,
       standardized: { street, city, state, zip },
@@ -92,7 +91,6 @@ export async function validateAddress({ street, city, state, zip }) {
       error: null,
     };
   } catch (err) {
-    console.error('USPS validation error:', err);
     return {
       valid: false,
       standardized: null,

@@ -26,7 +26,7 @@ export async function GET(request, { params }) {
       .single();
 
     if (error) {
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     if (!poll) {
@@ -88,7 +88,7 @@ export async function GET(request, { params }) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
 
@@ -167,7 +167,7 @@ export async function PUT(request, { params }) {
           userEmail: supporter.email,
           request,
         });
-        return NextResponse.json({ ok: false, error: pollError.message }, { status: 500 });
+        return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
       }
     }
 
@@ -239,7 +239,7 @@ export async function PUT(request, { params }) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
 
@@ -278,7 +278,7 @@ export async function DELETE(request, { params }) {
         userEmail: supporter.email,
         request,
       });
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 
     await logAudit({
@@ -307,6 +307,6 @@ export async function DELETE(request, { params }) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }

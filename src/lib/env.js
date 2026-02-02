@@ -23,9 +23,6 @@ if (missing.length > 0 && process.env.NODE_ENV === 'production') {
 }
 
 if (missing.length > 0 && process.env.NODE_ENV !== 'production') {
-  console.warn(
-    `[env] Warning: Missing environment variables: ${missing.join(', ')}`
-  );
 }
 
 // Admin password: either hashed or plaintext must be set
@@ -33,7 +30,5 @@ if (!process.env.ADMIN_PASSWORD_HASH && !process.env.ADMIN_PASSWORD) {
   const msg = 'Neither ADMIN_PASSWORD_HASH nor ADMIN_PASSWORD is set.';
   if (process.env.NODE_ENV === 'production') {
     throw new Error(msg);
-  } else {
-    console.warn(`[env] Warning: ${msg}`);
   }
 }
