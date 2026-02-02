@@ -93,14 +93,20 @@ export default function PollDetailPage() {
     setCommentMsg('');
 
     try {
+      const payload = {
+        poll_id: params.id,
+        content: commentForm.content,
+      };
+
+      // Only include parent_id if replying to a comment
+      if (replyTo?.id) {
+        payload.parent_id = replyTo.id;
+      }
+
       const res = await fetch('/api/comments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          poll_id: params.id,
-          content: commentForm.content,
-          parent_id: replyTo?.id || null,
-        }),
+        body: JSON.stringify(payload),
       });
 
       const result = await res.json();
