@@ -84,17 +84,40 @@ export async function GET(request, { params }) {
     userVoted = !!userVote;
   }
 
-  // Get approved comments
+  // Get approved comments with parent_id for threading
   const { data: comments, error: commentsError } = await supabase
     .from('comments')
-    .select('id, name, display_name, content, created_at, upvotes, downvotes')
+    .select('id, name, display_name, content, created_at, upvotes, downvotes, parent_id, supporter_id')
     .eq('poll_id', id)
     .eq('status', 'approved')
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: true });
 
   if (commentsError) {
       // silently ignored
     }
+
+  // Get user's votes on comments if authenticated
+  let userCommentVotes = {};
+  if (supporter && comments && comments.length > 0) {
+    const commentIds = comments.map(c => c.id);
+    const { data: commentVotes } = await supabase
+      .from('comment_votes')
+      .select('comment_id, vote_type')
+      .eq('supporter_id', supporter.id)
+      .in('comment_id', commentIds);
+
+    if (commentVotes) {
+      commentVotes.forEach(v => {
+        userCommentVotes[v.comment_id] = v.vote_type;
+      });
+    }
+  }
+
+  // Add user vote info to comments
+  const commentsWithVotes = comments?.map(c => ({
+    ...c,
+    user_vote: userCommentVotes[c.id] || null,
+  })) || [];
 
   // Build response
   const choices = poll.poll_choices
@@ -112,7 +135,7 @@ export async function GET(request, { params }) {
       ...poll,
       choices,
       total_votes: totalVotes,
-      comments: comments || [],
+      comments: commentsWithVotes,
       user_voted: userVoted,
       can_vote: poll.visibility === 'public' || (poll.visibility === 'authenticated' && isAuthenticated),
       view_only: poll.visibility === 'public_view' && !isAuthenticated,

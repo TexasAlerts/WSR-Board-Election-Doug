@@ -30,6 +30,23 @@ export async function GET(request) {
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 
+  // Get comment counts for each idea
+  let commentCountMap = {};
+  if (data.length > 0) {
+    const ideaIds = data.map(i => i.id);
+    const { data: commentCounts } = await supabase
+      .from('comments')
+      .select('idea_id')
+      .eq('status', 'approved')
+      .in('idea_id', ideaIds);
+
+    if (commentCounts) {
+      commentCounts.forEach(c => {
+        commentCountMap[c.idea_id] = (commentCountMap[c.idea_id] || 0) + 1;
+      });
+    }
+  }
+
   // Get user's votes if authenticated
   let userVotes = {};
   if (supporter && data.length > 0) {
@@ -47,10 +64,11 @@ export async function GET(request) {
     }
   }
 
-  // Add user vote info to ideas
+  // Add user vote info and comment counts to ideas
   const ideasWithVotes = data.map(idea => ({
     ...idea,
     user_vote: userVotes[idea.id] || null,
+    comment_count: commentCountMap[idea.id] || 0,
   }));
 
   return NextResponse.json({ ok: true, data: ideasWithVotes, isAuthenticated: !!supporter });

@@ -70,6 +70,25 @@ export async function GET(request) {
     });
   }
 
+  // Get comment counts for each poll
+  const { data: commentCounts, error: commentError } = await supabase
+    .from('comments')
+    .select('poll_id')
+    .eq('status', 'approved')
+    .in('poll_id', pollIds);
+
+  if (commentError) {
+    // silently ignored
+  }
+
+  // Count comments per poll
+  const commentCountMap = {};
+  if (commentCounts) {
+    commentCounts.forEach(c => {
+      commentCountMap[c.poll_id] = (commentCountMap[c.poll_id] || 0) + 1;
+    });
+  }
+
   // Check if current user has voted on any polls
   let userVotedPolls = {};
   if (supporter) {
@@ -86,10 +105,11 @@ export async function GET(request) {
     }
   }
 
-  // Add vote counts and visibility info to polls
+  // Add vote counts, comment counts, and visibility info to polls
   const pollsWithCounts = polls.map(p => ({
     ...p,
     vote_count: voteCountMap[p.id] || 0,
+    comment_count: commentCountMap[p.id] || 0,
     choices: p.poll_choices?.sort((a, b) => a.display_order - b.display_order) || [],
     user_voted: userVotedPolls[p.id] || false,
     can_vote: p.visibility === 'public' || (p.visibility === 'authenticated' && isAuthenticated),

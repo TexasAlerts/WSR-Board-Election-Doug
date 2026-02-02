@@ -170,8 +170,8 @@ export default function PollDetailPage() {
   }
 
   async function handleCommentVote(commentId, voteType) {
-    if (!isAuthenticated) {
-      setCommentMsg('Please sign in to vote on comments.');
+    if (!isAuthenticated && !verifiedVoter) {
+      setCommentMsg('Please sign in or verify your email to vote on comments.');
       return;
     }
 
@@ -266,13 +266,13 @@ export default function PollDetailPage() {
             {/* Thumbs up */}
             <button
               onClick={() => handleCommentVote(comment.id, 'up')}
-              disabled={!isAuthenticated || isVoting}
+              disabled={(!isAuthenticated && !verifiedVoter) || isVoting}
               className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
                 userVote === 'up'
                   ? 'bg-green-100 text-green-700'
                   : 'text-gray-600 hover:bg-gray-100'
               } disabled:opacity-50`}
-              title={!isAuthenticated ? 'Sign in to vote' : 'Upvote'}
+              title={!isAuthenticated && !verifiedVoter ? 'Sign in or verify email to vote' : 'Upvote'}
             >
               <ThumbsUp className="w-4 h-4" />
               <span className="text-sm font-medium">{comment.upvotes || 0}</span>
@@ -281,13 +281,13 @@ export default function PollDetailPage() {
             {/* Thumbs down */}
             <button
               onClick={() => handleCommentVote(comment.id, 'down')}
-              disabled={!isAuthenticated || isVoting}
+              disabled={(!isAuthenticated && !verifiedVoter) || isVoting}
               className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
                 userVote === 'down'
                   ? 'bg-red-100 text-red-700'
                   : 'text-gray-600 hover:bg-gray-100'
               } disabled:opacity-50`}
-              title={!isAuthenticated ? 'Sign in to vote' : 'Downvote'}
+              title={!isAuthenticated && !verifiedVoter ? 'Sign in or verify email to vote' : 'Downvote'}
             >
               <ThumbsDown className="w-4 h-4" />
               <span className="text-sm font-medium">{comment.downvotes || 0}</span>
