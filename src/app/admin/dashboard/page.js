@@ -4,7 +4,10 @@ import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Users, MessageSquare, Send, Loader2, FileText, AlertTriangle, ThumbsUp, Lightbulb, HelpCircle, UserPlus, BarChart3 } from 'lucide-react';
-import { ConfirmModal, PromptModal } from '../../../components/AdminModal';
+
+// Lazy load modal components for better initial bundle size
+const ConfirmModal = lazy(() => import('../../../components/AdminModal').then(mod => ({ default: mod.ConfirmModal })));
+const PromptModal = lazy(() => import('../../../components/AdminModal').then(mod => ({ default: mod.PromptModal })));
 
 const SupportersTab = lazy(() => import('../../../components/admin/SupportersTab'));
 const CommentsTab = lazy(() => import('../../../components/admin/CommentsTab'));

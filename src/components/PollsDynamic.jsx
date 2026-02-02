@@ -2,7 +2,13 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import VerifiedVoterModal from './VerifiedVoterModal';
+import dynamic from 'next/dynamic';
+
+// Lazy load VerifiedVoterModal for better initial bundle size
+const VerifiedVoterModal = dynamic(() => import('./VerifiedVoterModal'), {
+  ssr: false,
+  loading: () => null
+});
 
 export default function PollsDynamic() {
   const [polls, setPolls] = useState([]);
