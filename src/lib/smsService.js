@@ -1,6 +1,6 @@
 /**
  * SMS Service using Telnyx REST API
- * Requires TELNYX_API_KEY and TELNYX_PHONE_NUMBER environment variables
+ * Requires TELNYX_API_KEY, TELNYX_PHONE_NUMBER, TELNYX_CAMPAIGN_ID, and TELNYX_TCR_ID environment variables
  */
 
 /**
@@ -12,6 +12,8 @@
 export async function sendSMS(to, message) {
   const apiKey = process.env.TELNYX_API_KEY;
   const fromNumber = process.env.TELNYX_PHONE_NUMBER;
+  const campaignId = process.env.TELNYX_CAMPAIGN_ID;
+  const tcrId = process.env.TELNYX_TCR_ID;
 
   if (!apiKey || !fromNumber) {
     return {
@@ -22,17 +24,24 @@ export async function sendSMS(to, message) {
   }
 
   try {
+    const messagePayload = {
+      from: fromNumber,
+      to: to,
+      text: message,
+    };
+
+    // Add A2P 10DLC compliance fields if configured
+    if (campaignId) {
+      messagePayload.messaging_profile_id = campaignId;
+    }
+
     const response = await fetch('https://api.telnyx.com/v2/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({
-        from: fromNumber,
-        to: to,
-        text: message,
-      }),
+      body: JSON.stringify(messagePayload),
     });
 
     const data = await response.json();
