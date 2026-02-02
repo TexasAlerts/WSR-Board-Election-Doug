@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function VerifyVoterPage() {
   return (
@@ -130,7 +131,7 @@ function VerifyVoterContent() {
             <h1 className="text-xl font-semibold text-navy">Email Verification</h1>
             <p className="text-gray-600 mt-2">
               To vote on community polls, you need to verify your email address.
-              Visit the <a href="/polls" className="text-navy font-medium hover:underline">Polls page</a> and
+              Visit the <Link href="/polls" className="text-navy font-medium hover:underline">Polls page</Link> and
               click on a poll to start the verification process.
             </p>
           </>

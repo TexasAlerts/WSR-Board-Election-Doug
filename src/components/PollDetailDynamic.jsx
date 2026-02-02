@@ -23,6 +23,7 @@ export default function PollDetailDynamic({ pollId }) {
 
   useEffect(() => {
     loadPoll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pollId]);
 
   async function loadPoll() {
@@ -387,6 +388,7 @@ function Comment({
     if (expanded && comment.reply_count > 0 && replies.length === 0) {
       fetchReplies();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expanded]);
 
   const isReplying = replyingTo === comment.id;

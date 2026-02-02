@@ -40,6 +40,7 @@ export default function IdeaDetailDynamic({ ideaId }) {
 
   useEffect(() => {
     loadIdea();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ideaId]);
 
   async function loadIdea() {
@@ -435,6 +436,7 @@ function Comment({
     if (expanded && comment.reply_count > 0 && replies.length === 0) {
       fetchReplies();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expanded]);
 
   const isReplying = replyingTo === comment.id;
