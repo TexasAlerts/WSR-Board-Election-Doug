@@ -128,6 +128,13 @@ export async function POST(request) {
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
       const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
+      await logError({
+        errorType: ErrorTypes.VALIDATION_ERROR,
+        errorMessage: 'Ideas form validation failed: ' + errorMessage,
+        endpoint: '/api/ideas',
+        method: 'POST',
+        request,
+      });
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 
@@ -143,6 +150,13 @@ export async function POST(request) {
     if (recaptchaToken) {
       const captchaResult = await verifyCaptcha(recaptchaToken, 'submit_idea');
       if (!captchaResult.success) {
+        await logError({
+          errorType: ErrorTypes.EXTERNAL_SERVICE,
+          errorMessage: 'reCAPTCHA verification failed',
+          endpoint: '/api/ideas',
+          method: 'POST',
+          request,
+        });
         return NextResponse.json(
           { ok: false, error: 'Security verification failed. Please try again.' },
           { status: 400 }
