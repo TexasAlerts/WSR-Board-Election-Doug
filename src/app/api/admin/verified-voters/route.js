@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
-import { logAudit, AuditEvents } from '../../../../lib/logging';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 /**
  * GET /api/admin/verified-voters
@@ -64,6 +64,14 @@ export async function GET(request) {
 
     return NextResponse.json({ ok: true, data: votersWithCounts });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/admin/verified-voters',
+      method: 'GET',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }

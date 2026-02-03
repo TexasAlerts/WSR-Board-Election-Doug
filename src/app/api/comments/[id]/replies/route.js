@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../../lib/supabase';
 import { getCurrentSupporter } from '../../../../../lib/auth';
+import { logError, ErrorTypes } from '../../../../../lib/logging';
 
 // GET: Fetch replies for a comment (recursive threading)
 export async function GET(request, { params }) {
@@ -28,6 +29,13 @@ export async function GET(request, { params }) {
     .order('created_at', { ascending: true });
 
   if (error) {
+    await logError({
+      errorType: ErrorTypes.DATABASE_ERROR,
+      errorMessage: error.message,
+      endpoint: '/api/comments/[id]/replies',
+      method: 'GET',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 

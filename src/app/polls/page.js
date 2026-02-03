@@ -1,6 +1,14 @@
 import Image from 'next/image';
+import Script from 'next/script';
 import PollsDynamic from '../../components/PollsDynamic';
 import { getSupabase } from '../../lib/supabase';
+
+export const metadata = {
+  title: 'Community Polls - Doug Charles for Prosper Town Council',
+  description:
+    'Share your voice on issues that matter to Prosper. Vote on community polls and see real-time results from your neighbors.',
+  alternates: { canonical: '/polls' },
+};
 
 // Enable dynamic rendering to support SSR
 export const dynamic = 'force-dynamic';
@@ -96,8 +104,38 @@ async function getPolls() {
 export default async function PollsPage() {
   const initialPolls = await getPolls();
 
+  // Generate JSON-LD for polls
+  const pollsJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Community Polls - Doug Charles Campaign',
+    description:
+      'Community polls on issues that matter to Prosper residents. Share your voice and help shape local priorities.',
+    url: 'https://www.dougcharles.com/polls',
+    numberOfItems: initialPolls.length,
+    itemListElement: initialPolls.slice(0, 10).map((poll, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Question',
+        name: poll.title,
+        text: poll.description || poll.title,
+        answerCount: poll.vote_count || 0,
+        dateCreated: poll.created_at,
+        url: `https://www.dougcharles.com/polls/${poll.id}`,
+      },
+    })),
+  };
+
   return (
     <div className="space-y-0">
+      {/* JSON-LD structured data for polls */}
+      <Script
+        id="polls-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pollsJsonLd) }}
+      />
+
       {/* Hero */}
       <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">

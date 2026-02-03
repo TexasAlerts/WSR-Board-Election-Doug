@@ -20,6 +20,19 @@ const CAMPAIGN_ADDRESS =
   'Doug Charles for Prosper Town Council, 4360 Mill Branch Drive, Prosper, TX 75078';
 
 /**
+ * Escape HTML special characters to prevent XSS in email templates
+ */
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/**
  * Convert HTML to plain text
  */
 function stripHtml(html) {
@@ -94,7 +107,7 @@ export async function sendVerificationEmail(email, name, token) {
       subject: 'Verify your email - Doug Charles for Prosper',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1e3a5f;">Welcome, ${name}!</h2>
+          <h2 style="color: #1e3a5f;">Welcome, ${escapeHtml(name)}!</h2>
           <p>Thank you for signing up as a supporter. Please verify your email address to continue.</p>
           <p style="margin: 30px 0;">
             <a href="${verifyUrl}" style="background-color: #c41e3a; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
@@ -140,7 +153,7 @@ export async function sendPasswordResetEmail(email, name, token) {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #1e3a5f;">Password Reset Request</h2>
-          <p>Hi ${name}, we received a request to reset your password.</p>
+          <p>Hi ${escapeHtml(name)}, we received a request to reset your password.</p>
           <p style="margin: 30px 0;">
             <a href="${resetUrl}" style="background-color: #1e3a5f; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
               Reset Password
@@ -174,7 +187,7 @@ export async function sendWelcomeEmail(email, name) {
       subject: 'Welcome to Doug Charles for Prosper!',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1e3a5f;">Welcome, ${name}!</h2>
+          <h2 style="color: #1e3a5f;">Welcome, ${escapeHtml(name)}!</h2>
           <p>Your account has been verified and you're now an official supporter!</p>
           <p>As a supporter, you can:</p>
           <ul>
@@ -222,9 +235,9 @@ export async function sendCommentApprovedEmail(
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #1e3a5f;">Comment Approved</h2>
-          <p>Hi ${name}, your comment on "${contextTitle}" has been approved and is now visible.</p>
+          <p>Hi ${escapeHtml(name)}, your comment on "${escapeHtml(contextTitle)}" has been approved and is now visible.</p>
           <blockquote style="border-left: 3px solid #1e3a5f; padding-left: 15px; color: #666; margin: 20px 0;">
-            "${commentPreview}"
+            "${escapeHtml(commentPreview)}"
           </blockquote>
           <p>
             <a href="${contextUrl}" style="color: #1e3a5f;">View the discussion</a>
@@ -255,8 +268,8 @@ export async function sendCommentRejectedEmail(email, name, reason) {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #1e3a5f;">Comment Not Approved</h2>
-          <p>Hi ${name}, your recent comment was not approved for posting.</p>
-          ${reason ? `<p><strong>Reason:</strong> ${reason}</p>` : ''}
+          <p>Hi ${escapeHtml(name)}, your recent comment was not approved for posting.</p>
+          ${reason ? `<p><strong>Reason:</strong> ${escapeHtml(reason)}</p>` : ''}
           <p>If you have questions, please contact us.</p>
         </div>
       `,
@@ -284,7 +297,7 @@ export async function sendPhoneUpdateReminderEmail(email, name) {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #1e3a5f;">Update Your Phone Number</h2>
-          <p>Hi ${name},</p>
+          <p>Hi ${escapeHtml(name)},</p>
           <p>Welcome to the campaign! You skipped phone verification during signup. To stay informed on polls, comments, and ideas via text message, we recommend updating your phone to a cell number.</p>
           <p style="margin: 30px 0;">
             <a href="${SITE_URL}/settings" style="background-color: #c41e3a; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
@@ -322,15 +335,15 @@ export async function sendAdminNewRegistrationEmail(supporter) {
     const { data, error } = await client.emails.send({
       from: FROM_EMAIL,
       to: adminEmail,
-      subject: `New Supporter: ${supporter.first_name} ${supporter.last_name}`,
+      subject: `New Supporter: ${escapeHtml(supporter.first_name)} ${escapeHtml(supporter.last_name)}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #1e3a5f;">New Supporter Registration</h2>
-          <p><strong>Name:</strong> ${supporter.first_name} ${supporter.last_name}</p>
-          <p><strong>Email:</strong> ${supporter.email}</p>
-          <p><strong>Phone:</strong> ${supporter.phone}</p>
-          <p><strong>Address:</strong> ${supporter.street_address}, ${supporter.city}, ${supporter.state} ${supporter.zip_code}</p>
-          <p><strong>Status:</strong> ${supporter.status}</p>
+          <p><strong>Name:</strong> ${escapeHtml(supporter.first_name)} ${escapeHtml(supporter.last_name)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(supporter.email)}</p>
+          <p><strong>Phone:</strong> ${escapeHtml(supporter.phone)}</p>
+          <p><strong>Address:</strong> ${escapeHtml(supporter.street_address)}, ${escapeHtml(supporter.city)}, ${escapeHtml(supporter.state)} ${escapeHtml(supporter.zip_code)}</p>
+          <p><strong>Status:</strong> ${escapeHtml(supporter.status)}</p>
           <p>
             <a href="${SITE_URL}/admin/supporters" style="color: #1e3a5f;">View in Admin Panel</a>
           </p>
@@ -357,14 +370,14 @@ export async function sendAdminPendingCommentEmail(comment, contextTitle) {
     const { data, error } = await client.emails.send({
       from: FROM_EMAIL,
       to: adminEmail,
-      subject: `New Comment Pending: ${contextTitle}`,
+      subject: `New Comment Pending: ${escapeHtml(contextTitle)}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #1e3a5f;">Comment Awaiting Moderation</h2>
-          <p><strong>On:</strong> ${contextTitle}</p>
-          <p><strong>From:</strong> ${comment.name} (${comment.email})</p>
+          <p><strong>On:</strong> ${escapeHtml(contextTitle)}</p>
+          <p><strong>From:</strong> ${escapeHtml(comment.name)} (${escapeHtml(comment.email)})</p>
           <blockquote style="border-left: 3px solid #1e3a5f; padding-left: 15px; color: #666; margin: 20px 0;">
-            "${comment.content}"
+            "${escapeHtml(comment.content)}"
           </blockquote>
           <p>
             <a href="${SITE_URL}/admin/comments" style="background-color: #1e3a5f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block;">
@@ -398,7 +411,7 @@ export async function sendVoterVerificationEmail(email, name, token) {
       subject: 'Verify your email to vote - Doug Charles for Prosper',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1e3a5f;">Hi ${name}!</h2>
+          <h2 style="color: #1e3a5f;">Hi ${escapeHtml(name)}!</h2>
           <p>Thank you for wanting to participate in our community polls. Please verify your email to cast your vote.</p>
           <p style="margin: 30px 0;">
             <a href="${verifyUrl}" style="background-color: #c41e3a; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
@@ -443,9 +456,9 @@ export async function sendNewCommentNotificationEmail(
   const htmlBody = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h2 style="color: #1e3a5f;">New Comment</h2>
-      <p>${commenterName} commented on "${contextTitle}":</p>
+      <p>${escapeHtml(commenterName)} commented on "${escapeHtml(contextTitle)}":</p>
       <blockquote style="border-left: 3px solid #1e3a5f; padding-left: 15px; color: #666; margin: 20px 0;">
-        "${commentPreview}"
+        "${escapeHtml(commentPreview)}"
       </blockquote>
       <p>
         <a href="${contextUrl}" style="background-color: #1e3a5f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block;">
@@ -460,7 +473,7 @@ export async function sendNewCommentNotificationEmail(
     const { data, error } = await client.emails.send({
       from: FROM_EMAIL,
       to: email,
-      subject: `New comment on "${contextTitle}"`,
+      subject: `New comment on "${escapeHtml(contextTitle)}"`,
       html: htmlBody,
       text: stripHtml(htmlBody),
       headers: {
@@ -499,14 +512,14 @@ export async function sendNewReplyNotificationEmail(
   const htmlBody = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h2 style="color: #1e3a5f;">New Reply</h2>
-      <p>${replierName} replied to your comment:</p>
+      <p>${escapeHtml(replierName)} replied to your comment:</p>
       <div style="background: #f5f5f5; padding: 15px; border-radius: 6px; margin: 15px 0;">
         <p style="color: #999; font-size: 13px; margin: 0 0 8px 0;">Your comment:</p>
-        <p style="color: #666; margin: 0;">"${parentPreview}"</p>
+        <p style="color: #666; margin: 0;">"${escapeHtml(parentPreview)}"</p>
       </div>
       <div style="background: #f0f7ff; padding: 15px; border-radius: 6px; margin: 15px 0;">
-        <p style="color: #999; font-size: 13px; margin: 0 0 8px 0;">${replierName}'s reply:</p>
-        <p style="color: #333; margin: 0;">"${replyPreview}"</p>
+        <p style="color: #999; font-size: 13px; margin: 0 0 8px 0;">${escapeHtml(replierName)}'s reply:</p>
+        <p style="color: #333; margin: 0;">"${escapeHtml(replyPreview)}"</p>
       </div>
       <p>
         <a href="${contextUrl}" style="background-color: #1e3a5f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block;">
@@ -553,14 +566,14 @@ export async function sendWeeklyDigestEmail(email, name, digestData, unsubscribe
   const pollItems = (digestData.polls || [])
     .map(
       (p) =>
-        `<li><strong>${p.title}</strong> — ${p.newVotes} new vote${p.newVotes !== 1 ? 's' : ''}, ${p.totalVotes} total</li>`
+        `<li><strong>${escapeHtml(p.title)}</strong> — ${p.newVotes} new vote${p.newVotes !== 1 ? 's' : ''}, ${p.totalVotes} total</li>`
     )
     .join('');
 
   const ideaItems = (digestData.ideas || [])
     .map(
       (i) =>
-        `<li><strong>${i.title}</strong> — ${i.newVotes} new vote${i.newVotes !== 1 ? 's' : ''}</li>`
+        `<li><strong>${escapeHtml(i.title)}</strong> — ${i.newVotes} new vote${i.newVotes !== 1 ? 's' : ''}</li>`
     )
     .join('');
 
@@ -569,7 +582,7 @@ export async function sendWeeklyDigestEmail(email, name, digestData, unsubscribe
   const htmlBody = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h2 style="color: #1e3a5f;">Weekly Digest</h2>
-      <p>Hi ${name}, here's what happened this week on polls and ideas you participated in:</p>
+      <p>Hi ${escapeHtml(name)}, here's what happened this week on polls and ideas you participated in:</p>
       ${pollItems ? `<h3 style="color: #1e3a5f;">Polls</h3><ul>${pollItems}</ul>` : ''}
       ${ideaItems ? `<h3 style="color: #1e3a5f;">Ideas</h3><ul>${ideaItems}</ul>` : ''}
       ${commentCount > 0 ? `<p>${commentCount} new comment${commentCount !== 1 ? 's' : ''} on discussions you follow.</p>` : ''}

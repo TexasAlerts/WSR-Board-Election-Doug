@@ -1,9 +1,44 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import Script from 'next/script';
+
+// Breadcrumb JSON-LD structured data
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://www.dougcharles.com',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'About Doug',
+      item: 'https://www.dougcharles.com/about',
+    },
+  ],
+};
+
+export const metadata = {
+  title: 'About Doug Charles - Prosper Town Council Place 5 Candidate',
+  description:
+    '20-year Prosper resident, former Planning & Zoning Commissioner, and community leader. Learn about Doug Charles and his vision for Prosper.',
+  alternates: { canonical: '/about' },
+};
 
 export default function AboutPage() {
   return (
     <div className="space-y-0">
+      {/* Breadcrumb JSON-LD */}
+      <Script
+        id="about-breadcrumb"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
       {/* Hero */}
       <section className="hero-pattern hero-gradient text-center py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">

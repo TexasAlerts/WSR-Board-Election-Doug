@@ -2,6 +2,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Ear, ClipboardList, ShieldCheck } from 'lucide-react';
 
+export const metadata = {
+  title: 'Priorities - Doug Charles for Prosper Town Council',
+  description:
+    'Doug Charles priorities for Prosper: responsible growth, infrastructure, public safety, fiscal accountability, and transparent governance.',
+  alternates: { canonical: '/priorities' },
+};
+
 export default function PrioritiesPage() {
   return (
     <div className="space-y-0">

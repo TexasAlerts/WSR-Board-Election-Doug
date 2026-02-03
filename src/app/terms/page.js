@@ -1,6 +1,8 @@
 export const metadata = {
   title: 'Terms of Use - Doug Charles for Prosper Town Council',
-  description: 'Terms of use for the Doug Charles for Prosper Town Council campaign website.',
+  description:
+    'Terms of use for the Doug Charles campaign website, including content moderation, user submissions, SMS terms, and political contribution compliance.',
+  alternates: { canonical: '/terms' },
 };
 
 export default function TermsOfUse() {

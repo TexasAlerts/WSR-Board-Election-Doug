@@ -106,6 +106,25 @@ export default function StickyNav() {
             <button
               ref={aboutBtnRef}
               onClick={() => setAboutMenuOpen(!aboutMenuOpen)}
+              onKeyDown={(e) => {
+                if (aboutMenuOpen) {
+                  const items = document.querySelectorAll(
+                    '#about-dropdown-menu [role="menuitem"]'
+                  );
+                  const currentIndex = Array.from(items).indexOf(document.activeElement);
+                  if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    items[currentIndex === -1 ? 0 : (currentIndex + 1) % items.length]?.focus();
+                  } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    items[
+                      currentIndex === -1
+                        ? items.length - 1
+                        : (currentIndex - 1 + items.length) % items.length
+                    ]?.focus();
+                  }
+                }
+              }}
               className="flex items-center gap-1 text-gray-600 hover:text-navy transition-colors"
               aria-expanded={aboutMenuOpen}
               aria-haspopup="true"
@@ -180,6 +199,25 @@ export default function StickyNav() {
                 <button
                   ref={userBtnRef}
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  onKeyDown={(e) => {
+                    if (userMenuOpen) {
+                      const items = document.querySelectorAll(
+                        '#user-dropdown-menu [role="menuitem"]'
+                      );
+                      const currentIndex = Array.from(items).indexOf(document.activeElement);
+                      if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        items[currentIndex === -1 ? 0 : (currentIndex + 1) % items.length]?.focus();
+                      } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        items[
+                          currentIndex === -1
+                            ? items.length - 1
+                            : (currentIndex - 1 + items.length) % items.length
+                        ]?.focus();
+                      }
+                    }
+                  }}
                   className="flex items-center gap-2 text-gray-600 hover:text-navy transition-colors"
                   aria-expanded={userMenuOpen}
                   aria-haspopup="true"

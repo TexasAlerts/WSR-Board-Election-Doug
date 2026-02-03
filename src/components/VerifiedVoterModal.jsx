@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { logApiError } from '@/lib/clientErrorLogger';
 
 export default function VerifiedVoterModal({ onClose, onVerified }) {
   const [email, setEmail] = useState('');
@@ -74,7 +75,10 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
         setError(data.error || 'Something went wrong.');
         setStep('error');
       }
-    } catch {
+    } catch (err) {
+      await logApiError('/api/verified-voters/request-verification', 'POST', err.status || 500, err.message, {
+        userAgent: navigator.userAgent,
+      });
       setError('Network error. Please try again.');
       setStep('error');
     }
@@ -82,7 +86,7 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 px-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="voter-modal-title"

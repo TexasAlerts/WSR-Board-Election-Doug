@@ -1,6 +1,14 @@
 import Image from 'next/image';
+import Script from 'next/script';
 import IdeasClient from '../../components/IdeasClient';
 import { getSupabase } from '../../lib/supabase';
+
+export const metadata = {
+  title: 'Community Ideas - Doug Charles for Prosper Town Council',
+  description:
+    'Share your ideas for making Prosper better. Submit suggestions, vote on community proposals, and help shape our town\u2019s future.',
+  alternates: { canonical: '/ideas' },
+};
 
 // Enable dynamic rendering to support SSR
 export const dynamic = 'force-dynamic';
@@ -57,8 +65,49 @@ async function getIdeas() {
 export default async function IdeasPage() {
   const initialIdeas = await getIdeas();
 
+  // Generate JSON-LD for community ideas
+  const ideasJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Community Ideas - Doug Charles Campaign',
+    description:
+      'Community-submitted ideas for making Prosper better. Vote on proposals and help shape local priorities.',
+    url: 'https://www.dougcharles.com/ideas',
+    numberOfItems: initialIdeas.length,
+    itemListElement: initialIdeas.slice(0, 10).map((idea, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'CreativeWork',
+        name: idea.title,
+        description: idea.content?.substring(0, 200) || idea.title,
+        dateCreated: idea.created_at,
+        url: `https://www.dougcharles.com/ideas/${idea.id}`,
+        interactionStatistic: [
+          {
+            '@type': 'InteractionCounter',
+            interactionType: 'https://schema.org/LikeAction',
+            userInteractionCount: idea.upvotes || 0,
+          },
+          {
+            '@type': 'InteractionCounter',
+            interactionType: 'https://schema.org/CommentAction',
+            userInteractionCount: idea.comment_count || 0,
+          },
+        ],
+      },
+    })),
+  };
+
   return (
     <div className="space-y-0">
+      {/* JSON-LD structured data for ideas */}
+      <Script
+        id="ideas-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ideasJsonLd) }}
+      />
+
       {/* Hero */}
       <section className="bg-gradient-red text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">

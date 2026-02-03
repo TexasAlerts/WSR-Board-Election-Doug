@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
+import { logError, ErrorTypes } from '../../../../lib/logging';
 
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
@@ -52,6 +53,13 @@ export async function GET(request) {
   const { data, error, count } = await query;
 
   if (error) {
+    await logError({
+      errorType: ErrorTypes.DATABASE_ERROR,
+      errorMessage: error.message,
+      endpoint: '/api/admin/audit-logs',
+      method: 'GET',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 

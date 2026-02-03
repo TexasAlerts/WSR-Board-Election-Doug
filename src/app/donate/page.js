@@ -1,5 +1,12 @@
 import Image from 'next/image';
 import { Mail, MessageCircle } from 'lucide-react';
+
+export const metadata = {
+  title: 'Support the Campaign - Doug Charles for Prosper Town Council',
+  description:
+    'Support Doug Charles for Prosper Town Council Place 5. Your contribution helps bring common sense leadership to all of Prosper.',
+  alternates: { canonical: '/donate' },
+};
 import DonateDynamic from '../../components/DonateDynamic';
 
 const SHARE_MESSAGE =

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { sendSMS } from '../../../../lib/smsService';
-import { logAudit, AuditEvents } from '../../../../lib/logging';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 const OPT_OUT_KEYWORDS = ['stop', 'unsubscribe', 'cancel', 'end', 'quit'];
 const OPT_IN_KEYWORDS = ['start', 'unstop', 'subscribe'];
@@ -139,6 +139,14 @@ export async function POST(request) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/sms/inbound',
+      method: 'POST',
+      request,
+    }).catch(() => {});
     return NextResponse.json({ ok: true });
   }
 }

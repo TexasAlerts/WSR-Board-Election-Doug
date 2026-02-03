@@ -1,6 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'Why I\'m Running - Doug Charles for Prosper Town Council',
+  description:
+    'Why Doug Charles is running for Prosper Town Council Place 5. A 20-year resident committed to listening, planning, and protecting our community.',
+  alternates: { canonical: '/why' },
+};
+
 export default function WhyPage() {
   return (
     <div className="space-y-0">

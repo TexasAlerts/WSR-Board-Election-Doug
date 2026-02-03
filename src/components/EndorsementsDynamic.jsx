@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
 import { useRecaptcha } from '../hooks/useRecaptcha';
+import { logApiError } from '@/lib/clientErrorLogger';
 
 export default function EndorsementsDynamic() {
   const { getToken, isReady } = useRecaptcha();
@@ -24,7 +25,9 @@ export default function EndorsementsDynamic() {
         const res = await fetch('/api/endorsements', { cache: 'no-store' });
         const data = await res.json();
         setEndorsements(Array.isArray(data.data) ? data.data : []);
-      } catch (err) {}
+      } catch (err) {
+        await logApiError('/api/endorsements', 'GET', err.status || 500, err.message, { context: 'loadEndorsements' });
+      }
     }
     load();
   }, []);
@@ -78,7 +81,10 @@ export default function EndorsementsDynamic() {
         setSubmitMsg(data.error || 'Something went wrong. Please try again.');
       }
     } catch (err) {
-      setSubmitMsg('Something went wrong. Please try again.');
+      await logApiError('/api/endorsements', 'POST', err.status || 500, err.message, {
+        userAgent: navigator.userAgent,
+      });
+      setSubmitMsg('Something went wrong. Our team has been notified.');
     } finally {
       setIsSubmitting(false);
     }

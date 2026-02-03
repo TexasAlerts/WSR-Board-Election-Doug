@@ -3,6 +3,17 @@
  */
 
 /**
+ * Escape CSV formula injection.
+ * Prefixes cells starting with formula characters to prevent Excel/Sheets execution.
+ */
+function escapeCsvFormula(str) {
+  if (str && /^[=+\-@\t\r]/.test(str)) {
+    return "'" + str;
+  }
+  return str;
+}
+
+/**
  * Convert array of objects to CSV string.
  */
 export function toCSV(data, columns) {
@@ -15,7 +26,8 @@ export function toCSV(data, columns) {
       .map((col) => {
         const val = row[col];
         if (val === null || val === undefined) return '';
-        const str = String(val).replace(/"/g, '""');
+        let str = String(val).replace(/"/g, '""');
+        str = escapeCsvFormula(str);
         return str.includes(',') || str.includes('"') || str.includes('\n') ? `"${str}"` : str;
       })
       .join(',')

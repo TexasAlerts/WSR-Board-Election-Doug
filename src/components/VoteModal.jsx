@@ -18,6 +18,7 @@ export default function VoteModal({
   moveRanking,
 }) {
   const voteModalRef = useRef(null);
+  const closeButtonRef = useRef(null);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -48,13 +49,13 @@ export default function VoteModal({
       }
     }
     document.addEventListener('keydown', handleKeyDown);
-    voteModalRef.current?.focus();
+    closeButtonRef.current?.focus();
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -72,6 +73,7 @@ export default function VoteModal({
               {poll.title}
             </h2>
             <button
+              ref={closeButtonRef}
               onClick={onClose}
               aria-label="Close vote form"
               className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"

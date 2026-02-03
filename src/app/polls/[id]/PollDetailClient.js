@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Comment from '@/components/shared/Comment';
+import { logApiError } from '@/lib/clientErrorLogger';
 
 export default function PollDetailClient() {
   const params = useParams();
@@ -29,6 +30,7 @@ export default function PollDetailClient() {
 
         setPoll(data.data);
       } catch (err) {
+        await logApiError(`/api/polls/${params.id}`, 'GET', err.status || 500, err.message, { context: 'loadPoll' });
         setError('Error loading poll');
       } finally {
         setLoading(false);
@@ -45,7 +47,7 @@ export default function PollDetailClient() {
           return;
         }
       } catch (err) {
-        // Not authenticated
+        // Not authenticated - expected for guests, no logging needed
       }
 
       // Check for verified voter
@@ -59,7 +61,7 @@ export default function PollDetailClient() {
           });
         }
       } catch (err) {
-        // Not a verified voter
+        // Not a verified voter - expected for guests, no logging needed
       }
     }
 
@@ -97,47 +99,20 @@ export default function PollDetailClient() {
         return { ok: true };
       } else {
         const errorMsg = result.error || 'Error submitting comment';
-
-        // Log the error to admin dashboard
-        await fetch('/api/errors', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            error_type: 'validation_error',
-            error_message: `Comment submission failed: ${errorMsg}`,
-            endpoint: `/polls/${params.id}`,
-            context: JSON.stringify({
-              pollId: params.id,
-              hasContent: !!content,
-              contentLength: content?.length,
-              isReply: !!parent_id,
-              statusCode: res.status,
-            }),
-          }),
-        }).catch(() => {}); // Silently fail error logging
-
+        await logApiError('/api/comments', 'POST', res.status, errorMsg, {
+          pollId: params.id,
+          hasContent: !!content,
+          contentLength: content?.length,
+          isReply: !!parent_id,
+        });
         return { ok: false, error: errorMsg };
       }
     } catch (err) {
-      const errorMsg = 'Error submitting comment';
-
-      // Log the exception to admin dashboard
-      await fetch('/api/errors', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          error_type: 'client_error',
-          error_message: `Comment submission exception: ${err.message}`,
-          error_stack: err.stack,
-          endpoint: `/polls/${params.id}`,
-          context: JSON.stringify({
-            pollId: params.id,
-            errorType: err.name,
-          }),
-        }),
-      }).catch(() => {}); // Silently fail error logging
-
-      return { ok: false, error: errorMsg };
+      await logApiError('/api/comments', 'POST', err.status || 500, err.message, {
+        pollId: params.id,
+        context: 'commentSubmitException',
+      });
+      return { ok: false, error: 'Error submitting comment' };
     }
   }
 

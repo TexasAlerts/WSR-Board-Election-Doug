@@ -1,6 +1,8 @@
 export const metadata = {
   title: 'Privacy Policy - Doug Charles for Prosper Town Council',
-  description: 'Privacy policy for the Doug Charles for Prosper Town Council campaign website.',
+  description:
+    'Comprehensive privacy policy for the Doug Charles campaign website, covering data collection, cookies, SMS messaging, and your rights under the Texas Data Privacy and Security Act.',
+  alternates: { canonical: '/privacy' },
 };
 
 export default function PrivacyPolicy() {

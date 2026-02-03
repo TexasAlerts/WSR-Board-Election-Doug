@@ -45,11 +45,15 @@ export default function CommentForm({
           required
           className="form-input"
           placeholder="Share your thoughts..."
+          aria-describedby={commentMsg ? 'comment-message' : undefined}
         />
       </div>
 
       {commentMsg && (
         <div
+          id="comment-message"
+          role={commentMsg.includes('submitted') ? 'status' : 'alert'}
+          aria-live="polite"
           className={`p-4 rounded-lg ${commentMsg.includes('submitted') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}
         >
           {commentMsg}

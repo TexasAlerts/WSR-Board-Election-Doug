@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter } from '../../../../lib/auth';
+import { logError, ErrorTypes } from '../../../../lib/logging';
 
 export async function GET(request, { params }) {
   const supabase = getSupabase();
@@ -46,7 +47,13 @@ export async function GET(request, { params }) {
     .order('created_at', { ascending: false });
 
   if (commentsError) {
-    // silently ignored
+    await logError({
+      errorType: ErrorTypes.DATABASE_ERROR,
+      errorMessage: commentsError.message,
+      endpoint: '/api/ideas/[id]',
+      method: 'GET',
+      request,
+    });
   }
 
   // Get user's comment votes and reply counts if authenticated

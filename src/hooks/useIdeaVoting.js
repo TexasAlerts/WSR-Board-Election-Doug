@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { logApiError } from '@/lib/clientErrorLogger';
 
 export function useIdeaVoting(ideaId) {
   const [votingIdea, setVotingIdea] = useState(false);
@@ -30,6 +31,7 @@ export function useIdeaVoting(ideaId) {
         setError(result.error || 'Error voting on idea');
         return { ok: false };
       } catch (err) {
+        await logApiError(`/api/ideas/${ideaId}/vote`, 'POST', err.status || 500, err.message, { context: 'handleIdeaVote' });
         setError('Error voting on idea');
         return { ok: false };
       } finally {

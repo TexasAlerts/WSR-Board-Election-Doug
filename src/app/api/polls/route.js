@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../lib/supabase';
 import { getCurrentSupporter } from '../../../lib/auth';
+import { logError, ErrorTypes } from '../../../lib/logging';
 
 // API routes should be dynamic
 export const dynamic = 'force-dynamic';
@@ -49,6 +50,13 @@ export async function GET(request) {
   const { data: polls, error } = await query;
 
   if (error) {
+    await logError({
+      errorType: ErrorTypes.DATABASE_ERROR,
+      errorMessage: error.message,
+      endpoint: '/api/polls',
+      method: 'GET',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 
@@ -65,7 +73,13 @@ export async function GET(request) {
     .in('poll_id', pollIds);
 
   if (voteError) {
-    // silently ignored
+    await logError({
+      errorType: ErrorTypes.DATABASE_ERROR,
+      errorMessage: voteError.message,
+      endpoint: '/api/polls',
+      method: 'GET',
+      request,
+    });
   }
 
   // Count votes per poll
@@ -84,7 +98,13 @@ export async function GET(request) {
     .in('poll_id', pollIds);
 
   if (commentError) {
-    // silently ignored
+    await logError({
+      errorType: ErrorTypes.DATABASE_ERROR,
+      errorMessage: commentError.message,
+      endpoint: '/api/polls',
+      method: 'GET',
+      request,
+    });
   }
 
   // Count comments per poll

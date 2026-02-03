@@ -6,6 +6,7 @@ import {
   ANONYMOUS_VOTER_COOKIE,
   generateAnonymousVoterFingerprint,
 } from '../../../../lib/anonymousVoting';
+import { logError, ErrorTypes } from '../../../../lib/logging';
 
 export async function GET(request) {
   const supabase = getSupabase();
@@ -73,6 +74,14 @@ export async function GET(request) {
 
     return NextResponse.json({ ok: true, data: votedPolls });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/polls/my-votes',
+      method: 'GET',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { BarChart3, Download, Loader2 } from 'lucide-react';
+import { logApiError } from '@/lib/clientErrorLogger';
 
 export default function ReportsTab() {
   const [reportType, setReportType] = useState('engagement');
@@ -20,6 +21,9 @@ export default function ReportsTab() {
       if (!data.ok) throw new Error(data.error);
       setReportData(data.data);
     } catch (err) {
+      await logApiError(`/api/admin/reports/${reportType}`, 'GET', err.status || 500, err.message, {
+        reportType,
+      });
       setError(err.message);
     } finally {
       setLoading(false);
@@ -38,6 +42,10 @@ export default function ReportsTab() {
       a.click();
       URL.revokeObjectURL(url);
     } catch (err) {
+      await logApiError(`/api/admin/reports/${reportType}`, 'GET', err.status || 500, err.message, {
+        reportType,
+        format: 'csv',
+      });
       setError('Failed to download CSV');
     }
   }

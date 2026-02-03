@@ -4,6 +4,7 @@ import { generateToken } from '../../../../lib/auth';
 import { sendVoterVerificationEmail } from '../../../../lib/emailService';
 import { rateLimit } from '../../../../lib/rateLimit';
 import { parseNameParts } from '../../../../lib/formatDisplayName';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -21,6 +22,13 @@ export async function POST(request) {
     const body = await request.json();
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
+      await logError({
+        errorType: ErrorTypes.VALIDATION_ERROR,
+        errorMessage: 'Voter verification request validation failed: ' + parsed.error.errors[0].message,
+        endpoint: '/api/verified-voters/request-verification',
+        method: 'POST',
+        request,
+      });
       return NextResponse.json(
         { ok: false, error: parsed.error.errors[0].message },
         { status: 400 }
@@ -96,17 +104,40 @@ export async function POST(request) {
     // Send verification email
     const emailResult = await sendVoterVerificationEmail(normalizedEmail, name, token);
     if (!emailResult.success) {
+      await logError({
+        errorType: ErrorTypes.EXTERNAL_SERVICE,
+        errorMessage: 'Failed to send voter verification email',
+        endpoint: '/api/verified-voters/request-verification',
+        method: 'POST',
+        request,
+      });
       return NextResponse.json(
         { ok: false, error: 'Failed to send verification email' },
         { status: 500 }
       );
     }
 
+    await logAudit({
+      eventType: AuditEvents.VOTER_VERIFICATION_REQUESTED || 'VOTER_VERIFICATION_REQUESTED',
+      targetType: 'verified_voter',
+      details: { email: normalizedEmail, name },
+      request,
+      responseStatus: 200,
+    });
+
     return NextResponse.json({
       ok: true,
       message: 'Verification email sent. Please check your inbox.',
     });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/verified-voters/request-verification',
+      method: 'POST',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

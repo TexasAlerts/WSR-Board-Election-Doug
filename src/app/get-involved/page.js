@@ -1,6 +1,13 @@
 import Image from 'next/image';
 import GetInvolvedDynamic from '../../components/GetInvolvedDynamic';
 
+export const metadata = {
+  title: 'Get Involved - Doug Charles for Prosper Town Council',
+  description:
+    'Volunteer, host an event, request a yard sign, or endorse Doug Charles for Prosper Town Council Place 5. Every action makes a difference.',
+  alternates: { canonical: '/get-involved' },
+};
+
 export default function GetInvolvedPage() {
   return (
     <div className="space-y-0">

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../../lib/auth';
-import { logAudit, AuditEvents } from '../../../../../lib/logging';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../../lib/logging';
 
 /**
  * PATCH /api/admin/verified-voters/[id]
@@ -60,6 +60,14 @@ export async function PATCH(request, { params }) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/admin/verified-voters/[id]',
+      method: 'PATCH',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
@@ -110,6 +118,14 @@ export async function DELETE(request, { params }) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/admin/verified-voters/[id]',
+      method: 'DELETE',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
