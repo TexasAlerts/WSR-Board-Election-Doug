@@ -1,7 +1,9 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
+import { useRecaptcha } from '../hooks/useRecaptcha';
 
 export default function EndorsementsDynamic() {
+  const { getToken, isReady } = useRecaptcha();
   const [endorsements, setEndorsements] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({
@@ -41,6 +43,9 @@ export default function EndorsementsDynamic() {
     setIsSubmitting(true);
 
     try {
+      // Get reCAPTCHA token
+      const recaptchaToken = await getToken('submit_endorsement');
+
       const res = await fetch('/api/endorsements', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -51,6 +56,7 @@ export default function EndorsementsDynamic() {
           message: form.message,
           consentEmail: form.consentEmail,
           consentSms: form.consentSms,
+          recaptchaToken,
         }),
       });
       const data = await res.json();

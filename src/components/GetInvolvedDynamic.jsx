@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Mail, MessageCircle } from 'lucide-react';
 import { validatePhoneNumber } from '../lib/phoneValidation';
+import { useRecaptcha } from '../hooks/useRecaptcha';
 import ActionCards from './ActionCards';
 import GetInvolvedForm from './GetInvolvedForm';
 
@@ -12,6 +13,7 @@ const SHARE_MESSAGE =
 const SHARE_SUBJECT = 'Check out Doug Charles for Prosper Town Council';
 
 function GetInvolvedDynamicContent() {
+  const { getToken, isReady } = useRecaptcha();
   const [selectedAction, setSelectedAction] = useState(null);
   const formRef = useRef(null);
   const [form, setForm] = useState({
@@ -68,6 +70,10 @@ function GetInvolvedDynamicContent() {
     }
 
     try {
+      // Get reCAPTCHA token
+      const action = selectedAction === 'endorsement' ? 'submit_endorsement' : 'submit_interest';
+      const recaptchaToken = await getToken(action);
+
       const endpoint = selectedAction === 'endorsement' ? '/api/endorsements' : '/api/interest';
       const body =
         selectedAction === 'endorsement'
@@ -78,6 +84,7 @@ function GetInvolvedDynamicContent() {
               message: form.message,
               consentEmail: form.consentEmail,
               consentSms: form.consentSms,
+              recaptchaToken,
             }
           : {
               type: selectedAction,
@@ -87,6 +94,7 @@ function GetInvolvedDynamicContent() {
               message: form.message,
               consentEmail: form.consentEmail,
               consentSms: form.consentSms,
+              recaptchaToken,
             };
 
       const res = await fetch(endpoint, {

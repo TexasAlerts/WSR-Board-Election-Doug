@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRecaptcha } from '../hooks/useRecaptcha';
 
 export default function QnaDynamic({ initialQuestions = [] }) {
+  const { getToken, isReady } = useRecaptcha();
   const [questions, setQuestions] = useState(initialQuestions);
   const [form, setForm] = useState({ name: '', email: '', question: '' });
   const [submitted, setSubmitted] = useState(false);
@@ -36,10 +38,16 @@ export default function QnaDynamic({ initialQuestions = [] }) {
     setError('');
     setIsSubmitting(true);
     try {
+      // Get reCAPTCHA token
+      const recaptchaToken = await getToken('submit_question');
+
       const res = await fetch('/api/questions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          recaptchaToken,
+        }),
       });
       const data = await res.json();
       if (res.ok && data.ok) {

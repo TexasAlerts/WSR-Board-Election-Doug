@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { MessageSquare } from 'lucide-react';
+import { useRecaptcha } from '../hooks/useRecaptcha';
 
 const CATEGORIES = [
   { value: 'all', label: 'All Ideas', icon: '💡' },
@@ -23,6 +24,7 @@ const STATUS_COLORS = {
 };
 
 export default function IdeasClient({ initialIdeas = [] }) {
+  const { getToken, isReady } = useRecaptcha();
   const [ideas, setIdeas] = useState(initialIdeas);
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState('all');
@@ -167,10 +169,16 @@ export default function IdeasClient({ initialIdeas = [] }) {
     setSubmitMsg('');
 
     try {
+      // Get reCAPTCHA token
+      const recaptchaToken = await getToken('submit_idea');
+
       const res = await fetch('/api/ideas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(submitForm),
+        body: JSON.stringify({
+          ...submitForm,
+          recaptchaToken,
+        }),
       });
       const result = await res.json();
 
