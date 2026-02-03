@@ -40,7 +40,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "font-src 'self' data: https://fonts.gstatic.com",
               "img-src 'self' data: https:",
-              "connect-src 'self' https://*.supabase.co https://www.google.com https://www.recaptcha.net",
+              "connect-src 'self' https://*.supabase.co https://www.google.com https://www.gstatic.com https://www.recaptcha.net",
               "frame-src https://www.google.com https://www.recaptcha.net",
               "frame-ancestors 'none'",
               "base-uri 'self'",
