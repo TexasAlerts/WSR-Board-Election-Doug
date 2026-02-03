@@ -1,22 +1,78 @@
+/**
+ * React Error Boundary Component
+ *
+ * Catches JavaScript errors anywhere in the child component tree,
+ * logs those errors to the server, and displays a fallback UI.
+ *
+ * @example
+ * <ErrorBoundary>
+ *   <YourComponent />
+ * </ErrorBoundary>
+ *
+ * Features:
+ * - Catches React rendering errors
+ * - Logs errors to /api/errors endpoint
+ * - Displays user-friendly fallback UI
+ * - Allows user to reset error state
+ * - Prevents app crash from propagating
+ */
+
 'use client';
 
 import { Component } from 'react';
 
+/**
+ * ErrorBoundary class component
+ *
+ * @class
+ * @extends {Component}
+ *
+ * @property {Object} state - Component state
+ * @property {boolean} state.hasError - Whether an error has been caught
+ * @property {Error|null} state.error - The caught error object
+ */
 class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null };
   }
 
+  /**
+   * React lifecycle method called when an error is thrown
+   *
+   * @param {Error} error - The error that was thrown
+   * @returns {Object} New state with hasError set to true
+   */
   static getDerivedStateFromError(error) {
     return { hasError: true, error };
   }
 
+  /**
+   * React lifecycle method called after an error has been thrown
+   * Logs the error to the server for tracking
+   *
+   * @param {Error} error - The error that was thrown
+   * @param {Object} errorInfo - React error info with component stack
+   */
   componentDidCatch(error, errorInfo) {
     // Log error to the error logging API
     this.logError(error, errorInfo);
   }
 
+  /**
+   * Log the error to the server via /api/errors endpoint
+   *
+   * Sends error details including:
+   * - Error message and stack trace
+   * - Component stack from React
+   * - Current URL and pathname
+   *
+   * Silently fails if logging fails to prevent error loops.
+   *
+   * @param {Error} error - The error that was thrown
+   * @param {Object} errorInfo - React error info
+   * @param {string} errorInfo.componentStack - Component stack trace
+   */
   async logError(error, errorInfo) {
     try {
       await fetch('/api/errors', {

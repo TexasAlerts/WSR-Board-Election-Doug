@@ -1,8 +1,40 @@
+/**
+ * Logging and Audit Module
+ *
+ * Comprehensive logging system for security audits and error tracking.
+ *
+ * Features:
+ * - Audit logging for security-relevant events
+ * - Error logging with auto-deduplication
+ * - User agent parsing (browser, OS, device type)
+ * - Request metadata extraction
+ * - Automatic superuser notifications for errors
+ * - Sanitization of sensitive data
+ *
+ * All logs are stored in Supabase with full context including:
+ * - IP address and user agent
+ * - Browser, OS, and device type
+ * - Request method and path
+ * - Sanitized request body
+ * - Response status
+ */
+
 import { getSupabase } from './supabase';
 import { sendEmail } from './sendEmail';
 
 /**
  * Parse user agent to determine device type
+ *
+ * Detects mobile, tablet, or desktop based on user agent string.
+ * Tablets are checked first as some report as "mobile".
+ *
+ * @param {string} userAgent - Browser user agent string
+ * @returns {'mobile'|'tablet'|'desktop'|'unknown'} Device type
+ *
+ * @example
+ * getDeviceType('Mozilla/5.0 (iPhone...)') // 'mobile'
+ * getDeviceType('Mozilla/5.0 (iPad...)') // 'tablet'
+ * getDeviceType('Mozilla/5.0 (Windows NT...)') // 'desktop'
  */
 export function getDeviceType(userAgent) {
   if (!userAgent || userAgent === 'unknown') return 'unknown';
@@ -41,7 +73,22 @@ export function getDeviceType(userAgent) {
 }
 
 /**
- * Parse user agent to get browser and OS info
+ * Parse user agent to extract browser, OS, and device information
+ *
+ * Performs pattern matching on the user agent string to identify:
+ * - Browser: Chrome, Safari, Firefox, Edge, Opera, IE
+ * - OS: Windows, macOS, iOS, Android, Linux
+ * - Device type: mobile, tablet, desktop
+ *
+ * @param {string} userAgent - Browser user agent string
+ * @returns {Object} Parsed user agent info
+ * @returns {string} returns.browser - Browser name or 'unknown'
+ * @returns {string} returns.os - Operating system or 'unknown'
+ * @returns {string} returns.device - Device type: 'mobile'|'tablet'|'desktop'|'unknown'
+ *
+ * @example
+ * parseUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
+ * // { browser: 'Chrome', os: 'macOS', device: 'desktop' }
  */
 export function parseUserAgent(userAgent) {
   if (!userAgent || userAgent === 'unknown') {
@@ -75,7 +122,38 @@ export function parseUserAgent(userAgent) {
 }
 
 /**
- * Extract request metadata
+ * Extract comprehensive metadata from a request
+ *
+ * Parses request headers and URL to extract:
+ * - Client IP address (from x-forwarded-for or x-real-ip)
+ * - User agent string
+ * - HTTP method
+ * - Request path
+ * - Browser name
+ * - Operating system
+ * - Device type
+ *
+ * @param {Request} request - The incoming HTTP request object
+ * @returns {Object} Request metadata
+ * @returns {string} returns.ip - Client IP address
+ * @returns {string} returns.userAgent - User agent string
+ * @returns {string} returns.method - HTTP method (GET, POST, etc.)
+ * @returns {string} returns.path - Request path
+ * @returns {string} returns.browser - Browser name
+ * @returns {string} returns.os - Operating system
+ * @returns {string} returns.device - Device type
+ *
+ * @example
+ * const meta = getRequestMeta(request);
+ * // {
+ * //   ip: '192.168.1.1',
+ * //   userAgent: 'Mozilla/5.0...',
+ * //   method: 'POST',
+ * //   path: '/api/polls',
+ * //   browser: 'Chrome',
+ * //   os: 'Windows',
+ * //   device: 'desktop'
+ * // }
  */
 export function getRequestMeta(request) {
   const ip =
@@ -92,7 +170,22 @@ export function getRequestMeta(request) {
 }
 
 /**
- * Sanitize request body - remove sensitive fields
+ * Sanitize request body by removing sensitive fields
+ *
+ * Replaces sensitive data with '[REDACTED]' to prevent logging:
+ * - Passwords
+ * - Tokens
+ * - Secret keys
+ * - Verification codes
+ *
+ * Creates a shallow copy to avoid mutating the original object.
+ *
+ * @param {Object} body - The request body object
+ * @returns {Object} Sanitized copy of the body
+ *
+ * @example
+ * sanitizeBody({ email: 'user@example.com', password: 'secret123' })
+ * // { email: 'user@example.com', password: '[REDACTED]' }
  */
 function sanitizeBody(body) {
   if (!body) return null;
@@ -114,7 +207,54 @@ function sanitizeBody(body) {
 }
 
 /**
- * Log an audit event with full details
+ * Log a security audit event with full context
+ *
+ * Creates a comprehensive audit log entry in the database with:
+ * - Event type (from AuditEvents constants)
+ * - User information (supporter ID)
+ * - Target information (what was affected)
+ * - Before/after values for updates
+ * - Request metadata (IP, user agent, browser, OS, device)
+ * - Sanitized request body
+ * - Response status
+ *
+ * All request bodies are sanitized to remove passwords and tokens.
+ * Device info is automatically extracted from user agent.
+ *
+ * @param {Object} params - Audit log parameters
+ * @param {string} params.eventType - Event type (use AuditEvents constants)
+ * @param {string} [params.supporterId=null] - ID of the user performing action
+ * @param {string} [params.targetId=null] - ID of the affected resource
+ * @param {string} [params.targetType=null] - Type of affected resource
+ * @param {Object} [params.oldValues=null] - Previous values (for updates)
+ * @param {Object} [params.newValues=null] - New values (for updates)
+ * @param {Object} [params.details=null] - Additional event details
+ * @param {Request} [params.request=null] - HTTP request object (for metadata)
+ * @param {number} [params.responseStatus=null] - HTTP response status code
+ * @param {Object} [params.requestBody=null] - Request body (will be sanitized)
+ * @param {string} [params.sessionId=null] - Session ID if available
+ * @returns {Promise<void>}
+ *
+ * @example
+ * await logAudit({
+ *   eventType: AuditEvents.LOGIN_SUCCESS,
+ *   supporterId: supporter.id,
+ *   details: { email: supporter.email, role: supporter.role },
+ *   request,
+ *   responseStatus: 200,
+ * });
+ *
+ * @example
+ * await logAudit({
+ *   eventType: AuditEvents.SUPPORTER_ROLE_CHANGED,
+ *   supporterId: adminId,
+ *   targetId: userId,
+ *   targetType: 'supporter',
+ *   oldValues: { role: 'supporter' },
+ *   newValues: { role: 'admin' },
+ *   request,
+ *   responseStatus: 200,
+ * });
  */
 export async function logAudit({
   eventType,
@@ -170,6 +310,53 @@ export async function logAudit({
 
 /**
  * Log an error and optionally notify superusers
+ *
+ * Creates an error log entry with auto-deduplication:
+ * - If same error exists with status 'new', increments occurrence_count
+ * - Otherwise, creates new error log entry
+ * - Optionally emails superusers about new errors
+ *
+ * All errors include:
+ * - Error type and message
+ * - Stack trace
+ * - Endpoint and HTTP method
+ * - User information (if available)
+ * - Request metadata (IP, user agent, browser, OS, device)
+ * - Sanitized request body
+ *
+ * @param {Object} params - Error log parameters
+ * @param {string} params.errorType - Error type (use ErrorTypes constants)
+ * @param {string} params.errorMessage - Human-readable error message
+ * @param {string} [params.errorStack=null] - Stack trace
+ * @param {string} [params.endpoint=null] - API endpoint or page URL
+ * @param {string} [params.method=null] - HTTP method
+ * @param {Object} [params.requestBody=null] - Request body (will be sanitized)
+ * @param {string} [params.userId=null] - User ID if available
+ * @param {string} [params.userEmail=null] - User email if available
+ * @param {Request} [params.request=null] - HTTP request object
+ * @param {boolean} [params.notifySuperusers=true] - Send email to superusers
+ * @returns {Promise<string|null>} Error log ID or null if logging failed
+ *
+ * @example
+ * await logError({
+ *   errorType: ErrorTypes.API_ERROR,
+ *   errorMessage: 'Failed to fetch user data',
+ *   errorStack: err.stack,
+ *   endpoint: '/api/users',
+ *   method: 'GET',
+ *   request,
+ * });
+ *
+ * @example
+ * await logError({
+ *   errorType: ErrorTypes.DATABASE_ERROR,
+ *   errorMessage: 'Query timeout',
+ *   endpoint: '/api/polls',
+ *   userId: supporter.id,
+ *   userEmail: supporter.email,
+ *   request,
+ *   notifySuperusers: true,
+ * });
  */
 export async function logError({
   errorType,

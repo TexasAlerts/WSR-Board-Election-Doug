@@ -3,24 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ThumbsUp, ThumbsDown, MessageSquare } from 'lucide-react';
-
-const CATEGORIES = [
-  { value: 'infrastructure', label: 'Infrastructure', icon: '🛣️' },
-  { value: 'community', label: 'Community', icon: '🏘️' },
-  { value: 'safety', label: 'Safety', icon: '🛡️' },
-  { value: 'environment', label: 'Environment', icon: '🌳' },
-  { value: 'general', label: 'General', icon: '📝' },
-  { value: 'question', label: 'Questions', icon: '❓' },
-];
-
-const STATUS_COLORS = {
-  published: 'bg-green-100 text-green-700',
-  under_review: 'bg-blue-100 text-blue-700',
-  planned: 'bg-purple-100 text-purple-700',
-  completed: 'bg-navy/10 text-navy',
-  declined: 'bg-red-100 text-red-700',
-};
+import IdeaMetadata from '@/components/IdeaMetadata';
+import IdeaVotingPanel from '@/components/IdeaVotingPanel';
+import CommentList from '@/components/CommentList';
+import CommentForm from '@/components/CommentForm';
+import { useIdeaVoting } from '@/hooks/useIdeaVoting';
+import { useCommentThread } from '@/hooks/useCommentThread';
 
 export default function IdeaDetailClient() {
   const params = useParams();
@@ -33,10 +21,17 @@ export default function IdeaDetailClient() {
   const [supportMsg, setSupportMsg] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authenticatedSupporter, setAuthenticatedSupporter] = useState(null);
-  const [commentForm, setCommentForm] = useState({ content: '' });
-  const [commentMsg, setCommentMsg] = useState('');
-  const [submittingComment, setSubmittingComment] = useState(false);
-  const [votingIdea, setVotingIdea] = useState(false);
+
+  const { votingIdea, handleIdeaVote } = useIdeaVoting(params.id);
+  const {
+    commentForm,
+    setCommentForm,
+    commentMsg,
+    setCommentMsg,
+    submittingComment,
+    handleCommentSubmit,
+    handleCommentVote,
+  } = useCommentThread(params.id);
 
   useEffect(() => {
     async function loadIdea() {
@@ -150,120 +145,39 @@ export default function IdeaDetailClient() {
     }
   }
 
-  async function handleIdeaVote(voteType) {
+  async function onIdeaVote(voteType) {
     if (!isAuthenticated) {
       setCommentMsg('Please sign in to vote on ideas.');
       return;
     }
 
-    setVotingIdea(true);
-
-    try {
-      const res = await fetch(`/api/ideas/${params.id}/vote`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ vote_type: voteType }),
-      });
-
-      const result = await res.json();
-
-      if (result.ok) {
-        // Reload idea to get updated vote counts
-        const ideaRes = await fetch(`/api/ideas/${params.id}`);
-        const ideaData = await ideaRes.json();
-        if (ideaData.ok) {
-          setIdea(ideaData.data);
-        }
-      } else {
-        setCommentMsg(result.error || 'Error voting on idea');
-        setTimeout(() => setCommentMsg(''), 3000);
-      }
-    } catch (err) {
-      setCommentMsg('Error voting on idea');
-      setTimeout(() => setCommentMsg(''), 3000);
-    } finally {
-      setVotingIdea(false);
+    const result = await handleIdeaVote(voteType);
+    if (result.ok) {
+      setIdea(result.idea);
     }
   }
 
-  async function handleCommentSubmit(e) {
-    e.preventDefault();
-
+  async function onCommentSubmit(e) {
     if (!isAuthenticated) {
       setCommentMsg('Please sign in as a registered supporter to post comments.');
       return;
     }
 
-    setSubmittingComment(true);
-    setCommentMsg('');
-
-    try {
-      const res = await fetch('/api/comments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          idea_id: params.id,
-          content: commentForm.content,
-        }),
-      });
-
-      const result = await res.json();
-
-      if (result.ok) {
-        setCommentMsg('Your comment has been submitted for review.');
-        setCommentForm({ content: '' });
-        // Reload idea to get updated comments
-        const ideaRes = await fetch(`/api/ideas/${params.id}`);
-        const ideaData = await ideaRes.json();
-        if (ideaData.ok) {
-          setIdea(ideaData.data);
-        }
-      } else {
-        setCommentMsg(result.error || 'Error submitting comment');
-      }
-    } catch (err) {
-      setCommentMsg('Error submitting comment');
-    } finally {
-      setSubmittingComment(false);
+    const result = await handleCommentSubmit(e);
+    if (result.ok && result.idea) {
+      setIdea(result.idea);
     }
   }
 
-  async function handleCommentVote(commentId, voteType) {
+  async function onCommentVote(commentId, voteType) {
     if (!isAuthenticated) {
       setCommentMsg('Please sign in to vote on comments.');
       return;
     }
 
-    try {
-      const res = await fetch(`/api/comments/${commentId}/vote`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ vote_type: voteType }),
-      });
-
-      const result = await res.json();
-
-      if (result.ok) {
-        // Update the comment in idea.comments
-        const updatedComments = idea.comments.map((c) => {
-          if (c.id === commentId) {
-            return {
-              ...c,
-              upvotes: result.upvotes,
-              downvotes: result.downvotes,
-              user_vote: result.user_vote,
-            };
-          }
-          return c;
-        });
-        setIdea({ ...idea, comments: updatedComments });
-      } else {
-        setCommentMsg(result.error || 'Error voting on comment');
-        setTimeout(() => setCommentMsg(''), 3000);
-      }
-    } catch (err) {
-      setCommentMsg('Error voting on comment');
-      setTimeout(() => setCommentMsg(''), 3000);
+    const result = await handleCommentVote(commentId, voteType, idea.comments);
+    if (result.ok) {
+      setIdea({ ...idea, comments: result.comments });
     }
   }
 
@@ -289,11 +203,8 @@ export default function IdeaDetailClient() {
     );
   }
 
-  const categoryInfo = CATEGORIES.find((c) => c.value === idea.category) || CATEGORIES[4];
-
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      {/* Back button */}
       <Link href="/ideas" className="inline-flex items-center gap-2 text-navy hover:underline mb-6">
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -301,23 +212,8 @@ export default function IdeaDetailClient() {
         Back to Ideas
       </Link>
 
-      {/* Idea header */}
       <div className="card mb-8">
-        <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
-          <div className="flex flex-wrap gap-2">
-            <span className="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full font-medium capitalize">
-              {categoryInfo.icon} {categoryInfo.label}
-            </span>
-            <span
-              className={`px-3 py-1 text-sm rounded-full font-medium capitalize ${STATUS_COLORS[idea.status] || 'bg-gray-100 text-gray-600'}`}
-            >
-              {idea.status.replace('_', ' ')}
-            </span>
-          </div>
-          <span className="text-sm text-gray-500">
-            {new Date(idea.created_at).toLocaleDateString()}
-          </span>
-        </div>
+        <IdeaMetadata idea={idea} />
 
         <h1 className="text-3xl font-bold text-navy mb-4">{idea.title}</h1>
         <p className="text-gray-700 whitespace-pre-wrap mb-6">{idea.content}</p>
@@ -354,152 +250,37 @@ export default function IdeaDetailClient() {
             </span>
           </button>
 
-          {isAuthenticated && (
-            <>
-              <button
-                onClick={() => handleIdeaVote('up')}
-                disabled={votingIdea}
-                className={`flex items-center gap-1 px-3 py-2 rounded transition-colors ${
-                  idea.user_vote === 'up'
-                    ? 'bg-green-100 text-green-700'
-                    : 'text-gray-600 hover:bg-gray-100'
-                } disabled:opacity-50`}
-              >
-                <ThumbsUp className="w-4 h-4" />
-                <span className="text-sm font-medium">{idea.upvotes || 0}</span>
-              </button>
-
-              <button
-                onClick={() => handleIdeaVote('down')}
-                disabled={votingIdea}
-                className={`flex items-center gap-1 px-3 py-2 rounded transition-colors ${
-                  idea.user_vote === 'down'
-                    ? 'bg-red-100 text-red-700'
-                    : 'text-gray-600 hover:bg-gray-100'
-                } disabled:opacity-50`}
-              >
-                <ThumbsDown className="w-4 h-4" />
-                <span className="text-sm font-medium">{idea.downvotes || 0}</span>
-              </button>
-            </>
-          )}
+          <IdeaVotingPanel
+            idea={idea}
+            votingIdea={votingIdea}
+            onVote={onIdeaVote}
+            isAuthenticated={isAuthenticated}
+          />
 
           <span className="text-sm text-gray-500">by {idea.name}</span>
         </div>
       </div>
 
-      {/* Comments section */}
       <div className="card">
         <h2 className="text-2xl font-bold text-navy mb-6">
           Comments {idea.comments?.length > 0 && `(${idea.comments.length})`}
         </h2>
 
-        {idea.comments && idea.comments.length > 0 ? (
-          <div className="space-y-4 mb-8">
-            {idea.comments.map((comment) => (
-              <div key={comment.id} className="bg-gray-50 rounded-lg p-4">
-                <div className="flex justify-between items-start mb-2">
-                  <span className="font-medium text-gray-800">{comment.name}</span>
-                  <span className="text-sm text-gray-500">
-                    {new Date(comment.created_at).toLocaleDateString()}
-                  </span>
-                </div>
-                <p className="text-gray-700 whitespace-pre-wrap mb-3">{comment.content}</p>
+        <CommentList
+          comments={idea.comments}
+          isAuthenticated={isAuthenticated}
+          onVote={onCommentVote}
+        />
 
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => handleCommentVote(comment.id, 'up')}
-                    disabled={!isAuthenticated}
-                    className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
-                      comment.user_vote === 'up'
-                        ? 'bg-green-100 text-green-700'
-                        : 'text-gray-600 hover:bg-gray-100'
-                    } disabled:opacity-50`}
-                    title={!isAuthenticated ? 'Sign in to vote' : 'Upvote'}
-                  >
-                    <ThumbsUp className="w-4 h-4" />
-                    <span className="text-sm font-medium">{comment.upvotes || 0}</span>
-                  </button>
-
-                  <button
-                    onClick={() => handleCommentVote(comment.id, 'down')}
-                    disabled={!isAuthenticated}
-                    className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
-                      comment.user_vote === 'down'
-                        ? 'bg-red-100 text-red-700'
-                        : 'text-gray-600 hover:bg-gray-100'
-                    } disabled:opacity-50`}
-                    title={!isAuthenticated ? 'Sign in to vote' : 'Downvote'}
-                  >
-                    <ThumbsDown className="w-4 h-4" />
-                    <span className="text-sm font-medium">{comment.downvotes || 0}</span>
-                  </button>
-
-                  {comment.reply_count > 0 && (
-                    <div className="flex items-center gap-1 text-gray-600 ml-auto">
-                      <MessageSquare className="w-4 h-4" />
-                      <span className="text-sm">
-                        {comment.reply_count} {comment.reply_count === 1 ? 'reply' : 'replies'}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-8 text-gray-500 mb-8">
-            No comments yet. Be the first to comment!
-          </div>
-        )}
-
-        {/* Comment form */}
-        {isAuthenticated ? (
-          <form onSubmit={handleCommentSubmit} className="space-y-4">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-              <p className="text-sm text-green-700 font-medium">
-                Commenting as: {authenticatedSupporter?.name}
-              </p>
-              <p className="text-xs text-green-600">{authenticatedSupporter?.email}</p>
-            </div>
-
-            <div>
-              <label htmlFor="comment-content" className="form-label">
-                Your Comment
-              </label>
-              <textarea
-                id="comment-content"
-                rows={4}
-                value={commentForm.content}
-                onChange={(e) => setCommentForm({ content: e.target.value })}
-                required
-                className="form-input"
-                placeholder="Share your thoughts..."
-              />
-            </div>
-
-            {commentMsg && (
-              <div
-                className={`p-4 rounded-lg ${commentMsg.includes('submitted') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}
-              >
-                {commentMsg}
-              </div>
-            )}
-
-            <button type="submit" disabled={submittingComment} className="btn-primary w-full">
-              {submittingComment ? 'Submitting...' : 'Post Comment'}
-            </button>
-          </form>
-        ) : (
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
-            <p className="text-gray-600 mb-4">
-              You must be a registered supporter to post comments.
-            </p>
-            <Link href="/get-involved" className="btn-primary inline-block">
-              Register as Supporter
-            </Link>
-          </div>
-        )}
+        <CommentForm
+          isAuthenticated={isAuthenticated}
+          authenticatedSupporter={authenticatedSupporter}
+          commentForm={commentForm}
+          setCommentForm={setCommentForm}
+          commentMsg={commentMsg}
+          submittingComment={submittingComment}
+          onSubmit={onCommentSubmit}
+        />
       </div>
 
       {/* Support Modal */}

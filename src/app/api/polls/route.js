@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../lib/supabase';
 import { getCurrentSupporter } from '../../../lib/auth';
 
+// API routes should be dynamic
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET(request) {
   const supabase = getSupabase();
   const supporter = await getCurrentSupporter();
@@ -118,9 +122,14 @@ export async function GET(request) {
     view_only: p.visibility === 'public_view' && !isAuthenticated,
   }));
 
-  return NextResponse.json({
+  const response = NextResponse.json({
     ok: true,
     data: pollsWithCounts,
     isAuthenticated,
   });
+
+  // Add Cache-Control headers
+  response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120');
+
+  return response;
 }

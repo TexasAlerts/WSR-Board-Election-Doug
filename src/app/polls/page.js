@@ -1,7 +1,101 @@
 import Image from 'next/image';
 import PollsDynamic from '../../components/PollsDynamic';
+import { getSupabase } from '../../lib/supabase';
 
-export default function PollsPage() {
+// Enable dynamic rendering to support SSR
+export const dynamic = 'force-dynamic';
+// Enable ISR with 60 second revalidation
+export const revalidate = 60;
+
+// Server component that fetches polls data
+async function getPolls() {
+  const supabase = getSupabase();
+
+  try {
+    // Fetch active polls with their choices
+    const { data: polls, error } = await supabase
+      .from('polls')
+      .select(
+        `
+        id,
+        title,
+        description,
+        poll_type,
+        status,
+        visibility,
+        show_results_before_vote,
+        allow_comments,
+        closes_at,
+        created_at,
+        published_at,
+        poll_choices (
+          id,
+          choice_text,
+          display_order,
+          is_other_option
+        )
+      `
+      )
+      .eq('status', 'active')
+      .in('visibility', ['public', 'public_view'])
+      .order('published_at', { ascending: false });
+
+    if (error) {
+      return [];
+    }
+
+    // Get vote counts for each poll
+    const pollIds = polls?.map((p) => p.id) || [];
+
+    if (pollIds.length === 0) {
+      return [];
+    }
+
+    const { data: voteCounts } = await supabase
+      .from('poll_votes')
+      .select('poll_id')
+      .in('poll_id', pollIds);
+
+    // Count votes per poll
+    const voteCountMap = {};
+    if (voteCounts) {
+      voteCounts.forEach((v) => {
+        voteCountMap[v.poll_id] = (voteCountMap[v.poll_id] || 0) + 1;
+      });
+    }
+
+    // Get comment counts for each poll
+    const { data: commentCounts } = await supabase
+      .from('comments')
+      .select('poll_id')
+      .eq('status', 'approved')
+      .in('poll_id', pollIds);
+
+    // Count comments per poll
+    const commentCountMap = {};
+    if (commentCounts) {
+      commentCounts.forEach((c) => {
+        commentCountMap[c.poll_id] = (commentCountMap[c.poll_id] || 0) + 1;
+      });
+    }
+
+    // Add vote counts, comment counts, and format choices
+    const pollsWithCounts = polls.map((p) => ({
+      ...p,
+      vote_count: voteCountMap[p.id] || 0,
+      comment_count: commentCountMap[p.id] || 0,
+      choices: p.poll_choices?.sort((a, b) => a.display_order - b.display_order) || [],
+    }));
+
+    return pollsWithCounts;
+  } catch (error) {
+    return [];
+  }
+}
+
+export default async function PollsPage() {
+  const initialPolls = await getPolls();
+
   return (
     <div className="space-y-0">
       {/* Hero */}
@@ -25,7 +119,7 @@ export default function PollsPage() {
         </div>
       </section>
 
-      <PollsDynamic />
+      <PollsDynamic initialPolls={initialPolls} />
     </div>
   );
 }

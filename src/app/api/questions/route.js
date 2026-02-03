@@ -5,6 +5,10 @@ import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 import { verifyCaptcha } from '../../../lib/recaptcha';
 
+// API routes should be dynamic
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   const supabase = getSupabase();
   const { data, error } = await supabase
@@ -17,7 +21,13 @@ export async function GET() {
   if (error) {
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
-  return NextResponse.json({ ok: true, data });
+
+  const response = NextResponse.json({ ok: true, data });
+
+  // Add Cache-Control headers
+  response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120');
+
+  return response;
 }
 
 export async function POST(req) {

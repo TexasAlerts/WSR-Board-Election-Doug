@@ -1,3 +1,56 @@
+/**
+ * Volunteer Interest Submission API Endpoint
+ *
+ * POST /api/interest
+ *
+ * Captures volunteer interest and supporter sign-ups.
+ * Used by the "Get Involved" form for various engagement types.
+ *
+ * Request Body:
+ * - type: string (optional, default 'updates') - Interest type
+ *   Values: 'volunteer', 'yard_sign', 'host_event', 'donate', 'updates'
+ * - name: string (1-200 chars) - Full name
+ * - email: string (valid email, max 200 chars)
+ * - phone: string (optional, max 200 chars)
+ * - message: string (optional, max 4000 chars) - Additional message
+ * - consentEmail: boolean (optional, default false) - Email opt-in
+ * - consentSms: boolean (optional, default false) - SMS opt-in
+ * - recaptchaToken: string (optional) - reCAPTCHA v3 token
+ *
+ * Response (Success - 201):
+ * - ok: true
+ * - message: "Thank you for your interest!"
+ * - interestId: string
+ *
+ * Response (Error):
+ * - 400: Validation error or reCAPTCHA failed
+ * - 429: Too many submissions (rate limit)
+ * - 500: Server error
+ *
+ * Process Flow:
+ * 1. Rate limit check (5 per minute per IP)
+ * 2. Validate request body with Zod
+ * 3. Verify reCAPTCHA token (if provided)
+ * 4. Sanitize text inputs
+ * 5. Insert into interest_submissions table
+ * 6. Send notification email to admin
+ * 7. Send confirmation email to submitter
+ * 8. Log audit event
+ *
+ * Security Features:
+ * - Rate limiting by IP
+ * - reCAPTCHA v3 verification
+ * - XSS protection via sanitizeText()
+ * - Input validation with Zod
+ * - Audit logging
+ *
+ * Notifications:
+ * - Admin receives email with submission details
+ * - Submitter receives confirmation email
+ *
+ * Authentication: None required (public form)
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../lib/supabase';
 import { z } from 'zod';

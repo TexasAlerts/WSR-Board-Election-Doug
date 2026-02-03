@@ -8,6 +8,10 @@ import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/loggin
 import { sanitizeText } from '../../../lib/sanitize';
 import { verifyCaptcha } from '../../../lib/recaptcha';
 
+// API routes should be dynamic
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET(request) {
   const supabase = getSupabase();
   const supporter = await getCurrentSupporter();
@@ -74,7 +78,16 @@ export async function GET(request) {
     comment_count: commentCountMap[idea.id] || 0,
   }));
 
-  return NextResponse.json({ ok: true, data: ideasWithVotes, isAuthenticated: !!supporter });
+  const response = NextResponse.json({
+    ok: true,
+    data: ideasWithVotes,
+    isAuthenticated: !!supporter,
+  });
+
+  // Add Cache-Control headers
+  response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120');
+
+  return response;
 }
 
 export async function POST(request) {

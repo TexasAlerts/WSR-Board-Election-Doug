@@ -1,3 +1,47 @@
+/**
+ * Comments API Endpoint
+ *
+ * GET /api/comments?poll_id=X or ?idea_id=X
+ * POST /api/comments
+ *
+ * Handles comment submission and retrieval for polls and ideas.
+ * Supports threaded replies with parent_id.
+ *
+ * GET Query Parameters:
+ * - poll_id: string (UUID of poll)
+ * - idea_id: string (UUID of idea)
+ * - parent_id: string (optional, filter for replies to specific comment)
+ *
+ * GET Response (200):
+ * - ok: true
+ * - comments: Array<{id, display_name, content, created_at, upvotes, downvotes, parent_id, supporter_id}>
+ *
+ * POST Request Body:
+ * - poll_id OR idea_id: string (UUID)
+ * - parent_id: string (optional, for replies)
+ * - content: string (1-5000 chars)
+ *
+ * POST Response (Success - 201):
+ * - ok: true
+ * - message: "Comment submitted and pending approval"
+ * - comment: { id, status, display_name }
+ *
+ * POST Response (Error):
+ * - 400: Missing required fields or validation error
+ * - 401: Not authenticated
+ * - 429: Too many comments (5 per hour per user)
+ * - 500: Server error
+ *
+ * Security Features:
+ * - Rate limiting by supporter ID
+ * - XSS protection via sanitizeText()
+ * - Requires authentication
+ * - Admin moderation (status: pending → approved)
+ * - Audit logging
+ *
+ * Authentication: Required (getCurrentSupporter)
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../lib/supabase';
 import { getCurrentSupporter } from '../../../lib/auth';

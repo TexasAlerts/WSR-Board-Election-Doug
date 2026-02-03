@@ -2,16 +2,17 @@
  * Supabase Client - Lazy initialization to avoid build-time errors
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import type { Database } from '@/types';
 
-let supabaseServiceClient = null;
-let supabaseAnonClient = null;
+let supabaseServiceClient: SupabaseClient<Database> | null = null;
+let supabaseAnonClient: SupabaseClient<Database> | null = null;
 
 /**
  * Get Supabase client (service role)
  * Use this for server-side operations that need full access
  */
-export function getSupabase() {
+export function getSupabase(): SupabaseClient<Database> {
   if (!supabaseServiceClient) {
     const url = process.env.SUPABASE_URL;
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE;
@@ -22,7 +23,7 @@ export function getSupabase() {
       );
     }
 
-    supabaseServiceClient = createClient(url, key);
+    supabaseServiceClient = createClient<Database>(url, key);
   }
   return supabaseServiceClient;
 }
@@ -31,7 +32,7 @@ export function getSupabase() {
  * Get Supabase client (anon key)
  * Use this for public API routes with RLS
  */
-export function getSupabaseAnon() {
+export function getSupabaseAnon(): SupabaseClient<Database> {
   if (!supabaseAnonClient) {
     const url = process.env.SUPABASE_URL;
     const key = process.env.SUPABASE_ANON_KEY;
@@ -42,7 +43,7 @@ export function getSupabaseAnon() {
       );
     }
 
-    supabaseAnonClient = createClient(url, key);
+    supabaseAnonClient = createClient<Database>(url, key);
   }
   return supabaseAnonClient;
 }
@@ -51,7 +52,7 @@ export function getSupabaseAnon() {
  * Create a new Supabase client instance
  * Use when you need a fresh client (e.g., for testing)
  */
-export function createSupabaseClient() {
+export function createSupabaseClient(): SupabaseClient<Database> {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE;
 
@@ -59,5 +60,5 @@ export function createSupabaseClient() {
     throw new Error('Supabase configuration missing');
   }
 
-  return createClient(url, key);
+  return createClient<Database>(url, key);
 }

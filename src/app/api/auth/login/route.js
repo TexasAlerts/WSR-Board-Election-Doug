@@ -1,3 +1,36 @@
+/**
+ * User Login API Endpoint
+ *
+ * POST /api/auth/login
+ *
+ * Authenticates supporters using email and password.
+ *
+ * Request Body:
+ * - email: string (valid email format)
+ * - password: string (min 1 char)
+ *
+ * Response (Success - 200):
+ * - ok: true
+ * - message: "Login successful"
+ * - supporter: { id, firstName, lastName, email, role }
+ * - Sets httpOnly cookie: session_token
+ *
+ * Response (Error):
+ * - 400: Invalid email or password format
+ * - 401: Invalid credentials
+ * - 403: Account suspended/not verified
+ * - 429: Too many login attempts (10 per 15 minutes per IP)
+ * - 500: Server error
+ *
+ * Security Features:
+ * - Rate limiting by IP address
+ * - Bcrypt password verification
+ * - Audit logging for all attempts
+ * - Session tracking with IP and user agent
+ *
+ * Authentication: None required
+ */
+
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { rateLimit } from '../../../../lib/rateLimit';

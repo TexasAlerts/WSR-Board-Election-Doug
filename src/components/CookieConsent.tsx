@@ -7,9 +7,9 @@ import Link from 'next/link';
  * GDPR-compliant Cookie Consent Banner
  * Shows on first visit and stores consent in localStorage
  */
-export default function CookieConsent() {
-  const [showBanner, setShowBanner] = useState(false);
-  const [isClient, setIsClient] = useState(false);
+export default function CookieConsent(): React.JSX.Element | null {
+  const [showBanner, setShowBanner] = useState<boolean>(false);
+  const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -20,13 +20,13 @@ export default function CookieConsent() {
     }
   }, []);
 
-  const handleAccept = () => {
+  const handleAccept = (): void => {
     localStorage.setItem('cookieConsent', 'accepted');
     localStorage.setItem('cookieConsentDate', new Date().toISOString());
     setShowBanner(false);
   };
 
-  const handleDecline = () => {
+  const handleDecline = (): void => {
     localStorage.setItem('cookieConsent', 'declined');
     localStorage.setItem('cookieConsentDate', new Date().toISOString());
     setShowBanner(false);

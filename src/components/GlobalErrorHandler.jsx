@@ -3,16 +3,51 @@
 import { useEffect } from 'react';
 
 /**
- * GlobalErrorHandler
+ * GlobalErrorHandler Component
  *
- * Catches all unhandled errors and promise rejections
- * and logs them to the error_logs table.
+ * Sets up global error handlers for the entire application.
+ * Catches and logs unhandled errors and promise rejections.
  *
- * This should be included in the root layout to catch all client-side errors.
+ * This component should be included once in the root layout to ensure
+ * all client-side errors are captured and logged to the server.
+ *
+ * @example
+ * // In app/layout.tsx
+ * <html>
+ *   <body>
+ *     <GlobalErrorHandler />
+ *     {children}
+ *   </body>
+ * </html>
+ *
+ * Features:
+ * - Catches unhandled promise rejections (e.g., failed API calls)
+ * - Catches global JavaScript errors (window.onerror)
+ * - Logs all errors to /api/errors endpoint
+ * - Prevents error logging loops with silent failures
+ * - Includes context: URL, user agent, stack trace
+ * - Cleans up event listeners on unmount
+ *
+ * Error Types Caught:
+ * - UNHANDLED_PROMISE_REJECTION - Failed promises without .catch()
+ * - GLOBAL_ERROR - Uncaught JavaScript exceptions
+ *
+ * @returns {null} This component doesn't render any UI
  */
 export default function GlobalErrorHandler() {
   useEffect(() => {
-    // Catch unhandled promise rejections
+    /**
+     * Handle unhandled promise rejections
+     *
+     * Catches promises that reject without a .catch() handler.
+     * Common causes:
+     * - Failed fetch() calls without error handling
+     * - async functions that throw without try/catch
+     * - Promise.all() failures
+     *
+     * @param {PromiseRejectionEvent} event - The promise rejection event
+     * @param {Error|*} event.reason - The rejection reason (usually an Error)
+     */
     const handleUnhandledRejection = (event) => {
       const error = event.reason;
 
@@ -35,7 +70,23 @@ export default function GlobalErrorHandler() {
       event.preventDefault();
     };
 
-    // Catch global JavaScript errors
+    /**
+     * Handle global JavaScript errors
+     *
+     * Catches uncaught exceptions that bubble to window.onerror.
+     * Common causes:
+     * - Syntax errors
+     * - Reference errors (undefined variables)
+     * - Type errors
+     * - Third-party script errors
+     *
+     * @param {ErrorEvent} event - The error event
+     * @param {string} event.message - Error message
+     * @param {string} event.filename - File where error occurred
+     * @param {number} event.lineno - Line number
+     * @param {number} event.colno - Column number
+     * @param {Error} event.error - Error object with stack trace
+     */
     const handleError = (event) => {
       const { message, filename, lineno, colno, error } = event;
 

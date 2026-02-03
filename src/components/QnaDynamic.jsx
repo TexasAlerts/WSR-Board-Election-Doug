@@ -2,27 +2,34 @@
 
 import { useState, useEffect } from 'react';
 
-export default function QnaDynamic() {
-  const [questions, setQuestions] = useState([]);
+export default function QnaDynamic({ initialQuestions = [] }) {
+  const [questions, setQuestions] = useState(initialQuestions);
   const [form, setForm] = useState({ name: '', email: '', question: '' });
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
+    // Only load if we don't have initial questions
+    if (initialQuestions.length > 0) {
+      return;
+    }
+
     async function loadQuestions() {
       try {
-        const res = await fetch('/api/questions', { cache: 'no-store' });
+        setLoading(true);
+        const res = await fetch('/api/questions');
         const data = await res.json();
         setQuestions(Array.isArray(data.data) ? data.data : []);
       } catch (err) {
+        // Silent fail
       } finally {
         setLoading(false);
       }
     }
     loadQuestions();
-  }, []);
+  }, [initialQuestions]);
 
   async function handleSubmit(e) {
     e.preventDefault();
