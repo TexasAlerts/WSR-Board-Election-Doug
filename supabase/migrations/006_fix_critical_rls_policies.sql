@@ -30,6 +30,7 @@ GRANT SELECT ON poll_vote_counts TO anon;
 GRANT SELECT ON poll_vote_counts TO authenticated;
 
 -- Service role retains full access to poll_votes table for vote processing
+DROP POLICY IF EXISTS "Service role full access to poll_votes" ON poll_votes;
 CREATE POLICY "Service role full access to poll_votes" ON poll_votes
   FOR ALL USING (true) WITH CHECK (true);
 
@@ -42,6 +43,7 @@ ALTER TABLE notification_preferences ENABLE ROW LEVEL SECURITY;
 
 -- Only service role can access notification_preferences
 -- This prevents direct client access to email preferences
+DROP POLICY IF EXISTS "Service role full access to notification_preferences" ON notification_preferences;
 CREATE POLICY "Service role full access to notification_preferences" ON notification_preferences
   FOR ALL USING (true) WITH CHECK (true);
 

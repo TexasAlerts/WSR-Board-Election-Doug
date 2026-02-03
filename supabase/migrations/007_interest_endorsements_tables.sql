@@ -57,12 +57,16 @@ ALTER TABLE interest ENABLE ROW LEVEL SECURITY;
 ALTER TABLE endorsements ENABLE ROW LEVEL SECURITY;
 
 -- Service role full access (used by API routes)
+-- Drop existing policies if they exist to make migration idempotent
+DROP POLICY IF EXISTS "Service role full access to interest" ON interest;
 CREATE POLICY "Service role full access to interest" ON interest
   FOR ALL USING (true) WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Service role full access to endorsements" ON endorsements;
 CREATE POLICY "Service role full access to endorsements" ON endorsements
   FOR ALL USING (true) WITH CHECK (true);
 
 -- Public can read approved endorsements
+DROP POLICY IF EXISTS "Public can read approved endorsements" ON endorsements;
 CREATE POLICY "Public can read approved endorsements" ON endorsements
   FOR SELECT USING (status = 'approved');
