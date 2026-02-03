@@ -31,7 +31,7 @@ CREATE INDEX IF NOT EXISTS idx_supporters_status_created ON supporters(status, c
 
 -- Broadcasts: sent_by for admin queries
 CREATE INDEX IF NOT EXISTS idx_broadcasts_sent_by ON broadcasts(sent_by);
-CREATE INDEX IF NOT EXISTS idx_broadcasts_created ON broadcasts(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_broadcasts_sent_at ON broadcasts(sent_at DESC);
 
 -- Sessions: expires_at for cleanup queries (already has idx_sessions_expires in 008)
 -- Thread subscriptions: supporter lookups
