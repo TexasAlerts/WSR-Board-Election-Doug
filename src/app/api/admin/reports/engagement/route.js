@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../../lib/auth';
+import { logError, ErrorTypes } from '../../../../../lib/logging';
 
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
@@ -97,6 +98,14 @@ export async function GET(request) {
       },
     });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/admin/reports/engagement',
+      method: 'GET',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }

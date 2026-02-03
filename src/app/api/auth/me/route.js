@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getCurrentSupporter } from '../../../../lib/auth';
+import { logError, ErrorTypes } from '../../../../lib/logging';
 
 export async function GET() {
   try {
@@ -31,6 +32,13 @@ export async function GET() {
       },
     });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/auth/me',
+      method: 'GET',
+    });
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

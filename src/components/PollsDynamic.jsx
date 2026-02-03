@@ -7,6 +7,7 @@ import VotingOptionsModal from './VotingOptionsModal';
 import PollCard from './PollCard';
 import VoteModal from './VoteModal';
 import { usePollVoting } from '../hooks/usePollVoting';
+import { logApiError } from '@/lib/clientErrorLogger';
 
 export default function PollsDynamic({ initialPolls = [] }) {
   const [polls, setPolls] = useState(initialPolls);
@@ -53,7 +54,7 @@ export default function PollsDynamic({ initialPolls = [] }) {
           setIsAuthenticated(data.isAuthenticated || false);
         }
       } catch (err) {
-        // Silent fail
+        await logApiError('/api/polls', 'GET', err.status || 500, err.message, { context: 'loadPolls' });
       } finally {
         setLoading(false);
       }
@@ -80,7 +81,7 @@ export default function PollsDynamic({ initialPolls = [] }) {
           return; // Stop here if authenticated
         }
       } catch (err) {
-        // Not authenticated, check for verified voter
+        // Not authenticated, that's expected - no need to log
       }
 
       // If not authenticated, check for verified voter cookie
@@ -94,7 +95,7 @@ export default function PollsDynamic({ initialPolls = [] }) {
           });
         }
       } catch (err) {
-        // Not a verified voter either, that's fine
+        // Not a verified voter either, that's expected - no need to log
       }
     }
     checkAuth();
@@ -107,7 +108,8 @@ export default function PollsDynamic({ initialPolls = [] }) {
         if (data.ok) {
           setHasVoted(data.data || {});
         }
-      } catch {
+      } catch (err) {
+        await logApiError('/api/polls/my-votes', 'GET', err.status || 500, err.message, { context: 'loadVotedPolls' });
         setHasVoted({});
       }
     }

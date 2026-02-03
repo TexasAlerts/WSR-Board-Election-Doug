@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { logApiError } from '@/lib/clientErrorLogger';
 
 export function useCommentThread(ideaId) {
   const [commentForm, setCommentForm] = useState({ content: '' });
@@ -38,6 +39,7 @@ export function useCommentThread(ideaId) {
         setCommentMsg(result.error || 'Error submitting comment');
         return { ok: false };
       } catch (err) {
+        await logApiError('/api/comments', 'POST', err.status || 500, err.message, { ideaId, context: 'handleCommentSubmit' });
         setCommentMsg('Error submitting comment');
         return { ok: false };
       } finally {
@@ -75,6 +77,7 @@ export function useCommentThread(ideaId) {
       setTimeout(() => setCommentMsg(''), 3000);
       return { ok: false };
     } catch (err) {
+      await logApiError(`/api/comments/${commentId}/vote`, 'POST', err.status || 500, err.message, { context: 'handleCommentVote' });
       setCommentMsg('Error voting on comment');
       setTimeout(() => setCommentMsg(''), 3000);
       return { ok: false };

@@ -20,6 +20,7 @@ import {
   Pencil,
   X,
 } from 'lucide-react';
+import { logApiError } from '@/lib/clientErrorLogger';
 
 const NOTIFICATION_TYPES = [
   { label: 'New Polls', emailKey: 'email_on_new_poll', smsKey: 'sms_on_new_poll' },
@@ -105,7 +106,9 @@ export default function SettingsPage() {
       .then((d) => {
         if (d.ok) setPrefs(d.data);
       })
-      .catch(() => {});
+      .catch((err) => {
+        logApiError('/api/notifications/preferences', 'GET', err.status || 500, err.message, { context: 'loadPrefs' });
+      });
   }, [isAuthenticated]);
 
   // Load activity
@@ -115,8 +118,8 @@ export default function SettingsPage() {
       const res = await fetch(`/api/auth/my-activity?type=${tab}&limit=20`);
       const data = await res.json();
       if (data.ok) setActivity(data.data || []);
-    } catch {
-      // ignore
+    } catch (err) {
+      await logApiError('/api/auth/my-activity', 'GET', err.status || 500, err.message, { context: 'loadActivity', tab });
     } finally {
       setActivityLoading(false);
     }
@@ -143,6 +146,7 @@ export default function SettingsPage() {
       await refreshAuth();
       setEditingProfile(false);
     } catch (err) {
+      await logApiError('/api/auth/update-profile', 'PATCH', err.status || 500, err.message, { context: 'profileSave' });
       setProfileMsg({ type: 'error', text: err.message });
     } finally {
       setProfileLoading(false);
@@ -168,6 +172,7 @@ export default function SettingsPage() {
         text: data.smsSent ? 'Verification code sent to your phone!' : data.message,
       });
     } catch (err) {
+      await logApiError('/api/auth/update-phone', 'POST', err.status || 500, err.message, { context: 'phoneUpdate' });
       setPhoneMsg({ type: 'error', text: err.message });
     } finally {
       setPhoneLoading(false);
@@ -193,6 +198,7 @@ export default function SettingsPage() {
       setSmsCode('');
       refreshAuth();
     } catch (err) {
+      await logApiError('/api/auth/verify-phone-update', 'POST', err.status || 500, err.message, { context: 'phoneVerify' });
       setPhoneMsg({ type: 'error', text: err.message });
     } finally {
       setPhoneLoading(false);
@@ -213,6 +219,7 @@ export default function SettingsPage() {
       if (!res.ok) throw new Error(data.error || 'Failed to save preferences');
       setPrefsMsg({ type: 'success', text: 'Notification preferences saved!' });
     } catch (err) {
+      await logApiError('/api/notifications/preferences', 'PATCH', err.status || 500, err.message, { context: 'prefsSave' });
       setPrefsMsg({ type: 'error', text: err.message });
     } finally {
       setPrefsLoading(false);

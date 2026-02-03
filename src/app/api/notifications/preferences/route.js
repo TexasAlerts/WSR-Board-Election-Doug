@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, getVerifiedVoter } from '../../../../lib/auth';
+import { logError, ErrorTypes } from '../../../../lib/logging';
 
 const ALL_PREF_FIELDS = [
   // Existing email prefs
@@ -90,6 +91,14 @@ export async function PATCH(request) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/notifications/preferences',
+      method: 'PATCH',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

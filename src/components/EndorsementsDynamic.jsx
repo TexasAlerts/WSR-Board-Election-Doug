@@ -25,7 +25,9 @@ export default function EndorsementsDynamic() {
         const res = await fetch('/api/endorsements', { cache: 'no-store' });
         const data = await res.json();
         setEndorsements(Array.isArray(data.data) ? data.data : []);
-      } catch (err) {}
+      } catch (err) {
+        await logApiError('/api/endorsements', 'GET', err.status || 500, err.message, { context: 'loadEndorsements' });
+      }
     }
     load();
   }, []);

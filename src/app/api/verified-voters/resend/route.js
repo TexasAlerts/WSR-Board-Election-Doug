@@ -4,6 +4,7 @@ import { generateToken } from '../../../../lib/auth';
 import { sendVoterVerificationEmail } from '../../../../lib/emailService';
 import { rateLimit } from '../../../../lib/rateLimit';
 import { z } from 'zod';
+import { logError, ErrorTypes } from '../../../../lib/logging';
 
 const schema = z.object({
   email: z.string().email('Valid email required'),
@@ -63,6 +64,14 @@ export async function POST(request) {
 
     return NextResponse.json({ ok: true, message: 'Verification email sent.' });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/verified-voters/resend',
+      method: 'POST',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

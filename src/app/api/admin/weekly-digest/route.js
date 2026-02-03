@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { sendWeeklyDigestEmail } from '../../../../lib/emailService';
-import { logAudit, AuditEvents } from '../../../../lib/logging';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 /**
  * Weekly digest cron endpoint.
@@ -163,6 +163,14 @@ export async function POST(request) {
 
     return NextResponse.json({ ok: true, sent });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/admin/weekly-digest',
+      method: 'POST',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }

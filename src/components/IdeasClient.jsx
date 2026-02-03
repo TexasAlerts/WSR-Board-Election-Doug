@@ -90,7 +90,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
         setIdeas(data.data || []);
       }
     } catch (err) {
-      // Silent fail
+      await logApiError('/api/ideas', 'GET', err.status || 500, err.message, { context: 'loadIdeas', category });
     } finally {
       setLoading(false);
     }
@@ -123,7 +123,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
           return;
         }
       } catch (err) {
-        // Not authenticated, check for verified voter
+        // Not authenticated - expected for guests, no logging needed
       }
 
       // If not authenticated, check for verified voter cookie (for pre-filling support email)
@@ -134,7 +134,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
           setSupportEmail(voterData.data.email);
         }
       } catch (err) {
-        // Not a verified voter either, that's fine
+        // Not a verified voter - expected for guests, no logging needed
       }
     }
     checkAuth();
@@ -147,7 +147,8 @@ export default function IdeasClient({ initialIdeas = [] }) {
         if (data.ok) {
           setSupportedIdeas(data.data || {});
         }
-      } catch {
+      } catch (err) {
+        await logApiError('/api/ideas/my-support', 'GET', err.status || 500, err.message, { context: 'loadSupportedIdeas' });
         setSupportedIdeas({});
       }
     }
@@ -225,7 +226,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
           loadIdeas();
         }
       } catch (err) {
-        // Silent fail
+        await logApiError(`/api/ideas/${ideaId}/support`, 'DELETE', err.status || 500, err.message, { context: 'unsupport' });
       }
     } else {
       // Show support modal
@@ -259,6 +260,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
         setSupportMsg(result.error || 'Error supporting idea');
       }
     } catch (err) {
+      await logApiError(`/api/ideas/${supportIdeaId}/support`, 'POST', err.status || 500, err.message, { context: 'support' });
       setSupportMsg('Error supporting idea. Please try again.');
     }
   }

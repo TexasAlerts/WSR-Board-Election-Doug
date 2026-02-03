@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
+import { logError, ErrorTypes } from '../../../../lib/logging';
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -31,6 +32,15 @@ export async function GET(request) {
     .single();
 
   if (error || !prefs) {
+    if (error) {
+      await logError({
+        errorType: ErrorTypes.DATABASE_ERROR,
+        errorMessage: error.message,
+        endpoint: '/api/notifications/unsubscribe',
+        method: 'GET',
+        request,
+      });
+    }
     return NextResponse.json({ ok: false, error: 'Invalid unsubscribe link' }, { status: 400 });
   }
 

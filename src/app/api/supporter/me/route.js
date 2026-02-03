@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getCurrentSupporter } from '../../../../lib/auth';
+import { logError, ErrorTypes } from '../../../../lib/logging';
 
 /**
  * GET /api/supporter/me
@@ -24,6 +25,13 @@ export async function GET() {
       },
     });
   } catch (error) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: error.message,
+      errorStack: error.stack,
+      endpoint: '/api/supporter/me',
+      method: 'GET',
+    });
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }

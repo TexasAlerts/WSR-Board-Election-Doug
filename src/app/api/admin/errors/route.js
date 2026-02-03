@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
-import { logAudit, AuditEvents } from '../../../../lib/logging';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
@@ -111,6 +111,14 @@ export async function PUT(request) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/admin/errors',
+      method: 'PUT',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 400 });
   }
 }

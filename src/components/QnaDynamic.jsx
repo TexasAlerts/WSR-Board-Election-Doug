@@ -26,7 +26,7 @@ export default function QnaDynamic({ initialQuestions = [] }) {
         const data = await res.json();
         setQuestions(Array.isArray(data.data) ? data.data : []);
       } catch (err) {
-        // Silent fail
+        await logApiError('/api/questions', 'GET', err.status || 500, err.message, { context: 'loadQuestions' });
       } finally {
         setLoading(false);
       }

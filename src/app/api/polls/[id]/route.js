@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter } from '../../../../lib/auth';
+import { logError, ErrorTypes } from '../../../../lib/logging';
 
 export async function GET(request, { params }) {
   const supabase = getSupabase();
@@ -54,7 +55,13 @@ export async function GET(request, { params }) {
     .eq('poll_id', id);
 
   if (votesError) {
-    // silently ignored
+    await logError({
+      errorType: ErrorTypes.DATABASE_ERROR,
+      errorMessage: votesError.message,
+      endpoint: '/api/polls/[id]',
+      method: 'GET',
+      request,
+    });
   }
 
   // Calculate vote counts per choice
@@ -97,7 +104,13 @@ export async function GET(request, { params }) {
     .order('created_at', { ascending: true });
 
   if (commentsError) {
-    // silently ignored
+    await logError({
+      errorType: ErrorTypes.DATABASE_ERROR,
+      errorMessage: commentsError.message,
+      endpoint: '/api/polls/[id]',
+      method: 'GET',
+      request,
+    });
   }
 
   // Get user's votes on comments if authenticated

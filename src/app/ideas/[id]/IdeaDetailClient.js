@@ -9,6 +9,7 @@ import CommentList from '@/components/CommentList';
 import CommentForm from '@/components/CommentForm';
 import { useIdeaVoting } from '@/hooks/useIdeaVoting';
 import { useCommentThread } from '@/hooks/useCommentThread';
+import { logApiError } from '@/lib/clientErrorLogger';
 
 export default function IdeaDetailClient() {
   const params = useParams();
@@ -48,6 +49,7 @@ export default function IdeaDetailClient() {
         setIdea(data.data);
         setIsAuthenticated(data.isAuthenticated || false);
       } catch (err) {
+        await logApiError(`/api/ideas/${params.id}`, 'GET', err.status || 500, err.message, { context: 'loadIdea' });
         setError('Error loading idea');
       } finally {
         setLoading(false);
@@ -64,7 +66,7 @@ export default function IdeaDetailClient() {
           setSupportEmail(data.data.email);
         }
       } catch (err) {
-        // Not authenticated
+        // Not authenticated - expected for guests, no logging needed
       }
     }
 
@@ -105,7 +107,7 @@ export default function IdeaDetailClient() {
           }
         }
       } catch (err) {
-        // Error handling
+        await logApiError(`/api/ideas/${params.id}/support`, 'DELETE', err.status || 500, err.message, { context: 'unsupport' });
       }
     } else {
       // Show support modal
@@ -141,6 +143,7 @@ export default function IdeaDetailClient() {
         setSupportMsg(result.error || 'Error supporting idea');
       }
     } catch (err) {
+      await logApiError(`/api/ideas/${params.id}/support`, 'POST', err.status || 500, err.message, { context: 'support' });
       setSupportMsg('Error supporting idea. Please try again.');
     }
   }
@@ -286,7 +289,7 @@ export default function IdeaDetailClient() {
       {/* Support Modal */}
       {showSupportModal && (
         <div
-          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4"
           onClick={() => setShowSupportModal(false)}
         >
           <div

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../../lib/supabase';
 import { z } from 'zod';
 import { rateLimit } from '../../../../../lib/rateLimit';
+import { logError, ErrorTypes } from '../../../../../lib/logging';
 
 export async function POST(request, { params }) {
   const supabase = getSupabase();
@@ -77,6 +78,14 @@ export async function POST(request, { params }) {
 
     return NextResponse.json({ ok: true, support_count: idea.support_count + 1 }, { status: 201 });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/ideas/[id]/support',
+      method: 'POST',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }
@@ -140,6 +149,14 @@ export async function DELETE(request, { params }) {
 
     return NextResponse.json({ ok: true, support_count: newCount });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/ideas/[id]/support',
+      method: 'DELETE',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }

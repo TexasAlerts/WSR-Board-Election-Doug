@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, getVerifiedVoter } from '../../../../lib/auth';
 import { rateLimit } from '../../../../lib/rateLimit';
+import { logError, ErrorTypes } from '../../../../lib/logging';
 
 export async function GET(request) {
   const supabase = getSupabase();
@@ -50,6 +51,14 @@ export async function GET(request) {
 
     return NextResponse.json({ ok: true, data: supportedIdeas });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/ideas/my-support',
+      method: 'GET',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }
