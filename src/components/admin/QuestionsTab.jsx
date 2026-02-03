@@ -3,7 +3,14 @@
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 
 export default function QuestionsTab({
-  questions, loading, filter, setFilter, handleQuestionAction, showPrompt, formatDate, statusColors,
+  questions,
+  loading,
+  filter,
+  setFilter,
+  handleQuestionAction,
+  showPrompt,
+  formatDate,
+  statusColors,
 }) {
   return (
     <div>
@@ -13,9 +20,7 @@ export default function QuestionsTab({
             key={s}
             onClick={() => setFilter(s)}
             className={`px-3 py-1 rounded-full text-sm font-medium ${
-              filter === s
-                ? 'bg-navy text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
             {s}
@@ -36,7 +41,9 @@ export default function QuestionsTab({
                   <span className="font-medium">{q.name}</span>
                   <span className="text-gray-500 text-sm ml-2">{q.email}</span>
                 </div>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[q.status]}`}>
+                <span
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[q.status]}`}
+                >
                   {q.status}
                 </span>
               </div>
@@ -52,7 +59,12 @@ export default function QuestionsTab({
                   <div className="flex gap-2">
                     <button
                       onClick={async () => {
-                        const answer = await showPrompt('Answer Question', 'Your answer:', '', true);
+                        const answer = await showPrompt(
+                          'Answer Question',
+                          'Your answer:',
+                          '',
+                          true
+                        );
                         if (answer) {
                           handleQuestionAction(q.id, 'approve', answer);
                         }
@@ -64,7 +76,10 @@ export default function QuestionsTab({
                     </button>
                     <button
                       onClick={async () => {
-                        const reason = await showPrompt('Reject Question', 'Rejection reason (will be sent to user):');
+                        const reason = await showPrompt(
+                          'Reject Question',
+                          'Rejection reason (will be sent to user):'
+                        );
                         if (reason) {
                           handleQuestionAction(q.id, 'reject', null, reason);
                         }
@@ -80,9 +95,7 @@ export default function QuestionsTab({
             </div>
           ))}
           {questions.length === 0 && (
-            <div className="text-center py-12 text-gray-500">
-              No questions found
-            </div>
+            <div className="text-center py-12 text-gray-500">No questions found</div>
           )}
         </div>
       )}

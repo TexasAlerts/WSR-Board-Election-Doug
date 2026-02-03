@@ -9,6 +9,14 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
   const [error, setError] = useState('');
   const modalRef = useRef(null);
 
+  // Scroll lock to prevent background scrolling
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   // Escape key and focus trap
   useEffect(() => {
     function handleKeyDown(e) {
@@ -94,28 +102,35 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
 
         {step === 'form' && (
           <>
-            <h2 id="voter-modal-title" className="text-lg font-semibold text-navy mb-2">Verify Your Email to Vote</h2>
+            <h2 id="voter-modal-title" className="text-lg font-semibold text-navy mb-2">
+              Verify Your Email to Vote
+            </h2>
             <p className="text-gray-600 text-sm mb-4">
-              To vote on community polls, we need to verify your email address. This is a one-time process.
+              To vote on community polls, we need to verify your email address. This is a one-time
+              process.
             </p>
             <form onSubmit={handleSubmit}>
-              <label htmlFor="voter-name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+              <label htmlFor="voter-name" className="block text-sm font-medium text-gray-700 mb-1">
+                Name
+              </label>
               <input
                 id="voter-name"
                 type="text"
                 value={name}
-                onChange={e => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="First and Last Name"
                 required
                 className="w-full border rounded-md px-3 py-2.5 mb-3 text-sm min-h-[44px]"
                 aria-required="true"
               />
-              <label htmlFor="voter-email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <label htmlFor="voter-email" className="block text-sm font-medium text-gray-700 mb-1">
+                Email
+              </label>
               <input
                 id="voter-email"
                 type="email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
                 aria-required="true"
@@ -129,7 +144,10 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
               </button>
             </form>
             <p className="text-xs text-gray-500 mt-3 text-center">
-              Already a registered supporter? <a href="/auth/login" className="text-navy underline">Sign in</a>
+              Already a registered supporter?{' '}
+              <a href="/auth/login" className="text-navy underline">
+                Sign in
+              </a>
             </p>
           </>
         )}
@@ -146,16 +164,20 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
             <div className="text-green-500 text-4xl mb-3">&#9993;</div>
             <h2 className="text-lg font-semibold text-navy mb-2">Check Your Email</h2>
             <p className="text-gray-600 text-sm">
-              We sent a verification link to <strong>{email}</strong>. Click the link to verify and then return here to vote.
+              We sent a verification link to <strong>{email}</strong>. Click the link to verify and
+              then return here to vote.
             </p>
             <p className="text-gray-500 text-xs mt-4">
               Didn&apos;t receive it? Check your spam folder or{' '}
               <button
-                onClick={() => { setStep('form'); }}
+                onClick={() => {
+                  setStep('form');
+                }}
                 className="text-navy underline"
               >
                 try again
-              </button>.
+              </button>
+              .
             </p>
           </div>
         )}

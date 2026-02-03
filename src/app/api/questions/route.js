@@ -3,6 +3,11 @@ import { getSupabase } from '../../../lib/supabase';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
+import { verifyCaptcha } from '../../../lib/recaptcha';
+
+// API routes should be dynamic
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET() {
   const supabase = getSupabase();
@@ -16,7 +21,13 @@ export async function GET() {
   if (error) {
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
-  return NextResponse.json({ ok: true, data });
+
+  const response = NextResponse.json({ ok: true, data });
+
+  // Add Cache-Control headers
+  response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120');
+
+  return response;
 }
 
 export async function POST(req) {
@@ -30,33 +41,48 @@ export async function POST(req) {
       name: z.string().min(1, 'Name is required').max(200),
       email: z.string().email('Invalid email').max(200),
       question: z.string().min(1, 'Question is required').max(4000),
+      recaptchaToken: z.string().optional(),
     });
     const body = await req.json();
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
+      const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
-      const { name, email, question } = parsed.data;
-      const { error } = await supabase
-        .from('questions')
-        .insert({ name, email, question, status: 'pending' });
-      if (error) {
-        return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
+    const { name, email, question, recaptchaToken } = parsed.data;
+
+    // Verify reCAPTCHA if token is provided
+    if (recaptchaToken) {
+      const captchaResult = await verifyCaptcha(recaptchaToken, 'submit_question');
+      if (!captchaResult.success) {
+        return NextResponse.json(
+          { ok: false, error: 'Security verification failed. Please try again.' },
+          { status: 400 }
+        );
       }
-      await Promise.all([
-        sendEmail(
-          email,
-          'Thanks for your question',
-          `Hi ${name},\n\nThanks for your question:\n${question}\n\nWe will follow up once it has been answered.\n\n--\nDoug Charles`
-        ).catch(() => {}),
-        sendNotificationEmail(
-          'New question submitted',
-          `Name: ${name}\nEmail: ${email}\nQuestion: ${question}`
-        ).catch(() => {})
-      ]);
-      return NextResponse.json({ ok: true }, { status: 201 });
+    }
+    const { error } = await supabase
+      .from('questions')
+      .insert({ name, email, question, status: 'pending' });
+    if (error) {
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
+    }
+    await Promise.all([
+      sendEmail(
+        email,
+        'Thanks for your question',
+        `Hi ${name},\n\nThanks for your question:\n${question}\n\nWe will follow up once it has been answered.\n\n--\nDoug Charles`
+      ).catch(() => {}),
+      sendNotificationEmail(
+        'New question submitted',
+        `Name: ${name}\nEmail: ${email}\nQuestion: ${question}`
+      ).catch(() => {}),
+    ]);
+    return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
-    return NextResponse.json({ ok: false, error: 'Something went wrong. Please try again.' }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: 'Something went wrong. Please try again.' },
+      { status: 400 }
+    );
   }
 }

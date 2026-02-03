@@ -33,11 +33,18 @@ export async function POST(request) {
 
     if (!voter) {
       // Don't reveal whether email exists
-      return NextResponse.json({ ok: true, message: 'If that email is in our system, a verification link has been sent.' });
+      return NextResponse.json({
+        ok: true,
+        message: 'If that email is in our system, a verification link has been sent.',
+      });
     }
 
     if (voter.verified_at) {
-      return NextResponse.json({ ok: true, alreadyVerified: true, message: 'Email already verified.' });
+      return NextResponse.json({
+        ok: true,
+        alreadyVerified: true,
+        message: 'Email already verified.',
+      });
     }
 
     const token = generateToken(64);

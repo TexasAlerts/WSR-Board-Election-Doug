@@ -21,7 +21,7 @@ export async function POST(request, { params }) {
 
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
+      const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 
@@ -53,12 +53,10 @@ export async function POST(request, { params }) {
     }
 
     // Add support
-    const { error: supportError } = await supabase
-      .from('idea_supports')
-      .insert({
-        idea_id: id,
-        supporter_email: email,
-      });
+    const { error: supportError } = await supabase.from('idea_supports').insert({
+      idea_id: id,
+      supporter_email: email,
+    });
 
     if (supportError) {
       if (supportError.code === '23505') {
@@ -101,7 +99,7 @@ export async function DELETE(request, { params }) {
 
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
+      const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 

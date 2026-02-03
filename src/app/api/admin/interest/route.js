@@ -14,10 +14,7 @@ export async function GET(request) {
   const type = searchParams.get('type') || 'all';
 
   try {
-    let query = supabase
-      .from('interest')
-      .select('*')
-      .order('created_at', { ascending: false });
+    let query = supabase.from('interest').select('*').order('created_at', { ascending: false });
 
     if (type !== 'all') {
       query = query.eq('type', type);
@@ -69,10 +66,7 @@ export async function DELETE(request) {
   }
 
   try {
-    const { error } = await supabase
-      .from('interest')
-      .delete()
-      .eq('id', id);
+    const { error } = await supabase.from('interest').delete().eq('id', id);
 
     if (error) {
       return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });

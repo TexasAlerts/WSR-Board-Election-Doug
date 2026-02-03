@@ -20,12 +20,10 @@ export default function VerifiedVotersTab({
         <button
           onClick={() => setFilter('all')}
           className={`px-4 py-2 rounded-lg font-medium ${
-            filter === 'all'
-              ? 'bg-navy text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            filter === 'all' ? 'bg-navy text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
-          All ({voters.filter(v => !v.suspended_at).length})
+          All ({voters.filter((v) => !v.suspended_at).length})
         </button>
         <button
           onClick={() => setFilter('suspended')}
@@ -35,7 +33,7 @@ export default function VerifiedVotersTab({
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
-          Suspended ({voters.filter(v => v.suspended_at).length})
+          Suspended ({voters.filter((v) => v.suspended_at).length})
         </button>
       </div>
 
@@ -62,9 +60,7 @@ export default function VerifiedVotersTab({
                         Suspended
                       </span>
                     )}
-                    {voter.verified_at && (
-                      <CheckCircle className="w-4 h-4 text-green-500" />
-                    )}
+                    {voter.verified_at && <CheckCircle className="w-4 h-4 text-green-500" />}
                   </div>
 
                   <div className="space-y-1 text-sm text-gray-600">
@@ -75,7 +71,10 @@ export default function VerifiedVotersTab({
 
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4" />
-                      <span>Verified: {voter.verified_at ? formatDate(voter.verified_at) : 'Not verified'}</span>
+                      <span>
+                        Verified:{' '}
+                        {voter.verified_at ? formatDate(voter.verified_at) : 'Not verified'}
+                      </span>
                     </div>
 
                     {voter.suspended_at && (

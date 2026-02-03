@@ -66,12 +66,11 @@ export async function apiCall(url, options = {}) {
         ok: false,
         error: data.error || `Request failed with status ${response.status}`,
         status: response.status,
-        data
+        data,
       };
     }
 
     return { ok: true, data, status: response.status };
-
   } catch (error) {
     const responseTime = Date.now() - startTime;
 
@@ -101,7 +100,7 @@ export async function apiCall(url, options = {}) {
     return {
       ok: false,
       error: error.message || 'Network error occurred',
-      status: 0
+      status: 0,
     };
   }
 }

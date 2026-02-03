@@ -1,3 +1,47 @@
+/**
+ * Comments API Endpoint
+ *
+ * GET /api/comments?poll_id=X or ?idea_id=X
+ * POST /api/comments
+ *
+ * Handles comment submission and retrieval for polls and ideas.
+ * Supports threaded replies with parent_id.
+ *
+ * GET Query Parameters:
+ * - poll_id: string (UUID of poll)
+ * - idea_id: string (UUID of idea)
+ * - parent_id: string (optional, filter for replies to specific comment)
+ *
+ * GET Response (200):
+ * - ok: true
+ * - comments: Array<{id, display_name, content, created_at, upvotes, downvotes, parent_id, supporter_id}>
+ *
+ * POST Request Body:
+ * - poll_id OR idea_id: string (UUID)
+ * - parent_id: string (optional, for replies)
+ * - content: string (1-5000 chars)
+ *
+ * POST Response (Success - 201):
+ * - ok: true
+ * - message: "Comment submitted and pending approval"
+ * - comment: { id, status, display_name }
+ *
+ * POST Response (Error):
+ * - 400: Missing required fields or validation error
+ * - 401: Not authenticated
+ * - 429: Too many comments (5 per hour per user)
+ * - 500: Server error
+ *
+ * Security Features:
+ * - Rate limiting by supporter ID
+ * - XSS protection via sanitizeText()
+ * - Requires authentication
+ * - Admin moderation (status: pending → approved)
+ * - Audit logging
+ *
+ * Authentication: Required (getCurrentSupporter)
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../lib/supabase';
 import { getCurrentSupporter } from '../../../lib/auth';
@@ -24,7 +68,8 @@ export async function GET(request) {
 
   let query = supabase
     .from('comments')
-    .select(`
+    .select(
+      `
       id,
       display_name,
       content,
@@ -33,7 +78,8 @@ export async function GET(request) {
       downvotes,
       parent_id,
       supporter_id
-    `)
+    `
+    )
     .eq('status', 'approved')
     .order('created_at', { ascending: true });
 
@@ -59,7 +105,7 @@ export async function GET(request) {
   // Get user's votes on these comments
   let userVotes = {};
   if (supporter && comments.length > 0) {
-    const commentIds = comments.map(c => c.id);
+    const commentIds = comments.map((c) => c.id);
     const { data: votes } = await supabase
       .from('comment_votes')
       .select('comment_id, vote_type')
@@ -67,14 +113,14 @@ export async function GET(request) {
       .in('comment_id', commentIds);
 
     if (votes) {
-      votes.forEach(v => {
+      votes.forEach((v) => {
         userVotes[v.comment_id] = v.vote_type;
       });
     }
   }
 
   // Get reply counts for each comment
-  const commentIds = comments.map(c => c.id);
+  const commentIds = comments.map((c) => c.id);
   let replyCounts = {};
   if (commentIds.length > 0) {
     const { data: replies } = await supabase
@@ -84,14 +130,14 @@ export async function GET(request) {
       .in('parent_id', commentIds);
 
     if (replies) {
-      replies.forEach(r => {
+      replies.forEach((r) => {
         replyCounts[r.parent_id] = (replyCounts[r.parent_id] || 0) + 1;
       });
     }
   }
 
   // Add user vote info and reply counts to comments
-  const commentsWithVotes = comments.map(c => ({
+  const commentsWithVotes = comments.map((c) => ({
     ...c,
     user_vote: userVotes[c.id] || null,
     reply_count: replyCounts[c.id] || 0,
@@ -107,7 +153,10 @@ export async function POST(request) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   if (!rateLimit(`comment-${ip}`, 10, 60000)) {
-    return NextResponse.json({ ok: false, error: 'Too many comments. Please wait.' }, { status: 429 });
+    return NextResponse.json(
+      { ok: false, error: 'Too many comments. Please wait.' },
+      { status: 429 }
+    );
   }
 
   const supporter = await getCurrentSupporter();
@@ -118,18 +167,20 @@ export async function POST(request) {
   try {
     const body = await request.json();
 
-    const schema = z.object({
-      poll_id: z.string().uuid().optional(),
-      idea_id: z.string().uuid().optional(),
-      parent_id: z.string().uuid().optional(),
-      content: z.string().min(1, 'Comment cannot be empty').max(2000, 'Comment too long'),
-    }).refine(data => data.poll_id || data.idea_id, {
-      message: 'poll_id or idea_id required',
-    });
+    const schema = z
+      .object({
+        poll_id: z.string().uuid().optional(),
+        idea_id: z.string().uuid().optional(),
+        parent_id: z.string().uuid().optional(),
+        content: z.string().min(1, 'Comment cannot be empty').max(2000, 'Comment too long'),
+      })
+      .refine((data) => data.poll_id || data.idea_id, {
+        message: 'poll_id or idea_id required',
+      });
 
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
+      const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
 
       // Log validation errors to admin dashboard
       await logError({
@@ -225,11 +276,14 @@ export async function POST(request) {
       `From: ${supporter.first_name} ${supporter.last_name} (${supporter.email})\nOn: ${targetType}\nContent: ${content.trim()}`
     ).catch(() => {});
 
-    return NextResponse.json({
-      ok: true,
-      message: 'Comment submitted for approval',
-      data: comment,
-    }, { status: 201 });
+    return NextResponse.json(
+      {
+        ok: true,
+        message: 'Comment submitted for approval',
+        data: comment,
+      },
+      { status: 201 }
+    );
   } catch (err) {
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,

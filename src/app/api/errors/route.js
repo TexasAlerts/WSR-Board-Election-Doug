@@ -27,24 +27,25 @@ export async function POST(request) {
     const body = await request.json();
 
     // Support both old format (category, message) and new format (error_type, error_message)
-    const errorType = body.error_type || (body.category === 'client' ? 'client_error' : ErrorTypes.CLIENT_ERROR);
+    const errorType =
+      body.error_type || (body.category === 'client' ? 'client_error' : ErrorTypes.CLIENT_ERROR);
     const errorMessage = body.error_message || body.message;
     const errorStack = body.error_stack || body.stack;
     const endpoint = body.endpoint || body.url;
-    const context = body.context || (body.component_stack ? JSON.stringify({ componentStack: body.component_stack }) : null);
+    const context =
+      body.context ||
+      (body.component_stack ? JSON.stringify({ componentStack: body.component_stack }) : null);
 
     // Basic validation
     if (!errorMessage) {
-      return NextResponse.json(
-        { ok: false, error: 'Error message is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, error: 'Error message is required' }, { status: 400 });
     }
 
     // Rate limiting: check for recent errors from same IP
-    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-               request.headers.get('x-real-ip') ||
-               'unknown';
+    const ip =
+      request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      request.headers.get('x-real-ip') ||
+      'unknown';
 
     // Get user email from session if available (don't require auth)
     let userEmail = null;
@@ -91,7 +92,7 @@ export async function POST(request) {
     return NextResponse.json({
       ok: true,
       errorId,
-      message: 'Error logged successfully'
+      message: 'Error logged successfully',
     });
   } catch (err) {
     return NextResponse.json(

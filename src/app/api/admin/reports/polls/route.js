@@ -22,7 +22,7 @@ export async function GET(request) {
 
     const report = [];
 
-    for (const poll of (polls || [])) {
+    for (const poll of polls || []) {
       // Get choices
       const { data: choices } = await supabase
         .from('poll_choices')
@@ -39,12 +39,17 @@ export async function GET(request) {
       // Count votes per choice
       const choiceCounts = {};
       const otherResponses = [];
-      (choices || []).forEach(c => { choiceCounts[c.id] = 0; });
+      (choices || []).forEach((c) => {
+        choiceCounts[c.id] = 0;
+      });
 
-      (votes || []).forEach(v => {
+      (votes || []).forEach((v) => {
         const data = v.vote_data;
         if (data?.choice_id) choiceCounts[data.choice_id] = (choiceCounts[data.choice_id] || 0) + 1;
-        if (data?.choice_ids) data.choice_ids.forEach(id => { choiceCounts[id] = (choiceCounts[id] || 0) + 1; });
+        if (data?.choice_ids)
+          data.choice_ids.forEach((id) => {
+            choiceCounts[id] = (choiceCounts[id] || 0) + 1;
+          });
         if (v.other_text) otherResponses.push(v.other_text);
       });
 
@@ -69,7 +74,7 @@ export async function GET(request) {
         total_votes: (votes || []).length,
         approved_comments: commentCount || 0,
         pending_comments: pendingComments || 0,
-        choices: (choices || []).map(c => ({
+        choices: (choices || []).map((c) => ({
           text: c.choice_text,
           is_other: c.is_other_option,
           votes: choiceCounts[c.id] || 0,
@@ -80,8 +85,8 @@ export async function GET(request) {
     }
 
     if (format === 'csv') {
-      const flat = report.flatMap(p =>
-        p.choices.map(c => ({
+      const flat = report.flatMap((p) =>
+        p.choices.map((c) => ({
           poll_title: p.title,
           poll_type: p.poll_type,
           status: p.status,

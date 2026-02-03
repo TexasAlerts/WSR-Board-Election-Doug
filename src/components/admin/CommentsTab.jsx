@@ -3,7 +3,14 @@
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 
 export default function CommentsTab({
-  comments, loading, filter, setFilter, moderateComment, showPrompt, formatDate, statusColors,
+  comments,
+  loading,
+  filter,
+  setFilter,
+  moderateComment,
+  showPrompt,
+  formatDate,
+  statusColors,
 }) {
   return (
     <div>
@@ -13,9 +20,7 @@ export default function CommentsTab({
             key={s}
             onClick={() => setFilter(s)}
             className={`px-3 py-1 rounded-full text-sm font-medium ${
-              filter === s
-                ? 'bg-navy text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
             {s}
@@ -36,7 +41,9 @@ export default function CommentsTab({
                   <span className="font-medium">{c.name}</span>
                   <span className="text-gray-500 text-sm ml-2">{c.email}</span>
                 </div>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[c.status]}`}>
+                <span
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[c.status]}`}
+                >
                   {c.status}
                 </span>
               </div>
@@ -58,7 +65,10 @@ export default function CommentsTab({
                     </button>
                     <button
                       onClick={async () => {
-                        const reason = await showPrompt('Reject Comment', 'Rejection reason (optional):');
+                        const reason = await showPrompt(
+                          'Reject Comment',
+                          'Rejection reason (optional):'
+                        );
                         moderateComment(c.id, 'rejected', reason);
                       }}
                       className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
@@ -72,9 +82,7 @@ export default function CommentsTab({
             </div>
           ))}
           {comments.length === 0 && (
-            <div className="text-center py-12 text-gray-500">
-              No comments found
-            </div>
+            <div className="text-center py-12 text-gray-500">No comments found</div>
           )}
         </div>
       )}

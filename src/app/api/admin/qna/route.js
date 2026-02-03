@@ -15,10 +15,7 @@ export async function GET(req) {
   const status = searchParams.get('status') || 'pending';
 
   try {
-    let query = supabase
-      .from('questions')
-      .select('*')
-      .order('created_at', { ascending: false });
+    let query = supabase.from('questions').select('*').order('created_at', { ascending: false });
 
     if (status !== 'all') {
       query = query.eq('status', status);

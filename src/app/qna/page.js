@@ -1,7 +1,38 @@
 import Image from 'next/image';
 import QnaDynamic from '../../components/QnaDynamic';
+import { getSupabase } from '../../lib/supabase';
 
-export default function QnAPage() {
+// Enable dynamic rendering to support SSR
+export const dynamic = 'force-dynamic';
+// Enable ISR with 60 second revalidation
+export const revalidate = 60;
+
+// Server component that fetches questions data
+async function getQuestions() {
+  const supabase = getSupabase();
+
+  try {
+    const { data, error } = await supabase
+      .from('questions')
+      .select('id, name, question, answer, created_at')
+      .eq('status', 'approved')
+      .not('answer', 'is', null)
+      .neq('answer', '')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      return [];
+    }
+
+    return data || [];
+  } catch (error) {
+    return [];
+  }
+}
+
+export default async function QnAPage() {
+  const initialQuestions = await getQuestions();
+
   return (
     <div className="space-y-0">
       {/* Hero */}
@@ -29,7 +60,7 @@ export default function QnAPage() {
         </div>
       </section>
 
-      <QnaDynamic />
+      <QnaDynamic initialQuestions={initialQuestions} />
     </div>
   );
 }

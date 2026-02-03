@@ -12,9 +12,9 @@ import { usePathname } from 'next/navigation';
  * 2. Uses both window.scrollTo and documentElement.scrollTop
  * 3. RAF callback after browser paint
  */
-export default function ScrollToTop() {
+export default function ScrollToTop(): null {
   const pathname = usePathname();
-  const isFirstMount = useRef(true);
+  const isFirstMount = useRef<boolean>(true);
 
   // Disable browser's automatic scroll restoration on mount
   useEffect(() => {
@@ -31,12 +31,12 @@ export default function ScrollToTop() {
       return;
     }
 
-    const scrollToTop = () => {
+    const scrollToTop = (): void => {
       // Method 1: Standard scrollTo with instant behavior
       window.scrollTo({
         top: 0,
         left: 0,
-        behavior: 'instant'
+        behavior: 'instant',
       });
 
       // Method 2: Direct DOM manipulation as fallback

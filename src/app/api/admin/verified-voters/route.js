@@ -39,7 +39,7 @@ export async function GET(request) {
     }
 
     // Get vote counts for each voter by email
-    const voterEmails = voters.map(v => v.email);
+    const voterEmails = voters.map((v) => v.email);
     let voteCounts = {};
 
     if (voterEmails.length > 0) {
@@ -50,14 +50,14 @@ export async function GET(request) {
         .is('supporter_id', null); // Only count votes where they weren't fully registered
 
       if (votes) {
-        votes.forEach(v => {
+        votes.forEach((v) => {
           voteCounts[v.voter_email] = (voteCounts[v.voter_email] || 0) + 1;
         });
       }
     }
 
     // Add vote counts to voters
-    const votersWithCounts = voters.map(v => ({
+    const votersWithCounts = voters.map((v) => ({
       ...v,
       vote_count: voteCounts[v.email] || 0,
     }));

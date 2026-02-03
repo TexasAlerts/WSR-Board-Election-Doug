@@ -1,3 +1,46 @@
+/**
+ * User Registration API Endpoint
+ *
+ * POST /api/auth/register
+ *
+ * Creates a new supporter account with address validation.
+ *
+ * Request Body:
+ * - firstName: string (1-50 chars)
+ * - lastName: string (1-50 chars)
+ * - email: string (valid email)
+ * - phone: string (optional, US phone number)
+ * - streetAddress: string (5-100 chars)
+ * - city: string (2-50 chars)
+ * - state: string (2 chars, default 'TX')
+ * - zipCode: string (5-10 chars)
+ * - emailConsent: boolean (default true)
+ * - smsConsent: boolean (default true)
+ *
+ * Response (Success - 200):
+ * - ok: true
+ * - message: "Registration successful! Please check your email to verify your account."
+ * - supporterId: string
+ *
+ * Response (Error):
+ * - 400: Validation error, duplicate email, invalid address
+ * - 403: Account suspended
+ * - 429: Too many registration attempts (5 per hour per IP)
+ * - 500: Server error
+ *
+ * Process Flow:
+ * 1. Validate input with Zod schema
+ * 2. Check for duplicate email
+ * 3. Validate US phone number format
+ * 4. Validate address with USPS API
+ * 5. Create supporter record (status: pending_email)
+ * 6. Generate email verification token
+ * 7. Send verification email
+ * 8. Log audit event
+ *
+ * Authentication: None required
+ */
+
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { z } from 'zod';
@@ -80,10 +123,7 @@ export async function POST(request) {
     if (phone) {
       const phoneValidation = validatePhoneNumber(phone);
       if (!phoneValidation.valid) {
-        return NextResponse.json(
-          { ok: false, error: phoneValidation.error },
-          { status: 400 }
-        );
+        return NextResponse.json({ ok: false, error: phoneValidation.error }, { status: 400 });
       }
       phoneFormatted = phoneValidation.formatted;
     }
@@ -119,7 +159,7 @@ export async function POST(request) {
         address_validated: !addressValidation.skipped,
         email_consent: emailConsent,
         sms_consent: smsConsent,
-        consent_timestamp: (emailConsent || smsConsent) ? new Date().toISOString() : null,
+        consent_timestamp: emailConsent || smsConsent ? new Date().toISOString() : null,
         status: 'pending_email',
       })
       .select()
@@ -148,11 +188,7 @@ export async function POST(request) {
     }
 
     // Send verification email
-    const emailResult = await sendVerificationEmail(
-      supporter.email,
-      supporter.first_name,
-      token
-    );
+    const emailResult = await sendVerificationEmail(supporter.email, supporter.first_name, token);
 
     if (!emailResult.success) {
       // Don't fail registration, just log the error

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -19,8 +19,7 @@ export default function HomeDynamic() {
         const qnaData = await qnaRes.json();
         setEndorsements(Array.isArray(endorseData.data) ? endorseData.data : []);
         setQuestions(Array.isArray(qnaData.data) ? qnaData.data : []);
-      } catch (err) {
-      }
+      } catch (err) {}
     }
     loadData();
   }, []);
@@ -58,7 +57,10 @@ export default function HomeDynamic() {
                 View All Q&A
               </Link>
               <p className="text-gray-600 text-sm">
-                Have a question? <Link href="/qna" className="text-navy font-medium hover:underline">Submit yours</Link>
+                Have a question?{' '}
+                <Link href="/qna" className="text-navy font-medium hover:underline">
+                  Submit yours
+                </Link>
               </p>
             </div>
           </div>

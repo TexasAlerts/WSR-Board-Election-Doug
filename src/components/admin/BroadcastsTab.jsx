@@ -3,8 +3,17 @@
 import { Send, Loader2, Mail, Phone } from 'lucide-react';
 
 export default function BroadcastsTab({
-  broadcasts, loading, broadcastType, setBroadcastType, broadcastSubject, setBroadcastSubject,
-  broadcastMessage, setBroadcastMessage, sending, sendBroadcast, formatDate,
+  broadcasts,
+  loading,
+  broadcastType,
+  setBroadcastType,
+  broadcastSubject,
+  setBroadcastSubject,
+  broadcastMessage,
+  setBroadcastMessage,
+  sending,
+  sendBroadcast,
+  formatDate,
 }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -12,7 +21,12 @@ export default function BroadcastsTab({
         <h2 className="text-xl font-bold text-navy mb-4">Send Broadcast</h2>
         <form onSubmit={sendBroadcast} className="bg-white rounded-xl shadow p-6 space-y-4">
           <div>
-            <label htmlFor="broadcast-type" className="block text-sm font-medium text-gray-700 mb-1">Type</label>
+            <label
+              htmlFor="broadcast-type"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Type
+            </label>
             <select
               id="broadcast-type"
               value={broadcastType}
@@ -27,7 +41,12 @@ export default function BroadcastsTab({
 
           {(broadcastType === 'email' || broadcastType === 'both') && (
             <div>
-              <label htmlFor="broadcast-subject" className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+              <label
+                htmlFor="broadcast-subject"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Subject
+              </label>
               <input
                 id="broadcast-subject"
                 type="text"
@@ -41,7 +60,12 @@ export default function BroadcastsTab({
           )}
 
           <div>
-            <label htmlFor="broadcast-message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+            <label
+              htmlFor="broadcast-message"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Message
+            </label>
             <textarea
               id="broadcast-message"
               value={broadcastMessage}
@@ -101,9 +125,7 @@ export default function BroadcastsTab({
               </div>
             ))}
             {broadcasts.length === 0 && (
-              <div className="text-center py-12 text-gray-500">
-                No broadcasts sent yet
-              </div>
+              <div className="text-center py-12 text-gray-500">No broadcasts sent yet</div>
             )}
           </div>
         )}

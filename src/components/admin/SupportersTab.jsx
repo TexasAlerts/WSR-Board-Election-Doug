@@ -3,7 +3,14 @@
 import { CheckCircle, XCircle, Trash2, Loader2, Mail, Phone } from 'lucide-react';
 
 export default function SupportersTab({
-  supporters, loading, filter, setFilter, updateSupporter, deleteSupporter, formatDate, statusColors,
+  supporters,
+  loading,
+  filter,
+  setFilter,
+  updateSupporter,
+  deleteSupporter,
+  formatDate,
+  statusColors,
 }) {
   return (
     <div>
@@ -13,9 +20,7 @@ export default function SupportersTab({
             key={s}
             onClick={() => setFilter(s)}
             className={`px-3 py-1 rounded-full text-sm font-medium ${
-              filter === s
-                ? 'bg-navy text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
             {s.replace('_', ' ')}
@@ -33,19 +38,33 @@ export default function SupportersTab({
             <caption className="sr-only">Supporters list</caption>
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Address</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Consent</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Name
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Contact
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Address
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Status
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Consent
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {supporters.map((s) => (
                 <tr key={s.id} className="hover:bg-gray-50">
                   <td className="px-4 py-3">
-                    <div className="font-medium">{s.first_name} {s.last_name}</div>
+                    <div className="font-medium">
+                      {s.first_name} {s.last_name}
+                    </div>
                     <div className="text-xs text-gray-500">{formatDate(s.created_at)}</div>
                   </td>
                   <td className="px-4 py-3">
@@ -56,7 +75,9 @@ export default function SupportersTab({
                     {s.street_address}, {s.city}, {s.state} {s.zip_code}
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[s.status]}`}>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[s.status]}`}
+                    >
                       {s.status.replace('_', ' ')}
                     </span>
                   </td>

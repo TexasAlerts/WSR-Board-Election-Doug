@@ -15,10 +15,7 @@ export async function GET(request) {
   const status = searchParams.get('status') || 'pending';
 
   try {
-    let query = supabase
-      .from('endorsements')
-      .select('*')
-      .order('created_at', { ascending: false });
+    let query = supabase.from('endorsements').select('*').order('created_at', { ascending: false });
 
     if (status !== 'all') {
       query = query.eq('status', status);
@@ -169,9 +166,7 @@ export async function POST(request) {
 
       // Send rejection email to user
       if (data?.email) {
-        const reasonText = rejection_reason
-          ? `\n\nReason: ${rejection_reason}`
-          : '';
+        const reasonText = rejection_reason ? `\n\nReason: ${rejection_reason}` : '';
         await sendEmail(
           data.email,
           'Update on your endorsement submission',

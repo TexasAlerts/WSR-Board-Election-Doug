@@ -50,7 +50,7 @@ export async function POST(request, { params }) {
 
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
+      const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 
@@ -76,10 +76,7 @@ export async function POST(request, { params }) {
     }
 
     if (poll.visibility === 'public_view') {
-      return NextResponse.json(
-        { ok: false, error: 'This poll is view-only' },
-        { status: 403 }
-      );
+      return NextResponse.json({ ok: false, error: 'This poll is view-only' }, { status: 403 });
     }
 
     // Determine voter identity and voting mode
@@ -128,17 +125,16 @@ export async function POST(request, { params }) {
     }
 
     // Check if already voted
-    let existingVoteQuery = supabase
-      .from('poll_votes')
-      .select('id')
-      .eq('poll_id', id);
+    let existingVoteQuery = supabase.from('poll_votes').select('id').eq('poll_id', id);
 
     if (isAuthenticated) {
       // Check by supporter_id
       existingVoteQuery = existingVoteQuery.eq('supporter_id', voterId);
     } else if (isAnonymous) {
       // Check by anonymous token OR fingerprint (either match = already voted)
-      existingVoteQuery = existingVoteQuery.or(`anonymous_voter_token.eq.${anonymousVoterToken},anonymous_voter_fingerprint.eq.${anonymousVoterFingerprint}`);
+      existingVoteQuery = existingVoteQuery.or(
+        `anonymous_voter_token.eq.${anonymousVoterToken},anonymous_voter_fingerprint.eq.${anonymousVoterFingerprint}`
+      );
     } else {
       // Check by verified voter email
       existingVoteQuery = existingVoteQuery.eq('voter_email', voterEmail);
@@ -162,7 +158,10 @@ export async function POST(request, { params }) {
         .single();
 
       if (choiceData?.is_other_option && (!other_text || !other_text.trim())) {
-        return NextResponse.json({ ok: false, error: 'Please specify your "Other" answer' }, { status: 400 });
+        return NextResponse.json(
+          { ok: false, error: 'Please specify your "Other" answer' },
+          { status: 400 }
+        );
       }
     }
 
@@ -175,7 +174,10 @@ export async function POST(request, { params }) {
       vote_data = { choice_id };
     } else if (poll.poll_type === 'multiple_choice') {
       if (!choice_ids || choice_ids.length === 0) {
-        return NextResponse.json({ ok: false, error: 'Please select at least one option' }, { status: 400 });
+        return NextResponse.json(
+          { ok: false, error: 'Please select at least one option' },
+          { status: 400 }
+        );
       }
       vote_data = { choice_ids };
     } else if (poll.poll_type === 'ranked_choice') {
@@ -205,9 +207,7 @@ export async function POST(request, { params }) {
       voteRecord.voter_email = voterEmail;
     }
 
-    const { error: voteError } = await supabase
-      .from('poll_votes')
-      .insert(voteRecord);
+    const { error: voteError } = await supabase.from('poll_votes').insert(voteRecord);
 
     if (voteError) {
       if (voteError.code === '23505') {
@@ -219,7 +219,11 @@ export async function POST(request, { params }) {
     // Set anonymous voter cookie if this was an anonymous vote
     const response = NextResponse.json({ ok: true }, { status: 201 });
     if (isAnonymous) {
-      response.cookies.set(ANONYMOUS_VOTER_COOKIE, anonymousVoterToken, ANONYMOUS_VOTER_COOKIE_OPTIONS);
+      response.cookies.set(
+        ANONYMOUS_VOTER_COOKIE,
+        anonymousVoterToken,
+        ANONYMOUS_VOTER_COOKIE_OPTIONS
+      );
     }
 
     // Insert comment if provided and user is a registered supporter
@@ -235,13 +239,11 @@ export async function POST(request, { params }) {
         display_name: displayName,
       };
 
-      const { error: commentError } = await supabase
-        .from('comments')
-        .insert(commentRecord);
+      const { error: commentError } = await supabase.from('comments').insert(commentRecord);
 
       if (commentError) {
-      // silently ignored
-    } else {
+        // silently ignored
+      } else {
         await logAudit({
           eventType: AuditEvents.COMMENT_CREATED,
           supporterId: voterId,

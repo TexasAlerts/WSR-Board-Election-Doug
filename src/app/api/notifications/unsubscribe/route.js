@@ -12,7 +12,13 @@ export async function GET(request) {
 
   const supabase = getSupabase();
 
-  const validTypes = ['email_on_comment_moderation', 'email_on_new_comment', 'email_on_new_reply', 'email_on_weekly_digest', 'all'];
+  const validTypes = [
+    'email_on_comment_moderation',
+    'email_on_new_comment',
+    'email_on_new_reply',
+    'email_on_weekly_digest',
+    'all',
+  ];
 
   if (type && !validTypes.includes(type)) {
     return NextResponse.json({ ok: false, error: 'Invalid notification type' }, { status: 400 });
@@ -39,10 +45,7 @@ export async function GET(request) {
     updates[type] = false;
   }
 
-  await supabase
-    .from('notification_preferences')
-    .update(updates)
-    .eq('id', prefs.id);
+  await supabase.from('notification_preferences').update(updates).eq('id', prefs.id);
 
   // Redirect to unsubscribe confirmation page
   const redirectUrl = new URL('/notifications/unsubscribe', request.url);

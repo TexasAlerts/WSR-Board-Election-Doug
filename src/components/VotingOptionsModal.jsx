@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useRef, useEffect } from 'react';
 import { UserCheck, Mail, UserX } from 'lucide-react';
@@ -12,6 +12,14 @@ import { UserCheck, Mail, UserX } from 'lucide-react';
  */
 export default function VotingOptionsModal({ onClose, onOptionSelected }) {
   const modalRef = useRef(null);
+
+  // Scroll lock to prevent background scrolling
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
 
   // Focus trap and escape key handler
   useEffect(() => {
@@ -53,7 +61,7 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
         ref={modalRef}
         tabIndex={-1}
         className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto pb-safe outline-none"
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6 sm:p-8">
           <div className="flex justify-between items-start mb-6">
@@ -91,19 +99,28 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
                   <ul className="space-y-1 text-sm text-gray-600">
                     <li className="flex items-center gap-2">
                       <span className="text-green-600">✓</span>
-                      <span><strong className="text-navy">Vote</strong> on all polls</span>
+                      <span>
+                        <strong className="text-navy">Vote</strong> on all polls
+                      </span>
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="text-green-600">✓</span>
-                      <span><strong className="text-navy">Comment</strong> and reply to discussions</span>
+                      <span>
+                        <strong className="text-navy">Comment</strong> and reply to discussions
+                      </span>
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="text-green-600">✓</span>
-                      <span><strong className="text-navy">Get notified</strong> when polls you voted on close</span>
+                      <span>
+                        <strong className="text-navy">Get notified</strong> when polls you voted on
+                        close
+                      </span>
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="text-green-600">✓</span>
-                      <span><strong className="text-navy">Track</strong> your voting history</span>
+                      <span>
+                        <strong className="text-navy">Track</strong> your voting history
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -127,11 +144,16 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
                   <ul className="space-y-1 text-sm text-gray-600">
                     <li className="flex items-center gap-2">
                       <span className="text-green-600">✓</span>
-                      <span><strong className="text-navy">Vote</strong> on all polls</span>
+                      <span>
+                        <strong className="text-navy">Vote</strong> on all polls
+                      </span>
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="text-green-600">✓</span>
-                      <span><strong className="text-navy">Get notified</strong> when polls you voted on close</span>
+                      <span>
+                        <strong className="text-navy">Get notified</strong> when polls you voted on
+                        close
+                      </span>
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="text-gray-400">○</span>
@@ -159,7 +181,9 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
                   <ul className="space-y-1 text-sm text-gray-600">
                     <li className="flex items-center gap-2">
                       <span className="text-green-600">✓</span>
-                      <span><strong className="text-gray-900">Vote</strong> on this poll</span>
+                      <span>
+                        <strong className="text-gray-900">Vote</strong> on this poll
+                      </span>
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="text-gray-400">○</span>

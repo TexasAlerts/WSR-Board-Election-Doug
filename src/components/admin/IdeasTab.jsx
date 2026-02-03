@@ -3,24 +3,31 @@
 import { CheckCircle, XCircle, MessageSquare, Loader2 } from 'lucide-react';
 
 export default function IdeasTab({
-  ideas, loading, filter, setFilter, handleIdeaAction, showPrompt, formatDate, statusColors,
+  ideas,
+  loading,
+  filter,
+  setFilter,
+  handleIdeaAction,
+  showPrompt,
+  formatDate,
+  statusColors,
 }) {
   return (
     <div>
       <div className="flex gap-2 mb-4 flex-wrap">
-        {['pending', 'published', 'under_review', 'planned', 'completed', 'declined', 'all'].map((s) => (
-          <button
-            key={s}
-            onClick={() => setFilter(s)}
-            className={`px-3 py-1 rounded-full text-sm font-medium ${
-              filter === s
-                ? 'bg-navy text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            {s.replace('_', ' ')}
-          </button>
-        ))}
+        {['pending', 'published', 'under_review', 'planned', 'completed', 'declined', 'all'].map(
+          (s) => (
+            <button
+              key={s}
+              onClick={() => setFilter(s)}
+              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              {s.replace('_', ' ')}
+            </button>
+          )
+        )}
       </div>
 
       {loading ? (
@@ -35,9 +42,13 @@ export default function IdeasTab({
                 <div>
                   <span className="font-medium">{idea.name}</span>
                   <span className="text-gray-500 text-sm ml-2">{idea.email}</span>
-                  <span className="ml-2 px-2 py-0.5 rounded bg-gray-100 text-xs text-gray-600">{idea.category}</span>
+                  <span className="ml-2 px-2 py-0.5 rounded bg-gray-100 text-xs text-gray-600">
+                    {idea.category}
+                  </span>
                 </div>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[idea.status] || 'bg-gray-100 text-gray-600'}`}>
+                <span
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[idea.status] || 'bg-gray-100 text-gray-600'}`}
+                >
                   {idea.status.replace('_', ' ')}
                 </span>
               </div>
@@ -54,7 +65,10 @@ export default function IdeasTab({
                   <div className="flex gap-2">
                     <button
                       onClick={async () => {
-                        const response = await showPrompt('Publish Idea', 'Your response (optional):');
+                        const response = await showPrompt(
+                          'Publish Idea',
+                          'Your response (optional):'
+                        );
                         handleIdeaAction(idea.id, 'publish', response);
                       }}
                       className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
@@ -64,7 +78,10 @@ export default function IdeasTab({
                     </button>
                     <button
                       onClick={async () => {
-                        const reason = await showPrompt('Decline Idea', 'Rejection reason (will be sent to user):');
+                        const reason = await showPrompt(
+                          'Decline Idea',
+                          'Rejection reason (will be sent to user):'
+                        );
                         if (reason) {
                           handleIdeaAction(idea.id, 'reject', null, reason);
                         }
@@ -79,7 +96,12 @@ export default function IdeasTab({
                 {idea.status !== 'pending' && idea.status !== 'declined' && (
                   <button
                     onClick={async () => {
-                      const response = await showPrompt('Respond to Idea', 'Add/update response:', idea.admin_response || '', true);
+                      const response = await showPrompt(
+                        'Respond to Idea',
+                        'Add/update response:',
+                        idea.admin_response || '',
+                        true
+                      );
                       if (response) {
                         handleIdeaAction(idea.id, 'respond', response);
                       }
@@ -94,9 +116,7 @@ export default function IdeasTab({
             </div>
           ))}
           {ideas.length === 0 && (
-            <div className="text-center py-12 text-gray-500">
-              No ideas found
-            </div>
+            <div className="text-center py-12 text-gray-500">No ideas found</div>
           )}
         </div>
       )}

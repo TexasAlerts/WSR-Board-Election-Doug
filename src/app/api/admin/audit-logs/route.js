@@ -18,7 +18,8 @@ export async function GET(request) {
 
   let query = supabase
     .from('audit_logs')
-    .select(`
+    .select(
+      `
       id,
       supporter_id,
       event_type,
@@ -33,7 +34,8 @@ export async function GET(request) {
       request_path,
       response_status,
       created_at
-    `)
+    `
+    )
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1);
 
@@ -54,7 +56,7 @@ export async function GET(request) {
   }
 
   // Get supporter names for the logs
-  const supporterIds = [...new Set(data.filter(l => l.supporter_id).map(l => l.supporter_id))];
+  const supporterIds = [...new Set(data.filter((l) => l.supporter_id).map((l) => l.supporter_id))];
   let supporterNames = {};
 
   if (supporterIds.length > 0) {
@@ -64,7 +66,7 @@ export async function GET(request) {
       .in('id', supporterIds);
 
     if (supporters) {
-      supporters.forEach(s => {
+      supporters.forEach((s) => {
         supporterNames[s.id] = {
           name: `${s.first_name} ${s.last_name}`,
           email: s.email,
@@ -73,7 +75,7 @@ export async function GET(request) {
     }
   }
 
-  const logsWithNames = data.map(l => ({
+  const logsWithNames = data.map((l) => ({
     ...l,
     supporter_name: l.supporter_id ? supporterNames[l.supporter_id]?.name : null,
     supporter_email: l.supporter_id ? supporterNames[l.supporter_id]?.email : null,

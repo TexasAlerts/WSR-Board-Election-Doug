@@ -1,3 +1,36 @@
+/**
+ * User Login API Endpoint
+ *
+ * POST /api/auth/login
+ *
+ * Authenticates supporters using email and password.
+ *
+ * Request Body:
+ * - email: string (valid email format)
+ * - password: string (min 1 char)
+ *
+ * Response (Success - 200):
+ * - ok: true
+ * - message: "Login successful"
+ * - supporter: { id, firstName, lastName, email, role }
+ * - Sets httpOnly cookie: session_token
+ *
+ * Response (Error):
+ * - 400: Invalid email or password format
+ * - 401: Invalid credentials
+ * - 403: Account suspended/not verified
+ * - 429: Too many login attempts (10 per 15 minutes per IP)
+ * - 500: Server error
+ *
+ * Security Features:
+ * - Rate limiting by IP address
+ * - Bcrypt password verification
+ * - Audit logging for all attempts
+ * - Session tracking with IP and user agent
+ *
+ * Authentication: None required
+ */
+
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { rateLimit } from '../../../../lib/rateLimit';
@@ -42,10 +75,7 @@ export async function POST(request) {
         request,
         responseStatus: 401,
       });
-      return NextResponse.json(
-        { ok: false, error: 'Invalid email or password' },
-        { status: 401 }
-      );
+      return NextResponse.json({ ok: false, error: 'Invalid email or password' }, { status: 401 });
     }
 
     // Check account status
@@ -72,7 +102,12 @@ export async function POST(request) {
 
     if (supporter.status === 'pending_phone') {
       return NextResponse.json(
-        { ok: false, error: 'Please complete phone verification first.', requiresPhoneVerification: true, supporterId: supporter.id },
+        {
+          ok: false,
+          error: 'Please complete phone verification first.',
+          requiresPhoneVerification: true,
+          supporterId: supporter.id,
+        },
         { status: 403 }
       );
     }
@@ -95,10 +130,7 @@ export async function POST(request) {
         request,
         responseStatus: 401,
       });
-      return NextResponse.json(
-        { ok: false, error: 'Invalid email or password' },
-        { status: 401 }
-      );
+      return NextResponse.json({ ok: false, error: 'Invalid email or password' }, { status: 401 });
     }
 
     // Create session
@@ -113,10 +145,7 @@ export async function POST(request) {
         userEmail: supporter.email,
         request,
       });
-      return NextResponse.json(
-        { ok: false, error: 'Failed to create session' },
-        { status: 500 }
-      );
+      return NextResponse.json({ ok: false, error: 'Failed to create session' }, { status: 500 });
     }
 
     // Log successful login
@@ -163,9 +192,6 @@ export async function POST(request) {
       method: 'POST',
       request,
     });
-    return NextResponse.json(
-      { ok: false, error: 'An unexpected error occurred' },
-      { status: 500 }
-    );
+    return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

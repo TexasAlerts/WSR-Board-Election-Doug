@@ -1,28 +1,35 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
 
-export default function QnaDynamic() {
-  const [questions, setQuestions] = useState([]);
+export default function QnaDynamic({ initialQuestions = [] }) {
+  const [questions, setQuestions] = useState(initialQuestions);
   const [form, setForm] = useState({ name: '', email: '', question: '' });
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
+    // Only load if we don't have initial questions
+    if (initialQuestions.length > 0) {
+      return;
+    }
+
     async function loadQuestions() {
       try {
-        const res = await fetch('/api/questions', { cache: 'no-store' });
+        setLoading(true);
+        const res = await fetch('/api/questions');
         const data = await res.json();
         setQuestions(Array.isArray(data.data) ? data.data : []);
       } catch (err) {
+        // Silent fail
       } finally {
         setLoading(false);
       }
     }
     loadQuestions();
-  }, []);
+  }, [initialQuestions]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -57,7 +64,11 @@ export default function QnaDynamic() {
             <h2 className="text-xl font-bold text-navy mb-6">Ask Doug a Question</h2>
 
             {submitted ? (
-              <div className="p-6 bg-green-50 border border-green-200 rounded-lg" role="status" aria-live="polite">
+              <div
+                className="p-6 bg-green-50 border border-green-200 rounded-lg"
+                role="status"
+                aria-live="polite"
+              >
                 <p className="text-green-800 font-semibold">
                   Thank you for your question! I'll review it and post an answer soon.
                 </p>
@@ -65,7 +76,9 @@ export default function QnaDynamic() {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label htmlFor="name" className="form-label">Name *</label>
+                  <label htmlFor="name" className="form-label">
+                    Name *
+                  </label>
                   <input
                     id="name"
                     type="text"
@@ -79,7 +92,9 @@ export default function QnaDynamic() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="form-label">Email *</label>
+                  <label htmlFor="email" className="form-label">
+                    Email *
+                  </label>
                   <input
                     id="email"
                     type="email"
@@ -91,11 +106,15 @@ export default function QnaDynamic() {
                     autoComplete="email"
                     aria-describedby="email-hint"
                   />
-                  <p id="email-hint" className="text-sm text-gray-500 mt-1">Your email won't be published.</p>
+                  <p id="email-hint" className="text-sm text-gray-500 mt-1">
+                    Your email won't be published.
+                  </p>
                 </div>
 
                 <div>
-                  <label htmlFor="question" className="form-label">Your Question *</label>
+                  <label htmlFor="question" className="form-label">
+                    Your Question *
+                  </label>
                   <textarea
                     id="question"
                     required
@@ -109,7 +128,11 @@ export default function QnaDynamic() {
                 </div>
 
                 {error && (
-                  <div role="alert" aria-live="polite" className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <div
+                    role="alert"
+                    aria-live="polite"
+                    className="p-4 bg-red-50 border border-red-200 rounded-lg"
+                  >
                     <p className="text-red-800 font-medium">{error}</p>
                   </div>
                 )}
@@ -134,7 +157,9 @@ export default function QnaDynamic() {
           <h2 className="section-title text-center mb-12">Published Answers</h2>
 
           {loading ? (
-            <div className="text-center text-gray-500" role="status" aria-live="polite">Loading questions...</div>
+            <div className="text-center text-gray-500" role="status" aria-live="polite">
+              Loading questions...
+            </div>
           ) : questions.length > 0 ? (
             <div className="space-y-6">
               {questions.map((q) => (
@@ -158,7 +183,8 @@ export default function QnaDynamic() {
               <div className="text-4xl mb-4">&#10067;</div>
               <h3 className="text-lg font-bold text-navy mb-2">No Questions Yet</h3>
               <p className="text-gray-600">
-                No questions yet—be the first to ask! I'll personally respond to questions submitted here.
+                No questions yet—be the first to ask! I'll personally respond to questions submitted
+                here.
               </p>
             </div>
           )}

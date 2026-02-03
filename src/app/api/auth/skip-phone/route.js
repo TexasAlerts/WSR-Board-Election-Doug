@@ -2,7 +2,11 @@ import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { z } from 'zod';
 import { createSession } from '../../../../lib/auth';
-import { sendWelcomeEmail, sendPhoneUpdateReminderEmail, sendAdminNewRegistrationEmail } from '../../../../lib/emailService';
+import {
+  sendWelcomeEmail,
+  sendPhoneUpdateReminderEmail,
+  sendAdminNewRegistrationEmail,
+} from '../../../../lib/emailService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 const skipSchema = z.object({
@@ -94,7 +98,12 @@ export async function POST(request) {
     await sendPhoneUpdateReminderEmail(supporter.email, supporter.first_name);
 
     // Notify admin
-    const updatedSupporter = { ...supporter, status: 'approved', approved_at: now, phone_verified: false };
+    const updatedSupporter = {
+      ...supporter,
+      status: 'approved',
+      approved_at: now,
+      phone_verified: false,
+    };
     await sendAdminNewRegistrationEmail(updatedSupporter);
 
     // Set session cookie
@@ -121,9 +130,6 @@ export async function POST(request) {
       method: 'POST',
       request,
     });
-    return NextResponse.json(
-      { ok: false, error: 'An unexpected error occurred' },
-      { status: 500 }
-    );
+    return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

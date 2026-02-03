@@ -227,20 +227,36 @@ function VerifyContent() {
           </p>
         </div>
 
-        <form onSubmit={handlePasswordSubmit} className="bg-white rounded-xl shadow-lg p-8 space-y-6">
+        <form
+          onSubmit={handlePasswordSubmit}
+          className="bg-white rounded-xl shadow-lg p-8 space-y-6"
+        >
           {error && (
-            <div role="alert" aria-live="polite" className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+            <div
+              role="alert"
+              aria-live="polite"
+              className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3"
+            >
+              <AlertCircle
+                className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"
+                aria-hidden="true"
+              />
               <p className="text-red-700 text-sm">{error}</p>
             </div>
           )}
 
           <div>
-            <label htmlFor="verify-password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="verify-password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
+              <Lock
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                aria-hidden="true"
+              />
               <input
                 id="verify-password"
                 type="password"
@@ -260,11 +276,17 @@ function VerifyContent() {
           </div>
 
           <div>
-            <label htmlFor="verify-confirm-password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="verify-confirm-password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Confirm Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
+              <Lock
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                aria-hidden="true"
+              />
               <input
                 id="verify-confirm-password"
                 type="password"
@@ -309,18 +331,31 @@ function VerifyContent() {
 
         <form onSubmit={handleSmsSubmit} className="bg-white rounded-xl shadow-lg p-8 space-y-6">
           {error && (
-            <div role="alert" aria-live="polite" className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+            <div
+              role="alert"
+              aria-live="polite"
+              className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3"
+            >
+              <AlertCircle
+                className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"
+                aria-hidden="true"
+              />
               <p className="text-red-700 text-sm">{error}</p>
             </div>
           )}
 
           <div>
-            <label htmlFor="sms-verification-code" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="sms-verification-code"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Verification Code
             </label>
             <div className="relative">
-              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
+              <Phone
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                aria-hidden="true"
+              />
               <input
                 id="sms-verification-code"
                 type="text"

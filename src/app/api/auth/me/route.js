@@ -31,9 +31,6 @@ export async function GET() {
       },
     });
   } catch (err) {
-    return NextResponse.json(
-      { ok: false, error: 'An unexpected error occurred' },
-      { status: 500 }
-    );
+    return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

@@ -188,9 +188,7 @@ function ResetPasswordContent() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy mb-4 animate-fade-in-down">
             Create New Password
           </h1>
-          <p className="text-lg text-gray-600 animate-fade-in">
-            Enter your new password below
-          </p>
+          <p className="text-lg text-gray-600 animate-fade-in">Enter your new password below</p>
         </div>
       </section>
 
@@ -198,18 +196,31 @@ function ResetPasswordContent() {
         <div className="max-w-md mx-auto">
           <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-8 space-y-6">
             {error && (
-              <div role="alert" aria-live="polite" className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+              <div
+                role="alert"
+                aria-live="polite"
+                className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3"
+              >
+                <AlertCircle
+                  className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"
+                  aria-hidden="true"
+                />
                 <p className="text-red-700 text-sm">{error}</p>
               </div>
             )}
 
             <div>
-              <label htmlFor="reset-new-password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="reset-new-password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 New Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
+                <Lock
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                  aria-hidden="true"
+                />
                 <input
                   id="reset-new-password"
                   type={showPassword ? 'text' : 'password'}
@@ -236,26 +247,42 @@ function ResetPasswordContent() {
             <div id="password-requirements" className="bg-gray-50 rounded-lg p-4 space-y-2">
               <p className="text-sm font-medium text-gray-700">Password must have:</p>
               <ul className="space-y-1 text-sm">
-                <li className={`flex items-center gap-2 ${hasMinLength ? 'text-green-600' : 'text-gray-500'}`}>
-                  <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${hasMinLength ? 'bg-green-100' : 'bg-gray-200'}`}>
+                <li
+                  className={`flex items-center gap-2 ${hasMinLength ? 'text-green-600' : 'text-gray-500'}`}
+                >
+                  <span
+                    className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${hasMinLength ? 'bg-green-100' : 'bg-gray-200'}`}
+                  >
                     {hasMinLength ? '✓' : '○'}
                   </span>
                   At least 8 characters
                 </li>
-                <li className={`flex items-center gap-2 ${hasUppercase ? 'text-green-600' : 'text-gray-500'}`}>
-                  <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${hasUppercase ? 'bg-green-100' : 'bg-gray-200'}`}>
+                <li
+                  className={`flex items-center gap-2 ${hasUppercase ? 'text-green-600' : 'text-gray-500'}`}
+                >
+                  <span
+                    className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${hasUppercase ? 'bg-green-100' : 'bg-gray-200'}`}
+                  >
                     {hasUppercase ? '✓' : '○'}
                   </span>
                   One uppercase letter
                 </li>
-                <li className={`flex items-center gap-2 ${hasLowercase ? 'text-green-600' : 'text-gray-500'}`}>
-                  <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${hasLowercase ? 'bg-green-100' : 'bg-gray-200'}`}>
+                <li
+                  className={`flex items-center gap-2 ${hasLowercase ? 'text-green-600' : 'text-gray-500'}`}
+                >
+                  <span
+                    className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${hasLowercase ? 'bg-green-100' : 'bg-gray-200'}`}
+                  >
                     {hasLowercase ? '✓' : '○'}
                   </span>
                   One lowercase letter
                 </li>
-                <li className={`flex items-center gap-2 ${hasNumber ? 'text-green-600' : 'text-gray-500'}`}>
-                  <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${hasNumber ? 'bg-green-100' : 'bg-gray-200'}`}>
+                <li
+                  className={`flex items-center gap-2 ${hasNumber ? 'text-green-600' : 'text-gray-500'}`}
+                >
+                  <span
+                    className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${hasNumber ? 'bg-green-100' : 'bg-gray-200'}`}
+                  >
                     {hasNumber ? '✓' : '○'}
                   </span>
                   One number
@@ -264,11 +291,17 @@ function ResetPasswordContent() {
             </div>
 
             <div>
-              <label htmlFor="reset-confirm-password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="reset-confirm-password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Confirm Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
+                <Lock
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                  aria-hidden="true"
+                />
                 <input
                   id="reset-confirm-password"
                   type={showPassword ? 'text' : 'password'}
@@ -280,12 +313,16 @@ function ResetPasswordContent() {
                   }`}
                   placeholder="Confirm new password"
                   autoComplete="new-password"
-                  aria-describedby={confirmPassword && !passwordsMatch ? 'password-mismatch-error' : undefined}
+                  aria-describedby={
+                    confirmPassword && !passwordsMatch ? 'password-mismatch-error' : undefined
+                  }
                   aria-invalid={confirmPassword && !passwordsMatch ? 'true' : undefined}
                 />
               </div>
               {confirmPassword && !passwordsMatch && (
-                <p id="password-mismatch-error" role="alert" className="text-red-500 text-sm mt-1">Passwords do not match</p>
+                <p id="password-mismatch-error" role="alert" className="text-red-500 text-sm mt-1">
+                  Passwords do not match
+                </p>
               )}
             </div>
 

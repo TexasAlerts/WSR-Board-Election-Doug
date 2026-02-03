@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useState, useEffect } from 'react';
 
 export default function AdminEndorsements() {
@@ -36,8 +36,7 @@ export default function AdminEndorsements() {
       if (res.ok) {
         setPending((prev) => prev.filter((e) => e.id !== id));
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   if (error) return <div>{error}</div>;
@@ -55,8 +54,18 @@ export default function AdminEndorsements() {
               <p className="font-medium">{e.name}</p>
               {e.message && <p className="mt-1 italic">“{e.message}”</p>}
               <div className="flex flex-col xs:flex-row gap-2 mt-2 w-full">
-                <button onClick={() => handleAction(e.id, 'approve')} className="bg-lagoon text-white px-3 py-2 rounded w-full min-h-[44px]">Approve</button>
-                <button onClick={() => handleAction(e.id, 'reject')} className="bg-red-600 text-white px-3 py-2 rounded w-full min-h-[44px]">Reject</button>
+                <button
+                  onClick={() => handleAction(e.id, 'approve')}
+                  className="bg-lagoon text-white px-3 py-2 rounded w-full min-h-[44px]"
+                >
+                  Approve
+                </button>
+                <button
+                  onClick={() => handleAction(e.id, 'reject')}
+                  className="bg-red-600 text-white px-3 py-2 rounded w-full min-h-[44px]"
+                >
+                  Reject
+                </button>
               </div>
             </div>
           ))}

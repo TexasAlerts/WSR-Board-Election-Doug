@@ -9,7 +9,9 @@ export async function GET(request, { params }) {
 
   const { data: idea, error } = await supabase
     .from('ideas')
-    .select('id, name, category, title, content, status, support_count, upvotes, downvotes, admin_response, created_at')
+    .select(
+      'id, name, category, title, content, status, support_count, upvotes, downvotes, admin_response, created_at'
+    )
     .eq('id', id)
     .in('status', ['published', 'under_review', 'planned', 'completed', 'declined'])
     .eq('is_public', true)
@@ -44,14 +46,14 @@ export async function GET(request, { params }) {
     .order('created_at', { ascending: false });
 
   if (commentsError) {
-      // silently ignored
-    }
+    // silently ignored
+  }
 
   // Get user's comment votes and reply counts if authenticated
   let userCommentVotes = {};
   let replyCounts = {};
   if (comments && comments.length > 0) {
-    const commentIds = comments.map(c => c.id);
+    const commentIds = comments.map((c) => c.id);
 
     // Get reply counts
     const { data: replies } = await supabase
@@ -61,7 +63,7 @@ export async function GET(request, { params }) {
       .eq('status', 'approved');
 
     if (replies) {
-      replies.forEach(r => {
+      replies.forEach((r) => {
         replyCounts[r.parent_id] = (replyCounts[r.parent_id] || 0) + 1;
       });
     }
@@ -75,7 +77,7 @@ export async function GET(request, { params }) {
         .in('comment_id', commentIds);
 
       if (votes) {
-        votes.forEach(v => {
+        votes.forEach((v) => {
           userCommentVotes[v.comment_id] = v.vote_type;
         });
       }
@@ -83,7 +85,7 @@ export async function GET(request, { params }) {
   }
 
   // Add vote info to comments
-  const commentsWithVotes = (comments || []).map(c => ({
+  const commentsWithVotes = (comments || []).map((c) => ({
     ...c,
     user_vote: userCommentVotes[c.id] || null,
     reply_count: replyCounts[c.id] || 0,

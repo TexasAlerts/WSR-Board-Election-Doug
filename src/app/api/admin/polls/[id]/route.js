@@ -17,11 +17,13 @@ export async function GET(request, { params }) {
   try {
     const { data: poll, error } = await supabase
       .from('polls')
-      .select(`
+      .select(
+        `
         *,
         poll_choices (id, choice_text, display_order),
         poll_votes (id, vote_data, created_at, voter_email)
-      `)
+      `
+      )
       .eq('id', id)
       .single();
 
@@ -112,13 +114,15 @@ export async function PUT(request, { params }) {
       allow_comments: z.boolean().optional(),
       show_results_before_vote: z.boolean().optional(),
       closes_at: z.string().datetime().optional().nullable(),
-      choices: z.array(
-        z.object({
-          id: z.string().uuid().optional(),
-          choice_text: z.string().min(1).max(500),
-          display_order: z.number().int().min(0).optional(),
-        })
-      ).optional(),
+      choices: z
+        .array(
+          z.object({
+            id: z.string().uuid().optional(),
+            choice_text: z.string().min(1).max(500),
+            display_order: z.number().int().min(0).optional(),
+          })
+        )
+        .optional(),
     });
 
     const body = await request.json();
@@ -132,11 +136,7 @@ export async function PUT(request, { params }) {
     }
 
     // Get current poll for comparison
-    const { data: currentPoll } = await supabase
-      .from('polls')
-      .select('*')
-      .eq('id', id)
-      .single();
+    const { data: currentPoll } = await supabase.from('polls').select('*').eq('id', id).single();
 
     if (!currentPoll) {
       return NextResponse.json({ ok: false, error: 'Poll not found' }, { status: 404 });
@@ -151,10 +151,7 @@ export async function PUT(request, { params }) {
 
     // Update poll
     if (Object.keys(pollUpdates).length > 0) {
-      const { error: pollError } = await supabase
-        .from('polls')
-        .update(pollUpdates)
-        .eq('id', id);
+      const { error: pollError } = await supabase.from('polls').update(pollUpdates).eq('id', id);
 
       if (pollError) {
         await logError({

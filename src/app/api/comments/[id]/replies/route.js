@@ -11,7 +11,8 @@ export async function GET(request, { params }) {
   // Get direct replies to this comment
   const { data: replies, error } = await supabase
     .from('comments')
-    .select(`
+    .select(
+      `
       id,
       name,
       content,
@@ -20,7 +21,8 @@ export async function GET(request, { params }) {
       downvotes,
       parent_id,
       supporter_id
-    `)
+    `
+    )
     .eq('parent_id', parentId)
     .eq('status', 'approved')
     .order('created_at', { ascending: true });
@@ -36,7 +38,7 @@ export async function GET(request, { params }) {
   // Get user's votes on these replies
   let userVotes = {};
   if (supporter) {
-    const replyIds = replies.map(r => r.id);
+    const replyIds = replies.map((r) => r.id);
     const { data: votes } = await supabase
       .from('comment_votes')
       .select('comment_id, vote_type')
@@ -44,14 +46,14 @@ export async function GET(request, { params }) {
       .in('comment_id', replyIds);
 
     if (votes) {
-      votes.forEach(v => {
+      votes.forEach((v) => {
         userVotes[v.comment_id] = v.vote_type;
       });
     }
   }
 
   // Get reply counts for each reply (nested replies)
-  const replyIds = replies.map(r => r.id);
+  const replyIds = replies.map((r) => r.id);
   let replyCounts = {};
   const { data: nestedReplies } = await supabase
     .from('comments')
@@ -60,13 +62,13 @@ export async function GET(request, { params }) {
     .in('parent_id', replyIds);
 
   if (nestedReplies) {
-    nestedReplies.forEach(r => {
+    nestedReplies.forEach((r) => {
       replyCounts[r.parent_id] = (replyCounts[r.parent_id] || 0) + 1;
     });
   }
 
   // Add user vote info and reply counts
-  const repliesWithVotes = replies.map(r => ({
+  const repliesWithVotes = replies.map((r) => ({
     ...r,
     user_vote: userVotes[r.id] || null,
     reply_count: replyCounts[r.id] || 0,

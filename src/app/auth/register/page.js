@@ -70,12 +70,13 @@ export default function RegisterPage() {
           </p>
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
             <p className="text-yellow-800 text-sm font-medium">
-              ⚠️ <strong>Check your spam/junk folder!</strong> Verification emails sometimes get filtered. If you don&apos;t see it in your inbox, look in your junk or spam folder.
+              ⚠️ <strong>Check your spam/junk folder!</strong> Verification emails sometimes get
+              filtered. If you don&apos;t see it in your inbox, look in your junk or spam folder.
             </p>
           </div>
           <p className="text-green-600 text-sm">
-            Click the link in your email to verify your address and create your password.
-            The link expires in 24 hours.
+            Click the link in your email to verify your address and create your password. The link
+            expires in 24 hours.
           </p>
         </div>
       </div>
@@ -93,7 +94,11 @@ export default function RegisterPage() {
 
       <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-8 space-y-6">
         {error && (
-          <div role="alert" aria-live="polite" className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+          <div
+            role="alert"
+            aria-live="polite"
+            className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3"
+          >
             <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
             <p className="text-red-700 text-sm">{error}</p>
           </div>
@@ -106,7 +111,10 @@ export default function RegisterPage() {
               First Name *
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
+              <User
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                aria-hidden="true"
+              />
               <input
                 id="reg-firstName"
                 type="text"
@@ -146,7 +154,10 @@ export default function RegisterPage() {
             Email Address *
           </label>
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
+            <Mail
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+              aria-hidden="true"
+            />
             <input
               id="reg-email"
               type="email"
@@ -168,7 +179,10 @@ export default function RegisterPage() {
             Cell Phone Number (optional)
           </label>
           <div className="relative">
-            <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
+            <Phone
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+              aria-hidden="true"
+            />
             <input
               id="reg-phone"
               type="tel"
@@ -186,11 +200,17 @@ export default function RegisterPage() {
         <fieldset className="space-y-4">
           <legend className="sr-only">Address</legend>
           <div>
-            <label htmlFor="reg-streetAddress" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="reg-streetAddress"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Street Address *
             </label>
             <div className="relative">
-              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
+              <MapPin
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                aria-hidden="true"
+              />
               <input
                 id="reg-streetAddress"
                 type="text"
@@ -281,9 +301,20 @@ export default function RegisterPage() {
               className="mt-0.5 w-5 h-5 min-w-[20px] text-navy rounded focus:ring-navy focus:ring-2"
             />
             <span className="text-sm text-gray-600">
-              By checking this box, you consent to receive SMS campaign updates, alerts, and donation solicitations from Doug Charles for Prosper Town Council at the number provided, including messages sent by autodialer. Message frequency may vary. Standard message and data rates may apply. Carriers are not liable for delayed or undelivered messages. Reply STOP to opt out. Reply HELP for help. Consent is not a condition of purchase or registration.{' '}
-              <Link href="/privacy" className="text-navy underline">Privacy Policy</Link> &{' '}
-              <Link href="/terms" className="text-navy underline">Terms</Link>.
+              By checking this box, you consent to receive SMS campaign updates, alerts, and
+              donation solicitations from Doug Charles for Prosper Town Council at the number
+              provided, including messages sent by autodialer. Message frequency may vary. Standard
+              message and data rates may apply. Carriers are not liable for delayed or undelivered
+              messages. Reply STOP to opt out. Reply HELP for help. Consent is not a condition of
+              purchase or registration.{' '}
+              <Link href="/privacy" className="text-navy underline">
+                Privacy Policy
+              </Link>{' '}
+              &{' '}
+              <Link href="/terms" className="text-navy underline">
+                Terms
+              </Link>
+              .
             </span>
           </label>
         </fieldset>

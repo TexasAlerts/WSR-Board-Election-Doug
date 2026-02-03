@@ -72,16 +72,20 @@ export async function PATCH(request) {
 
     updates.updated_at = new Date().toISOString();
 
-    const { error } = await supabase
-      .from('notification_preferences')
-      .upsert({
+    const { error } = await supabase.from('notification_preferences').upsert(
+      {
         email,
         supporter_id: supporter?.id !== 'admin' ? supporter?.id : null,
         ...updates,
-      }, { onConflict: 'email' });
+      },
+      { onConflict: 'email' }
+    );
 
     if (error) {
-      return NextResponse.json({ ok: false, error: 'Failed to update preferences' }, { status: 500 });
+      return NextResponse.json(
+        { ok: false, error: 'Failed to update preferences' },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({ ok: true });

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useState, useEffect } from 'react';
 
 export default function AdminQna() {
@@ -42,8 +42,7 @@ export default function AdminQna() {
       if (res.ok) {
         setPending((prev) => prev.filter((q) => q.id !== id));
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   if (error) {
@@ -69,10 +68,16 @@ export default function AdminQna() {
                 rows={3}
               ></textarea>
               <div className="flex flex-col xs:flex-row gap-2 w-full">
-                <button onClick={() => handleAction(q.id, 'approve')} className="bg-lagoon text-white px-3 py-2 rounded w-full min-h-[44px]">
+                <button
+                  onClick={() => handleAction(q.id, 'approve')}
+                  className="bg-lagoon text-white px-3 py-2 rounded w-full min-h-[44px]"
+                >
                   Approve
                 </button>
-                <button onClick={() => handleAction(q.id, 'reject')} className="bg-red-600 text-white px-3 py-2 rounded w-full min-h-[44px]">
+                <button
+                  onClick={() => handleAction(q.id, 'reject')}
+                  className="bg-red-600 text-white px-3 py-2 rounded w-full min-h-[44px]"
+                >
                   Reject
                 </button>
               </div>

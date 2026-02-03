@@ -60,10 +60,7 @@ export async function POST(request, { params }) {
     if (existingVote) {
       if (existingVote.vote_type === vote_type) {
         // Same vote - remove it (toggle off)
-        await supabase
-          .from('idea_votes')
-          .delete()
-          .eq('id', existingVote.id);
+        await supabase.from('idea_votes').delete().eq('id', existingVote.id);
 
         if (vote_type === 'up') {
           newUpvotes = Math.max(0, newUpvotes - 1);
@@ -72,10 +69,7 @@ export async function POST(request, { params }) {
         }
       } else {
         // Different vote - change it
-        await supabase
-          .from('idea_votes')
-          .update({ vote_type })
-          .eq('id', existingVote.id);
+        await supabase.from('idea_votes').update({ vote_type }).eq('id', existingVote.id);
 
         if (vote_type === 'up') {
           newUpvotes += 1;
@@ -87,13 +81,11 @@ export async function POST(request, { params }) {
       }
     } else {
       // New vote
-      const { error: voteError } = await supabase
-        .from('idea_votes')
-        .insert({
-          idea_id: ideaId,
-          supporter_id: supporter.id,
-          vote_type,
-        });
+      const { error: voteError } = await supabase.from('idea_votes').insert({
+        idea_id: ideaId,
+        supporter_id: supporter.id,
+        vote_type,
+      });
 
       if (voteError) {
         if (voteError.code === '23505') {

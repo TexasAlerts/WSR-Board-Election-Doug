@@ -23,7 +23,7 @@ export async function POST(request, { params }) {
     // Check for verified voter
     try {
       const voterRes = await fetch(new URL('/api/verified-voters/me', request.url), {
-        headers: { cookie: request.headers.get('cookie') || '' }
+        headers: { cookie: request.headers.get('cookie') || '' },
       });
       const voterData = await voterRes.json();
       if (voterData.ok && voterData.data) {
@@ -35,7 +35,10 @@ export async function POST(request, { params }) {
   }
 
   if (!supporter && !verifiedVoter) {
-    return NextResponse.json({ ok: false, error: 'Please sign in or verify your email to vote' }, { status: 401 });
+    return NextResponse.json(
+      { ok: false, error: 'Please sign in or verify your email to vote' },
+      { status: 401 }
+    );
   }
 
   // Determine voter identity
@@ -70,7 +73,10 @@ export async function POST(request, { params }) {
 
     // Can't vote on your own comment (only check for authenticated supporters)
     if (supporter && comment.supporter_id === supporter.id) {
-      return NextResponse.json({ ok: false, error: 'Cannot vote on your own comment' }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: 'Cannot vote on your own comment' },
+        { status: 400 }
+      );
     }
 
     // Check for existing vote
@@ -93,10 +99,7 @@ export async function POST(request, { params }) {
     if (existingVote) {
       if (existingVote.vote_type === vote_type) {
         // Same vote - remove it (toggle off)
-        await supabase
-          .from('comment_votes')
-          .delete()
-          .eq('id', existingVote.id);
+        await supabase.from('comment_votes').delete().eq('id', existingVote.id);
 
         if (vote_type === 'up') {
           newUpvotes = Math.max(0, newUpvotes - 1);
@@ -105,10 +108,7 @@ export async function POST(request, { params }) {
         }
       } else {
         // Different vote - change it
-        await supabase
-          .from('comment_votes')
-          .update({ vote_type })
-          .eq('id', existingVote.id);
+        await supabase.from('comment_votes').update({ vote_type }).eq('id', existingVote.id);
 
         if (vote_type === 'up') {
           newUpvotes += 1;
@@ -131,9 +131,7 @@ export async function POST(request, { params }) {
         voteInsert.voter_email = voterEmail;
       }
 
-      const { error: voteError } = await supabase
-        .from('comment_votes')
-        .insert(voteInsert);
+      const { error: voteError } = await supabase.from('comment_votes').insert(voteInsert);
 
       if (voteError) {
         if (voteError.code === '23505') {

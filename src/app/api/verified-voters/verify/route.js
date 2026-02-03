@@ -27,30 +27,31 @@ export async function POST(request) {
       .single();
 
     if (error || !voter) {
-      return NextResponse.json({
-        ok: false,
-        error: 'Invalid or expired verification link. Please request a new one.',
-        expired: true,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          ok: false,
+          error: 'Invalid or expired verification link. Please request a new one.',
+          expired: true,
+        },
+        { status: 400 }
+      );
     }
 
     // Mark as verified
     const now = new Date().toISOString();
-    await supabase
-      .from('verified_voters')
-      .update({ verified_at: now })
-      .eq('id', voter.id);
+    await supabase.from('verified_voters').update({ verified_at: now }).eq('id', voter.id);
 
     // Create default notification preferences
-    await supabase
-      .from('notification_preferences')
-      .upsert({
+    await supabase.from('notification_preferences').upsert(
+      {
         email: voter.email,
         email_on_comment_moderation: true,
         email_on_new_comment: true,
         email_on_new_reply: true,
         email_on_weekly_digest: true,
-      }, { onConflict: 'email' });
+      },
+      { onConflict: 'email' }
+    );
 
     // Audit log
     await logAudit({

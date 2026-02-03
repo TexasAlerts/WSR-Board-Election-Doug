@@ -33,8 +33,7 @@ export function AuthProvider({ children }) {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
       setSupporter(null);
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 
   const refreshAuth = () => {

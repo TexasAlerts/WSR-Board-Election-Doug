@@ -1,6 +1,7 @@
 export const metadata = {
   title: 'Account | Doug Charles for Prosper Town Council',
-  description: 'Sign in or register to engage with the Doug Charles for Prosper Town Council campaign.',
+  description:
+    'Sign in or register to engage with the Doug Charles for Prosper Town Council campaign.',
   alternates: {
     canonical: null,
   },

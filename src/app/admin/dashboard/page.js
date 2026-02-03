@@ -3,7 +3,20 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Users, MessageSquare, Send, Loader2, FileText, AlertTriangle, ThumbsUp, Lightbulb, HelpCircle, UserPlus, BarChart3, UserCheck } from 'lucide-react';
+import {
+  Users,
+  MessageSquare,
+  Send,
+  Loader2,
+  FileText,
+  AlertTriangle,
+  ThumbsUp,
+  Lightbulb,
+  HelpCircle,
+  UserPlus,
+  BarChart3,
+  UserCheck,
+} from 'lucide-react';
 import { ConfirmModal, PromptModal } from '../../../components/AdminModal';
 
 const SupportersTab = lazy(() => import('../../../components/admin/SupportersTab'));
@@ -52,14 +65,31 @@ export default function AdminDashboard() {
   const [error, setError] = useState('');
 
   // Modal state for accessible confirm/prompt dialogs
-  const [confirmModal, setConfirmModal] = useState({ open: false, title: '', message: '', onConfirm: null });
-  const [promptModal, setPromptModal] = useState({ open: false, title: '', label: '', defaultValue: '', multiline: false, onSubmit: null });
+  const [confirmModal, setConfirmModal] = useState({
+    open: false,
+    title: '',
+    message: '',
+    onConfirm: null,
+  });
+  const [promptModal, setPromptModal] = useState({
+    open: false,
+    title: '',
+    label: '',
+    defaultValue: '',
+    multiline: false,
+    onSubmit: null,
+  });
 
   const showConfirm = useCallback((title, message) => {
     return new Promise((resolve) => {
       setConfirmModal({
-        open: true, title, message,
-        onConfirm: () => { setConfirmModal(m => ({ ...m, open: false })); resolve(true); },
+        open: true,
+        title,
+        message,
+        onConfirm: () => {
+          setConfirmModal((m) => ({ ...m, open: false }));
+          resolve(true);
+        },
       });
     });
   }, []);
@@ -67,8 +97,15 @@ export default function AdminDashboard() {
   const showPrompt = useCallback((title, label, defaultValue = '', multiline = false) => {
     return new Promise((resolve) => {
       setPromptModal({
-        open: true, title, label, defaultValue, multiline,
-        onSubmit: (val) => { setPromptModal(m => ({ ...m, open: false })); resolve(val); },
+        open: true,
+        title,
+        label,
+        defaultValue,
+        multiline,
+        onSubmit: (val) => {
+          setPromptModal((m) => ({ ...m, open: false }));
+          resolve(val);
+        },
       });
     });
   }, []);
@@ -97,73 +134,110 @@ export default function AdminDashboard() {
       if (activeTab === 'supporters') {
         res = await fetch(`/api/admin/supporters?status=${supporterFilter}`);
         data = await res.json();
-        if (!res.ok) { if (handleAuthError(res)) return; throw new Error(data.error); }
+        if (!res.ok) {
+          if (handleAuthError(res)) return;
+          throw new Error(data.error);
+        }
         setSupporters(data.data);
       } else if (activeTab === 'comments') {
         res = await fetch(`/api/admin/comments?status=${commentFilter}`);
         data = await res.json();
-        if (!res.ok) { if (handleAuthError(res)) return; throw new Error(data.error); }
+        if (!res.ok) {
+          if (handleAuthError(res)) return;
+          throw new Error(data.error);
+        }
         setComments(data.data);
       } else if (activeTab === 'broadcasts') {
         res = await fetch('/api/admin/broadcasts');
         data = await res.json();
-        if (!res.ok) { if (handleAuthError(res)) return; throw new Error(data.error); }
+        if (!res.ok) {
+          if (handleAuthError(res)) return;
+          throw new Error(data.error);
+        }
         setBroadcasts(data.data);
       } else if (activeTab === 'audit') {
-        const url = auditFilter === 'all'
-          ? '/api/admin/audit-logs?limit=100'
-          : `/api/admin/audit-logs?event_type=${auditFilter}&limit=100`;
+        const url =
+          auditFilter === 'all'
+            ? '/api/admin/audit-logs?limit=100'
+            : `/api/admin/audit-logs?event_type=${auditFilter}&limit=100`;
         res = await fetch(url);
         data = await res.json();
-        if (!res.ok) { if (handleAuthError(res)) return; throw new Error(data.error); }
+        if (!res.ok) {
+          if (handleAuthError(res)) return;
+          throw new Error(data.error);
+        }
         setAuditLogs(data.data);
       } else if (activeTab === 'errors') {
-        const url = errorFilter === 'all'
-          ? '/api/admin/errors?limit=100'
-          : `/api/admin/errors?status=${errorFilter}&limit=100`;
+        const url =
+          errorFilter === 'all'
+            ? '/api/admin/errors?limit=100'
+            : `/api/admin/errors?status=${errorFilter}&limit=100`;
         res = await fetch(url);
         data = await res.json();
-        if (!res.ok) { if (handleAuthError(res)) return; throw new Error(data.error); }
+        if (!res.ok) {
+          if (handleAuthError(res)) return;
+          throw new Error(data.error);
+        }
         setErrorLogs(data.data);
       } else if (activeTab === 'endorsements') {
-        const url = endorsementFilter === 'all'
-          ? '/api/admin/endorsements?status=all'
-          : `/api/admin/endorsements?status=${endorsementFilter}`;
+        const url =
+          endorsementFilter === 'all'
+            ? '/api/admin/endorsements?status=all'
+            : `/api/admin/endorsements?status=${endorsementFilter}`;
         res = await fetch(url);
         data = await res.json();
-        if (!res.ok) { if (handleAuthError(res)) return; throw new Error(data.error); }
+        if (!res.ok) {
+          if (handleAuthError(res)) return;
+          throw new Error(data.error);
+        }
         setEndorsements(data.data || []);
       } else if (activeTab === 'questions') {
-        const url = questionFilter === 'all'
-          ? '/api/admin/qna?status=all'
-          : `/api/admin/qna?status=${questionFilter}`;
+        const url =
+          questionFilter === 'all'
+            ? '/api/admin/qna?status=all'
+            : `/api/admin/qna?status=${questionFilter}`;
         res = await fetch(url);
         data = await res.json();
-        if (!res.ok) { if (handleAuthError(res)) return; throw new Error(data.error); }
+        if (!res.ok) {
+          if (handleAuthError(res)) return;
+          throw new Error(data.error);
+        }
         setQuestions(data.data || []);
       } else if (activeTab === 'ideas') {
-        const url = ideaFilter === 'all'
-          ? '/api/admin/ideas?status=all'
-          : `/api/admin/ideas?status=${ideaFilter}`;
+        const url =
+          ideaFilter === 'all'
+            ? '/api/admin/ideas?status=all'
+            : `/api/admin/ideas?status=${ideaFilter}`;
         res = await fetch(url);
         data = await res.json();
-        if (!res.ok) { if (handleAuthError(res)) return; throw new Error(data.error); }
+        if (!res.ok) {
+          if (handleAuthError(res)) return;
+          throw new Error(data.error);
+        }
         setIdeas(data.data || []);
       } else if (activeTab === 'interest') {
-        const url = interestFilter === 'all'
-          ? '/api/admin/interest?type=all'
-          : `/api/admin/interest?type=${interestFilter}`;
+        const url =
+          interestFilter === 'all'
+            ? '/api/admin/interest?type=all'
+            : `/api/admin/interest?type=${interestFilter}`;
         res = await fetch(url);
         data = await res.json();
-        if (!res.ok) { if (handleAuthError(res)) return; throw new Error(data.error); }
+        if (!res.ok) {
+          if (handleAuthError(res)) return;
+          throw new Error(data.error);
+        }
         setInterest(data.data || []);
       } else if (activeTab === 'verified-voters') {
-        const url = verifiedVoterFilter === 'all'
-          ? '/api/admin/verified-voters?status=all'
-          : `/api/admin/verified-voters?status=${verifiedVoterFilter}`;
+        const url =
+          verifiedVoterFilter === 'all'
+            ? '/api/admin/verified-voters?status=all'
+            : `/api/admin/verified-voters?status=${verifiedVoterFilter}`;
         res = await fetch(url);
         data = await res.json();
-        if (!res.ok) { if (handleAuthError(res)) return; throw new Error(data.error); }
+        if (!res.ok) {
+          if (handleAuthError(res)) return;
+          throw new Error(data.error);
+        }
         setVerifiedVoters(data.data || []);
       }
     } catch (err) {
@@ -188,7 +262,19 @@ export default function AdminDashboard() {
     } finally {
       setLoading(false);
     }
-  }, [activeTab, supporterFilter, commentFilter, auditFilter, errorFilter, endorsementFilter, questionFilter, ideaFilter, interestFilter, verifiedVoterFilter, router]);
+  }, [
+    activeTab,
+    supporterFilter,
+    commentFilter,
+    auditFilter,
+    errorFilter,
+    endorsementFilter,
+    questionFilter,
+    ideaFilter,
+    interestFilter,
+    verifiedVoterFilter,
+    router,
+  ]);
 
   useEffect(() => {
     loadData();
@@ -334,7 +420,10 @@ export default function AdminDashboard() {
   };
 
   const handleDeleteInterest = async (id) => {
-    const confirmed = await showConfirm('Delete Interest Record', 'Are you sure you want to delete this interest record?');
+    const confirmed = await showConfirm(
+      'Delete Interest Record',
+      'Are you sure you want to delete this interest record?'
+    );
     if (!confirmed) return;
     try {
       const res = await fetch(`/api/admin/interest?id=${id}`, {
@@ -468,88 +557,131 @@ export default function AdminDashboard() {
       <Suspense fallback={<TabSpinner />}>
         {activeTab === 'supporters' && (
           <SupportersTab
-            supporters={supporters} loading={loading} filter={supporterFilter}
-            setFilter={setSupporterFilter} updateSupporter={updateSupporter} deleteSupporter={deleteSupporter}
-            formatDate={formatDate} statusColors={statusColors}
+            supporters={supporters}
+            loading={loading}
+            filter={supporterFilter}
+            setFilter={setSupporterFilter}
+            updateSupporter={updateSupporter}
+            deleteSupporter={deleteSupporter}
+            formatDate={formatDate}
+            statusColors={statusColors}
           />
         )}
 
         {activeTab === 'verified-voters' && (
           <VerifiedVotersTab
-            voters={verifiedVoters} loading={loading} filter={verifiedVoterFilter}
-            setFilter={setVerifiedVoterFilter} handleSuspendVoter={handleSuspendVoter}
-            handleDeleteVoter={handleDeleteVoter} formatDate={formatDate}
+            voters={verifiedVoters}
+            loading={loading}
+            filter={verifiedVoterFilter}
+            setFilter={setVerifiedVoterFilter}
+            handleSuspendVoter={handleSuspendVoter}
+            handleDeleteVoter={handleDeleteVoter}
+            formatDate={formatDate}
           />
         )}
 
         {activeTab === 'comments' && (
           <CommentsTab
-            comments={comments} loading={loading} filter={commentFilter}
-            setFilter={setCommentFilter} moderateComment={moderateComment}
-            showPrompt={showPrompt} formatDate={formatDate} statusColors={statusColors}
+            comments={comments}
+            loading={loading}
+            filter={commentFilter}
+            setFilter={setCommentFilter}
+            moderateComment={moderateComment}
+            showPrompt={showPrompt}
+            formatDate={formatDate}
+            statusColors={statusColors}
           />
         )}
 
         {activeTab === 'broadcasts' && (
           <BroadcastsTab
-            broadcasts={broadcasts} loading={loading}
-            broadcastType={broadcastType} setBroadcastType={setBroadcastType}
-            broadcastSubject={broadcastSubject} setBroadcastSubject={setBroadcastSubject}
-            broadcastMessage={broadcastMessage} setBroadcastMessage={setBroadcastMessage}
-            sending={sending} sendBroadcast={sendBroadcast} formatDate={formatDate}
+            broadcasts={broadcasts}
+            loading={loading}
+            broadcastType={broadcastType}
+            setBroadcastType={setBroadcastType}
+            broadcastSubject={broadcastSubject}
+            setBroadcastSubject={setBroadcastSubject}
+            broadcastMessage={broadcastMessage}
+            setBroadcastMessage={setBroadcastMessage}
+            sending={sending}
+            sendBroadcast={sendBroadcast}
+            formatDate={formatDate}
           />
         )}
 
         {activeTab === 'audit' && (
           <AuditLogsTab
-            auditLogs={auditLogs} loading={loading} filter={auditFilter}
-            setFilter={setAuditFilter} formatDate={formatDate}
+            auditLogs={auditLogs}
+            loading={loading}
+            filter={auditFilter}
+            setFilter={setAuditFilter}
+            formatDate={formatDate}
           />
         )}
 
         {activeTab === 'errors' && (
           <ErrorLogsTab
-            errorLogs={errorLogs} loading={loading} filter={errorFilter}
-            setFilter={setErrorFilter} updateErrorStatus={updateErrorStatus}
-            showPrompt={showPrompt} formatDate={formatDate}
+            errorLogs={errorLogs}
+            loading={loading}
+            filter={errorFilter}
+            setFilter={setErrorFilter}
+            updateErrorStatus={updateErrorStatus}
+            showPrompt={showPrompt}
+            formatDate={formatDate}
           />
         )}
 
         {activeTab === 'endorsements' && (
           <EndorsementsTab
-            endorsements={endorsements} loading={loading} filter={endorsementFilter}
-            setFilter={setEndorsementFilter} handleEndorsementAction={handleEndorsementAction}
-            showPrompt={showPrompt} formatDate={formatDate} statusColors={statusColors}
+            endorsements={endorsements}
+            loading={loading}
+            filter={endorsementFilter}
+            setFilter={setEndorsementFilter}
+            handleEndorsementAction={handleEndorsementAction}
+            showPrompt={showPrompt}
+            formatDate={formatDate}
+            statusColors={statusColors}
           />
         )}
 
         {activeTab === 'questions' && (
           <QuestionsTab
-            questions={questions} loading={loading} filter={questionFilter}
-            setFilter={setQuestionFilter} handleQuestionAction={handleQuestionAction}
-            showPrompt={showPrompt} formatDate={formatDate} statusColors={statusColors}
+            questions={questions}
+            loading={loading}
+            filter={questionFilter}
+            setFilter={setQuestionFilter}
+            handleQuestionAction={handleQuestionAction}
+            showPrompt={showPrompt}
+            formatDate={formatDate}
+            statusColors={statusColors}
           />
         )}
 
         {activeTab === 'ideas' && (
           <IdeasTab
-            ideas={ideas} loading={loading} filter={ideaFilter}
-            setFilter={setIdeaFilter} handleIdeaAction={handleIdeaAction}
-            showPrompt={showPrompt} formatDate={formatDate} statusColors={statusColors}
+            ideas={ideas}
+            loading={loading}
+            filter={ideaFilter}
+            setFilter={setIdeaFilter}
+            handleIdeaAction={handleIdeaAction}
+            showPrompt={showPrompt}
+            formatDate={formatDate}
+            statusColors={statusColors}
           />
         )}
 
         {activeTab === 'interest' && (
           <InterestTab
-            interest={interest} loading={loading} filter={interestFilter}
-            setFilter={setInterestFilter} handleDeleteInterest={handleDeleteInterest}
+            interest={interest}
+            loading={loading}
+            filter={interestFilter}
+            setFilter={setInterestFilter}
+            handleDeleteInterest={handleDeleteInterest}
             formatDate={formatDate}
           />
         )}
 
-        {activeTab === 'reports' && (
-          <ReportsTab />
-        )}
+        {activeTab === 'reports' && <ReportsTab />}
       </Suspense>
 
       {/* Accessible modal dialogs */}
@@ -558,7 +690,7 @@ export default function AdminDashboard() {
         title={confirmModal.title}
         message={confirmModal.message}
         onConfirm={confirmModal.onConfirm || (() => {})}
-        onCancel={() => setConfirmModal(m => ({ ...m, open: false }))}
+        onCancel={() => setConfirmModal((m) => ({ ...m, open: false }))}
       />
       <PromptModal
         open={promptModal.open}
@@ -567,7 +699,7 @@ export default function AdminDashboard() {
         defaultValue={promptModal.defaultValue}
         multiline={promptModal.multiline}
         onSubmit={promptModal.onSubmit || (() => {})}
-        onCancel={() => setPromptModal(m => ({ ...m, open: false }))}
+        onCancel={() => setPromptModal((m) => ({ ...m, open: false }))}
       />
     </div>
   );

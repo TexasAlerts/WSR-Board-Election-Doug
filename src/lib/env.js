@@ -18,7 +18,7 @@ const missing = required.filter((key) => !process.env[key]);
 if (missing.length > 0 && process.env.NODE_ENV === 'production') {
   throw new Error(
     `Missing required environment variables: ${missing.join(', ')}. ` +
-    'Check your Vercel environment settings.'
+      'Check your Vercel environment settings.'
   );
 }
 

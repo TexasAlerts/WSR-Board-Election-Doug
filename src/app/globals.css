@@ -16,7 +16,7 @@
   body {
     /* Use min-height instead of height to fix Next.js scroll-to-top issue */
     min-height: 100%;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     color: #333333;
     font-family: var(--font-open-sans), 'Open Sans', sans-serif;
     overflow-x: hidden;
@@ -41,7 +41,12 @@
     }
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-oswald), 'Oswald', sans-serif;
     font-weight: 700;
     letter-spacing: 0.02em;
@@ -91,7 +96,10 @@
 
   /* Print styles */
   @media print {
-    nav, footer, .fixed, [class*="sticky"] {
+    nav,
+    footer,
+    .fixed,
+    [class*='sticky'] {
       display: none !important;
     }
     body {
@@ -99,31 +107,29 @@
       background: #fff !important;
     }
     a[href]::after {
-      content: " (" attr(href) ")";
+      content: ' (' attr(href) ')';
       font-size: 0.8em;
       color: #555;
     }
-    a[href^="/"]::after {
-      content: " (https://www.dougcharles.com" attr(href) ")";
+    a[href^='/']::after {
+      content: ' (https://www.dougcharles.com' attr(href) ')';
     }
-    a[href^="#"]::after,
-    a[href^="javascript:"]::after {
-      content: "";
+    a[href^='#']::after,
+    a[href^='javascript:']::after {
+      content: '';
     }
   }
 
-
-
   /* Gradient text utility */
   .text-gradient-navy {
-    background: linear-gradient(135deg, #1B3A5D 0%, #2B4A6D 100%);
+    background: linear-gradient(135deg, #1b3a5d 0%, #2b4a6d 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .text-gradient-red {
-    background: linear-gradient(135deg, #BF1E2E 0%, #CF3040 100%);
+    background: linear-gradient(135deg, #bf1e2e 0%, #cf3040 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -183,7 +189,7 @@
     transform: translateX(-50%);
     width: 60px;
     height: 4px;
-    background: linear-gradient(90deg, #1B3A5D 0%, #BF1E2E 100%);
+    background: linear-gradient(90deg, #1b3a5d 0%, #bf1e2e 100%);
     border-radius: 2px;
   }
 
@@ -197,7 +203,7 @@
     @apply shadow-navy-md hover:shadow-navy-lg;
     @apply hover:scale-[1.02] active:scale-[0.98];
     @apply focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2;
-    background: linear-gradient(135deg, #1B3A5D 0%, #0F2840 100%);
+    background: linear-gradient(135deg, #1b3a5d 0%, #0f2840 100%);
     overflow: hidden;
     min-height: 44px; /* WCAG 2.1 touch target minimum */
   }
@@ -209,7 +215,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
     transition: left 0.5s ease;
   }
 
@@ -222,7 +228,7 @@
     @apply transition-all duration-300 ease-out;
     @apply hover:scale-[1.02] active:scale-[0.98];
     @apply focus:outline-none focus:ring-2 focus:ring-prosper-red focus:ring-offset-2;
-    background: linear-gradient(135deg, #BF1E2E 0%, #9F1020 100%);
+    background: linear-gradient(135deg, #bf1e2e 0%, #9f1020 100%);
     box-shadow: 0 4px 14px rgba(191, 30, 46, 0.25);
     min-height: 44px; /* WCAG 2.1 touch target minimum */
   }
@@ -331,7 +337,7 @@
     @apply text-lg italic text-gray-700 py-4 px-6;
     @apply relative rounded-r-lg;
     border-left: 4px solid;
-    border-image: linear-gradient(180deg, #1B3A5D 0%, #BF1E2E 100%) 1;
+    border-image: linear-gradient(180deg, #1b3a5d 0%, #bf1e2e 100%) 1;
     background: linear-gradient(90deg, rgba(27, 58, 93, 0.03) 0%, transparent 100%);
   }
 
@@ -371,12 +377,12 @@
 
   .accent-line {
     height: 2px;
-    background: linear-gradient(90deg, transparent, #1B3A5D, transparent);
+    background: linear-gradient(90deg, transparent, #1b3a5d, transparent);
   }
 
   .accent-line-full {
     height: 4px;
-    background: linear-gradient(90deg, #1B3A5D 0%, #BF1E2E 100%);
+    background: linear-gradient(90deg, #1b3a5d 0%, #bf1e2e 100%);
     border-radius: 2px;
   }
 }
@@ -408,7 +414,7 @@
    ============================================ */
 
 .cta-gradient {
-  background: linear-gradient(135deg, #1B3A5D 0%, #0F2840 100%);
+  background: linear-gradient(135deg, #1b3a5d 0%, #0f2840 100%);
   position: relative;
   overflow: hidden;
 }
@@ -420,7 +426,7 @@
   right: -20%;
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -440,7 +446,7 @@
    ============================================ */
 
 .priorities-gradient {
-  background: linear-gradient(180deg, #F8F8F5 0%, #FFFFFF 50%, #F8F8F5 100%);
+  background: linear-gradient(180deg, #f8f8f5 0%, #ffffff 50%, #f8f8f5 100%);
 }
 
 /* ============================================
