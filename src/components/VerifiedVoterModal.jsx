@@ -9,6 +9,14 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
   const [error, setError] = useState('');
   const modalRef = useRef(null);
 
+  // Scroll lock to prevent background scrolling
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   // Escape key and focus trap
   useEffect(() => {
     function handleKeyDown(e) {

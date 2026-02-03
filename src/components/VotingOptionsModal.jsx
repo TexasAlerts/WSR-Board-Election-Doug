@@ -13,6 +13,14 @@ import { UserCheck, Mail, UserX } from 'lucide-react';
 export default function VotingOptionsModal({ onClose, onOptionSelected }) {
   const modalRef = useRef(null);
 
+  // Scroll lock to prevent background scrolling
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   // Focus trap and escape key handler
   useEffect(() => {
     function handleKeyDown(e) {

@@ -73,28 +73,25 @@ export default function PollsDynamic() {
     }
     checkAuth();
 
-    // Check localStorage for voted polls
-    try {
-      const voted = JSON.parse(localStorage.getItem('votedPolls') || '{}');
-      setHasVoted(voted);
-    } catch {
-      setHasVoted({});
+    // Fetch voted polls from API instead of localStorage
+    async function loadVotedPolls() {
+      try {
+        const res = await fetch('/api/polls/my-votes');
+        const data = await res.json();
+        if (data.ok) {
+          setHasVoted(data.data || {});
+        }
+      } catch {
+        setHasVoted({});
+      }
     }
-
-    // Check if user is already a verified voter (cookie set by server)
-    // We check by looking for voter info in localStorage as a client-side cache
-    // But only if they're not authenticated (authenticated users don't need this)
-    try {
-      const voter = JSON.parse(localStorage.getItem('verifiedVoter') || 'null');
-      if (voter && !isAuthenticated) setVerifiedVoter(voter);
-    } catch {
-      // ignore
-    }
+    loadVotedPolls();
 
     // Reload authentication when window regains focus (e.g., after signing in)
     const handleFocus = () => {
       checkAuth();
       loadPolls();
+      loadVotedPolls();
     };
     window.addEventListener('focus', handleFocus);
 
@@ -105,6 +102,15 @@ export default function PollsDynamic() {
   }, []);
 
   const voteModalRef = useRef(null);
+
+  // Scroll lock to prevent background scrolling when vote modal is open
+  useEffect(() => {
+    if (!selectedPoll) return;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedPoll]);
 
   // Close modal on Escape key and trap focus
   useEffect(() => {
@@ -179,7 +185,6 @@ export default function PollsDynamic() {
 
   function handleVerified(voter) {
     setVerifiedVoter(voter);
-    localStorage.setItem('verifiedVoter', JSON.stringify(voter));
     setShowVerifyModal(false);
     if (pendingPoll) {
       setVotingMode('verified');
@@ -235,8 +240,8 @@ export default function PollsDynamic() {
 
       if (result.ok) {
         setSubmitMsg('Thank you for voting!');
-        setHasVoted({ ...hasVoted, [selectedPoll.id]: voteForm.email });
-        localStorage.setItem('votedPolls', JSON.stringify({ ...hasVoted, [selectedPoll.id]: voteForm.email }));
+        // Update local state to reflect the vote
+        setHasVoted({ ...hasVoted, [selectedPoll.id]: voteForm.email || 'anonymous' });
         setSelectedPoll(null);
         setVoteForm({ email: '', name: '', selectedChoice: null, selectedChoices: [], rankings: [], comment: '', otherText: '' });
         // Reload polls to get updated counts

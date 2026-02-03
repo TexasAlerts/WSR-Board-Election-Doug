@@ -23,6 +23,15 @@ export function ConfirmModal({ open, title, message, onConfirm, onCancel }) {
     return () => document.removeEventListener('keydown', handleKey);
   }, [open, onCancel]);
 
+  // Scroll lock to prevent background scrolling
+  useEffect(() => {
+    if (!open) return;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
+
   if (!open) return null;
 
   return (
@@ -67,6 +76,15 @@ export function PromptModal({ open, title, label, defaultValue, onSubmit, onCanc
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
   }, [open, onCancel]);
+
+  // Scroll lock to prevent background scrolling
+  useEffect(() => {
+    if (!open) return;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
