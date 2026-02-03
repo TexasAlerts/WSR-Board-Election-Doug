@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { MessageSquare } from 'lucide-react';
 import { useRecaptcha } from '../hooks/useRecaptcha';
+import { logApiError } from '@/lib/clientErrorLogger';
 
 const CATEGORIES = [
   { value: 'all', label: 'All Ideas', icon: '💡' },
@@ -197,7 +198,11 @@ export default function IdeasClient({ initialIdeas = [] }) {
         setSubmitMsg(result.error || 'Error submitting idea');
       }
     } catch (err) {
-      setSubmitMsg('Error submitting idea');
+      await logApiError('/api/ideas', 'POST', err.status || 500, err.message, {
+        formData: submitForm,
+        userAgent: navigator.userAgent,
+      });
+      setSubmitMsg('Error submitting idea. Our team has been notified.');
     }
   }
 
@@ -403,7 +408,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
       {/* Submit Form Modal */}
       {showSubmitForm && (
         <div
-          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4 pb-28 sm:pb-4"
           onClick={() => setShowSubmitForm(false)}
           role="dialog"
           aria-modal="true"
@@ -412,7 +417,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
           <div
             ref={submitModalRef}
             tabIndex={-1}
-            className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto outline-none"
+            className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[80vh] sm:max-h-[90vh] overflow-y-auto outline-none"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 sm:p-6">
