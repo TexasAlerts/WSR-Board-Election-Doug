@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { rateLimit } from '../../../../lib/rateLimit';
 import { createSMSVerification } from '../../../../lib/auth';
 import { sendVerificationSMS } from '../../../../lib/smsService';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 const sendCodeSchema = z.object({
   supporterId: z.string().uuid('Invalid supporter ID'),
@@ -27,6 +28,13 @@ export async function POST(request) {
 
     if (!parsed.success) {
       const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
+      await logError({
+        errorType: ErrorTypes.VALIDATION_ERROR,
+        errorMessage: 'SMS code request validation failed: ' + errorMessage,
+        endpoint: '/api/auth/send-sms-code',
+        method: 'POST',
+        request,
+      });
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 
@@ -63,17 +71,40 @@ export async function POST(request) {
     const smsResult = await sendVerificationSMS(supporter.phone, code);
 
     if (!smsResult.success) {
+      await logError({
+        errorType: ErrorTypes.EXTERNAL_SERVICE,
+        errorMessage: 'Failed to send SMS verification code',
+        endpoint: '/api/auth/send-sms-code',
+        method: 'POST',
+        request,
+      });
       return NextResponse.json(
         { ok: false, error: 'Failed to send verification code. Please try again.' },
         { status: 500 }
       );
     }
 
+    await logAudit({
+      eventType: AuditEvents.SMS_CODE_SENT || 'SMS_CODE_SENT',
+      supporterId,
+      details: { phone: supporter.phone },
+      request,
+      responseStatus: 200,
+    });
+
     return NextResponse.json({
       ok: true,
       message: 'Verification code sent to your phone.',
     });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/auth/send-sms-code',
+      method: 'POST',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

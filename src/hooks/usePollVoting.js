@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { logApiError } from '@/lib/clientErrorLogger';
 
 export function usePollVoting() {
   const [voteForm, setVoteForm] = useState({
@@ -131,6 +132,9 @@ export function usePollVoting() {
         setSubmitMsg(result.error || 'Error voting');
         return { ok: false };
       } catch (err) {
+        await logApiError(`/api/polls/${pollId}/vote`, 'POST', err.status || 500, err.message, {
+          userAgent: navigator.userAgent,
+        });
         setSubmitMsg('Error submitting vote');
         return { ok: false };
       }

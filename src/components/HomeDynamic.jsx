@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { HelpCircle } from 'lucide-react';
+import { logApiError } from '@/lib/clientErrorLogger';
 
 export default function HomeDynamic() {
   const [endorsements, setEndorsements] = useState([]);
@@ -19,7 +20,11 @@ export default function HomeDynamic() {
         const qnaData = await qnaRes.json();
         setEndorsements(Array.isArray(endorseData.data) ? endorseData.data : []);
         setQuestions(Array.isArray(qnaData.data) ? qnaData.data : []);
-      } catch (err) {}
+      } catch (err) {
+        await logApiError('/api/endorsements', 'GET', err.status || 500, err.message, {
+          userAgent: navigator.userAgent,
+        });
+      }
     }
     loadData();
   }, []);

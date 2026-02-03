@@ -2,6 +2,13 @@ import Image from 'next/image';
 import PollsDynamic from '../../components/PollsDynamic';
 import { getSupabase } from '../../lib/supabase';
 
+export const metadata = {
+  title: 'Community Polls - Doug Charles for Prosper Town Council',
+  description:
+    'Share your voice on issues that matter to Prosper. Vote on community polls and see real-time results from your neighbors.',
+  alternates: { canonical: '/polls' },
+};
+
 // Enable dynamic rendering to support SSR
 export const dynamic = 'force-dynamic';
 // Enable ISR with 60 second revalidation

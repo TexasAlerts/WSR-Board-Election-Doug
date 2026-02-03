@@ -2,6 +2,13 @@ import Image from 'next/image';
 import IdeasClient from '../../components/IdeasClient';
 import { getSupabase } from '../../lib/supabase';
 
+export const metadata = {
+  title: 'Community Ideas - Doug Charles for Prosper Town Council',
+  description:
+    'Share your ideas for making Prosper better. Submit suggestions, vote on community proposals, and help shape our town\u2019s future.',
+  alternates: { canonical: '/ideas' },
+};
+
 // Enable dynamic rendering to support SSR
 export const dynamic = 'force-dynamic';
 // Enable ISR with 60 second revalidation

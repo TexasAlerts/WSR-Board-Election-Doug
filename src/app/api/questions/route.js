@@ -90,6 +90,14 @@ export async function POST(req) {
       });
       return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
+    await logAudit({
+      eventType: AuditEvents.QUESTION_SUBMITTED || 'QUESTION_SUBMITTED',
+      targetType: 'question',
+      details: { name, email },
+      request: req,
+      responseStatus: 201,
+    });
+
     await Promise.all([
       sendEmail(
         email,
