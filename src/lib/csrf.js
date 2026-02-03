@@ -1,6 +1,12 @@
 import crypto from 'crypto';
 
-const CSRF_SECRET = process.env.CSRF_SECRET || process.env.NEXTAUTH_SECRET || 'csrf-fallback-secret';
+// Require a proper secret in production - fail fast if missing
+const CSRF_SECRET = process.env.CSRF_SECRET || process.env.NEXTAUTH_SECRET;
+if (!CSRF_SECRET && process.env.NODE_ENV === 'production') {
+  throw new Error('CSRF_SECRET or NEXTAUTH_SECRET environment variable is required in production');
+}
+// Use a development-only fallback for local testing
+const SECRET = CSRF_SECRET || 'dev-only-csrf-secret-not-for-production';
 const CSRF_TOKEN_EXPIRY = 60 * 60 * 1000; // 1 hour
 
 /**
@@ -13,7 +19,7 @@ export function generateCSRFToken() {
   const timestamp = Date.now();
   const randomBytes = crypto.randomBytes(32).toString('hex');
   const data = `${randomBytes}.${timestamp}`;
-  const signature = crypto.createHmac('sha256', CSRF_SECRET).update(data).digest('hex');
+  const signature = crypto.createHmac('sha256', SECRET).update(data).digest('hex');
   return `${data}.${signature}`;
 }
 
@@ -34,7 +40,13 @@ export function validateCSRFToken(token) {
   const data = `${randomBytes}.${timestamp}`;
 
   // Verify signature
-  const expectedSignature = crypto.createHmac('sha256', CSRF_SECRET).update(data).digest('hex');
+  const expectedSignature = crypto.createHmac('sha256', SECRET).update(data).digest('hex');
+
+  // Guard against length mismatch - timingSafeEqual throws if lengths differ
+  if (signature.length !== expectedSignature.length) {
+    return false;
+  }
+
   if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))) {
     return false;
   }
