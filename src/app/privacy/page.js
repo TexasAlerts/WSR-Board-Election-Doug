@@ -11,7 +11,7 @@ export default function PrivacyPolicy() {
         <strong>Effective Date:</strong> January 2026
       </p>
       <p className="text-charcoal">
-        <strong>Last Updated:</strong> January 2026
+        <strong>Last Updated:</strong> February 2, 2026
       </p>
 
       <section className="space-y-4">
@@ -53,6 +53,39 @@ export default function PrivacyPolicy() {
           including your IP address, browser type, device type, and pages visited. This information
           helps us improve the Site and understand how visitors use it.
         </p>
+
+        <h3 className="text-lg font-semibold text-navy">Cookies and Third-Party Services</h3>
+        <p>
+          Our Site uses cookies and third-party services to provide functionality and protect against spam:
+        </p>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>
+            <strong>Google reCAPTCHA v3:</strong> We use Google reCAPTCHA v3 on submission forms (ideas, endorsements, questions, volunteer interest) to protect against spam and abuse. reCAPTCHA analyzes user interaction with our Site and collects hardware and software information (such as device and application data) to assess whether you are a human or a bot. This information is sent to Google for analysis. Use of reCAPTCHA is subject to the{' '}
+            <a
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-navy underline"
+            >
+              Google Privacy Policy
+            </a>{' '}
+            and{' '}
+            <a
+              href="https://policies.google.com/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-navy underline"
+            >
+              Google Terms of Service
+            </a>.
+          </li>
+          <li>
+            <strong>Essential Cookies:</strong> We use cookies to maintain your session, remember your preferences, and provide core functionality such as authentication and voting verification. These cookies do not store personally identifiable information in client-accessible storage.
+          </li>
+          <li>
+            <strong>Cookie Consent:</strong> When you first visit our Site, you will see a cookie consent banner. You may accept or decline non-essential cookies. Essential cookies required for Site functionality cannot be disabled.
+          </li>
+        </ul>
       </section>
 
       <section className="space-y-4">
