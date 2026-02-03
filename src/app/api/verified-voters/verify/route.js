@@ -72,7 +72,7 @@ export async function POST(request) {
     response.cookies.set('verified_voter_id', voter.id, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: 'strict',
       maxAge: 365 * 24 * 60 * 60, // 1 year
       path: '/',
     });

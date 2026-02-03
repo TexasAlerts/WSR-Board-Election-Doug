@@ -39,6 +39,13 @@ export async function POST(req) {
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
       const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
+      await logError({
+        errorType: ErrorTypes.VALIDATION_ERROR,
+        errorMessage: 'Endorsements form validation failed: ' + errorMessage,
+        endpoint: '/api/endorsements',
+        method: 'POST',
+        request: req,
+      });
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
     const { name, email, phone, message, consentEmail, consentSms, recaptchaToken } = parsed.data;
@@ -47,6 +54,13 @@ export async function POST(req) {
     if (recaptchaToken) {
       const captchaResult = await verifyCaptcha(recaptchaToken, 'submit_endorsement');
       if (!captchaResult.success) {
+        await logError({
+          errorType: ErrorTypes.EXTERNAL_SERVICE,
+          errorMessage: 'reCAPTCHA verification failed',
+          endpoint: '/api/endorsements',
+          method: 'POST',
+          request: req,
+        });
         return NextResponse.json(
           { ok: false, error: 'Security verification failed. Please try again.' },
           { status: 400 }

@@ -34,7 +34,7 @@ export const ANONYMOUS_VOTER_COOKIE = 'av_session';
 export const ANONYMOUS_VOTER_COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax',
+  sameSite: 'strict',
   path: '/',
   maxAge: 365 * 24 * 60 * 60, // 1 year
 };

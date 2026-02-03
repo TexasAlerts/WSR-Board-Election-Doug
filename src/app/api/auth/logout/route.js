@@ -33,7 +33,7 @@ export async function POST(request) {
     response.cookies.set('session_token', '', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: 'strict',
       expires: new Date(0),
       path: '/',
     });

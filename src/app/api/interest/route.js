@@ -81,6 +81,13 @@ export async function POST(req) {
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
       const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
+      await logError({
+        errorType: ErrorTypes.VALIDATION_ERROR,
+        errorMessage: 'Interest form validation failed: ' + errorMessage,
+        endpoint: '/api/interest',
+        method: 'POST',
+        request: req,
+      });
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
     const {
@@ -98,6 +105,13 @@ export async function POST(req) {
     if (recaptchaToken) {
       const captchaResult = await verifyCaptcha(recaptchaToken, 'submit_interest');
       if (!captchaResult.success) {
+        await logError({
+          errorType: ErrorTypes.EXTERNAL_SERVICE,
+          errorMessage: 'reCAPTCHA verification failed',
+          endpoint: '/api/interest',
+          method: 'POST',
+          request: req,
+        });
         return NextResponse.json(
           { ok: false, error: 'Security verification failed. Please try again.' },
           { status: 400 }
@@ -153,6 +167,14 @@ export async function POST(req) {
     ]);
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/interest',
+      method: 'POST',
+      request: req,
+    });
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }

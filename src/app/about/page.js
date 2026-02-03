@@ -1,6 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'About Doug Charles - Prosper Town Council Place 5 Candidate',
+  description:
+    '20-year Prosper resident, former Planning & Zoning Commissioner, and community leader. Learn about Doug Charles and his vision for Prosper.',
+  alternates: { canonical: '/about' },
+};
+
 export default function AboutPage() {
   return (
     <div className="space-y-0">

@@ -2,6 +2,13 @@ import Image from 'next/image';
 import QnaDynamic from '../../components/QnaDynamic';
 import { getSupabase } from '../../lib/supabase';
 
+export const metadata = {
+  title: 'Q&A with Doug - Doug Charles for Prosper Town Council',
+  description:
+    'Ask Doug Charles questions about his positions, priorities, and plans for Prosper. Get direct answers from your Town Council Place 5 candidate.',
+  alternates: { canonical: '/qna' },
+};
+
 // Enable dynamic rendering to support SSR
 export const dynamic = 'force-dynamic';
 // Enable ISR with 60 second revalidation

@@ -1,6 +1,13 @@
 import Image from 'next/image';
 import EndorsementsDynamic from '../../components/EndorsementsDynamic';
 
+export const metadata = {
+  title: 'Endorsements - Doug Charles for Prosper Town Council',
+  description:
+    'See who supports Doug Charles for Prosper Town Council Place 5. Add your endorsement and show your support for common sense leadership.',
+  alternates: { canonical: '/endorsements' },
+};
+
 export default function EndorsementsPage() {
   return (
     <div className="space-y-0">

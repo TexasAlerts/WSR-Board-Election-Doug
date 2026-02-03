@@ -3,6 +3,7 @@ import { getSupabase } from '../../../lib/supabase';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
+import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
 import { verifyCaptcha } from '../../../lib/recaptcha';
 
 // API routes should be dynamic
@@ -47,6 +48,13 @@ export async function POST(req) {
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
       const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
+      await logError({
+        errorType: ErrorTypes.VALIDATION_ERROR,
+        errorMessage: 'Questions form validation failed: ' + errorMessage,
+        endpoint: '/api/questions',
+        method: 'POST',
+        request: req,
+      });
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
     const { name, email, question, recaptchaToken } = parsed.data;
@@ -55,6 +63,13 @@ export async function POST(req) {
     if (recaptchaToken) {
       const captchaResult = await verifyCaptcha(recaptchaToken, 'submit_question');
       if (!captchaResult.success) {
+        await logError({
+          errorType: ErrorTypes.EXTERNAL_SERVICE,
+          errorMessage: 'reCAPTCHA verification failed',
+          endpoint: '/api/questions',
+          method: 'POST',
+          request: req,
+        });
         return NextResponse.json(
           { ok: false, error: 'Security verification failed. Please try again.' },
           { status: 400 }
@@ -65,6 +80,14 @@ export async function POST(req) {
       .from('questions')
       .insert({ name, email, question, status: 'pending' });
     if (error) {
+      await logError({
+        errorType: ErrorTypes.DATABASE_ERROR,
+        errorMessage: error.message,
+        endpoint: '/api/questions',
+        method: 'POST',
+        userEmail: email,
+        request: req,
+      });
       return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
     await Promise.all([
@@ -80,6 +103,14 @@ export async function POST(req) {
     ]);
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/questions',
+      method: 'POST',
+      request: req,
+    });
     return NextResponse.json(
       { ok: false, error: 'Something went wrong. Please try again.' },
       { status: 400 }

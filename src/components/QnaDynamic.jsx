@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRecaptcha } from '../hooks/useRecaptcha';
+import { logApiError } from '@/lib/clientErrorLogger';
 
 export default function QnaDynamic({ initialQuestions = [] }) {
   const { getToken, isReady } = useRecaptcha();
@@ -57,7 +58,10 @@ export default function QnaDynamic({ initialQuestions = [] }) {
         setError(data.error || 'Something went wrong. Please try again.');
       }
     } catch (err) {
-      setError('Something went wrong. Please try again.');
+      await logApiError('/api/questions', 'POST', err.status || 500, err.message, {
+        userAgent: navigator.userAgent,
+      });
+      setError('Something went wrong. Our team has been notified.');
     } finally {
       setIsSubmitting(false);
     }

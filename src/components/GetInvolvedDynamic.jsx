@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Mail, MessageCircle } from 'lucide-react';
 import { validatePhoneNumber } from '../lib/phoneValidation';
 import { useRecaptcha } from '../hooks/useRecaptcha';
+import { logApiError } from '@/lib/clientErrorLogger';
 import ActionCards from './ActionCards';
 import GetInvolvedForm from './GetInvolvedForm';
 
@@ -122,7 +123,10 @@ function GetInvolvedDynamicContent() {
         setSubmitMsg(data.error || 'Something went wrong. Please try again.');
       }
     } catch (err) {
-      setSubmitMsg('Something went wrong. Please try again.');
+      await logApiError(endpoint, 'POST', err.status || 500, err.message, {
+        userAgent: navigator.userAgent,
+      });
+      setSubmitMsg('Something went wrong. Our team has been notified.');
     } finally {
       setIsSubmitting(false);
     }
