@@ -37,6 +37,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^15.0.0",
     "@eslint/eslintrc": "^3.3.3",
     "@next/eslint-plugin-next": "^16.1.6",
     "@playwright/test": "^1.58.0",

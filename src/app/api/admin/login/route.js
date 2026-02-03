@@ -40,6 +40,19 @@ export async function POST(req) {
     if (!storedHash) {
       return NextResponse.json({ ok: false, error: 'Admin login not configured' }, { status: 500 });
     }
+
+    // Validate that the stored hash is actually a bcrypt hash
+    if (!storedHash.startsWith('$2a$') && !storedHash.startsWith('$2b$')) {
+      await logError({
+        errorType: ErrorTypes.CONFIG_ERROR || 'CONFIG_ERROR',
+        errorMessage: 'ADMIN_PASSWORD_HASH is not a valid bcrypt hash',
+        endpoint: '/api/admin/login',
+        method: 'POST',
+        request: req,
+      });
+      return NextResponse.json({ ok: false, error: 'Admin login misconfigured' }, { status: 500 });
+    }
+
     const valid = await bcrypt.compare(password, storedHash);
 
     if (valid) {

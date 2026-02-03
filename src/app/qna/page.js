@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Script from 'next/script';
 import QnaDynamic from '../../components/QnaDynamic';
 import { getSupabase } from '../../lib/supabase';
 
@@ -40,8 +41,37 @@ async function getQuestions() {
 export default async function QnAPage() {
   const initialQuestions = await getQuestions();
 
+  // Generate FAQ JSON-LD structured data
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: initialQuestions.slice(0, 20).map((q) => ({
+      '@type': 'Question',
+      name: q.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: q.answer,
+        dateCreated: q.created_at,
+        author: {
+          '@type': 'Person',
+          name: 'Doug Charles',
+          url: 'https://www.dougcharles.com',
+        },
+      },
+    })),
+  };
+
   return (
     <div className="space-y-0">
+      {/* JSON-LD structured data for Q&A */}
+      {initialQuestions.length > 0 && (
+        <Script
+          id="qna-structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
+
       {/* Hero */}
       <section className="hero-pattern hero-gradient text-center py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
