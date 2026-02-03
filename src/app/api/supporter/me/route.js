@@ -10,10 +10,7 @@ export async function GET() {
     const supporter = await getCurrentSupporter();
 
     if (!supporter) {
-      return NextResponse.json(
-        { ok: false, error: 'Not authenticated' },
-        { status: 401 }
-      );
+      return NextResponse.json({ ok: false, error: 'Not authenticated' }, { status: 401 });
     }
 
     // Return safe supporter data (exclude sensitive fields)
@@ -27,9 +24,6 @@ export async function GET() {
       },
     });
   } catch (error) {
-    return NextResponse.json(
-      { ok: false, error: 'Server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }

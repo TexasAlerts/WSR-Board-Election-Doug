@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -6,8 +6,9 @@ import Link from 'next/link';
 import { Mail, MessageCircle } from 'lucide-react';
 import { validatePhoneNumber } from '../lib/phoneValidation';
 
-const SHARE_MESSAGE = "I'm supporting Doug Charles for Prosper Town Council Place 5! Learn more about his Common Sense leadership for ALL of Prosper at www.dougcharles.com";
-const SHARE_SUBJECT = "Check out Doug Charles for Prosper Town Council";
+const SHARE_MESSAGE =
+  "I'm supporting Doug Charles for Prosper Town Council Place 5! Learn more about his Common Sense leadership for ALL of Prosper at www.dougcharles.com";
+const SHARE_SUBJECT = 'Check out Doug Charles for Prosper Town Council';
 
 const actionCards = [
   {
@@ -32,7 +33,7 @@ const actionCards = [
     id: 'meeting',
     icon: '☕',
     title: 'Meet with Doug',
-    description: 'Schedule a conversation about Prosper\'s future',
+    description: "Schedule a conversation about Prosper's future",
   },
   {
     id: 'endorsement',
@@ -68,7 +69,7 @@ function GetInvolvedDynamicContent() {
 
   useEffect(() => {
     const ft = searchParams.get('form');
-    if (ft && actionCards.find(c => c.id === ft && !c.isLink)) {
+    if (ft && actionCards.find((c) => c.id === ft && !c.isLink)) {
       setSelectedAction(ft);
     }
   }, [searchParams]);
@@ -121,7 +122,14 @@ function GetInvolvedDynamicContent() {
         const data = await res.json();
         if (res.ok && data.ok) {
           setSubmitMsg('Thank you! Your endorsement has been received.');
-          setForm({ name: '', email: '', phone: '', message: '', consentEmail: false, consentSms: false });
+          setForm({
+            name: '',
+            email: '',
+            phone: '',
+            message: '',
+            consentEmail: false,
+            consentSms: false,
+          });
         } else {
           setSubmitMsg(data.error || 'Something went wrong. Please try again.');
         }
@@ -142,7 +150,14 @@ function GetInvolvedDynamicContent() {
         const data = await res.json();
         if (res.ok && data.ok) {
           setSubmitMsg('Thank you! We will be in touch.');
-          setForm({ name: '', email: '', phone: '', message: '', consentEmail: false, consentSms: false });
+          setForm({
+            name: '',
+            email: '',
+            phone: '',
+            message: '',
+            consentEmail: false,
+            consentSms: false,
+          });
         } else {
           setSubmitMsg(data.error || 'Something went wrong. Please try again.');
         }
@@ -155,23 +170,29 @@ function GetInvolvedDynamicContent() {
   }
 
   function getFormTitle() {
-    const card = actionCards.find(c => c.id === selectedAction);
+    const card = actionCards.find((c) => c.id === selectedAction);
     return card ? card.title : '';
   }
 
   function getFormIcon() {
-    const card = actionCards.find(c => c.id === selectedAction);
+    const card = actionCards.find((c) => c.id === selectedAction);
     return card ? card.icon : '';
   }
 
   function getSubmitLabel() {
     switch (selectedAction) {
-      case 'updates': return 'Subscribe';
-      case 'yardsign': return 'Request Sign';
-      case 'volunteer': return 'Sign Up';
-      case 'meeting': return 'Request Meeting';
-      case 'endorsement': return 'Submit Endorsement';
-      default: return 'Submit';
+      case 'updates':
+        return 'Subscribe';
+      case 'yardsign':
+        return 'Request Sign';
+      case 'volunteer':
+        return 'Sign Up';
+      case 'meeting':
+        return 'Request Meeting';
+      case 'endorsement':
+        return 'Submit Endorsement';
+      default:
+        return 'Submit';
     }
   }
 
@@ -184,7 +205,7 @@ function GetInvolvedDynamicContent() {
           <p className="section-subtitle text-center mb-12">Every action makes a difference</p>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-            {actionCards.map((card) => (
+            {actionCards.map((card) =>
               card.isLink ? (
                 <Link
                   key={card.id}
@@ -194,8 +215,12 @@ function GetInvolvedDynamicContent() {
                   <div className="icon-container mx-auto mb-3 sm:mb-4 w-12 h-12 sm:w-14 sm:h-14">
                     <span className="text-xl sm:text-2xl">{card.icon}</span>
                   </div>
-                  <h3 className="text-base sm:text-lg font-bold text-navy mb-1 sm:mb-2">{card.title}</h3>
-                  <p className="text-xs sm:text-sm text-gray-600 leading-snug">{card.description}</p>
+                  <h3 className="text-base sm:text-lg font-bold text-navy mb-1 sm:mb-2">
+                    {card.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-600 leading-snug">
+                    {card.description}
+                  </p>
                 </Link>
               ) : (
                 <button
@@ -211,11 +236,15 @@ function GetInvolvedDynamicContent() {
                   <div className="icon-container mx-auto mb-3 sm:mb-4 w-12 h-12 sm:w-14 sm:h-14">
                     <span className="text-xl sm:text-2xl">{card.icon}</span>
                   </div>
-                  <h3 className="text-base sm:text-lg font-bold text-navy mb-1 sm:mb-2">{card.title}</h3>
-                  <p className="text-xs sm:text-sm text-gray-600 leading-snug">{card.description}</p>
+                  <h3 className="text-base sm:text-lg font-bold text-navy mb-1 sm:mb-2">
+                    {card.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-600 leading-snug">
+                    {card.description}
+                  </p>
                 </button>
               )
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -277,175 +306,201 @@ function GetInvolvedDynamicContent() {
       >
         <div className="max-w-2xl mx-auto">
           <div className="card">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{getFormIcon()}</span>
-                    {getFormTitle() && <h2 className="text-xl font-bold text-navy">{getFormTitle()}</h2>}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedAction(null)}
-                    className="text-gray-400 hover:text-gray-600 text-xl font-bold min-w-[44px] min-h-[44px] flex items-center justify-center"
-                    aria-label="Close form"
-                  >
-                    ×
-                  </button>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">{getFormIcon()}</span>
+                {getFormTitle() && (
+                  <h2 className="text-xl font-bold text-navy">{getFormTitle()}</h2>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedAction(null)}
+                className="text-gray-400 hover:text-gray-600 text-xl font-bold min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label="Close form"
+              >
+                ×
+              </button>
+            </div>
+
+            {submitMsg && submitMsg.includes('Thank you') ? (
+              <div
+                className="p-6 bg-green-50 border border-green-200 rounded-lg"
+                role="status"
+                aria-live="polite"
+              >
+                <p className="text-green-800 font-semibold">{submitMsg}</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSubmitMsg('');
+                    setSelectedAction(null);
+                  }}
+                  className="mt-4 text-navy font-medium hover:underline"
+                >
+                  ← Back to options
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div>
+                  <label htmlFor="name" className="form-label">
+                    Name *
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    required
+                    aria-required="true"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="form-input"
+                    autoComplete="name"
+                  />
                 </div>
 
-                {submitMsg && submitMsg.includes('Thank you') ? (
-                  <div className="p-6 bg-green-50 border border-green-200 rounded-lg" role="status" aria-live="polite">
-                    <p className="text-green-800 font-semibold">{submitMsg}</p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSubmitMsg('');
-                        setSelectedAction(null);
-                      }}
-                      className="mt-4 text-navy font-medium hover:underline"
-                    >
-                      ← Back to options
-                    </button>
+                <div>
+                  <label htmlFor="email" className="form-label">
+                    Email *
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    required
+                    aria-required="true"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    className="form-input"
+                    autoComplete="email"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="phone" className="form-label">
+                    Phone {selectedAction === 'meeting' ? '*' : '(optional)'}
+                  </label>
+                  <input
+                    id="phone"
+                    type="tel"
+                    required={selectedAction === 'meeting'}
+                    value={form.phone}
+                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                    className="form-input"
+                    placeholder="(555) 555-5555"
+                    aria-describedby="phone-hint"
+                    autoComplete="tel"
+                  />
+                  <p id="phone-hint" className="text-sm text-gray-500 mt-1">
+                    US phone numbers only
+                  </p>
+                </div>
+
+                {selectedAction === 'yardsign' && (
+                  <div>
+                    <label htmlFor="address" className="form-label">
+                      Delivery Address *
+                    </label>
+                    <input
+                      id="address"
+                      type="text"
+                      required
+                      aria-required="true"
+                      value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      className="form-input"
+                      placeholder="Street address in Prosper"
+                    />
                   </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                      <label htmlFor="name" className="form-label">Name *</label>
-                      <input
-                        id="name"
-                        type="text"
-                        required
-                        aria-required="true"
-                        value={form.name}
-                        onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        className="form-input"
-                        autoComplete="name"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="email" className="form-label">Email *</label>
-                      <input
-                        id="email"
-                        type="email"
-                        required
-                        aria-required="true"
-                        value={form.email}
-                        onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        className="form-input"
-                        autoComplete="email"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="phone" className="form-label">
-                        Phone {selectedAction === 'meeting' ? '*' : '(optional)'}
-                      </label>
-                      <input
-                        id="phone"
-                        type="tel"
-                        required={selectedAction === 'meeting'}
-                        value={form.phone}
-                        onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                        className="form-input"
-                        placeholder="(555) 555-5555"
-                        aria-describedby="phone-hint"
-                        autoComplete="tel"
-                      />
-                      <p id="phone-hint" className="text-sm text-gray-500 mt-1">US phone numbers only</p>
-                    </div>
-
-                    {selectedAction === 'yardsign' && (
-                      <div>
-                        <label htmlFor="address" className="form-label">Delivery Address *</label>
-                        <input
-                          id="address"
-                          type="text"
-                          required
-                          aria-required="true"
-                          value={form.message}
-                          onChange={(e) => setForm({ ...form, message: e.target.value })}
-                          className="form-input"
-                          placeholder="Street address in Prosper"
-                        />
-                      </div>
-                    )}
-
-                    {selectedAction === 'endorsement' && (
-                      <div>
-                        <label htmlFor="message" className="form-label">Why I support Doug (optional)</label>
-                        <textarea
-                          id="message"
-                          rows={3}
-                          value={form.message}
-                          onChange={(e) => setForm({ ...form, message: e.target.value })}
-                          className="form-input"
-                          placeholder="Share why you're endorsing Doug for Town Council..."
-                        />
-                      </div>
-                    )}
-
-                    {(selectedAction === 'volunteer' || selectedAction === 'meeting') && (
-                      <div>
-                        <label htmlFor="message" className="form-label">
-                          {selectedAction === 'meeting' ? 'Preferred time or message' : 'Message (optional)'}
-                        </label>
-                        <textarea
-                          id="message"
-                          rows={3}
-                          value={form.message}
-                          onChange={(e) => setForm({ ...form, message: e.target.value })}
-                          className="form-input"
-                          placeholder={selectedAction === 'meeting' ? 'Let us know your availability...' : ''}
-                        />
-                      </div>
-                    )}
-
-                    {/* Consent checkboxes */}
-                    <fieldset className="space-y-3 pt-2">
-                      <legend className="sr-only">Communication preferences</legend>
-                      <label className="flex items-start gap-3 cursor-pointer min-h-[44px]">
-                        <input
-                          type="checkbox"
-                          checked={form.consentEmail}
-                          onChange={(e) => setForm({ ...form, consentEmail: e.target.checked })}
-                          className="mt-0.5 h-5 w-5 min-w-[20px] rounded border-gray-300 text-navy focus:ring-navy focus:ring-2"
-                        />
-                        <span className="text-sm text-gray-600">
-                          I agree to receive campaign updates via email. You can unsubscribe at any time.
-                        </span>
-                      </label>
-
-                      <label className="flex items-start gap-3 cursor-pointer min-h-[44px]">
-                        <input
-                          type="checkbox"
-                          checked={form.consentSms}
-                          onChange={(e) => setForm({ ...form, consentSms: e.target.checked })}
-                          className="mt-0.5 h-5 w-5 min-w-[20px] rounded border-gray-300 text-navy focus:ring-navy focus:ring-2"
-                        />
-                        <span className="text-sm text-gray-600">
-                          I agree to receive campaign updates via text message. Msg & data rates may apply. Reply STOP to opt out.
-                        </span>
-                      </label>
-                    </fieldset>
-
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isSubmitting ? 'Submitting...' : getSubmitLabel()}
-                    </button>
-
-                    {submitMsg && !submitMsg.includes('Thank you') && (
-                      <div role="alert" aria-live="polite" className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                        <p className="text-red-800 font-medium">{submitMsg}</p>
-                      </div>
-                    )}
-                  </form>
                 )}
-            </div>
+
+                {selectedAction === 'endorsement' && (
+                  <div>
+                    <label htmlFor="message" className="form-label">
+                      Why I support Doug (optional)
+                    </label>
+                    <textarea
+                      id="message"
+                      rows={3}
+                      value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      className="form-input"
+                      placeholder="Share why you're endorsing Doug for Town Council..."
+                    />
+                  </div>
+                )}
+
+                {(selectedAction === 'volunteer' || selectedAction === 'meeting') && (
+                  <div>
+                    <label htmlFor="message" className="form-label">
+                      {selectedAction === 'meeting'
+                        ? 'Preferred time or message'
+                        : 'Message (optional)'}
+                    </label>
+                    <textarea
+                      id="message"
+                      rows={3}
+                      value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      className="form-input"
+                      placeholder={
+                        selectedAction === 'meeting' ? 'Let us know your availability...' : ''
+                      }
+                    />
+                  </div>
+                )}
+
+                {/* Consent checkboxes */}
+                <fieldset className="space-y-3 pt-2">
+                  <legend className="sr-only">Communication preferences</legend>
+                  <label className="flex items-start gap-3 cursor-pointer min-h-[44px]">
+                    <input
+                      type="checkbox"
+                      checked={form.consentEmail}
+                      onChange={(e) => setForm({ ...form, consentEmail: e.target.checked })}
+                      className="mt-0.5 h-5 w-5 min-w-[20px] rounded border-gray-300 text-navy focus:ring-navy focus:ring-2"
+                    />
+                    <span className="text-sm text-gray-600">
+                      I agree to receive campaign updates via email. You can unsubscribe at any
+                      time.
+                    </span>
+                  </label>
+
+                  <label className="flex items-start gap-3 cursor-pointer min-h-[44px]">
+                    <input
+                      type="checkbox"
+                      checked={form.consentSms}
+                      onChange={(e) => setForm({ ...form, consentSms: e.target.checked })}
+                      className="mt-0.5 h-5 w-5 min-w-[20px] rounded border-gray-300 text-navy focus:ring-navy focus:ring-2"
+                    />
+                    <span className="text-sm text-gray-600">
+                      I agree to receive campaign updates via text message. Msg & data rates may
+                      apply. Reply STOP to opt out.
+                    </span>
+                  </label>
+                </fieldset>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Submitting...' : getSubmitLabel()}
+                </button>
+
+                {submitMsg && !submitMsg.includes('Thank you') && (
+                  <div
+                    role="alert"
+                    aria-live="polite"
+                    className="p-4 bg-red-50 border border-red-200 rounded-lg"
+                  >
+                    <p className="text-red-800 font-medium">{submitMsg}</p>
+                  </div>
+                )}
+              </form>
+            )}
           </div>
-        </section>
+        </div>
+      </section>
     </>
   );
 }

@@ -18,7 +18,9 @@ export async function GET(request) {
   try {
     let query = supabase
       .from('ideas')
-      .select('id, name, email, category, title, content, status, support_count, upvotes, downvotes, admin_response, created_at, supporter_id')
+      .select(
+        'id, name, email, category, title, content, status, support_count, upvotes, downvotes, admin_response, created_at, supporter_id'
+      )
       .order('created_at', { ascending: false });
 
     if (category && category !== 'all') query = query.eq('category', category);
@@ -28,7 +30,7 @@ export async function GET(request) {
     if (error) return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
 
     // Get comment counts per idea
-    const ideaIds = (ideas || []).map(i => i.id);
+    const ideaIds = (ideas || []).map((i) => i.id);
     const commentCounts = {};
     if (ideaIds.length > 0) {
       const { data: comments } = await supabase
@@ -36,18 +38,18 @@ export async function GET(request) {
         .select('idea_id')
         .in('idea_id', ideaIds)
         .eq('status', 'approved');
-      comments?.forEach(c => {
+      comments?.forEach((c) => {
         commentCounts[c.idea_id] = (commentCounts[c.idea_id] || 0) + 1;
       });
     }
 
-    const enriched = (ideas || []).map(i => ({
+    const enriched = (ideas || []).map((i) => ({
       ...i,
       comment_count: commentCounts[i.id] || 0,
     }));
 
     if (format === 'csv') {
-      const flat = enriched.map(i => ({
+      const flat = enriched.map((i) => ({
         id: i.id,
         name: i.name,
         email: i.email,

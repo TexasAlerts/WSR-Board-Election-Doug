@@ -17,7 +17,9 @@ export function getSupabase() {
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE;
 
     if (!url || !key) {
-      throw new Error('Supabase configuration missing. Ensure SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set.');
+      throw new Error(
+        'Supabase configuration missing. Ensure SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set.'
+      );
     }
 
     supabaseServiceClient = createClient(url, key);
@@ -35,7 +37,9 @@ export function getSupabaseAnon() {
     const key = process.env.SUPABASE_ANON_KEY;
 
     if (!url || !key) {
-      throw new Error('Supabase configuration missing. Ensure SUPABASE_URL and SUPABASE_ANON_KEY are set.');
+      throw new Error(
+        'Supabase configuration missing. Ensure SUPABASE_URL and SUPABASE_ANON_KEY are set.'
+      );
     }
 
     supabaseAnonClient = createClient(url, key);

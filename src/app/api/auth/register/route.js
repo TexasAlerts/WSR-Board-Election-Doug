@@ -80,10 +80,7 @@ export async function POST(request) {
     if (phone) {
       const phoneValidation = validatePhoneNumber(phone);
       if (!phoneValidation.valid) {
-        return NextResponse.json(
-          { ok: false, error: phoneValidation.error },
-          { status: 400 }
-        );
+        return NextResponse.json({ ok: false, error: phoneValidation.error }, { status: 400 });
       }
       phoneFormatted = phoneValidation.formatted;
     }
@@ -119,7 +116,7 @@ export async function POST(request) {
         address_validated: !addressValidation.skipped,
         email_consent: emailConsent,
         sms_consent: smsConsent,
-        consent_timestamp: (emailConsent || smsConsent) ? new Date().toISOString() : null,
+        consent_timestamp: emailConsent || smsConsent ? new Date().toISOString() : null,
         status: 'pending_email',
       })
       .select()
@@ -148,11 +145,7 @@ export async function POST(request) {
     }
 
     // Send verification email
-    const emailResult = await sendVerificationEmail(
-      supporter.email,
-      supporter.first_name,
-      token
-    );
+    const emailResult = await sendVerificationEmail(supporter.email, supporter.first_name, token);
 
     if (!emailResult.success) {
       // Don't fail registration, just log the error

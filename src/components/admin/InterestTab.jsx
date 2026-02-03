@@ -3,7 +3,12 @@
 import { XCircle, Loader2 } from 'lucide-react';
 
 export default function InterestTab({
-  interest, loading, filter, setFilter, handleDeleteInterest, formatDate,
+  interest,
+  loading,
+  filter,
+  setFilter,
+  handleDeleteInterest,
+  formatDate,
 }) {
   return (
     <div>
@@ -13,12 +18,14 @@ export default function InterestTab({
             key={s}
             onClick={() => setFilter(s)}
             className={`px-3 py-1 rounded-full text-sm font-medium ${
-              filter === s
-                ? 'bg-navy text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            {s === 'yardsign' ? 'Yard Signs' : s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
+            {s === 'yardsign'
+              ? 'Yard Signs'
+              : s === 'all'
+                ? 'All'
+                : s.charAt(0).toUpperCase() + s.slice(1)}
           </button>
         ))}
       </div>
@@ -35,24 +42,41 @@ export default function InterestTab({
               <caption className="sr-only">Interest submissions</caption>
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Message</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Type
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Name
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Contact
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Message
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Date
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {interest.map((i) => (
                   <tr key={i.id} className="hover:bg-gray-50">
                     <td className="px-4 py-3">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        i.type === 'volunteer' ? 'bg-green-100 text-green-700' :
-                        i.type === 'yardsign' ? 'bg-blue-100 text-blue-700' :
-                        i.type === 'meeting' ? 'bg-purple-100 text-purple-700' :
-                        'bg-gray-100 text-gray-700'
-                      }`}>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          i.type === 'volunteer'
+                            ? 'bg-green-100 text-green-700'
+                            : i.type === 'yardsign'
+                              ? 'bg-blue-100 text-blue-700'
+                              : i.type === 'meeting'
+                                ? 'bg-purple-100 text-purple-700'
+                                : 'bg-gray-100 text-gray-700'
+                        }`}
+                      >
                         {i.type === 'yardsign' ? 'Yard Sign' : i.type}
                       </span>
                     </td>
@@ -64,9 +88,7 @@ export default function InterestTab({
                     <td className="px-4 py-3 text-sm text-gray-600 max-w-xs truncate">
                       {i.message || '-'}
                     </td>
-                    <td className="px-4 py-3 text-xs text-gray-500">
-                      {formatDate(i.created_at)}
-                    </td>
+                    <td className="px-4 py-3 text-xs text-gray-500">{formatDate(i.created_at)}</td>
                     <td className="px-4 py-3">
                       <button
                         onClick={() => handleDeleteInterest(i.id)}
@@ -94,12 +116,17 @@ export default function InterestTab({
             {interest.map((i) => (
               <div key={i.id} className="bg-white rounded-xl shadow p-4">
                 <div className="flex justify-between items-start mb-2">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    i.type === 'volunteer' ? 'bg-green-100 text-green-700' :
-                    i.type === 'yardsign' ? 'bg-blue-100 text-blue-700' :
-                    i.type === 'meeting' ? 'bg-purple-100 text-purple-700' :
-                    'bg-gray-100 text-gray-700'
-                  }`}>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      i.type === 'volunteer'
+                        ? 'bg-green-100 text-green-700'
+                        : i.type === 'yardsign'
+                          ? 'bg-blue-100 text-blue-700'
+                          : i.type === 'meeting'
+                            ? 'bg-purple-100 text-purple-700'
+                            : 'bg-gray-100 text-gray-700'
+                    }`}
+                  >
                     {i.type === 'yardsign' ? 'Yard Sign' : i.type}
                   </span>
                   <button
@@ -120,9 +147,7 @@ export default function InterestTab({
               </div>
             ))}
             {interest.length === 0 && (
-              <div className="text-center py-12 text-gray-500">
-                No interest records found
-              </div>
+              <div className="text-center py-12 text-gray-500">No interest records found</div>
             )}
           </div>
         </>

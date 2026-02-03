@@ -18,11 +18,13 @@ export async function GET(request) {
   try {
     let query = supabase
       .from('polls')
-      .select(`
+      .select(
+        `
         *,
         poll_choices (id, choice_text, display_order),
         poll_votes (id)
-      `)
+      `
+      )
       .order('created_at', { ascending: false });
 
     if (status !== 'all') {
@@ -80,18 +82,22 @@ export async function POST(request) {
     const schema = z.object({
       title: z.string().min(1, 'Title is required').max(500),
       description: z.string().max(2000).optional().nullable(),
-      poll_type: z.enum(['single_choice', 'multiple_choice', 'ranked_choice']).default('single_choice'),
+      poll_type: z
+        .enum(['single_choice', 'multiple_choice', 'ranked_choice'])
+        .default('single_choice'),
       visibility: z.enum(['public', 'public_view', 'authenticated']).default('public'),
       status: z.enum(['draft', 'active', 'closed']).default('draft'),
       allow_comments: z.boolean().default(true),
       show_results_before_vote: z.boolean().default(false),
       closes_at: z.string().datetime().optional().nullable(),
-      choices: z.array(
-        z.object({
-          choice_text: z.string().min(1).max(500),
-          display_order: z.number().int().min(0).optional(),
-        })
-      ).min(2, 'At least 2 choices are required'),
+      choices: z
+        .array(
+          z.object({
+            choice_text: z.string().min(1).max(500),
+            display_order: z.number().int().min(0).optional(),
+          })
+        )
+        .min(2, 'At least 2 choices are required'),
     });
 
     const body = await request.json();
@@ -138,9 +144,7 @@ export async function POST(request) {
       display_order: choice.display_order ?? index,
     }));
 
-    const { error: choicesError } = await supabase
-      .from('poll_choices')
-      .insert(choicesWithPollId);
+    const { error: choicesError } = await supabase.from('poll_choices').insert(choicesWithPollId);
 
     if (choicesError) {
       // Rollback poll creation

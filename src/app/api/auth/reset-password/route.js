@@ -15,10 +15,7 @@ export async function GET(req) {
   const token = searchParams.get('token');
 
   if (!token) {
-    return NextResponse.json(
-      { ok: false, error: 'No token provided' },
-      { status: 400 }
-    );
+    return NextResponse.json({ ok: false, error: 'No token provided' }, { status: 400 });
   }
 
   try {
@@ -40,10 +37,7 @@ export async function GET(req) {
       method: 'GET',
     });
 
-    return NextResponse.json(
-      { ok: false, error: 'Failed to validate token' },
-      { status: 500 }
-    );
+    return NextResponse.json({ ok: false, error: 'Failed to validate token' }, { status: 500 });
   }
 }
 

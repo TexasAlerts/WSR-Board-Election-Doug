@@ -44,10 +44,9 @@ export async function validateAddress({ street, city, state, zip }) {
   `.trim();
 
   try {
-    const response = await fetch(
-      `${USPS_API_URL}?API=Verify&XML=${encodeURIComponent(xml)}`,
-      { method: 'GET' }
-    );
+    const response = await fetch(`${USPS_API_URL}?API=Verify&XML=${encodeURIComponent(xml)}`, {
+      method: 'GET',
+    });
 
     if (!response.ok) {
       throw new Error(`USPS API error: ${response.status}`);
@@ -73,7 +72,8 @@ export async function validateAddress({ street, city, state, zip }) {
     const dpvConfirmation = extractXmlValue(text, 'DPVConfirmation');
 
     // DPV codes: Y = confirmed, D = confirmed (missing secondary), N = not confirmed, S = secondary missing
-    const isDeliverable = dpvConfirmation === 'Y' || dpvConfirmation === 'D' || dpvConfirmation === 'S';
+    const isDeliverable =
+      dpvConfirmation === 'Y' || dpvConfirmation === 'D' || dpvConfirmation === 'S';
 
     if (!address2) {
       return { valid: false, standardized: null, error: 'Address not found' };

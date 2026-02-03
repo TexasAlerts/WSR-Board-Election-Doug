@@ -128,9 +128,6 @@ export async function POST(request) {
       method: 'POST',
       request,
     });
-    return NextResponse.json(
-      { ok: false, error: 'An unexpected error occurred' },
-      { status: 500 }
-    );
+    return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

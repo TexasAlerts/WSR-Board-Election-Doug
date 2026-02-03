@@ -10,10 +10,7 @@ export async function GET() {
     const voter = await getVerifiedVoter();
 
     if (!voter) {
-      return NextResponse.json(
-        { ok: false, error: 'Not verified' },
-        { status: 401 }
-      );
+      return NextResponse.json({ ok: false, error: 'Not verified' }, { status: 401 });
     }
 
     // Return safe voter data
@@ -27,9 +24,6 @@ export async function GET() {
       },
     });
   } catch (error) {
-    return NextResponse.json(
-      { ok: false, error: 'Server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }

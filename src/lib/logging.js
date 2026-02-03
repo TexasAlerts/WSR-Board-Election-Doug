@@ -78,9 +78,10 @@ export function parseUserAgent(userAgent) {
  * Extract request metadata
  */
 export function getRequestMeta(request) {
-  const ip = request?.headers?.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-             request?.headers?.get('x-real-ip') ||
-             'unknown';
+  const ip =
+    request?.headers?.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    request?.headers?.get('x-real-ip') ||
+    'unknown';
   const userAgent = request?.headers?.get('user-agent') || 'unknown';
   const method = request?.method || 'unknown';
   const url = request?.url ? new URL(request.url) : null;
@@ -96,8 +97,15 @@ export function getRequestMeta(request) {
 function sanitizeBody(body) {
   if (!body) return null;
   const sanitized = { ...body };
-  const sensitiveFields = ['password', 'password_hash', 'confirmPassword', 'token', 'code', 'secret'];
-  sensitiveFields.forEach(field => {
+  const sensitiveFields = [
+    'password',
+    'password_hash',
+    'confirmPassword',
+    'token',
+    'code',
+    'secret',
+  ];
+  sensitiveFields.forEach((field) => {
     if (sanitized[field]) {
       sanitized[field] = '[REDACTED]';
     }
@@ -135,24 +143,22 @@ export async function logAudit({
       },
     };
 
-    const { error } = await supabase
-      .from('audit_logs')
-      .insert({
-        supporter_id: supporterId,
-        event_type: eventType,
-        target_id: targetId,
-        target_type: targetType,
-        old_values: oldValues,
-        new_values: newValues,
-        details: JSON.stringify(enrichedDetails),
-        ip_address: meta.ip,
-        user_agent: meta.userAgent,
-        request_method: meta.method,
-        request_path: meta.path,
-        request_body: requestBody ? sanitizeBody(requestBody) : null,
-        response_status: responseStatus,
-        session_id: sessionId,
-      });
+    const { error } = await supabase.from('audit_logs').insert({
+      supporter_id: supporterId,
+      event_type: eventType,
+      target_id: targetId,
+      target_type: targetType,
+      old_values: oldValues,
+      new_values: newValues,
+      details: JSON.stringify(enrichedDetails),
+      ip_address: meta.ip,
+      user_agent: meta.userAgent,
+      request_method: meta.method,
+      request_path: meta.path,
+      request_body: requestBody ? sanitizeBody(requestBody) : null,
+      response_status: responseStatus,
+      session_id: sessionId,
+    });
 
     if (error) {
       console.error('Failed to log audit event:', error);
@@ -260,7 +266,14 @@ export async function logError({
 /**
  * Notify superusers of a new error
  */
-async function notifySuperusersOfError({ errorId, errorType, errorMessage, endpoint, userEmail, deviceInfo }) {
+async function notifySuperusersOfError({
+  errorId,
+  errorType,
+  errorMessage,
+  endpoint,
+  userEmail,
+  deviceInfo,
+}) {
   try {
     const supabase = getSupabase();
 
@@ -309,7 +322,6 @@ Please review and resolve this error in the admin dashboard.
       .from('error_logs')
       .update({ notified_at: new Date().toISOString() })
       .eq('id', errorId);
-
   } catch (err) {
     console.error('Failed to notify superusers:', err);
   }

@@ -99,9 +99,17 @@ function sanitizeRequestData(data) {
   if (!data || typeof data !== 'object') return data;
 
   const sanitized = { ...data };
-  const sensitiveFields = ['password', 'confirmPassword', 'token', 'code', 'secret', 'ssn', 'credit_card'];
+  const sensitiveFields = [
+    'password',
+    'confirmPassword',
+    'token',
+    'code',
+    'secret',
+    'ssn',
+    'credit_card',
+  ];
 
-  sensitiveFields.forEach(field => {
+  sensitiveFields.forEach((field) => {
     if (sanitized[field]) {
       sanitized[field] = '[REDACTED]';
     }

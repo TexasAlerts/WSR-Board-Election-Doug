@@ -20,12 +20,8 @@ export default function PollsPage() {
           className="absolute top-4 right-4 w-20 sm:w-28 md:w-32 lg:w-36 h-auto opacity-40 pointer-events-none brightness-200"
         />
         <div className="max-w-3xl mx-auto text-center relative z-10">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
-            Community Polls
-          </h1>
-          <p className="text-xl text-white/90">
-            Share your voice on issues that matter to Prosper
-          </p>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">Community Polls</h1>
+          <p className="text-xl text-white/90">Share your voice on issues that matter to Prosper</p>
         </div>
       </section>
 

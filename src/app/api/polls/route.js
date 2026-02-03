@@ -10,7 +10,8 @@ export async function GET(request) {
   // Get active polls with their choices
   let query = supabase
     .from('polls')
-    .select(`
+    .select(
+      `
       id,
       title,
       description,
@@ -27,7 +28,8 @@ export async function GET(request) {
         choice_text,
         display_order
       )
-    `)
+    `
+    )
     .eq('status', 'active')
     .order('published_at', { ascending: false });
 
@@ -47,7 +49,7 @@ export async function GET(request) {
   }
 
   // Get vote counts for each poll
-  const pollIds = polls.map(p => p.id);
+  const pollIds = polls.map((p) => p.id);
 
   if (pollIds.length === 0) {
     return NextResponse.json({ ok: true, data: [] });
@@ -59,13 +61,13 @@ export async function GET(request) {
     .in('poll_id', pollIds);
 
   if (voteError) {
-      // silently ignored
-    }
+    // silently ignored
+  }
 
   // Count votes per poll
   const voteCountMap = {};
   if (voteCounts) {
-    voteCounts.forEach(v => {
+    voteCounts.forEach((v) => {
       voteCountMap[v.poll_id] = (voteCountMap[v.poll_id] || 0) + 1;
     });
   }
@@ -84,7 +86,7 @@ export async function GET(request) {
   // Count comments per poll
   const commentCountMap = {};
   if (commentCounts) {
-    commentCounts.forEach(c => {
+    commentCounts.forEach((c) => {
       commentCountMap[c.poll_id] = (commentCountMap[c.poll_id] || 0) + 1;
     });
   }
@@ -99,14 +101,14 @@ export async function GET(request) {
       .in('poll_id', pollIds);
 
     if (userVotes) {
-      userVotes.forEach(v => {
+      userVotes.forEach((v) => {
         userVotedPolls[v.poll_id] = true;
       });
     }
   }
 
   // Add vote counts, comment counts, and visibility info to polls
-  const pollsWithCounts = polls.map(p => ({
+  const pollsWithCounts = polls.map((p) => ({
     ...p,
     vote_count: voteCountMap[p.id] || 0,
     comment_count: commentCountMap[p.id] || 0,

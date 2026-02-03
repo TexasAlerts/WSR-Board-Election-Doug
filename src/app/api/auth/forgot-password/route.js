@@ -45,11 +45,7 @@ export async function POST(req) {
 
         if (token) {
           // Send password reset email
-          await sendPasswordResetEmail(
-            supporter.email,
-            supporter.first_name,
-            token
-          );
+          await sendPasswordResetEmail(supporter.email, supporter.first_name, token);
 
           // Log the password reset request
           await logAudit({

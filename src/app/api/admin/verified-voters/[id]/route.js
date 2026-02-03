@@ -91,10 +91,7 @@ export async function DELETE(request, { params }) {
     }
 
     // Delete the voter
-    const { error } = await supabase
-      .from('verified_voters')
-      .delete()
-      .eq('id', id);
+    const { error } = await supabase.from('verified_voters').delete().eq('id', id);
 
     if (error) {
       return NextResponse.json({ ok: false, error: 'Failed to delete voter' }, { status: 500 });

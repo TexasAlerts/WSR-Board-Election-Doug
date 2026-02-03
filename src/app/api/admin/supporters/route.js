@@ -16,7 +16,9 @@ export async function GET(request) {
   try {
     let query = supabase
       .from('supporters')
-      .select('id, first_name, last_name, email, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at')
+      .select(
+        'id, first_name, last_name, email, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at'
+      )
       .order('created_at', { ascending: false });
 
     if (status && status !== 'all') {
@@ -99,10 +101,7 @@ export async function PUT(request) {
       return NextResponse.json({ ok: false, error: 'No updates provided' }, { status: 400 });
     }
 
-    const { error } = await supabase
-      .from('supporters')
-      .update(updates)
-      .eq('id', id);
+    const { error } = await supabase.from('supporters').update(updates).eq('id', id);
 
     if (error) {
       await logError({
@@ -175,12 +174,18 @@ export async function DELETE(request) {
     }
 
     if (!reason || reason.trim().length < 3) {
-      return NextResponse.json({ ok: false, error: 'Deletion reason required (min 3 characters)' }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: 'Deletion reason required (min 3 characters)' },
+        { status: 400 }
+      );
     }
 
     // Prevent self-deletion
     if (id === supporter.id) {
-      return NextResponse.json({ ok: false, error: 'Cannot delete your own account' }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: 'Cannot delete your own account' },
+        { status: 400 }
+      );
     }
 
     // Fetch target supporter
@@ -201,7 +206,10 @@ export async function DELETE(request) {
 
     // Count related records for audit snapshot
     const [votes, comments, ideas] = await Promise.all([
-      supabase.from('poll_votes').select('id', { count: 'exact', head: true }).eq('supporter_id', id),
+      supabase
+        .from('poll_votes')
+        .select('id', { count: 'exact', head: true })
+        .eq('supporter_id', id),
       supabase.from('comments').select('id', { count: 'exact', head: true }).eq('supporter_id', id),
       supabase.from('ideas').select('id', { count: 'exact', head: true }).eq('supporter_id', id),
     ]);
@@ -221,10 +229,7 @@ export async function DELETE(request) {
     ]);
 
     // Delete supporter (CASCADE handles sessions, verifications, comment_votes, idea_votes, thread_subscriptions, notification_preferences)
-    const { error: deleteError } = await supabase
-      .from('supporters')
-      .delete()
-      .eq('id', id);
+    const { error: deleteError } = await supabase.from('supporters').delete().eq('id', id);
 
     if (deleteError) {
       await logError({

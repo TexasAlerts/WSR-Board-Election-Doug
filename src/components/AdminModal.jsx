@@ -35,9 +35,16 @@ export function ConfirmModal({ open, title, message, onConfirm, onCancel }) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="confirm-title"
+    >
       <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6">
-        <h2 id="confirm-title" className="text-lg font-bold text-navy mb-2">{title}</h2>
+        <h2 id="confirm-title" className="text-lg font-bold text-navy mb-2">
+          {title}
+        </h2>
         <p className="text-gray-600 mb-6">{message}</p>
         <div className="flex gap-3 justify-end">
           <button
@@ -94,15 +101,34 @@ export function PromptModal({ open, title, label, defaultValue, onSubmit, onCanc
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50" role="dialog" aria-modal="true" aria-labelledby="prompt-title">
-      <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6">
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="prompt-title"
+    >
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6"
+      >
         <div className="flex items-center justify-between mb-4">
-          <h2 id="prompt-title" className="text-lg font-bold text-navy">{title}</h2>
-          <button type="button" onClick={onCancel} className="p-2 hover:bg-gray-100 rounded min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Close">
+          <h2 id="prompt-title" className="text-lg font-bold text-navy">
+            {title}
+          </h2>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="p-2 hover:bg-gray-100 rounded min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label="Close"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
-        {label && <label htmlFor="prompt-input" className="block text-sm font-medium text-gray-700 mb-2">{label}</label>}
+        {label && (
+          <label htmlFor="prompt-input" className="block text-sm font-medium text-gray-700 mb-2">
+            {label}
+          </label>
+        )}
         {multiline ? (
           <textarea
             id="prompt-input"

@@ -3,7 +3,13 @@
 import { CheckCircle, XCircle, RefreshCw, Loader2 } from 'lucide-react';
 
 export default function ErrorLogsTab({
-  errorLogs, loading, filter, setFilter, updateErrorStatus, showPrompt, formatDate,
+  errorLogs,
+  loading,
+  filter,
+  setFilter,
+  updateErrorStatus,
+  showPrompt,
+  formatDate,
 }) {
   return (
     <div>
@@ -13,9 +19,7 @@ export default function ErrorLogsTab({
             key={s}
             onClick={() => setFilter(s)}
             className={`px-3 py-1 rounded-full text-sm font-medium ${
-              filter === s
-                ? 'bg-navy text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
             {s.replace('_', ' ')}
@@ -30,33 +34,49 @@ export default function ErrorLogsTab({
       ) : (
         <div className="space-y-4">
           {errorLogs.map((err) => (
-            <div key={err.id} className={`bg-white rounded-xl shadow p-4 border-l-4 ${
-              err.status === 'new' ? 'border-red-500' :
-              err.status === 'investigating' ? 'border-yellow-500' :
-              err.status === 'resolved' ? 'border-green-500' : 'border-gray-400'
-            }`}>
+            <div
+              key={err.id}
+              className={`bg-white rounded-xl shadow p-4 border-l-4 ${
+                err.status === 'new'
+                  ? 'border-red-500'
+                  : err.status === 'investigating'
+                    ? 'border-yellow-500'
+                    : err.status === 'resolved'
+                      ? 'border-green-500'
+                      : 'border-gray-400'
+              }`}
+            >
               <div className="flex justify-between items-start mb-2">
                 <div>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    err.status === 'new' ? 'bg-red-100 text-red-800' :
-                    err.status === 'investigating' ? 'bg-yellow-100 text-yellow-800' :
-                    err.status === 'resolved' ? 'bg-green-100 text-green-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      err.status === 'new'
+                        ? 'bg-red-100 text-red-800'
+                        : err.status === 'investigating'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : err.status === 'resolved'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
                     {err.status.replace('_', ' ')}
                   </span>
                   <span className="ml-2 text-xs text-gray-500">
                     {err.occurrence_count > 1 && `${err.occurrence_count}x`}
                   </span>
                 </div>
-                <span className="text-xs text-gray-500">{formatDate(err.last_occurred_at || err.created_at)}</span>
+                <span className="text-xs text-gray-500">
+                  {formatDate(err.last_occurred_at || err.created_at)}
+                </span>
               </div>
 
               <div className="mb-2">
                 <span className="px-2 py-0.5 rounded bg-gray-100 text-xs font-mono text-gray-700">
                   {err.error_type}
                 </span>
-                <span className="ml-2 text-sm text-gray-600">{err.endpoint} ({err.method})</span>
+                <span className="ml-2 text-sm text-gray-600">
+                  {err.endpoint} ({err.method})
+                </span>
               </div>
 
               <p className="text-red-700 font-medium mb-2">{err.error_message}</p>
@@ -71,8 +91,12 @@ export default function ErrorLogsTab({
 
               {err.error_stack && (
                 <details className="mb-3">
-                  <summary className="text-sm text-navy cursor-pointer hover:underline">Stack Trace</summary>
-                  <pre className="mt-2 p-2 bg-gray-100 rounded text-xs overflow-x-auto">{err.error_stack}</pre>
+                  <summary className="text-sm text-navy cursor-pointer hover:underline">
+                    Stack Trace
+                  </summary>
+                  <pre className="mt-2 p-2 bg-gray-100 rounded text-xs overflow-x-auto">
+                    {err.error_stack}
+                  </pre>
                 </details>
               )}
 
@@ -118,9 +142,7 @@ export default function ErrorLogsTab({
             </div>
           ))}
           {errorLogs.length === 0 && (
-            <div className="text-center py-12 text-gray-500">
-              No errors found
-            </div>
+            <div className="text-center py-12 text-gray-500">No errors found</div>
           )}
         </div>
       )}

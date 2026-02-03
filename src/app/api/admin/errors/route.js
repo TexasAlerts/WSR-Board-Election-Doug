@@ -15,7 +15,8 @@ export async function GET(request) {
 
   let query = supabase
     .from('error_logs')
-    .select(`
+    .select(
+      `
       id,
       error_type,
       error_message,
@@ -31,7 +32,8 @@ export async function GET(request) {
       resolution_notes,
       resolved_at,
       created_at
-    `)
+    `
+    )
     .order('last_occurred_at', { ascending: false })
     .limit(100);
 
@@ -90,10 +92,7 @@ export async function PUT(request) {
       return NextResponse.json({ ok: false, error: 'No updates provided' }, { status: 400 });
     }
 
-    const { error } = await supabase
-      .from('error_logs')
-      .update(updates)
-      .eq('id', id);
+    const { error } = await supabase.from('error_logs').update(updates).eq('id', id);
 
     if (error) {
       return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });

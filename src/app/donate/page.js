@@ -2,8 +2,9 @@ import Image from 'next/image';
 import { Mail, MessageCircle } from 'lucide-react';
 import DonateDynamic from '../../components/DonateDynamic';
 
-const SHARE_MESSAGE = "I'm supporting Doug Charles for Prosper Town Council Place 5! Learn more about his Common Sense leadership for ALL of Prosper at www.dougcharles.com";
-const SHARE_SUBJECT = "Check out Doug Charles for Prosper Town Council";
+const SHARE_MESSAGE =
+  "I'm supporting Doug Charles for Prosper Town Council Place 5! Learn more about his Common Sense leadership for ALL of Prosper at www.dougcharles.com";
+const SHARE_SUBJECT = 'Check out Doug Charles for Prosper Town Council';
 
 export default function DonatePage() {
   return (
@@ -24,11 +25,10 @@ export default function DonatePage() {
           className="absolute top-4 right-4 w-20 sm:w-28 md:w-32 lg:w-36 h-auto opacity-40 pointer-events-none brightness-200"
         />
         <div className="max-w-3xl mx-auto text-center relative z-10">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
-            Support the Campaign
-          </h1>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">Support the Campaign</h1>
           <p className="text-xl text-white/90">
-            Your contribution helps us reach every voter in Prosper with a message of <strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper.
+            Your contribution helps us reach every voter in Prosper with a message of{' '}
+            <strong>Common Sense</strong> leadership for <strong>ALL</strong> of Prosper.
           </p>
         </div>
       </section>
@@ -42,7 +42,9 @@ export default function DonatePage() {
 
         <div className="max-w-4xl mx-auto">
           <h2 className="section-title text-center mb-4">Your Support Makes a Difference</h2>
-          <p className="section-subtitle text-center">Every dollar helps build a stronger campaign</p>
+          <p className="section-subtitle text-center">
+            Every dollar helps build a stronger campaign
+          </p>
 
           <div className="grid gap-6 md:grid-cols-3 mt-12">
             <div className="card text-center h-full">
@@ -50,7 +52,10 @@ export default function DonatePage() {
                 <span className="text-2xl">🏠</span>
               </div>
               <h3 className="text-xl font-bold text-navy mb-3">Yard Signs</h3>
-              <p className="text-gray-600">Help <strong className="text-navy">spread the message</strong> across <strong className="text-prosper-red">Prosper neighborhoods</strong>.</p>
+              <p className="text-gray-600">
+                Help <strong className="text-navy">spread the message</strong> across{' '}
+                <strong className="text-prosper-red">Prosper neighborhoods</strong>.
+              </p>
             </div>
 
             <div className="card text-center h-full">
@@ -58,7 +63,10 @@ export default function DonatePage() {
                 <span className="text-2xl">📬</span>
               </div>
               <h3 className="text-xl font-bold text-navy mb-3">Voter Outreach</h3>
-              <p className="text-gray-600">Connect with voters through <strong className="text-navy">mailers, door-to-door, and digital campaigns</strong>.</p>
+              <p className="text-gray-600">
+                Connect with voters through{' '}
+                <strong className="text-navy">mailers, door-to-door, and digital campaigns</strong>.
+              </p>
             </div>
 
             <div className="card text-center h-full">
@@ -66,7 +74,10 @@ export default function DonatePage() {
                 <span className="text-2xl">🤝</span>
               </div>
               <h3 className="text-xl font-bold text-navy mb-3">Community Events</h3>
-              <p className="text-gray-600">Host <strong className="text-navy">meet-and-greets and town halls</strong> to <strong className="text-prosper-red">hear from residents</strong>.</p>
+              <p className="text-gray-600">
+                Host <strong className="text-navy">meet-and-greets and town halls</strong> to{' '}
+                <strong className="text-prosper-red">hear from residents</strong>.
+              </p>
             </div>
           </div>
         </div>
@@ -79,7 +90,9 @@ export default function DonatePage() {
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-navy mb-2">Spread the Word</h2>
               <p className="text-gray-600">
-                Can't donate right now? Help us <strong className="text-navy">reach more Prosper residents</strong> by sharing with friends and neighbors!
+                Can't donate right now? Help us{' '}
+                <strong className="text-navy">reach more Prosper residents</strong> by sharing with
+                friends and neighbors!
               </p>
             </div>
 
@@ -126,8 +139,12 @@ export default function DonatePage() {
           <div className="card bg-gray-50/50">
             <p className="text-sm text-gray-600 leading-relaxed">
               Political advertising paid for by Doug Charles for Prosper Town Council.
-              <br /><br />
-              Under Texas law, contributions from corporations and labor organizations are prohibited. Individual contributions are not tax-deductible. By contributing, you confirm you are a U.S. citizen or permanent resident and this contribution is from your own funds.
+              <br />
+              <br />
+              Under Texas law, contributions from corporations and labor organizations are
+              prohibited. Individual contributions are not tax-deductible. By contributing, you
+              confirm you are a U.S. citizen or permanent resident and this contribution is from
+              your own funds.
             </p>
           </div>
         </div>

@@ -16,7 +16,8 @@ function getResendClient() {
 
 const FROM_EMAIL = 'Doug Charles <hello@dougcharles.com>';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dougcharles.com';
-const CAMPAIGN_ADDRESS = 'Doug Charles for Prosper Town Council, 4360 Mill Branch Drive, Prosper, TX 75078';
+const CAMPAIGN_ADDRESS =
+  'Doug Charles for Prosper Town Council, 4360 Mill Branch Drive, Prosper, TX 75078';
 
 /**
  * Convert HTML to plain text
@@ -54,15 +55,20 @@ function getCampaignFooter(unsubscribeEmail = null, unsubscribeUrl = null) {
         ${CAMPAIGN_ADDRESS}<br>
         <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
       </p>
-      ${unsubscribeEmail || unsubscribeUrl ? `
+      ${
+        unsubscribeEmail || unsubscribeUrl
+          ? `
         <p style="margin: 15px 0 5px 0;">
-          ${unsubscribeUrl ?
-            `<a href="${unsubscribeUrl}" style="color: #999;">Unsubscribe</a>` :
-            `<a href="${SITE_URL}/auth/unsubscribe?email=${encodeURIComponent(unsubscribeEmail)}" style="color: #999;">Unsubscribe</a>`
+          ${
+            unsubscribeUrl
+              ? `<a href="${unsubscribeUrl}" style="color: #999;">Unsubscribe</a>`
+              : `<a href="${SITE_URL}/auth/unsubscribe?email=${encodeURIComponent(unsubscribeEmail)}" style="color: #999;">Unsubscribe</a>`
           } |
           <a href="${SITE_URL}/settings" style="color: #999;">Manage Preferences</a>
         </p>
-      ` : ''}
+      `
+          : ''
+      }
       <p style="margin: 5px 0; color: #ccc; font-size: 11px;">
         Paid for by Doug Charles Campaign
       </p>
@@ -198,7 +204,13 @@ export async function sendWelcomeEmail(email, name) {
 /**
  * Send comment approved notification
  */
-export async function sendCommentApprovedEmail(email, name, commentPreview, contextTitle, contextUrl) {
+export async function sendCommentApprovedEmail(
+  email,
+  name,
+  commentPreview,
+  contextTitle,
+  contextUrl
+) {
   const client = getResendClient();
   if (!client) return { success: false, error: 'Email service not configured' };
 
@@ -415,7 +427,14 @@ export async function sendVoterVerificationEmail(email, name, token) {
 /**
  * Send new comment notification to poll/idea participants
  */
-export async function sendNewCommentNotificationEmail(email, commenterName, commentPreview, contextTitle, contextUrl, unsubscribeToken) {
+export async function sendNewCommentNotificationEmail(
+  email,
+  commenterName,
+  commentPreview,
+  contextTitle,
+  contextUrl,
+  unsubscribeToken
+) {
   const client = getResendClient();
   if (!client) return { success: false, error: 'Email service not configured' };
 
@@ -464,7 +483,14 @@ export async function sendNewCommentNotificationEmail(email, commenterName, comm
 /**
  * Send reply notification to parent comment author
  */
-export async function sendNewReplyNotificationEmail(email, replierName, replyPreview, parentPreview, contextUrl, unsubscribeToken) {
+export async function sendNewReplyNotificationEmail(
+  email,
+  replierName,
+  replyPreview,
+  parentPreview,
+  contextUrl,
+  unsubscribeToken
+) {
   const client = getResendClient();
   if (!client) return { success: false, error: 'Email service not configured' };
 
@@ -524,13 +550,19 @@ export async function sendWeeklyDigestEmail(email, name, digestData, unsubscribe
 
   const unsubscribeUrl = `${SITE_URL}/notifications/unsubscribe?token=${unsubscribeToken}&type=email_on_weekly_digest`;
 
-  const pollItems = (digestData.polls || []).map(p =>
-    `<li><strong>${p.title}</strong> — ${p.newVotes} new vote${p.newVotes !== 1 ? 's' : ''}, ${p.totalVotes} total</li>`
-  ).join('');
+  const pollItems = (digestData.polls || [])
+    .map(
+      (p) =>
+        `<li><strong>${p.title}</strong> — ${p.newVotes} new vote${p.newVotes !== 1 ? 's' : ''}, ${p.totalVotes} total</li>`
+    )
+    .join('');
 
-  const ideaItems = (digestData.ideas || []).map(i =>
-    `<li><strong>${i.title}</strong> — ${i.newVotes} new vote${i.newVotes !== 1 ? 's' : ''}</li>`
-  ).join('');
+  const ideaItems = (digestData.ideas || [])
+    .map(
+      (i) =>
+        `<li><strong>${i.title}</strong> — ${i.newVotes} new vote${i.newVotes !== 1 ? 's' : ''}</li>`
+    )
+    .join('');
 
   const commentCount = digestData.newComments || 0;
 
@@ -551,7 +583,7 @@ export async function sendWeeklyDigestEmail(email, name, digestData, unsubscribe
   `;
 
   try {
-    const { data, error} = await client.emails.send({
+    const { data, error } = await client.emails.send({
       from: FROM_EMAIL,
       to: email,
       subject: 'Weekly Activity Digest - Doug Charles for Prosper',
@@ -582,7 +614,8 @@ export async function sendWeeklyDigestEmail(email, name, digestData, unsubscribe
  */
 export async function sendBroadcastEmail(subject, htmlBody, recipients) {
   const client = getResendClient();
-  if (!client) return { sent: 0, failed: recipients.length, errors: ['Email service not configured'] };
+  if (!client)
+    return { sent: 0, failed: recipients.length, errors: ['Email service not configured'] };
 
   const results = { sent: 0, failed: 0, errors: [] };
 

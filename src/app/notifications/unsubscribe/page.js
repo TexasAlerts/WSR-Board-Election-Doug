@@ -6,7 +6,13 @@ import Link from 'next/link';
 
 export default function UnsubscribePage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><p>Loading...</p></div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <p>Loading...</p>
+        </div>
+      }
+    >
       <UnsubscribeContent />
     </Suspense>
   );
@@ -49,7 +55,8 @@ function UnsubscribeContent() {
             <div className="text-navy text-5xl mb-4">&#9993;</div>
             <h1 className="text-xl font-semibold text-navy mb-2">Notification Preferences</h1>
             <p className="text-gray-600">
-              To manage your notification preferences, use the unsubscribe link in any notification email you have received.
+              To manage your notification preferences, use the unsubscribe link in any notification
+              email you have received.
             </p>
           </>
         )}

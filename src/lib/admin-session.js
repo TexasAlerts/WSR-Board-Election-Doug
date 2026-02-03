@@ -15,15 +15,13 @@ export async function createAdminSession(request) {
   const ip = request?.headers?.get('x-forwarded-for')?.split(',')[0] || 'unknown';
   const userAgent = request?.headers?.get('user-agent') || 'unknown';
 
-  const { error } = await supabase
-    .from('sessions')
-    .insert({
-      supporter_id: null,
-      token,
-      expires_at: expiresAt.toISOString(),
-      ip_address: ip,
-      user_agent: userAgent,
-    });
+  const { error } = await supabase.from('sessions').insert({
+    supporter_id: null,
+    token,
+    expires_at: expiresAt.toISOString(),
+    ip_address: ip,
+    user_agent: userAgent,
+  });
 
   if (error) {
     return null;
@@ -65,7 +63,7 @@ export async function deleteAdminSession(token) {
  */
 export async function requireAdmin(req) {
   const adminCookie = req.cookies.get('admin_session');
-  if (adminCookie && await validateAdminSession(adminCookie.value)) {
+  if (adminCookie && (await validateAdminSession(adminCookie.value))) {
     return true;
   }
   return false;

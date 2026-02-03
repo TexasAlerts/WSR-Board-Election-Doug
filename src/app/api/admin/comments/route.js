@@ -3,7 +3,10 @@ import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 import { sendCommentApprovedEmail, sendCommentRejectedEmail } from '../../../../lib/emailService';
-import { notifyParticipantsOfNewComment, notifyParentCommentAuthor } from '../../../../lib/notifications';
+import {
+  notifyParticipantsOfNewComment,
+  notifyParentCommentAuthor,
+} from '../../../../lib/notifications';
 
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
@@ -18,7 +21,8 @@ export async function GET(request) {
   try {
     let query = supabase
       .from('comments')
-      .select(`
+      .select(
+        `
         id,
         name,
         email,
@@ -33,7 +37,8 @@ export async function GET(request) {
         created_at,
         moderated_at,
         supporter_id
-      `)
+      `
+      )
       .order('created_at', { ascending: false });
 
     if (status && status !== 'all') {
@@ -56,33 +61,27 @@ export async function GET(request) {
     }
 
     // Get poll and idea titles for context
-    const pollIds = [...new Set(data.filter(c => c.poll_id).map(c => c.poll_id))];
-    const ideaIds = [...new Set(data.filter(c => c.idea_id).map(c => c.idea_id))];
+    const pollIds = [...new Set(data.filter((c) => c.poll_id).map((c) => c.poll_id))];
+    const ideaIds = [...new Set(data.filter((c) => c.idea_id).map((c) => c.idea_id))];
 
     let pollTitles = {};
     let ideaTitles = {};
 
     if (pollIds.length > 0) {
-      const { data: polls } = await supabase
-        .from('polls')
-        .select('id, title')
-        .in('id', pollIds);
+      const { data: polls } = await supabase.from('polls').select('id, title').in('id', pollIds);
       if (polls) {
-        polls.forEach(p => pollTitles[p.id] = p.title);
+        polls.forEach((p) => (pollTitles[p.id] = p.title));
       }
     }
 
     if (ideaIds.length > 0) {
-      const { data: ideas } = await supabase
-        .from('ideas')
-        .select('id, title')
-        .in('id', ideaIds);
+      const { data: ideas } = await supabase.from('ideas').select('id, title').in('id', ideaIds);
       if (ideas) {
-        ideas.forEach(i => ideaTitles[i.id] = i.title);
+        ideas.forEach((i) => (ideaTitles[i.id] = i.title));
       }
     }
 
-    const commentsWithContext = data.map(c => ({
+    const commentsWithContext = data.map((c) => ({
       ...c,
       poll_title: c.poll_id ? pollTitles[c.poll_id] : null,
       idea_title: c.idea_id ? ideaTitles[c.idea_id] : null,
@@ -141,10 +140,7 @@ export async function PUT(request) {
       updates.rejection_reason = rejection_reason;
     }
 
-    const { error } = await supabase
-      .from('comments')
-      .update(updates)
-      .eq('id', id);
+    const { error } = await supabase.from('comments').update(updates).eq('id', id);
 
     if (error) {
       await logError({
@@ -161,7 +157,8 @@ export async function PUT(request) {
     }
 
     // Log the moderation action
-    const eventType = status === 'approved' ? AuditEvents.COMMENT_APPROVED : AuditEvents.COMMENT_REJECTED;
+    const eventType =
+      status === 'approved' ? AuditEvents.COMMENT_APPROVED : AuditEvents.COMMENT_REJECTED;
 
     await logAudit({
       eventType,
@@ -186,23 +183,26 @@ export async function PUT(request) {
     // Send notifications (fire-and-forget)
     if (status === 'approved' && oldComment) {
       const contextTitle = oldComment.poll_id
-        ? (await supabase.from('polls').select('title').eq('id', oldComment.poll_id).single()).data?.title
-        : (await supabase.from('ideas').select('title').eq('id', oldComment.idea_id).single()).data?.title;
+        ? (await supabase.from('polls').select('title').eq('id', oldComment.poll_id).single()).data
+            ?.title
+        : (await supabase.from('ideas').select('title').eq('id', oldComment.idea_id).single()).data
+            ?.title;
       const contextUrl = oldComment.poll_id
         ? `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dougcharles.com'}/polls/${oldComment.poll_id}`
         : `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dougcharles.com'}/ideas/${oldComment.idea_id}`;
 
       // Notify author of approval
       sendCommentApprovedEmail(
-        oldComment.email, oldComment.name,
+        oldComment.email,
+        oldComment.name,
         oldComment.content.substring(0, 200),
-        contextTitle || 'a discussion', contextUrl
+        contextTitle || 'a discussion',
+        contextUrl
       ).catch(() => {});
 
       // Notify other participants
       const fullComment = { ...oldComment, id, display_name: oldComment.name };
-      notifyParticipantsOfNewComment(fullComment)
-        .catch(() => {});
+      notifyParticipantsOfNewComment(fullComment).catch(() => {});
 
       // If it's a reply, notify parent author
       const { data: commentWithParent } = await supabase
@@ -211,12 +211,14 @@ export async function PUT(request) {
         .eq('id', id)
         .single();
       if (commentWithParent?.parent_id) {
-        notifyParentCommentAuthor({ ...fullComment, parent_id: commentWithParent.parent_id })
-          .catch(() => {});
+        notifyParentCommentAuthor({ ...fullComment, parent_id: commentWithParent.parent_id }).catch(
+          () => {}
+        );
       }
     } else if (status === 'rejected' && oldComment) {
-      sendCommentRejectedEmail(oldComment.email, oldComment.name, rejection_reason || '')
-        .catch(() => {});
+      sendCommentRejectedEmail(oldComment.email, oldComment.name, rejection_reason || '').catch(
+        () => {}
+      );
     }
 
     return NextResponse.json({ ok: true });

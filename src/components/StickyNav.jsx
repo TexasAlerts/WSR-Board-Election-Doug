@@ -1,17 +1,9 @@
-"use client";
+'use client';
 
 import { useRef, useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
-import {
-  Menu,
-  X,
-  Home as HomeIcon,
-  User,
-  LogOut,
-  Settings,
-  ChevronDown,
-} from 'lucide-react';
+import { Menu, X, Home as HomeIcon, User, LogOut, Settings, ChevronDown } from 'lucide-react';
 
 export default function StickyNav() {
   const navRef = useRef(null);
@@ -93,7 +85,9 @@ export default function StickyNav() {
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         <Link href="/" className="text-xl font-bold text-navy flex items-center" aria-label="Home">
           <span className="sm:inline hidden">Home</span>
-          <span className="sm:hidden" aria-hidden="true"><HomeIcon className="h-7 w-7" /></span>
+          <span className="sm:hidden" aria-hidden="true">
+            <HomeIcon className="h-7 w-7" />
+          </span>
         </Link>
         <button
           ref={mobileMenuBtnRef}
@@ -118,10 +112,16 @@ export default function StickyNav() {
               aria-controls="about-dropdown-menu"
             >
               About
-              <ChevronDown className={`w-4 h-4 transition-transform ${aboutMenuOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown
+                className={`w-4 h-4 transition-transform ${aboutMenuOpen ? 'rotate-180' : ''}`}
+              />
             </button>
             {aboutMenuOpen && (
-              <div id="about-dropdown-menu" role="menu" className="absolute left-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
+              <div
+                id="about-dropdown-menu"
+                role="menu"
+                className="absolute left-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50"
+              >
                 <Link
                   href="/about"
                   role="menuitem"
@@ -174,8 +174,8 @@ export default function StickyNav() {
           </Link>
 
           {/* Auth section */}
-          {!loading && (
-            isAuthenticated ? (
+          {!loading &&
+            (isAuthenticated ? (
               <div className="relative">
                 <button
                   ref={userBtnRef}
@@ -189,7 +189,11 @@ export default function StickyNav() {
                   <span>{supporter?.first_name}</span>
                 </button>
                 {userMenuOpen && (
-                  <div id="user-dropdown-menu" role="menu" className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
+                  <div
+                    id="user-dropdown-menu"
+                    role="menu"
+                    className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50"
+                  >
                     <Link
                       href="/settings"
                       role="menuitem"
@@ -225,10 +229,12 @@ export default function StickyNav() {
               <Link href="/auth/login" className="text-gray-600 hover:text-navy transition-colors">
                 Sign In
               </Link>
-            )
-          )}
+            ))}
 
-          <Link href="/donate" className="bg-prosper-red text-white px-5 py-2 rounded-lg font-semibold hover:bg-red-dark transition-colors">
+          <Link
+            href="/donate"
+            className="bg-prosper-red text-white px-5 py-2 rounded-lg font-semibold hover:bg-red-dark transition-colors"
+          >
             Donate
           </Link>
         </div>
@@ -240,45 +246,88 @@ export default function StickyNav() {
           aria-label="Mobile navigation"
         >
           {/* About section */}
-          <div className="py-2 px-3 text-xs font-bold text-navy uppercase tracking-wider">About Doug</div>
-          <Link href="/about" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
+          <div className="py-2 px-3 text-xs font-bold text-navy uppercase tracking-wider">
+            About Doug
+          </div>
+          <Link
+            href="/about"
+            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            onClick={() => setOpen(false)}
+          >
             About Doug
           </Link>
-          <Link href="/why" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
+          <Link
+            href="/why"
+            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            onClick={() => setOpen(false)}
+          >
             Why I'm Running
           </Link>
-          <Link href="/priorities" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
+          <Link
+            href="/priorities"
+            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            onClick={() => setOpen(false)}
+          >
             Priorities
           </Link>
-          <Link href="/track-record" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
+          <Link
+            href="/track-record"
+            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            onClick={() => setOpen(false)}
+          >
             Track Record
           </Link>
 
           {/* Engage section */}
-          <div className="py-2 px-3 text-xs font-bold text-navy uppercase tracking-wider mt-3">Get Involved</div>
-          <Link href="/polls" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
+          <div className="py-2 px-3 text-xs font-bold text-navy uppercase tracking-wider mt-3">
+            Get Involved
+          </div>
+          <Link
+            href="/polls"
+            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            onClick={() => setOpen(false)}
+          >
             Polls
           </Link>
-          <Link href="/ideas" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
+          <Link
+            href="/ideas"
+            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            onClick={() => setOpen(false)}
+          >
             Ideas
           </Link>
-          <Link href="/qna" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
+          <Link
+            href="/qna"
+            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            onClick={() => setOpen(false)}
+          >
             Q&A
           </Link>
-          <Link href="/endorsements" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
+          <Link
+            href="/endorsements"
+            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            onClick={() => setOpen(false)}
+          >
             Endorsements
           </Link>
-          <Link href="/get-involved" className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]" onClick={() => setOpen(false)}>
+          <Link
+            href="/get-involved"
+            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            onClick={() => setOpen(false)}
+          >
             Get Involved
           </Link>
 
           {/* Auth section - Mobile */}
           <div className="pt-4 mt-3 border-t border-gray-200 space-y-3">
-            {!loading && (
-              isAuthenticated ? (
+            {!loading &&
+              (isAuthenticated ? (
                 <>
                   <div className="px-4 py-2 text-sm text-gray-500 bg-gray-50 rounded-lg">
-                    Signed in as <span className="font-medium text-navy">{supporter?.first_name} {supporter?.last_name}</span>
+                    Signed in as{' '}
+                    <span className="font-medium text-navy">
+                      {supporter?.first_name} {supporter?.last_name}
+                    </span>
                   </div>
                   <Link
                     href="/settings"
@@ -320,9 +369,12 @@ export default function StickyNav() {
                     Sign Up
                   </Link>
                 </div>
-              )
-            )}
-            <Link href="/donate" className="block py-3.5 bg-prosper-red text-white text-center rounded-xl font-semibold min-h-[48px] flex items-center justify-center active:bg-prosper-red-dark shadow-md" onClick={() => setOpen(false)}>
+              ))}
+            <Link
+              href="/donate"
+              className="block py-3.5 bg-prosper-red text-white text-center rounded-xl font-semibold min-h-[48px] flex items-center justify-center active:bg-prosper-red-dark shadow-md"
+              onClick={() => setOpen(false)}
+            >
               Donate to the Campaign
             </Link>
           </div>

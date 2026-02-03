@@ -5,13 +5,30 @@ import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
-  User, Phone, Mail, MapPin, CheckCircle, AlertCircle,
-  Loader2, Bell, MessageSquare, Vote, Lightbulb, Save, Pencil, X,
+  User,
+  Phone,
+  Mail,
+  MapPin,
+  CheckCircle,
+  AlertCircle,
+  Loader2,
+  Bell,
+  MessageSquare,
+  Vote,
+  Lightbulb,
+  Save,
+  Pencil,
+  X,
 } from 'lucide-react';
 
 const NOTIFICATION_TYPES = [
   { label: 'New Polls', emailKey: 'email_on_new_poll', smsKey: 'sms_on_new_poll' },
-  { label: 'Comments & Replies', emailKey: 'email_on_new_comment', smsKey: 'sms_on_comment_activity', linkedEmailKeys: ['email_on_new_reply', 'email_on_comment_moderation'] },
+  {
+    label: 'Comments & Replies',
+    emailKey: 'email_on_new_comment',
+    smsKey: 'sms_on_comment_activity',
+    linkedEmailKeys: ['email_on_new_reply', 'email_on_comment_moderation'],
+  },
   { label: 'New Ideas', emailKey: 'email_on_weekly_digest', smsKey: 'sms_on_new_idea' },
   { label: 'Campaign Broadcasts', emailKey: 'email_on_broadcast', smsKey: 'sms_on_broadcast' },
   { label: 'System Messages', emailKey: 'email_on_system', smsKey: 'sms_on_system' },
@@ -28,7 +45,14 @@ export default function SettingsPage() {
   const router = useRouter();
 
   // Profile state
-  const [profile, setProfile] = useState({ firstName: '', lastName: '', streetAddress: '', city: '', state: '', zipCode: '' });
+  const [profile, setProfile] = useState({
+    firstName: '',
+    lastName: '',
+    streetAddress: '',
+    city: '',
+    state: '',
+    zipCode: '',
+  });
   const [profileMsg, setProfileMsg] = useState({ type: '', text: '' });
   const [profileLoading, setProfileLoading] = useState(false);
 
@@ -78,7 +102,9 @@ export default function SettingsPage() {
     if (!isAuthenticated) return;
     fetch('/api/notifications/preferences')
       .then((r) => r.json())
-      .then((d) => { if (d.ok) setPrefs(d.data); })
+      .then((d) => {
+        if (d.ok) setPrefs(d.data);
+      })
       .catch(() => {});
   }, [isAuthenticated]);
 
@@ -137,7 +163,10 @@ export default function SettingsPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to update phone');
       setShowPhoneVerify(true);
-      setPhoneMsg({ type: 'success', text: data.smsSent ? 'Verification code sent to your phone!' : data.message });
+      setPhoneMsg({
+        type: 'success',
+        text: data.smsSent ? 'Verification code sent to your phone!' : data.message,
+      });
     } catch (err) {
       setPhoneMsg({ type: 'error', text: err.message });
     } finally {
@@ -198,7 +227,9 @@ export default function SettingsPage() {
   const toggleEmailGroup = (type, value) => {
     const updates = { [type.emailKey]: value };
     if (type.linkedEmailKeys) {
-      type.linkedEmailKeys.forEach((k) => { updates[k] = value; });
+      type.linkedEmailKeys.forEach((k) => {
+        updates[k] = value;
+      });
     }
     setPrefs((prev) => ({ ...prev, ...updates }));
   };
@@ -260,14 +291,18 @@ export default function SettingsPage() {
             </div>
             <div>
               <span className="form-label">Name</span>
-              <p className="text-gray-900">{supporter?.first_name} {supporter?.last_name}</p>
+              <p className="text-gray-900">
+                {supporter?.first_name} {supporter?.last_name}
+              </p>
             </div>
             <div>
               <span className="form-label flex items-center gap-2">
                 <MapPin className="w-4 h-4" /> Address
               </span>
               <p className="text-gray-900">{supporter?.street_address}</p>
-              <p className="text-gray-900">{supporter?.city}, {supporter?.state} {supporter?.zip_code}</p>
+              <p className="text-gray-900">
+                {supporter?.city}, {supporter?.state} {supporter?.zip_code}
+              </p>
             </div>
           </div>
         ) : (
@@ -290,12 +325,32 @@ export default function SettingsPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="settings-firstName" className="form-label">First Name</label>
-                <input id="settings-firstName" type="text" value={profile.firstName} onChange={(e) => setProfile({ ...profile, firstName: e.target.value })} required aria-required="true" className="form-input" />
+                <label htmlFor="settings-firstName" className="form-label">
+                  First Name
+                </label>
+                <input
+                  id="settings-firstName"
+                  type="text"
+                  value={profile.firstName}
+                  onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
+                  required
+                  aria-required="true"
+                  className="form-input"
+                />
               </div>
               <div>
-                <label htmlFor="settings-lastName" className="form-label">Last Name</label>
-                <input id="settings-lastName" type="text" value={profile.lastName} onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} required aria-required="true" className="form-input" />
+                <label htmlFor="settings-lastName" className="form-label">
+                  Last Name
+                </label>
+                <input
+                  id="settings-lastName"
+                  type="text"
+                  value={profile.lastName}
+                  onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
+                  required
+                  aria-required="true"
+                  className="form-input"
+                />
               </div>
             </div>
 
@@ -303,30 +358,91 @@ export default function SettingsPage() {
               <label htmlFor="settings-address" className="form-label flex items-center gap-2">
                 <MapPin className="w-4 h-4" /> Street Address
               </label>
-              <input id="settings-address" type="text" value={profile.streetAddress} onChange={(e) => setProfile({ ...profile, streetAddress: e.target.value })} required aria-required="true" className="form-input" />
+              <input
+                id="settings-address"
+                type="text"
+                value={profile.streetAddress}
+                onChange={(e) => setProfile({ ...profile, streetAddress: e.target.value })}
+                required
+                aria-required="true"
+                className="form-input"
+              />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
               <div className="col-span-1 sm:col-span-3">
-                <label htmlFor="settings-city" className="form-label">City</label>
-                <input id="settings-city" type="text" value={profile.city} onChange={(e) => setProfile({ ...profile, city: e.target.value })} required aria-required="true" className="form-input" />
+                <label htmlFor="settings-city" className="form-label">
+                  City
+                </label>
+                <input
+                  id="settings-city"
+                  type="text"
+                  value={profile.city}
+                  onChange={(e) => setProfile({ ...profile, city: e.target.value })}
+                  required
+                  aria-required="true"
+                  className="form-input"
+                />
               </div>
               <div className="col-span-1">
-                <label htmlFor="settings-state" className="form-label">State</label>
-                <input id="settings-state" type="text" value={profile.state} onChange={(e) => setProfile({ ...profile, state: e.target.value })} maxLength={2} className="form-input" />
+                <label htmlFor="settings-state" className="form-label">
+                  State
+                </label>
+                <input
+                  id="settings-state"
+                  type="text"
+                  value={profile.state}
+                  onChange={(e) => setProfile({ ...profile, state: e.target.value })}
+                  maxLength={2}
+                  className="form-input"
+                />
               </div>
               <div className="col-span-1 sm:col-span-2">
-                <label htmlFor="settings-zip" className="form-label">ZIP Code</label>
-                <input id="settings-zip" type="text" value={profile.zipCode} onChange={(e) => setProfile({ ...profile, zipCode: e.target.value })} required className="form-input" />
+                <label htmlFor="settings-zip" className="form-label">
+                  ZIP Code
+                </label>
+                <input
+                  id="settings-zip"
+                  type="text"
+                  value={profile.zipCode}
+                  onChange={(e) => setProfile({ ...profile, zipCode: e.target.value })}
+                  required
+                  className="form-input"
+                />
               </div>
             </div>
 
             <div className="flex gap-3">
-              <button type="submit" disabled={profileLoading} className="btn-primary flex items-center gap-2">
-                {profileLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+              <button
+                type="submit"
+                disabled={profileLoading}
+                className="btn-primary flex items-center gap-2"
+              >
+                {profileLoading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )}
                 Save Profile
               </button>
-              <button type="button" onClick={() => { setEditingProfile(false); setProfileMsg({ type: '', text: '' }); if (supporter) { setProfile({ firstName: supporter.first_name || '', lastName: supporter.last_name || '', streetAddress: supporter.street_address || '', city: supporter.city || '', state: supporter.state || '', zipCode: supporter.zip_code || '' }); } }} className="btn-outline flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setEditingProfile(false);
+                  setProfileMsg({ type: '', text: '' });
+                  if (supporter) {
+                    setProfile({
+                      firstName: supporter.first_name || '',
+                      lastName: supporter.last_name || '',
+                      streetAddress: supporter.street_address || '',
+                      city: supporter.city || '',
+                      state: supporter.state || '',
+                      zipCode: supporter.zip_code || '',
+                    });
+                  }
+                }}
+                className="btn-outline flex items-center gap-2"
+              >
                 <X className="w-4 h-4" /> Cancel
               </button>
             </div>
@@ -355,7 +471,8 @@ export default function SettingsPage() {
         {!phoneVerified && !editingPhone && !showPhoneVerify && (
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
             <p className="text-yellow-800 text-sm font-medium">
-              Your phone is not verified. Update to a cell phone number and verify it to receive text message alerts.
+              Your phone is not verified. Update to a cell phone number and verify it to receive
+              text message alerts.
             </p>
           </div>
         )}
@@ -381,7 +498,9 @@ export default function SettingsPage() {
         ) : showPhoneVerify ? (
           <form onSubmit={handlePhoneVerify} className="space-y-4">
             <div>
-              <label htmlFor="settings-sms-code" className="form-label">Verification Code</label>
+              <label htmlFor="settings-sms-code" className="form-label">
+                Verification Code
+              </label>
               <input
                 id="settings-sms-code"
                 type="text"
@@ -394,13 +513,28 @@ export default function SettingsPage() {
                 placeholder="000000"
                 autoComplete="one-time-code"
               />
-              <p className="text-xs text-gray-500 mt-1 text-center">Enter the 6-digit code sent to your phone</p>
+              <p className="text-xs text-gray-500 mt-1 text-center">
+                Enter the 6-digit code sent to your phone
+              </p>
             </div>
             <div className="flex gap-3">
-              <button type="button" onClick={() => { setShowPhoneVerify(false); setEditingPhone(false); setSmsCode(''); setPhoneMsg({ type: '', text: '' }); }} className="btn-outline flex-1">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPhoneVerify(false);
+                  setEditingPhone(false);
+                  setSmsCode('');
+                  setPhoneMsg({ type: '', text: '' });
+                }}
+                className="btn-outline flex-1"
+              >
                 Cancel
               </button>
-              <button type="submit" disabled={phoneLoading || smsCode.length !== 6} className="btn-secondary flex-1 flex items-center justify-center gap-2">
+              <button
+                type="submit"
+                disabled={phoneLoading || smsCode.length !== 6}
+                className="btn-secondary flex-1 flex items-center justify-center gap-2"
+              >
                 {phoneLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                 Verify Code
               </button>
@@ -410,7 +544,9 @@ export default function SettingsPage() {
           /* Edit mode */
           <form onSubmit={handlePhoneUpdate} className="space-y-4">
             <div>
-              <label htmlFor="settings-phone" className="form-label">Cell Phone Number</label>
+              <label htmlFor="settings-phone" className="form-label">
+                Cell Phone Number
+              </label>
               <input
                 id="settings-phone"
                 type="tel"
@@ -425,17 +561,43 @@ export default function SettingsPage() {
                 Must be a cell phone that can receive text messages.
               </p>
               <p className="text-xs text-gray-500 mt-2">
-                By updating your phone number, you consent to receive SMS verification codes, campaign updates, and donation solicitations from Doug Charles for Prosper Town Council. Message frequency may vary. Msg &amp; data rates may apply. Reply STOP to opt out. Reply HELP for help. Consent is not a condition of purchase or registration.{' '}
-                <Link href="/privacy" className="text-navy underline">Privacy Policy</Link> &{' '}
-                <Link href="/terms" className="text-navy underline">Terms</Link>.
+                By updating your phone number, you consent to receive SMS verification codes,
+                campaign updates, and donation solicitations from Doug Charles for Prosper Town
+                Council. Message frequency may vary. Msg &amp; data rates may apply. Reply STOP to
+                opt out. Reply HELP for help. Consent is not a condition of purchase or
+                registration.{' '}
+                <Link href="/privacy" className="text-navy underline">
+                  Privacy Policy
+                </Link>{' '}
+                &{' '}
+                <Link href="/terms" className="text-navy underline">
+                  Terms
+                </Link>
+                .
               </p>
             </div>
             <div className="flex gap-3">
-              <button type="submit" disabled={phoneLoading} className="btn-secondary flex items-center gap-2">
-                {phoneLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Phone className="w-4 h-4" />}
+              <button
+                type="submit"
+                disabled={phoneLoading}
+                className="btn-secondary flex items-center gap-2"
+              >
+                {phoneLoading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Phone className="w-4 h-4" />
+                )}
                 Update & Verify Phone
               </button>
-              <button type="button" onClick={() => { setEditingPhone(false); setPhoneMsg({ type: '', text: '' }); setPhone(supporter?.phone || ''); }} className="btn-outline flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setEditingPhone(false);
+                  setPhoneMsg({ type: '', text: '' });
+                  setPhone(supporter?.phone || '');
+                }}
+                className="btn-outline flex items-center gap-2"
+              >
                 <X className="w-4 h-4" /> Cancel
               </button>
             </div>
@@ -449,7 +611,9 @@ export default function SettingsPage() {
           <Bell className="w-5 h-5" />
           Notification Preferences
         </h2>
-        <p className="text-sm text-gray-600 mb-6">Choose how you want to be notified for each type of activity.</p>
+        <p className="text-sm text-gray-600 mb-6">
+          Choose how you want to be notified for each type of activity.
+        </p>
 
         <StatusMessage msg={prefsMsg} />
 
@@ -469,12 +633,19 @@ export default function SettingsPage() {
               const smsOn = prefs[type.smsKey] !== false;
 
               return (
-                <div key={type.label} className="grid grid-cols-[1fr_auto_auto] gap-4 items-center py-2 border-b border-gray-100">
+                <div
+                  key={type.label}
+                  className="grid grid-cols-[1fr_auto_auto] gap-4 items-center py-2 border-b border-gray-100"
+                >
                   <span className="text-sm font-medium text-gray-700">{type.label}</span>
                   <div className="w-16 flex justify-center">
                     <ToggleSwitch
                       checked={emailOn}
-                      onChange={(v) => type.linkedEmailKeys ? toggleEmailGroup(type, v) : togglePref(type.emailKey, v)}
+                      onChange={(v) =>
+                        type.linkedEmailKeys
+                          ? toggleEmailGroup(type, v)
+                          : togglePref(type.emailKey, v)
+                      }
                       label={`${type.label} email notifications`}
                     />
                   </div>
@@ -486,7 +657,12 @@ export default function SettingsPage() {
                         label={`${type.label} text notifications`}
                       />
                     ) : (
-                      <span className="text-xs text-gray-500" title="Verify your phone to enable text notifications">—</span>
+                      <span
+                        className="text-xs text-gray-500"
+                        title="Verify your phone to enable text notifications"
+                      >
+                        —
+                      </span>
                     )}
                   </div>
                 </div>
@@ -495,12 +671,28 @@ export default function SettingsPage() {
 
             {!phoneVerified && (
               <p className="text-xs text-gray-500 mt-2">
-                Text message notifications require a verified cell phone number. <button type="button" onClick={() => document.getElementById('settings-phone')?.focus()} className="text-navy underline hover:text-navy-dark">Update your phone above</button> to enable them.
+                Text message notifications require a verified cell phone number.{' '}
+                <button
+                  type="button"
+                  onClick={() => document.getElementById('settings-phone')?.focus()}
+                  className="text-navy underline hover:text-navy-dark"
+                >
+                  Update your phone above
+                </button>{' '}
+                to enable them.
               </p>
             )}
 
-            <button onClick={handlePrefsSave} disabled={prefsLoading} className="btn-primary flex items-center gap-2 mt-4">
-              {prefsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+            <button
+              onClick={handlePrefsSave}
+              disabled={prefsLoading}
+              className="btn-primary flex items-center gap-2 mt-4"
+            >
+              {prefsLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Save className="w-4 h-4" />
+              )}
               Save Preferences
             </button>
           </div>
@@ -545,9 +737,21 @@ export default function SettingsPage() {
         ) : activity.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
             <p>No {activeTab} yet.</p>
-            {activeTab === 'votes' && <Link href="/polls" className="text-navy underline text-sm mt-2 inline-block">View polls</Link>}
-            {activeTab === 'ideas' && <Link href="/ideas" className="text-navy underline text-sm mt-2 inline-block">Submit an idea</Link>}
-            {activeTab === 'comments' && <Link href="/polls" className="text-navy underline text-sm mt-2 inline-block">Join a discussion</Link>}
+            {activeTab === 'votes' && (
+              <Link href="/polls" className="text-navy underline text-sm mt-2 inline-block">
+                View polls
+              </Link>
+            )}
+            {activeTab === 'ideas' && (
+              <Link href="/ideas" className="text-navy underline text-sm mt-2 inline-block">
+                Submit an idea
+              </Link>
+            )}
+            {activeTab === 'comments' && (
+              <Link href="/polls" className="text-navy underline text-sm mt-2 inline-block">
+                Join a discussion
+              </Link>
+            )}
           </div>
         ) : (
           <div className="space-y-3">
@@ -565,8 +769,16 @@ function StatusMessage({ msg }) {
   if (!msg.text) return null;
   const isError = msg.type === 'error';
   return (
-    <div role={isError ? 'alert' : 'status'} aria-live="polite" className={`p-4 rounded-lg flex items-start gap-3 mb-4 ${isError ? 'bg-red-50 border border-red-200' : 'bg-green-50 border border-green-200'}`}>
-      {isError ? <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" /> : <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />}
+    <div
+      role={isError ? 'alert' : 'status'}
+      aria-live="polite"
+      className={`p-4 rounded-lg flex items-start gap-3 mb-4 ${isError ? 'bg-red-50 border border-red-200' : 'bg-green-50 border border-green-200'}`}
+    >
+      {isError ? (
+        <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+      ) : (
+        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+      )}
       <p className={`text-sm ${isError ? 'text-red-700' : 'text-green-700'}`}>{msg.text}</p>
     </div>
   );
@@ -582,7 +794,9 @@ function ToggleSwitch({ checked, onChange, label }) {
       onClick={() => onChange(!checked)}
       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors min-w-[44px] min-h-[44px] justify-center ${checked ? 'bg-navy' : 'bg-gray-300'}`}
     >
-      <span className={`inline-block h-4 w-4 rounded-full bg-white transition-transform absolute ${checked ? 'translate-x-2.5' : '-translate-x-2.5'}`} />
+      <span
+        className={`inline-block h-4 w-4 rounded-full bg-white transition-transform absolute ${checked ? 'translate-x-2.5' : '-translate-x-2.5'}`}
+      />
     </button>
   );
 }
@@ -591,7 +805,10 @@ function ActivityItem({ item, type }) {
   if (type === 'votes') {
     const poll = item.polls;
     return (
-      <Link href="/polls" className="block p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+      <Link
+        href="/polls"
+        className="block p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+      >
         <p className="font-medium text-navy text-sm">{poll?.title || 'Poll'}</p>
         <p className="text-xs text-gray-500 mt-1">
           Voted {new Date(item.created_at).toLocaleDateString()}
@@ -611,16 +828,26 @@ function ActivityItem({ item, type }) {
       declined: 'bg-red-100 text-red-800',
     };
     return (
-      <Link href="/ideas" className="block p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+      <Link
+        href="/ideas"
+        className="block p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+      >
         <div className="flex items-center justify-between gap-2">
           <p className="font-medium text-navy text-sm">{item.title}</p>
-          <span className={`text-xs px-2 py-0.5 rounded-full ${statusColors[item.status] || 'bg-gray-100 text-gray-600'}`}>
+          <span
+            className={`text-xs px-2 py-0.5 rounded-full ${statusColors[item.status] || 'bg-gray-100 text-gray-600'}`}
+          >
             {item.status}
           </span>
         </div>
         <p className="text-xs text-gray-500 mt-1">
           Submitted {new Date(item.created_at).toLocaleDateString()}
-          {item.upvotes > 0 && <span> — {item.upvotes} upvote{item.upvotes !== 1 ? 's' : ''}</span>}
+          {item.upvotes > 0 && (
+            <span>
+              {' '}
+              — {item.upvotes} upvote{item.upvotes !== 1 ? 's' : ''}
+            </span>
+          )}
         </p>
       </Link>
     );
@@ -630,14 +857,19 @@ function ActivityItem({ item, type }) {
     const target = item.polls?.title || item.ideas?.title || 'Discussion';
     const isReply = !!item.parent_id;
     return (
-      <Link href={item.poll_id ? '/polls' : '/ideas'} className="block p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+      <Link
+        href={item.poll_id ? '/polls' : '/ideas'}
+        className="block p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+      >
         <p className="text-xs text-gray-500 mb-1">
           {isReply ? 'Reply' : 'Comment'} on <span className="font-medium text-navy">{target}</span>
         </p>
         <p className="text-sm text-gray-700 line-clamp-2">{item.content}</p>
         <p className="text-xs text-gray-400 mt-1">
           {new Date(item.created_at).toLocaleDateString()}
-          <span className={`ml-2 ${item.status === 'approved' ? 'text-green-600' : item.status === 'rejected' ? 'text-red-600' : 'text-yellow-600'}`}>
+          <span
+            className={`ml-2 ${item.status === 'approved' ? 'text-green-600' : item.status === 'rejected' ? 'text-red-600' : 'text-yellow-600'}`}
+          >
             {item.status}
           </span>
         </p>

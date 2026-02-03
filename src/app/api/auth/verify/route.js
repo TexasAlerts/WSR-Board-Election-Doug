@@ -96,10 +96,7 @@ export async function POST(request) {
       .eq('id', supporter.id);
 
     if (updateError) {
-      return NextResponse.json(
-        { ok: false, error: 'Failed to update account' },
-        { status: 500 }
-      );
+      return NextResponse.json({ ok: false, error: 'Failed to update account' }, { status: 500 });
     }
 
     // Mark verification token as used
@@ -110,8 +107,8 @@ export async function POST(request) {
     if (smsCode) {
       const smsResult = await sendVerificationSMS(supporter.phone, smsCode);
       if (!smsResult.success) {
-      // silently ignored
-    }
+        // silently ignored
+      }
     }
 
     // Log event
@@ -146,9 +143,6 @@ export async function POST(request) {
       method: 'POST',
       request,
     });
-    return NextResponse.json(
-      { ok: false, error: 'An unexpected error occurred' },
-      { status: 500 }
-    );
+    return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

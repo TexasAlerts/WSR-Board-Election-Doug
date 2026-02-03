@@ -70,10 +70,12 @@ export async function validateSession(token) {
   const supabase = getSupabase();
   const { data: session, error } = await supabase
     .from('sessions')
-    .select(`
+    .select(
+      `
       *,
       supporter:supporters(id, first_name, last_name, email, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at)
-    `)
+    `
+    )
     .eq('token', token)
     .gt('expires_at', new Date().toISOString())
     .single();
@@ -97,7 +99,7 @@ export async function getCurrentSupporter() {
 
   // Fallback: check password-based admin session
   const adminToken = cookieStore.get('admin_session')?.value;
-  if (adminToken && await validateAdminSession(adminToken)) {
+  if (adminToken && (await validateAdminSession(adminToken))) {
     // Return a synthetic admin supporter object
     return { id: 'admin', role: 'super_admin', first_name: 'Admin', last_name: '' };
   }
@@ -108,10 +110,7 @@ export async function getCurrentSupporter() {
 // Delete session (logout)
 export async function deleteSession(token) {
   const supabase = getSupabase();
-  const { error } = await supabase
-    .from('sessions')
-    .delete()
-    .eq('token', token);
+  const { error } = await supabase.from('sessions').delete().eq('token', token);
 
   return !error;
 }
@@ -119,10 +118,7 @@ export async function deleteSession(token) {
 // Delete all sessions for a supporter
 export async function deleteAllSessions(supporterId) {
   const supabase = getSupabase();
-  const { error } = await supabase
-    .from('sessions')
-    .delete()
-    .eq('supporter_id', supporterId);
+  const { error } = await supabase.from('sessions').delete().eq('supporter_id', supporterId);
 
   return !error;
 }
@@ -132,7 +128,9 @@ export async function createEmailVerification(supporterId, purpose = 'verify') {
   const supabase = getSupabase();
   const token = generateToken(64);
   const expiresAt = new Date();
-  expiresAt.setHours(expiresAt.getHours() + (parseInt(process.env.VERIFICATION_EXPIRY_HOURS) || 24));
+  expiresAt.setHours(
+    expiresAt.getHours() + (parseInt(process.env.VERIFICATION_EXPIRY_HOURS) || 24)
+  );
 
   const { data, error } = await supabase
     .from('email_verifications')
@@ -185,7 +183,9 @@ export async function createSMSVerification(supporterId, phone) {
   const supabase = getSupabase();
   const code = generateSMSCode();
   const expiresAt = new Date();
-  expiresAt.setMinutes(expiresAt.getMinutes() + (parseInt(process.env.SMS_CODE_EXPIRY_MINUTES) || 10));
+  expiresAt.setMinutes(
+    expiresAt.getMinutes() + (parseInt(process.env.SMS_CODE_EXPIRY_MINUTES) || 10)
+  );
 
   // Invalidate any existing codes for this supporter
   await supabase
@@ -279,7 +279,9 @@ export async function getSupporterByEmail(email) {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('supporters')
-    .select('id, first_name, last_name, email, password_hash, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at')
+    .select(
+      'id, first_name, last_name, email, password_hash, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at'
+    )
     .eq('email', email.toLowerCase())
     .single();
 
@@ -292,7 +294,9 @@ export async function getSupporterById(id) {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('supporters')
-    .select('id, first_name, last_name, email, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at')
+    .select(
+      'id, first_name, last_name, email, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at'
+    )
     .eq('id', id)
     .single();
 

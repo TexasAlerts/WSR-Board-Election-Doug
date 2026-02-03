@@ -47,9 +47,8 @@ export default function AdminPollsPage() {
     setError('');
 
     try {
-      const url = statusFilter === 'all'
-        ? '/api/admin/polls'
-        : `/api/admin/polls?status=${statusFilter}`;
+      const url =
+        statusFilter === 'all' ? '/api/admin/polls' : `/api/admin/polls?status=${statusFilter}`;
       const res = await fetch(url);
       const data = await res.json();
 
@@ -107,9 +106,7 @@ export default function AdminPollsPage() {
         closes_at: formData.closes_at || null,
       };
 
-      const url = editingPoll
-        ? `/api/admin/polls/${editingPoll.id}`
-        : '/api/admin/polls';
+      const url = editingPoll ? `/api/admin/polls/${editingPoll.id}` : '/api/admin/polls';
       const method = editingPoll ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -140,9 +137,10 @@ export default function AdminPollsPage() {
       allow_comments: poll.allow_comments,
       show_results_before_vote: poll.show_results_before_vote,
       closes_at: poll.closes_at ? poll.closes_at.slice(0, 16) : '',
-      choices: poll.poll_choices.length > 0
-        ? poll.poll_choices.map((c) => ({ id: c.id, choice_text: c.choice_text }))
-        : [{ choice_text: '' }, { choice_text: '' }],
+      choices:
+        poll.poll_choices.length > 0
+          ? poll.poll_choices.map((c) => ({ id: c.id, choice_text: c.choice_text }))
+          : [{ choice_text: '' }, { choice_text: '' }],
     });
     setEditingPoll(poll);
     setShowCreateForm(true);
@@ -269,7 +267,10 @@ export default function AdminPollsPage() {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="poll-title" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="poll-title"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Title *
                   </label>
                   <input
@@ -284,7 +285,10 @@ export default function AdminPollsPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="poll-description" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="poll-description"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Description
                   </label>
                   <textarea
@@ -299,7 +303,10 @@ export default function AdminPollsPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="poll-type" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="poll-type"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Poll Type
                     </label>
                     <select
@@ -315,7 +322,10 @@ export default function AdminPollsPage() {
                   </div>
 
                   <div>
-                    <label htmlFor="poll-visibility" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="poll-visibility"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Visibility
                     </label>
                     <select
@@ -325,7 +335,9 @@ export default function AdminPollsPage() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                     >
                       <option value="public">Public (anyone can vote)</option>
-                      <option value="public_view">Public View (view only, must login to vote)</option>
+                      <option value="public_view">
+                        Public View (view only, must login to vote)
+                      </option>
                       <option value="authenticated">Authenticated Only</option>
                     </select>
                   </div>
@@ -333,7 +345,10 @@ export default function AdminPollsPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="poll-status" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="poll-status"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Status
                     </label>
                     <select
@@ -349,7 +364,10 @@ export default function AdminPollsPage() {
                   </div>
 
                   <div>
-                    <label htmlFor="poll-closes-at" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="poll-closes-at"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Closes At (optional)
                     </label>
                     <input
@@ -367,7 +385,9 @@ export default function AdminPollsPage() {
                     <input
                       type="checkbox"
                       checked={formData.allow_comments}
-                      onChange={(e) => setFormData({ ...formData, allow_comments: e.target.checked })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, allow_comments: e.target.checked })
+                      }
                       className="w-5 h-5 min-w-[20px] rounded border-gray-300 text-navy focus:ring-navy"
                     />
                     <span className="text-sm text-gray-700">Allow comments</span>
@@ -377,7 +397,9 @@ export default function AdminPollsPage() {
                     <input
                       type="checkbox"
                       checked={formData.show_results_before_vote}
-                      onChange={(e) => setFormData({ ...formData, show_results_before_vote: e.target.checked })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, show_results_before_vote: e.target.checked })
+                      }
                       className="w-5 h-5 min-w-[20px] rounded border-gray-300 text-navy focus:ring-navy"
                     />
                     <span className="text-sm text-gray-700">Show results before voting</span>
@@ -386,7 +408,10 @@ export default function AdminPollsPage() {
 
                 {/* Choices */}
                 <div>
-                  <span className="block text-sm font-medium text-gray-700 mb-2" id="poll-choices-label">
+                  <span
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                    id="poll-choices-label"
+                  >
                     Choices * (minimum 2)
                   </span>
                   <div className="space-y-2">
@@ -484,16 +509,21 @@ export default function AdminPollsPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-1">
                     <h3 className="text-lg font-semibold text-navy">{poll.title}</h3>
-                    <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[poll.status]}`}>
+                    <span
+                      className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[poll.status]}`}
+                    >
                       {poll.status}
                     </span>
                     <span className="px-2 py-0.5 rounded bg-gray-100 text-xs text-gray-600">
-                      {poll.poll_type === 'single_choice' ? 'Single' : poll.poll_type === 'multiple_choice' ? 'Multiple' : 'Ranked'} choice
+                      {poll.poll_type === 'single_choice'
+                        ? 'Single'
+                        : poll.poll_type === 'multiple_choice'
+                          ? 'Multiple'
+                          : 'Ranked'}{' '}
+                      choice
                     </span>
                   </div>
-                  {poll.description && (
-                    <p className="text-gray-600 text-sm">{poll.description}</p>
-                  )}
+                  {poll.description && <p className="text-gray-600 text-sm">{poll.description}</p>}
                 </div>
                 <div className="flex items-center gap-2">
                   <button

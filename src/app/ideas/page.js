@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Image from 'next/image';
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -107,10 +107,10 @@ export default function IdeasPage() {
           setIsAuthenticated(true);
           setAuthenticatedSupporter(data.data);
           // Pre-fill form with authenticated user info
-          setSubmitForm(prev => ({
+          setSubmitForm((prev) => ({
             ...prev,
             name: data.data.name,
-            email: data.data.email
+            email: data.data.email,
           }));
           setSupportEmail(data.data.email);
           return; // Stop here if authenticated
@@ -132,17 +132,24 @@ export default function IdeasPage() {
     }
     checkAuth();
 
-    // Load supported ideas from localStorage
-    try {
-      const supported = JSON.parse(localStorage.getItem('supportedIdeas') || '{}');
-      setSupportedIdeas(supported);
-    } catch {
-      setSupportedIdeas({});
+    // Fetch supported ideas from API instead of localStorage
+    async function loadSupportedIdeas() {
+      try {
+        const res = await fetch('/api/ideas/my-support');
+        const data = await res.json();
+        if (data.ok) {
+          setSupportedIdeas(data.data || {});
+        }
+      } catch {
+        setSupportedIdeas({});
+      }
     }
+    loadSupportedIdeas();
 
     // Reload authentication when window regains focus (e.g., after signing in)
     const handleFocus = () => {
       checkAuth();
+      loadSupportedIdeas();
     };
     window.addEventListener('focus', handleFocus);
 
@@ -198,11 +205,9 @@ export default function IdeasPage() {
           const newSupported = { ...supportedIdeas };
           delete newSupported[ideaId];
           setSupportedIdeas(newSupported);
-          localStorage.setItem('supportedIdeas', JSON.stringify(newSupported));
           loadIdeas();
         }
-      } catch (err) {
-      }
+      } catch (err) {}
     } else {
       // Show support modal instead of prompt
       setSupportIdeaId(ideaId);
@@ -227,7 +232,6 @@ export default function IdeasPage() {
       if (result.ok) {
         const newSupported = { ...supportedIdeas, [supportIdeaId]: supportEmail };
         setSupportedIdeas(newSupported);
-        localStorage.setItem('supportedIdeas', JSON.stringify(newSupported));
         loadIdeas();
         setShowSupportModal(false);
         setSupportIdeaId(null);
@@ -258,16 +262,9 @@ export default function IdeasPage() {
           className="absolute top-4 right-4 w-20 sm:w-28 md:w-32 lg:w-36 h-auto opacity-40 pointer-events-none brightness-200"
         />
         <div className="max-w-3xl mx-auto text-center relative z-10">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
-            Community Ideas
-          </h1>
-          <p className="text-xl text-white/90 mb-8">
-            Share your ideas for making Prosper better
-          </p>
-          <button
-            onClick={() => setShowSubmitForm(true)}
-            className="btn-white"
-          >
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">Community Ideas</h1>
+          <p className="text-xl text-white/90 mb-8">Share your ideas for making Prosper better</p>
+          <button onClick={() => setShowSubmitForm(true)} className="btn-white">
             Submit Your Idea
           </button>
         </div>
@@ -277,7 +274,7 @@ export default function IdeasPage() {
       <section className="py-8 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-wrap gap-2 justify-center">
-            {CATEGORIES.map(cat => (
+            {CATEGORIES.map((cat) => (
               <button
                 key={cat.value}
                 onClick={() => setCategory(cat.value)}
@@ -299,12 +296,17 @@ export default function IdeasPage() {
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {loading ? (
-            <div className="text-center py-12 text-gray-500" role="status" aria-live="polite">Loading ideas...</div>
+            <div className="text-center py-12 text-gray-500" role="status" aria-live="polite">
+              Loading ideas...
+            </div>
           ) : ideas.length === 0 ? (
             <div className="card text-center py-12">
               <div className="text-4xl mb-4">💡</div>
               <h2 className="text-xl font-bold text-navy mb-2">Be the First!</h2>
-              <p className="text-gray-600 mb-6">Be the first to share your ideas for making Prosper better! Use the form above to submit your thoughts.</p>
+              <p className="text-gray-600 mb-6">
+                Be the first to share your ideas for making Prosper better! Use the form above to
+                submit your thoughts.
+              </p>
               <button onClick={() => setShowSubmitForm(true)} className="btn-primary">
                 Submit Your Idea
               </button>
@@ -316,9 +318,11 @@ export default function IdeasPage() {
                   <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
                     <div className="flex flex-wrap gap-2">
                       <span className="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full font-medium capitalize">
-                        {CATEGORIES.find(c => c.value === idea.category)?.icon} {idea.category}
+                        {CATEGORIES.find((c) => c.value === idea.category)?.icon} {idea.category}
                       </span>
-                      <span className={`px-3 py-1 text-sm rounded-full font-medium capitalize ${STATUS_COLORS[idea.status] || 'bg-gray-100 text-gray-600'}`}>
+                      <span
+                        className={`px-3 py-1 text-sm rounded-full font-medium capitalize ${STATUS_COLORS[idea.status] || 'bg-gray-100 text-gray-600'}`}
+                      >
                         {idea.status.replace('_', ' ')}
                       </span>
                     </div>
@@ -327,7 +331,11 @@ export default function IdeasPage() {
                     </span>
                   </div>
 
-                  <h2 className="text-xl font-bold text-navy mb-2">{idea.title}</h2>
+                  <Link href={`/ideas/${idea.id}`}>
+                    <h2 className="text-xl font-bold text-navy mb-2 hover:underline cursor-pointer">
+                      {idea.title}
+                    </h2>
+                  </Link>
                   <p className="text-gray-600 mb-4">
                     {idea.content.length > 200 ? idea.content.slice(0, 200) + '...' : idea.content}
                   </p>
@@ -343,7 +351,11 @@ export default function IdeasPage() {
                     <div className="flex items-center gap-4">
                       <button
                         onClick={() => handleSupport(idea.id)}
-                        aria-label={supportedIdeas[idea.id] ? `Remove support for ${idea.title}` : `Support ${idea.title}`}
+                        aria-label={
+                          supportedIdeas[idea.id]
+                            ? `Remove support for ${idea.title}`
+                            : `Support ${idea.title}`
+                        }
                         aria-pressed={!!supportedIdeas[idea.id]}
                         className={`flex items-center gap-2 px-4 py-3 min-h-[44px] rounded-lg font-medium transition-all ${
                           supportedIdeas[idea.id]
@@ -372,6 +384,12 @@ export default function IdeasPage() {
                       )}
                       <span className="text-sm text-gray-500">by {idea.name}</span>
                     </div>
+                    <Link
+                      href={`/ideas/${idea.id}`}
+                      className="text-navy hover:underline text-sm font-medium"
+                    >
+                      View Details →
+                    </Link>
                   </div>
                 </div>
               ))}
@@ -389,34 +407,47 @@ export default function IdeasPage() {
           aria-modal="true"
           aria-labelledby="modal-title"
         >
-          <div ref={submitModalRef} tabIndex={-1} className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto outline-none" onClick={e => e.stopPropagation()}>
+          <div
+            ref={submitModalRef}
+            tabIndex={-1}
+            className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto outline-none"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="p-4 sm:p-6">
               <div className="flex justify-between items-start mb-6">
-                <h2 id="modal-title" className="text-2xl font-bold text-navy">Submit Your Idea</h2>
+                <h2 id="modal-title" className="text-2xl font-bold text-navy">
+                  Submit Your Idea
+                </h2>
                 <button
                   onClick={() => setShowSubmitForm(false)}
                   className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
                   aria-label="Close form"
-                >×</button>
+                >
+                  ×
+                </button>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 {isAuthenticated && authenticatedSupporter && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
-                    <p className="text-sm text-green-700 font-medium">✓ Signed in as: {authenticatedSupporter.name}</p>
+                    <p className="text-sm text-green-700 font-medium">
+                      ✓ Signed in as: {authenticatedSupporter.name}
+                    </p>
                     <p className="text-xs text-green-600">{authenticatedSupporter.email}</p>
                   </div>
                 )}
 
                 <div>
-                  <label htmlFor="idea-name" className="form-label">Your Name *</label>
+                  <label htmlFor="idea-name" className="form-label">
+                    Your Name *
+                  </label>
                   <input
                     id="idea-name"
                     type="text"
                     required
                     aria-required="true"
                     value={submitForm.name}
-                    onChange={e => setSubmitForm({ ...submitForm, name: e.target.value })}
+                    onChange={(e) => setSubmitForm({ ...submitForm, name: e.target.value })}
                     className="form-input"
                     autoComplete="name"
                     disabled={isAuthenticated}
@@ -424,14 +455,16 @@ export default function IdeasPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="idea-email" className="form-label">Your Email *</label>
+                  <label htmlFor="idea-email" className="form-label">
+                    Your Email *
+                  </label>
                   <input
                     id="idea-email"
                     type="email"
                     required
                     aria-required="true"
                     value={submitForm.email}
-                    onChange={e => setSubmitForm({ ...submitForm, email: e.target.value })}
+                    onChange={(e) => setSubmitForm({ ...submitForm, email: e.target.value })}
                     className="form-input"
                     autoComplete="email"
                     disabled={isAuthenticated}
@@ -439,14 +472,16 @@ export default function IdeasPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="idea-category" className="form-label">Category *</label>
+                  <label htmlFor="idea-category" className="form-label">
+                    Category *
+                  </label>
                   <select
                     id="idea-category"
                     value={submitForm.category}
-                    onChange={e => setSubmitForm({ ...submitForm, category: e.target.value })}
+                    onChange={(e) => setSubmitForm({ ...submitForm, category: e.target.value })}
                     className="form-input"
                   >
-                    {CATEGORIES.filter(c => c.value !== 'all').map(cat => (
+                    {CATEGORIES.filter((c) => c.value !== 'all').map((cat) => (
                       <option key={cat.value} value={cat.value}>
                         {cat.icon} {cat.label}
                       </option>
@@ -455,7 +490,9 @@ export default function IdeasPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="idea-title" className="form-label">Title *</label>
+                  <label htmlFor="idea-title" className="form-label">
+                    Title *
+                  </label>
                   <input
                     id="idea-title"
                     type="text"
@@ -463,16 +500,20 @@ export default function IdeasPage() {
                     aria-required="true"
                     minLength={5}
                     value={submitForm.title}
-                    onChange={e => setSubmitForm({ ...submitForm, title: e.target.value })}
+                    onChange={(e) => setSubmitForm({ ...submitForm, title: e.target.value })}
                     className="form-input"
                     placeholder="Give your idea a clear title"
                     aria-describedby="title-hint"
                   />
-                  <p id="title-hint" className="text-xs text-gray-500 mt-1">At least 5 characters</p>
+                  <p id="title-hint" className="text-xs text-gray-500 mt-1">
+                    At least 5 characters
+                  </p>
                 </div>
 
                 <div>
-                  <label htmlFor="idea-content" className="form-label">Description *</label>
+                  <label htmlFor="idea-content" className="form-label">
+                    Description *
+                  </label>
                   <textarea
                     id="idea-content"
                     required
@@ -480,20 +521,25 @@ export default function IdeasPage() {
                     minLength={20}
                     rows={5}
                     value={submitForm.content}
-                    onChange={e => setSubmitForm({ ...submitForm, content: e.target.value })}
+                    onChange={(e) => setSubmitForm({ ...submitForm, content: e.target.value })}
                     className="form-input"
                     placeholder="Describe your idea in detail..."
                     aria-describedby="content-hint"
                   />
-                  <p id="content-hint" className="text-xs text-gray-500 mt-1">At least 20 characters</p>
+                  <p id="content-hint" className="text-xs text-gray-500 mt-1">
+                    At least 20 characters
+                  </p>
                 </div>
 
-                <label htmlFor="is_public" className="flex items-center gap-3 cursor-pointer min-h-[44px]">
+                <label
+                  htmlFor="is_public"
+                  className="flex items-center gap-3 cursor-pointer min-h-[44px]"
+                >
                   <input
                     type="checkbox"
                     id="is_public"
                     checked={submitForm.is_public}
-                    onChange={e => setSubmitForm({ ...submitForm, is_public: e.target.checked })}
+                    onChange={(e) => setSubmitForm({ ...submitForm, is_public: e.target.checked })}
                     className="w-5 h-5 min-w-[20px] rounded border-gray-300"
                   />
                   <span className="text-sm text-gray-600">
@@ -502,7 +548,11 @@ export default function IdeasPage() {
                 </label>
 
                 {submitMsg && (
-                  <div role="alert" aria-live="polite" className={`p-4 rounded-lg ${submitMsg.includes('Thank') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                  <div
+                    role="alert"
+                    aria-live="polite"
+                    className={`p-4 rounded-lg ${submitMsg.includes('Thank') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}
+                  >
                     {submitMsg}
                   </div>
                 )}
@@ -525,33 +575,50 @@ export default function IdeasPage() {
           aria-modal="true"
           aria-labelledby="support-modal-title"
         >
-          <div ref={supportModalRef} tabIndex={-1} className="bg-white rounded-xl shadow-2xl max-w-sm w-full outline-none" onClick={e => e.stopPropagation()}>
+          <div
+            ref={supportModalRef}
+            tabIndex={-1}
+            className="bg-white rounded-xl shadow-2xl max-w-sm w-full outline-none"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="p-4 sm:p-6">
               <div className="flex justify-between items-start mb-4">
-                <h2 id="support-modal-title" className="text-xl font-bold text-navy">Support This Idea</h2>
+                <h2 id="support-modal-title" className="text-xl font-bold text-navy">
+                  Support This Idea
+                </h2>
                 <button
                   onClick={() => setShowSupportModal(false)}
                   className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
                   aria-label="Close"
-                >×</button>
+                >
+                  ×
+                </button>
               </div>
-              <p className="text-gray-600 text-sm mb-4">Enter your email to show your support for this idea.</p>
+              <p className="text-gray-600 text-sm mb-4">
+                Enter your email to show your support for this idea.
+              </p>
               <form onSubmit={submitSupport} className="space-y-4">
                 <div>
-                  <label htmlFor="support-email" className="form-label">Email *</label>
+                  <label htmlFor="support-email" className="form-label">
+                    Email *
+                  </label>
                   <input
                     id="support-email"
                     type="email"
                     required
                     value={supportEmail}
-                    onChange={e => setSupportEmail(e.target.value)}
+                    onChange={(e) => setSupportEmail(e.target.value)}
                     className="form-input"
                     placeholder="you@example.com"
                     autoComplete="email"
                   />
                 </div>
                 {supportMsg && (
-                  <div role="alert" aria-live="polite" className="p-3 bg-red-50 text-red-700 rounded-lg text-sm">
+                  <div
+                    role="alert"
+                    aria-live="polite"
+                    className="p-3 bg-red-50 text-red-700 rounded-lg text-sm"
+                  >
                     {supportMsg}
                   </div>
                 )}

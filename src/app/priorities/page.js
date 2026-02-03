@@ -24,7 +24,9 @@ export default function PrioritiesPage() {
             My Priorities
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            <strong className="text-navy">Listen.</strong> <strong className="text-navy">Plan.</strong> <strong className="text-prosper-red">Protect.</strong>
+            <strong className="text-navy">Listen.</strong>{' '}
+            <strong className="text-navy">Plan.</strong>{' '}
+            <strong className="text-prosper-red">Protect.</strong>
           </p>
         </div>
       </section>
@@ -38,14 +40,30 @@ export default function PrioritiesPage() {
             </div>
             <h2 className="text-2xl font-bold mb-4 text-navy">Listen</h2>
             <p className="text-gray-600 leading-relaxed">
-              Good decisions start with <strong className="text-navy">hearing from residents</strong>—not as an afterthought, but <strong className="text-prosper-red">from the beginning</strong>. Your voice should shape outcomes <strong className="text-navy">before votes are taken</strong>. That's why I'll hold periodic <strong className="text-navy">"Coffee with Doug"</strong> sessions at local spots where any Prosper resident can meet with me directly—no appointment needed.
+              Good decisions start with{' '}
+              <strong className="text-navy">hearing from residents</strong>—not as an afterthought,
+              but <strong className="text-prosper-red">from the beginning</strong>. Your voice
+              should shape outcomes <strong className="text-navy">before votes are taken</strong>.
+              That's why I'll hold periodic{' '}
+              <strong className="text-navy">"Coffee with Doug"</strong> sessions at local spots
+              where any Prosper resident can meet with me directly—no appointment needed.
             </p>
             <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
-              <Link href="/qna" className="text-navy font-medium hover:underline">Ask a question</Link>
-              <span className="text-gray-500" aria-hidden="true">·</span>
-              <Link href="/get-involved#meeting" className="text-navy font-medium hover:underline">Request a meeting</Link>
-              <span className="text-gray-500" aria-hidden="true">·</span>
-              <Link href="/qna" className="text-navy font-medium hover:underline">Submit an idea</Link>
+              <Link href="/qna" className="text-navy font-medium hover:underline">
+                Ask a question
+              </Link>
+              <span className="text-gray-500" aria-hidden="true">
+                ·
+              </span>
+              <Link href="/get-involved#meeting" className="text-navy font-medium hover:underline">
+                Request a meeting
+              </Link>
+              <span className="text-gray-500" aria-hidden="true">
+                ·
+              </span>
+              <Link href="/qna" className="text-navy font-medium hover:underline">
+                Submit an idea
+              </Link>
             </div>
           </div>
 
@@ -55,12 +73,21 @@ export default function PrioritiesPage() {
             </div>
             <h2 className="text-2xl font-bold mb-4 text-navy">Plan</h2>
             <p className="text-gray-600 leading-relaxed">
-              <strong className="text-navy">Build it right the first time.</strong> Size projects correctly from the start so we don't run out of money halfway through. <strong className="text-prosper-red">Think long-term</strong> so we're not fixing mistakes or asking for more money later.
+              <strong className="text-navy">Build it right the first time.</strong> Size projects
+              correctly from the start so we don't run out of money halfway through.{' '}
+              <strong className="text-prosper-red">Think long-term</strong> so we're not fixing
+              mistakes or asking for more money later.
             </p>
             <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
-              <Link href="/polls" className="text-navy font-medium hover:underline">Participate in a poll</Link>
-              <span className="text-gray-500" aria-hidden="true">·</span>
-              <Link href="/track-record" className="text-navy font-medium hover:underline">See fiscal track record</Link>
+              <Link href="/polls" className="text-navy font-medium hover:underline">
+                Participate in a poll
+              </Link>
+              <span className="text-gray-500" aria-hidden="true">
+                ·
+              </span>
+              <Link href="/track-record" className="text-navy font-medium hover:underline">
+                See fiscal track record
+              </Link>
             </div>
           </div>
 
@@ -70,12 +97,22 @@ export default function PrioritiesPage() {
             </div>
             <h2 className="text-2xl font-bold mb-4 text-navy">Protect</h2>
             <p className="text-gray-600 leading-relaxed">
-              Prosper isn't just another suburb—it's <strong className="text-navy">Friday night football under the lights</strong>, <strong className="text-prosper-red">Small Town, Big Heart</strong>, and downtown festivals that bring neighbors together. Growth should <strong className="text-navy">add to that story</strong>, not erase it.
+              Prosper isn't just another suburb—it's{' '}
+              <strong className="text-navy">Friday night football under the lights</strong>,{' '}
+              <strong className="text-prosper-red">Small Town, Big Heart</strong>, and downtown
+              festivals that bring neighbors together. Growth should{' '}
+              <strong className="text-navy">add to that story</strong>, not erase it.
             </p>
             <div className="flex flex-wrap justify-center gap-2 mt-4 text-sm">
-              <Link href="/track-record" className="text-navy font-medium hover:underline">See track record</Link>
-              <span className="text-gray-500" aria-hidden="true">·</span>
-              <Link href="/endorsements" className="text-navy font-medium hover:underline">Hear from neighbors</Link>
+              <Link href="/track-record" className="text-navy font-medium hover:underline">
+                See track record
+              </Link>
+              <span className="text-gray-500" aria-hidden="true">
+                ·
+              </span>
+              <Link href="/endorsements" className="text-navy font-medium hover:underline">
+                Hear from neighbors
+              </Link>
             </div>
           </div>
         </div>
@@ -92,41 +129,103 @@ export default function PrioritiesPage() {
             <div className="card">
               <h3 className="text-xl font-bold text-navy mb-4">Transparent Government</h3>
               <p className="text-gray-700 leading-relaxed">
-                Every resident deserves to know what their local government is doing and why. I'll push for <strong className="text-navy">earlier public input</strong> on major decisions, <strong className="text-navy">clearer communication</strong> about town projects, and more accessible council meetings. The best decisions happen when residents are <strong className="text-prosper-red">informed and engaged from the start</strong>.
+                Every resident deserves to know what their local government is doing and why. I'll
+                push for <strong className="text-navy">earlier public input</strong> on major
+                decisions, <strong className="text-navy">clearer communication</strong> about town
+                projects, and more accessible council meetings. The best decisions happen when
+                residents are{' '}
+                <strong className="text-prosper-red">informed and engaged from the start</strong>.
               </p>
-              <Link href="/qna" className="text-navy text-sm font-medium hover:underline mt-3 inline-block">Ask Doug a question →</Link>
+              <Link
+                href="/qna"
+                className="text-navy text-sm font-medium hover:underline mt-3 inline-block"
+              >
+                Ask Doug a question →
+              </Link>
             </div>
 
             <div className="card">
               <h3 className="text-xl font-bold text-navy mb-4">Responsible Growth</h3>
               <p className="text-gray-700 leading-relaxed">
-                Prosper is growing whether we like it or not. The question is whether we <strong className="text-navy">manage that growth wisely</strong>. That means <strong className="text-navy">holding developers accountable</strong> for the infrastructure their projects require, attracting businesses so <strong className="text-navy">homeowners don't carry the full tax burden</strong>, and protecting the quality of life that brought us all here. Growth should benefit <strong className="text-prosper-red">existing residents, not just developers</strong>—and that includes ensuring our fire and police have the capacity to keep pace with new rooftops.
+                Prosper is growing whether we like it or not. The question is whether we{' '}
+                <strong className="text-navy">manage that growth wisely</strong>. That means{' '}
+                <strong className="text-navy">holding developers accountable</strong> for the
+                infrastructure their projects require, attracting businesses so{' '}
+                <strong className="text-navy">homeowners don't carry the full tax burden</strong>,
+                and protecting the quality of life that brought us all here. Growth should benefit{' '}
+                <strong className="text-prosper-red">
+                  existing residents, not just developers
+                </strong>
+                —and that includes ensuring our fire and police have the capacity to keep pace with
+                new rooftops.
               </p>
-              <Link href="/track-record" className="text-navy text-sm font-medium hover:underline mt-3 inline-block">See Doug&apos;s growth track record →</Link>
+              <Link
+                href="/track-record"
+                className="text-navy text-sm font-medium hover:underline mt-3 inline-block"
+              >
+                See Doug&apos;s growth track record →
+              </Link>
             </div>
 
             <div className="card">
               <h3 className="text-xl font-bold text-navy mb-4">Fiscal Responsibility</h3>
               <p className="text-gray-700 leading-relaxed">
-                Your tax dollars should be spent wisely. That means <strong className="text-navy">right-sizing projects from the start</strong>, planning for long-term maintenance costs, and being honest about what things really cost. I've worked on the <strong className="text-navy">bond committee</strong> and <strong className="text-navy">Planning & Zoning Commission</strong>—I know how to read a budget and <strong className="text-prosper-red">ask the tough questions</strong>.
+                Your tax dollars should be spent wisely. That means{' '}
+                <strong className="text-navy">right-sizing projects from the start</strong>,
+                planning for long-term maintenance costs, and being honest about what things really
+                cost. I've worked on the <strong className="text-navy">bond committee</strong> and{' '}
+                <strong className="text-navy">Planning & Zoning Commission</strong>—I know how to
+                read a budget and{' '}
+                <strong className="text-prosper-red">ask the tough questions</strong>.
               </p>
-              <Link href="/track-record" className="text-navy text-sm font-medium hover:underline mt-3 inline-block">See Doug&apos;s bond &amp; budget record →</Link>
+              <Link
+                href="/track-record"
+                className="text-navy text-sm font-medium hover:underline mt-3 inline-block"
+              >
+                See Doug&apos;s bond &amp; budget record →
+              </Link>
             </div>
 
             <div className="card">
               <h3 className="text-xl font-bold text-navy mb-4">Community Character</h3>
               <p className="text-gray-700 leading-relaxed">
-                Prosper isn't just another suburb. We have a character worth preserving—<strong className="text-navy">Friday night football</strong> at Children's Health Stadium, the <strong className="text-prosper-red">"Small Town, Big Heart"</strong> spirit, downtown festivals, and neighbors who still wave from their driveways. Every zoning decision, every development approval, should <strong className="text-navy">strengthen what makes Prosper special</strong>—not dilute it.
+                Prosper isn't just another suburb. We have a character worth preserving—
+                <strong className="text-navy">Friday night football</strong> at Children's Health
+                Stadium, the <strong className="text-prosper-red">"Small Town, Big Heart"</strong>{' '}
+                spirit, downtown festivals, and neighbors who still wave from their driveways. Every
+                zoning decision, every development approval, should{' '}
+                <strong className="text-navy">strengthen what makes Prosper special</strong>—not
+                dilute it.
               </p>
-              <Link href="/endorsements" className="text-navy text-sm font-medium hover:underline mt-3 inline-block">Hear from your neighbors →</Link>
+              <Link
+                href="/endorsements"
+                className="text-navy text-sm font-medium hover:underline mt-3 inline-block"
+              >
+                Hear from your neighbors →
+              </Link>
             </div>
 
             <div className="card">
               <h3 className="text-xl font-bold text-navy mb-4">Strategic Commercial Development</h3>
               <p className="text-gray-700 leading-relaxed">
-                Prosper ranks <strong className="text-prosper-red">#8 among the wealthiest zip codes in Texas</strong> (Source: US Census). Our tollway corridor and remaining commercial development should reflect that—not strip malls and fast food chains. With <strong className="text-navy">The Fields, PGA, and Universal Theme Park</strong> right next door, let's build a commercial base that draws people to <strong className="text-navy">our downtown, our retail, our restaurants</strong>. By creating the right environment for high-end commercial development, we can attract jobs and destinations Prosper residents will enjoy.
+                Prosper ranks{' '}
+                <strong className="text-prosper-red">
+                  #8 among the wealthiest zip codes in Texas
+                </strong>{' '}
+                (Source: US Census). Our tollway corridor and remaining commercial development
+                should reflect that—not strip malls and fast food chains. With{' '}
+                <strong className="text-navy">The Fields, PGA, and Universal Theme Park</strong>{' '}
+                right next door, let's build a commercial base that draws people to{' '}
+                <strong className="text-navy">our downtown, our retail, our restaurants</strong>. By
+                creating the right environment for high-end commercial development, we can attract
+                jobs and destinations Prosper residents will enjoy.
               </p>
-              <Link href="/why" className="text-navy text-sm font-medium hover:underline mt-3 inline-block">Learn why Doug is running →</Link>
+              <Link
+                href="/why"
+                className="text-navy text-sm font-medium hover:underline mt-3 inline-block"
+              >
+                Learn why Doug is running →
+              </Link>
             </div>
           </div>
         </div>
@@ -145,7 +244,10 @@ export default function PrioritiesPage() {
               <h3 className="text-xl font-bold text-navy mb-2">Why I'm Running</h3>
               <p className="text-gray-600 text-sm">My motivation and what I'll do differently</p>
             </Link>
-            <Link href="/track-record" className="card text-center hover:shadow-navy-lg transition-shadow">
+            <Link
+              href="/track-record"
+              className="card text-center hover:shadow-navy-lg transition-shadow"
+            >
               <h3 className="text-xl font-bold text-navy mb-2">Track Record</h3>
               <p className="text-gray-600 text-sm">Results, not just promises</p>
             </Link>

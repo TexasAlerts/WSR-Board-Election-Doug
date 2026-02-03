@@ -39,7 +39,7 @@ export async function sendSMS(to, message) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify(messagePayload),
     });
@@ -47,7 +47,8 @@ export async function sendSMS(to, message) {
     const data = await response.json();
 
     if (!response.ok) {
-      const errorDetail = data.errors?.[0]?.detail || data.errors?.[0]?.title || JSON.stringify(data);
+      const errorDetail =
+        data.errors?.[0]?.detail || data.errors?.[0]?.title || JSON.stringify(data);
       return {
         success: false,
         messageId: null,

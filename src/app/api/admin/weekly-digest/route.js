@@ -43,7 +43,7 @@ export async function POST(request) {
         .select('poll_id')
         .eq('voter_email', email);
 
-      const pollIds = [...new Set((votes || []).map(v => v.poll_id))];
+      const pollIds = [...new Set((votes || []).map((v) => v.poll_id))];
 
       // Get poll data with new vote counts
       const pollDigest = [];
@@ -84,10 +84,12 @@ export async function POST(request) {
         .select('idea_id')
         .eq('supporter_email', email);
 
-      const ideaIds = [...new Set([
-        ...((ideaVotes || []).map(v => v.idea_id)),
-        ...((ideaSupports || []).map(s => s.idea_id)),
-      ])];
+      const ideaIds = [
+        ...new Set([
+          ...(ideaVotes || []).map((v) => v.idea_id),
+          ...(ideaSupports || []).map((s) => s.idea_id),
+        ]),
+      ];
 
       const ideaDigest = [];
       for (const ideaId of ideaIds) {
@@ -132,19 +134,22 @@ export async function POST(request) {
         .eq('email', email)
         .single();
 
-      const { data: voter } = !supporter ? await supabase
-        .from('verified_voters')
-        .select('first_name')
-        .eq('email', email)
-        .single() : { data: null };
+      const { data: voter } = !supporter
+        ? await supabase.from('verified_voters').select('first_name').eq('email', email).single()
+        : { data: null };
 
       const name = supporter?.first_name || voter?.first_name || 'Neighbor';
 
-      await sendWeeklyDigestEmail(email, name, {
-        polls: pollDigest,
-        ideas: ideaDigest,
-        newComments,
-      }, unsubscribe_token);
+      await sendWeeklyDigestEmail(
+        email,
+        name,
+        {
+          polls: pollDigest,
+          ideas: ideaDigest,
+          newComments,
+        },
+        unsubscribe_token
+      );
 
       sent++;
     }

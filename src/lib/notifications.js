@@ -20,11 +20,19 @@ export async function notifyParticipantsOfNewComment(comment) {
   let contextTitle = '';
   let contextUrl = '';
   if (comment.poll_id) {
-    const { data: poll } = await supabase.from('polls').select('title').eq('id', comment.poll_id).single();
+    const { data: poll } = await supabase
+      .from('polls')
+      .select('title')
+      .eq('id', comment.poll_id)
+      .single();
     contextTitle = poll?.title || 'a poll';
     contextUrl = `${SITE_URL}/polls/${comment.poll_id}`;
   } else {
-    const { data: idea } = await supabase.from('ideas').select('title').eq('id', comment.idea_id).single();
+    const { data: idea } = await supabase
+      .from('ideas')
+      .select('title')
+      .eq('id', comment.idea_id)
+      .single();
     contextTitle = idea?.title || 'an idea';
     contextUrl = `${SITE_URL}/ideas/${comment.idea_id}`;
   }
@@ -37,7 +45,9 @@ export async function notifyParticipantsOfNewComment(comment) {
       .from('poll_votes')
       .select('voter_email')
       .eq('poll_id', contextId);
-    voters?.forEach(v => { if (v.voter_email) participantEmails.add(v.voter_email); });
+    voters?.forEach((v) => {
+      if (v.voter_email) participantEmails.add(v.voter_email);
+    });
   }
 
   // Add commenters on this poll/idea
@@ -47,7 +57,9 @@ export async function notifyParticipantsOfNewComment(comment) {
     .select('email')
     .match(commentFilter)
     .eq('status', 'approved');
-  commenters?.forEach(c => { if (c.email) participantEmails.add(c.email); });
+  commenters?.forEach((c) => {
+    if (c.email) participantEmails.add(c.email);
+  });
 
   // Remove the comment author
   participantEmails.delete(comment.email);
@@ -61,7 +73,9 @@ export async function notifyParticipantsOfNewComment(comment) {
     .in('email', Array.from(participantEmails));
 
   const prefsMap = {};
-  prefs?.forEach(p => { prefsMap[p.email] = p; });
+  prefs?.forEach((p) => {
+    prefsMap[p.email] = p;
+  });
 
   const commenterName = comment.display_name || getUserDisplayName({ name: comment.name });
   const preview = comment.content.substring(0, 200);
@@ -72,8 +86,14 @@ export async function notifyParticipantsOfNewComment(comment) {
     if (pref && pref.email_on_new_comment === false) continue;
 
     const token = pref?.unsubscribe_token || '';
-    sendNewCommentNotificationEmail(email, commenterName, preview, contextTitle, contextUrl, token)
-      .catch(() => {});
+    sendNewCommentNotificationEmail(
+      email,
+      commenterName,
+      preview,
+      contextTitle,
+      contextUrl,
+      token
+    ).catch(() => {});
   }
 }
 
@@ -111,6 +131,12 @@ export async function notifyParentCommentAuthor(replyComment) {
   const parentPreview = parent.content.substring(0, 200);
   const token = pref?.unsubscribe_token || '';
 
-  sendNewReplyNotificationEmail(parent.email, replierName, replyPreview, parentPreview, contextUrl, token)
-    .catch(() => {});
+  sendNewReplyNotificationEmail(
+    parent.email,
+    replierName,
+    replyPreview,
+    parentPreview,
+    contextUrl,
+    token
+  ).catch(() => {});
 }

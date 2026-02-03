@@ -6,6 +6,7 @@ import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
 import { sanitizeText } from '../../../lib/sanitize';
+import { verifyCaptcha } from '../../../lib/recaptcha';
 
 export async function GET(request) {
   const supabase = getSupabase();
@@ -15,7 +16,9 @@ export async function GET(request) {
 
   let query = supabase
     .from('ideas')
-    .select('id, name, category, title, content, status, support_count, upvotes, downvotes, admin_response, created_at')
+    .select(
+      'id, name, category, title, content, status, support_count, upvotes, downvotes, admin_response, created_at'
+    )
     .in('status', ['published', 'under_review', 'planned', 'completed', 'declined'])
     .eq('is_public', true)
     .order('created_at', { ascending: false });
@@ -33,7 +36,7 @@ export async function GET(request) {
   // Get comment counts for each idea
   let commentCountMap = {};
   if (data.length > 0) {
-    const ideaIds = data.map(i => i.id);
+    const ideaIds = data.map((i) => i.id);
     const { data: commentCounts } = await supabase
       .from('comments')
       .select('idea_id')
@@ -41,7 +44,7 @@ export async function GET(request) {
       .in('idea_id', ideaIds);
 
     if (commentCounts) {
-      commentCounts.forEach(c => {
+      commentCounts.forEach((c) => {
         commentCountMap[c.idea_id] = (commentCountMap[c.idea_id] || 0) + 1;
       });
     }
@@ -50,7 +53,7 @@ export async function GET(request) {
   // Get user's votes if authenticated
   let userVotes = {};
   if (supporter && data.length > 0) {
-    const ideaIds = data.map(i => i.id);
+    const ideaIds = data.map((i) => i.id);
     const { data: votes } = await supabase
       .from('idea_votes')
       .select('idea_id, vote_type')
@@ -58,14 +61,14 @@ export async function GET(request) {
       .in('idea_id', ideaIds);
 
     if (votes) {
-      votes.forEach(v => {
+      votes.forEach((v) => {
         userVotes[v.idea_id] = v.vote_type;
       });
     }
   }
 
   // Add user vote info and comment counts to ideas
-  const ideasWithVotes = data.map(idea => ({
+  const ideasWithVotes = data.map((idea) => ({
     ...idea,
     user_vote: userVotes[idea.id] || null,
     comment_count: commentCountMap[idea.id] || 0,
@@ -95,19 +98,44 @@ export async function POST(request) {
     const body = await request.json();
 
     const schema = z.object({
-      category: z.enum(['infrastructure', 'community', 'safety', 'environment', 'general', 'question']),
+      category: z.enum([
+        'infrastructure',
+        'community',
+        'safety',
+        'environment',
+        'general',
+        'question',
+      ]),
       title: z.string().min(5, 'Title must be at least 5 characters').max(200),
       content: z.string().min(20, 'Content must be at least 20 characters').max(4000),
       is_public: z.boolean().optional().default(true),
+      recaptchaToken: z.string().optional(),
     });
 
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
+      const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 
-    const { category, title: rawTitle, content: rawContent, is_public } = parsed.data;
+    const {
+      category,
+      title: rawTitle,
+      content: rawContent,
+      is_public,
+      recaptchaToken,
+    } = parsed.data;
+
+    // Verify reCAPTCHA if token is provided
+    if (recaptchaToken) {
+      const captchaResult = await verifyCaptcha(recaptchaToken, 'submit_idea');
+      if (!captchaResult.success) {
+        return NextResponse.json(
+          { ok: false, error: 'Security verification failed. Please try again.' },
+          { status: 400 }
+        );
+      }
+    }
     const name = `${supporter.first_name} ${supporter.last_name}`;
     const email = supporter.email;
     const title = sanitizeText(rawTitle);

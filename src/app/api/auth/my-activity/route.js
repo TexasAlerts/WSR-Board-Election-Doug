@@ -19,7 +19,8 @@ export async function GET(request) {
       // Get polls the user voted on
       const { data, error } = await supabase
         .from('poll_votes')
-        .select(`
+        .select(
+          `
           id,
           created_at,
           vote_data,
@@ -31,7 +32,8 @@ export async function GET(request) {
             status,
             poll_type
           )
-        `)
+        `
+        )
         .eq('supporter_id', supporter.id)
         .order('created_at', { ascending: false })
         .range(offset, offset + limit - 1);
@@ -43,7 +45,8 @@ export async function GET(request) {
       // Also check voter_email for legacy votes
       const { data: emailVotes, error: emailError } = await supabase
         .from('poll_votes')
-        .select(`
+        .select(
+          `
           id,
           created_at,
           vote_data,
@@ -55,7 +58,8 @@ export async function GET(request) {
             status,
             poll_type
           )
-        `)
+        `
+        )
         .eq('voter_email', supporter.email)
         .is('supporter_id', null)
         .order('created_at', { ascending: false })
@@ -91,7 +95,8 @@ export async function GET(request) {
     if (type === 'comments') {
       const { data, error } = await supabase
         .from('comments')
-        .select(`
+        .select(
+          `
           id,
           content,
           status,
@@ -103,7 +108,8 @@ export async function GET(request) {
           idea_id,
           polls (id, title),
           ideas (id, title)
-        `)
+        `
+        )
         .eq('supporter_id', supporter.id)
         .order('created_at', { ascending: false })
         .range(offset, offset + limit - 1);
@@ -115,7 +121,10 @@ export async function GET(request) {
       return NextResponse.json({ ok: true, data: data || [], type: 'comments' });
     }
 
-    return NextResponse.json({ ok: false, error: 'Invalid type. Use: votes, ideas, or comments' }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: 'Invalid type. Use: votes, ideas, or comments' },
+      { status: 400 }
+    );
   } catch (err) {
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }

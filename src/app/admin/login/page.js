@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -30,8 +30,19 @@ export default function AdminLogin() {
     <div className="max-w-md mx-auto mt-12 space-y-4 px-2 w-full">
       <h1 className="text-2xl font-bold">Admin Login</h1>
       <form onSubmit={handleSubmit} className="space-y-4 w-full">
-        <input type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Enter admin password" className="border p-2 rounded w-full min-h-[44px]" />
-        <button type="submit" className="bg-lagoon text-white px-4 py-2 rounded w-full min-h-[44px]">Login</button>
+        <input
+          type="password"
+          value={pw}
+          onChange={(e) => setPw(e.target.value)}
+          placeholder="Enter admin password"
+          className="border p-2 rounded w-full min-h-[44px]"
+        />
+        <button
+          type="submit"
+          className="bg-lagoon text-white px-4 py-2 rounded w-full min-h-[44px]"
+        >
+          Login
+        </button>
         {error && <p className="text-red-600">{error}</p>}
       </form>
     </div>

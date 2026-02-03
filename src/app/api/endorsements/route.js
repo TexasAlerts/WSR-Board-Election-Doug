@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
+import { verifyCaptcha } from '../../../lib/recaptcha';
 
 export async function GET() {
   const supabase = getSupabaseAnon();
@@ -32,14 +33,26 @@ export async function POST(req) {
       message: z.string().max(4000).optional().nullable(),
       consentEmail: z.boolean().optional().default(false),
       consentSms: z.boolean().optional().default(false),
+      recaptchaToken: z.string().optional(),
     });
     const body = await req.json();
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      const errorMessage = parsed.error.errors.map(e => e.message).join(', ');
+      const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
       return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
-    const { name, email, phone, message, consentEmail, consentSms } = parsed.data;
+    const { name, email, phone, message, consentEmail, consentSms, recaptchaToken } = parsed.data;
+
+    // Verify reCAPTCHA if token is provided
+    if (recaptchaToken) {
+      const captchaResult = await verifyCaptcha(recaptchaToken, 'submit_endorsement');
+      if (!captchaResult.success) {
+        return NextResponse.json(
+          { ok: false, error: 'Security verification failed. Please try again.' },
+          { status: 400 }
+        );
+      }
+    }
     const { data: endorsement, error } = await supabase
       .from('endorsements')
       .insert({
@@ -92,7 +105,7 @@ export async function POST(req) {
       sendNotificationEmail(
         'New endorsement submitted',
         `Name: ${name}\nEmail: ${email}\nMessage: ${message || ''}`
-      ).catch(() => {})
+      ).catch(() => {}),
     ]);
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
@@ -104,6 +117,9 @@ export async function POST(req) {
       method: 'POST',
       request: req,
     });
-    return NextResponse.json({ ok: false, error: 'Something went wrong. Please try again.' }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: 'Something went wrong. Please try again.' },
+      { status: 400 }
+    );
   }
 }

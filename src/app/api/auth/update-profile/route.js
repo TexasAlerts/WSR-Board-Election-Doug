@@ -60,7 +60,14 @@ export async function PATCH(request) {
       eventType: AuditEvents.PROFILE_UPDATED,
       supporterId: supporter.id,
       oldValues,
-      newValues: { first_name: firstName, last_name: lastName, street_address: streetAddress, city, state, zip_code: zipCode },
+      newValues: {
+        first_name: firstName,
+        last_name: lastName,
+        street_address: streetAddress,
+        city,
+        state,
+        zip_code: zipCode,
+      },
       request,
       responseStatus: 200,
     });

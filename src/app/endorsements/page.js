@@ -20,7 +20,8 @@ export default function EndorsementsPage() {
             Endorsements
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Neighbors supporting <strong className="text-navy">Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper
+            Neighbors supporting <strong className="text-navy">Common Sense</strong> leadership for{' '}
+            <strong className="text-prosper-red">ALL</strong> of Prosper
           </p>
         </div>
       </section>

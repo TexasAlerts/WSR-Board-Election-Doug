@@ -19,7 +19,9 @@ export async function GET(request) {
   try {
     let query = supabase
       .from('comments')
-      .select('id, name, email, display_name, content, status, poll_id, idea_id, parent_id, upvotes, downvotes, rejection_reason, created_at, moderated_at, moderated_by')
+      .select(
+        'id, name, email, display_name, content, status, poll_id, idea_id, parent_id, upvotes, downvotes, rejection_reason, created_at, moderated_at, moderated_by'
+      )
       .order('created_at', { ascending: false });
 
     if (status && status !== 'all') query = query.eq('status', status);
@@ -30,22 +32,26 @@ export async function GET(request) {
     if (error) return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
 
     // Get context titles
-    const pollIds = [...new Set((comments || []).filter(c => c.poll_id).map(c => c.poll_id))];
-    const ideaIds = [...new Set((comments || []).filter(c => c.idea_id).map(c => c.idea_id))];
+    const pollIds = [...new Set((comments || []).filter((c) => c.poll_id).map((c) => c.poll_id))];
+    const ideaIds = [...new Set((comments || []).filter((c) => c.idea_id).map((c) => c.idea_id))];
 
     const pollTitles = {};
     const ideaTitles = {};
 
     if (pollIds.length > 0) {
       const { data: polls } = await supabase.from('polls').select('id, title').in('id', pollIds);
-      polls?.forEach(p => { pollTitles[p.id] = p.title; });
+      polls?.forEach((p) => {
+        pollTitles[p.id] = p.title;
+      });
     }
     if (ideaIds.length > 0) {
       const { data: ideas } = await supabase.from('ideas').select('id, title').in('id', ideaIds);
-      ideas?.forEach(i => { ideaTitles[i.id] = i.title; });
+      ideas?.forEach((i) => {
+        ideaTitles[i.id] = i.title;
+      });
     }
 
-    const enriched = (comments || []).map(c => ({
+    const enriched = (comments || []).map((c) => ({
       ...c,
       context_type: c.poll_id ? 'poll' : 'idea',
       context_title: c.poll_id ? pollTitles[c.poll_id] : ideaTitles[c.idea_id],
@@ -53,7 +59,7 @@ export async function GET(request) {
     }));
 
     if (format === 'csv') {
-      const flat = enriched.map(c => ({
+      const flat = enriched.map((c) => ({
         id: c.id,
         name: c.name,
         email: c.email,

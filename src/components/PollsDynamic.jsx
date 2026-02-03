@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
@@ -10,7 +10,15 @@ export default function PollsDynamic() {
   const [polls, setPolls] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedPoll, setSelectedPoll] = useState(null);
-  const [voteForm, setVoteForm] = useState({ email: '', name: '', selectedChoice: null, selectedChoices: [], rankings: [], comment: '', otherText: '' });
+  const [voteForm, setVoteForm] = useState({
+    email: '',
+    name: '',
+    selectedChoice: null,
+    selectedChoices: [],
+    rankings: [],
+    comment: '',
+    otherText: '',
+  });
   const [hasVoted, setHasVoted] = useState({});
   const [submitMsg, setSubmitMsg] = useState('');
   const [showVerifyModal, setShowVerifyModal] = useState(false);
@@ -49,7 +57,7 @@ export default function PollsDynamic() {
           // Use authenticated supporter info as verified voter
           setVerifiedVoter({
             email: data.data.email,
-            name: data.data.name
+            name: data.data.name,
           });
           return; // Stop here if authenticated
         }
@@ -64,7 +72,7 @@ export default function PollsDynamic() {
         if (voterData.ok && voterData.data) {
           setVerifiedVoter({
             email: voterData.data.email,
-            name: voterData.data.name
+            name: voterData.data.name,
           });
         }
       } catch (err) {
@@ -151,7 +159,7 @@ export default function PollsDynamic() {
       setVoteForm({
         ...voteForm,
         email: authenticatedSupporter.email,
-        name: authenticatedSupporter.name
+        name: authenticatedSupporter.name,
       });
     } else if (verifiedVoter) {
       // Already verified, open vote modal directly
@@ -178,7 +186,15 @@ export default function PollsDynamic() {
       // Open vote modal without email/name requirements
       setVotingMode('anonymous');
       setSelectedPoll(pendingPoll);
-      setVoteForm({ email: '', name: '', selectedChoice: null, selectedChoices: [], rankings: [], comment: '', otherText: '' });
+      setVoteForm({
+        email: '',
+        name: '',
+        selectedChoice: null,
+        selectedChoices: [],
+        rankings: [],
+        comment: '',
+        otherText: '',
+      });
       setPendingPoll(null);
     }
   }
@@ -243,7 +259,15 @@ export default function PollsDynamic() {
         // Update local state to reflect the vote
         setHasVoted({ ...hasVoted, [selectedPoll.id]: voteForm.email || 'anonymous' });
         setSelectedPoll(null);
-        setVoteForm({ email: '', name: '', selectedChoice: null, selectedChoices: [], rankings: [], comment: '', otherText: '' });
+        setVoteForm({
+          email: '',
+          name: '',
+          selectedChoice: null,
+          selectedChoices: [],
+          rankings: [],
+          comment: '',
+          otherText: '',
+        });
         // Reload polls to get updated counts
         const pollsRes = await fetch('/api/polls');
         const pollsData = await pollsRes.json();
@@ -258,7 +282,10 @@ export default function PollsDynamic() {
 
   function toggleChoice(choiceId) {
     if (voteForm.selectedChoices.includes(choiceId)) {
-      setVoteForm({ ...voteForm, selectedChoices: voteForm.selectedChoices.filter(id => id !== choiceId) });
+      setVoteForm({
+        ...voteForm,
+        selectedChoices: voteForm.selectedChoices.filter((id) => id !== choiceId),
+      });
     } else {
       setVoteForm({ ...voteForm, selectedChoices: [...voteForm.selectedChoices, choiceId] });
     }
@@ -291,7 +318,10 @@ export default function PollsDynamic() {
     const newIndex = direction === 'up' ? index - 1 : index + 1;
     if (newIndex < 0 || newIndex >= currentRankings.length) return;
 
-    [currentRankings[index], currentRankings[newIndex]] = [currentRankings[newIndex], currentRankings[index]];
+    [currentRankings[index], currentRankings[newIndex]] = [
+      currentRankings[newIndex],
+      currentRankings[index],
+    ];
     setVoteForm({ ...voteForm, rankings: currentRankings });
   }
 
@@ -301,12 +331,17 @@ export default function PollsDynamic() {
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {loading ? (
-            <div className="text-center py-12 text-gray-500" role="status" aria-live="polite">Loading polls...</div>
+            <div className="text-center py-12 text-gray-500" role="status" aria-live="polite">
+              Loading polls...
+            </div>
           ) : polls.length === 0 ? (
             <div className="card text-center py-12">
               <div className="text-4xl mb-4">📊</div>
               <h2 className="text-xl font-bold text-navy mb-2">Gathering Community Input</h2>
-              <p className="text-gray-600 mb-4">We're gathering community input on key issues. Check back soon for polls, or visit the Ideas page to share your thoughts directly.</p>
+              <p className="text-gray-600 mb-4">
+                We're gathering community input on key issues. Check back soon for polls, or visit
+                the Ideas page to share your thoughts directly.
+              </p>
               <Link href="/ideas" className="btn-primary">
                 Share an Idea
               </Link>
@@ -319,7 +354,11 @@ export default function PollsDynamic() {
                     <h2 className="text-xl font-bold text-navy">{poll.title}</h2>
                     <div className="flex gap-2">
                       <span className="px-3 py-1 bg-navy/10 text-navy text-sm rounded-full font-medium">
-                        {poll.poll_type === 'single_choice' ? 'Single Choice' : poll.poll_type === 'multiple_choice' ? 'Multiple Choice' : 'Ranked Choice'}
+                        {poll.poll_type === 'single_choice'
+                          ? 'Single Choice'
+                          : poll.poll_type === 'multiple_choice'
+                            ? 'Multiple Choice'
+                            : 'Ranked Choice'}
                       </span>
                       {hasVoted[poll.id] && (
                         <span className="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full font-medium">
@@ -329,9 +368,7 @@ export default function PollsDynamic() {
                     </div>
                   </div>
 
-                  {poll.description && (
-                    <p className="text-gray-600 mb-4">{poll.description}</p>
-                  )}
+                  {poll.description && <p className="text-gray-600 mb-4">{poll.description}</p>}
 
                   <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                     <div className="flex items-center gap-4">
@@ -345,9 +382,7 @@ export default function PollsDynamic() {
                           title="View comments"
                         >
                           <MessageSquare className="w-4 h-4" />
-                          <span className="text-sm font-medium">
-                            {poll.comment_count || 0}
-                          </span>
+                          <span className="text-sm font-medium">{poll.comment_count || 0}</span>
                         </Link>
                       )}
                     </div>
@@ -359,10 +394,7 @@ export default function PollsDynamic() {
                         View Results →
                       </Link>
                     ) : (
-                      <button
-                        onClick={() => handleVoteClick(poll)}
-                        className="btn-primary"
-                      >
+                      <button onClick={() => handleVoteClick(poll)} className="btn-primary">
                         Vote Now
                       </button>
                     )}
@@ -387,12 +419,20 @@ export default function PollsDynamic() {
             ref={voteModalRef}
             tabIndex={-1}
             className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto pb-safe outline-none"
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 sm:p-6">
               <div className="flex justify-between items-start mb-6">
-                <h2 id="vote-modal-title" className="text-2xl font-bold text-navy">{selectedPoll.title}</h2>
-                <button onClick={() => setSelectedPoll(null)} aria-label="Close vote form" className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center">×</button>
+                <h2 id="vote-modal-title" className="text-2xl font-bold text-navy">
+                  {selectedPoll.title}
+                </h2>
+                <button
+                  onClick={() => setSelectedPoll(null)}
+                  aria-label="Close vote form"
+                  className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
+                >
+                  ×
+                </button>
               </div>
 
               {selectedPoll.description && (
@@ -403,7 +443,9 @@ export default function PollsDynamic() {
                 {votingMode === 'authenticated' && authenticatedSupporter ? (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-green-700 font-medium">Voting as: {authenticatedSupporter.name}</p>
+                      <p className="text-sm text-green-700 font-medium">
+                        Voting as: {authenticatedSupporter.name}
+                      </p>
                       <p className="text-xs text-green-600">{authenticatedSupporter.email}</p>
                       <p className="text-xs text-green-500 mt-1">✓ Authenticated</p>
                     </div>
@@ -412,7 +454,9 @@ export default function PollsDynamic() {
                 ) : votingMode === 'verified' && verifiedVoter ? (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-green-700 font-medium">Voting as: {verifiedVoter.name}</p>
+                      <p className="text-sm text-green-700 font-medium">
+                        Voting as: {verifiedVoter.name}
+                      </p>
                       <p className="text-xs text-green-600">{verifiedVoter.email}</p>
                       <p className="text-xs text-green-500 mt-1">✓ Verified voter</p>
                     </div>
@@ -423,7 +467,8 @@ export default function PollsDynamic() {
                     <div>
                       <p className="text-sm text-gray-700 font-medium">Voting anonymously</p>
                       <p className="text-xs text-gray-600 mt-1">
-                        No personal information required. A cookie will be used to prevent duplicate votes.
+                        No personal information required. A cookie will be used to prevent duplicate
+                        votes.
                       </p>
                     </div>
                   </div>
@@ -439,29 +484,41 @@ export default function PollsDynamic() {
                   </label>
 
                   {/* Single and Multiple Choice UI */}
-                  {(selectedPoll.poll_type === 'single_choice' || selectedPoll.poll_type === 'multiple_choice') && (
+                  {(selectedPoll.poll_type === 'single_choice' ||
+                    selectedPoll.poll_type === 'multiple_choice') && (
                     <div
                       className="space-y-2 mt-2"
                       role={selectedPoll.poll_type === 'single_choice' ? 'radiogroup' : 'group'}
-                      aria-label={selectedPoll.poll_type === 'single_choice' ? 'Poll options' : 'Poll options - select multiple'}
+                      aria-label={
+                        selectedPoll.poll_type === 'single_choice'
+                          ? 'Poll options'
+                          : 'Poll options - select multiple'
+                      }
                     >
-                      {selectedPoll.choices?.map(choice => {
+                      {selectedPoll.choices?.map((choice) => {
                         const isOther = choice.is_other_option;
-                        const isSelected = selectedPoll.poll_type === 'single_choice'
-                          ? voteForm.selectedChoice === choice.id
-                          : voteForm.selectedChoices.includes(choice.id);
+                        const isSelected =
+                          selectedPoll.poll_type === 'single_choice'
+                            ? voteForm.selectedChoice === choice.id
+                            : voteForm.selectedChoices.includes(choice.id);
                         return (
                           <div key={choice.id}>
                             <button
                               type="button"
-                              role={selectedPoll.poll_type === 'single_choice' ? 'radio' : 'checkbox'}
+                              role={
+                                selectedPoll.poll_type === 'single_choice' ? 'radio' : 'checkbox'
+                              }
                               aria-checked={isSelected}
                               onClick={() => {
                                 if (selectedPoll.poll_type === 'single_choice') {
-                                  setVoteForm({ ...voteForm, selectedChoice: choice.id, otherText: isOther ? voteForm.otherText : '' });
+                                  setVoteForm({
+                                    ...voteForm,
+                                    selectedChoice: choice.id,
+                                    otherText: isOther ? voteForm.otherText : '',
+                                  });
                                 } else {
                                   toggleChoice(choice.id);
-                                  if (!isOther) setVoteForm(prev => ({ ...prev, otherText: '' }));
+                                  if (!isOther) setVoteForm((prev) => ({ ...prev, otherText: '' }));
                                 }
                               }}
                               className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${
@@ -471,33 +528,47 @@ export default function PollsDynamic() {
                               }`}
                             >
                               <div className="flex items-center gap-3">
-                                <div className={`w-5 h-5 rounded-${selectedPoll.poll_type === 'single_choice' ? 'full' : 'md'} border-2 flex items-center justify-center ${
-                                  isSelected
-                                    ? 'border-navy bg-navy text-white'
-                                    : 'border-gray-300'
-                                }`}>
+                                <div
+                                  className={`w-5 h-5 rounded-${selectedPoll.poll_type === 'single_choice' ? 'full' : 'md'} border-2 flex items-center justify-center ${
+                                    isSelected
+                                      ? 'border-navy bg-navy text-white'
+                                      : 'border-gray-300'
+                                  }`}
+                                >
                                   {isSelected && (
-                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    <svg
+                                      className="w-3 h-3"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clipRule="evenodd"
+                                      />
                                     </svg>
                                   )}
                                 </div>
-                                <span>{isOther ? 'Other' : (choice.text || choice.choice_text)}</span>
+                                <span>{isOther ? 'Other' : choice.text || choice.choice_text}</span>
                               </div>
                             </button>
                             {isOther && isSelected && (
                               <>
-                              <label htmlFor="poll-other-text" className="sr-only">Specify your other option</label>
-                              <input
-                                id="poll-other-text"
-                                type="text"
-                                value={voteForm.otherText}
-                                onChange={e => setVoteForm({ ...voteForm, otherText: e.target.value })}
-                                placeholder="Please specify..."
-                                className="form-input mt-2 ml-8"
-                                maxLength={500}
-                                required
-                              />
+                                <label htmlFor="poll-other-text" className="sr-only">
+                                  Specify your other option
+                                </label>
+                                <input
+                                  id="poll-other-text"
+                                  type="text"
+                                  value={voteForm.otherText}
+                                  onChange={(e) =>
+                                    setVoteForm({ ...voteForm, otherText: e.target.value })
+                                  }
+                                  placeholder="Please specify..."
+                                  className="form-input mt-2 ml-8"
+                                  maxLength={500}
+                                  required
+                                />
                               </>
                             )}
                           </div>
@@ -513,7 +584,7 @@ export default function PollsDynamic() {
                         Click choices in order of preference. Your first click is your top choice.
                       </p>
                       <div className="space-y-2">
-                        {selectedPoll.choices?.map(choice => {
+                        {selectedPoll.choices?.map((choice) => {
                           const rank = getRankForChoice(choice.id);
                           return (
                             <button
@@ -534,7 +605,9 @@ export default function PollsDynamic() {
                                         ? 'border-navy bg-navy text-white'
                                         : 'border-gray-300 text-gray-400'
                                     }`}
-                                    aria-label={rank !== null ? `Ranked number ${rank}` : 'Not yet ranked'}
+                                    aria-label={
+                                      rank !== null ? `Ranked number ${rank}` : 'Not yet ranked'
+                                    }
                                   >
                                     {rank !== null ? rank : '-'}
                                   </div>
@@ -544,26 +617,52 @@ export default function PollsDynamic() {
                                   <div className="flex gap-1">
                                     <button
                                       type="button"
-                                      onClick={(e) => { e.stopPropagation(); moveRanking(choice.id, 'up'); }}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        moveRanking(choice.id, 'up');
+                                      }}
                                       disabled={rank === 1}
                                       className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg disabled:opacity-30"
                                       aria-label={`Move ${choice.text || choice.choice_text} up`}
                                       title="Move up"
                                     >
-                                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                      <svg
+                                        className="w-5 h-5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M5 15l7-7 7 7"
+                                        />
                                       </svg>
                                     </button>
                                     <button
                                       type="button"
-                                      onClick={(e) => { e.stopPropagation(); moveRanking(choice.id, 'down'); }}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        moveRanking(choice.id, 'down');
+                                      }}
                                       disabled={rank === voteForm.rankings.length}
                                       className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg disabled:opacity-30"
                                       aria-label={`Move ${choice.text || choice.choice_text} down`}
                                       title="Move down"
                                     >
-                                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                      <svg
+                                        className="w-5 h-5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M19 9l-7 7-7-7"
+                                        />
                                       </svg>
                                     </button>
                                   </div>
@@ -573,23 +672,27 @@ export default function PollsDynamic() {
                           );
                         })}
                       </div>
-                      {voteForm.rankings.length > 0 && voteForm.rankings.length < (selectedPoll.choices?.length || 0) && (
-                        <p className="text-sm text-amber-600 mt-2">
-                          {(selectedPoll.choices?.length || 0) - voteForm.rankings.length} more choice(s) to rank
-                        </p>
-                      )}
+                      {voteForm.rankings.length > 0 &&
+                        voteForm.rankings.length < (selectedPoll.choices?.length || 0) && (
+                          <p className="text-sm text-amber-600 mt-2">
+                            {(selectedPoll.choices?.length || 0) - voteForm.rankings.length} more
+                            choice(s) to rank
+                          </p>
+                        )}
                     </div>
                   )}
                 </div>
 
                 {selectedPoll.allow_comments && votingMode === 'authenticated' && (
                   <div>
-                    <label htmlFor="poll-vote-comment" className="form-label">Comment (optional)</label>
+                    <label htmlFor="poll-vote-comment" className="form-label">
+                      Comment (optional)
+                    </label>
                     <textarea
                       id="poll-vote-comment"
                       rows={3}
                       value={voteForm.comment}
-                      onChange={e => setVoteForm({ ...voteForm, comment: e.target.value })}
+                      onChange={(e) => setVoteForm({ ...voteForm, comment: e.target.value })}
                       className="form-input"
                       placeholder="Share your thoughts..."
                     />
@@ -600,7 +703,11 @@ export default function PollsDynamic() {
                 )}
 
                 {submitMsg && (
-                  <div role="alert" aria-live="polite" className={`p-4 rounded-lg ${submitMsg.includes('Thank') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                  <div
+                    role="alert"
+                    aria-live="polite"
+                    className={`p-4 rounded-lg ${submitMsg.includes('Thank') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}
+                  >
                     {submitMsg}
                   </div>
                 )}
@@ -629,7 +736,10 @@ export default function PollsDynamic() {
       {/* Voting Options Modal */}
       {showVotingOptionsModal && (
         <VotingOptionsModal
-          onClose={() => { setShowVotingOptionsModal(false); setPendingPoll(null); }}
+          onClose={() => {
+            setShowVotingOptionsModal(false);
+            setPendingPoll(null);
+          }}
           onOptionSelected={handleVotingOption}
         />
       )}
@@ -637,7 +747,10 @@ export default function PollsDynamic() {
       {/* Voter Verification Modal */}
       {showVerifyModal && (
         <VerifiedVoterModal
-          onClose={() => { setShowVerifyModal(false); setPendingPoll(null); }}
+          onClose={() => {
+            setShowVerifyModal(false);
+            setPendingPoll(null);
+          }}
           onVerified={handleVerified}
         />
       )}

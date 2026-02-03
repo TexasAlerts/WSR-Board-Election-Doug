@@ -15,7 +15,9 @@ export async function GET(request) {
   try {
     const { data, error } = await supabase
       .from('broadcasts')
-      .select('id, broadcast_type, subject, body, email_recipient_count, sms_recipient_count, sent_at')
+      .select(
+        'id, broadcast_type, subject, body, email_recipient_count, sms_recipient_count, sent_at'
+      )
       .order('sent_at', { ascending: false })
       .limit(50);
 

@@ -86,18 +86,31 @@ export default function ForgotPasswordPage() {
           ) : (
             <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-8 space-y-6">
               {error && (
-                <div role="alert" aria-live="polite" className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                <div
+                  role="alert"
+                  aria-live="polite"
+                  className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3"
+                >
+                  <AlertCircle
+                    className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"
+                    aria-hidden="true"
+                  />
                   <p className="text-red-700 text-sm">{error}</p>
                 </div>
               )}
 
               <div>
-                <label htmlFor="forgot-email" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="forgot-email"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
+                  <Mail
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                    aria-hidden="true"
+                  />
                   <input
                     id="forgot-email"
                     type="email"

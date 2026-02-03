@@ -7,19 +7,29 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
     <div>
       <div className="flex gap-2 mb-4 flex-wrap">
         {[
-          'all', 'LOGIN_SUCCESS', 'LOGIN_FAILED', 'LOGOUT', 'REGISTER',
-          'SUPPORTER_APPROVED', 'SUPPORTER_SUSPENDED', 'COMMENT_APPROVED',
-          'COMMENT_REJECTED', 'COMMENT_CREATED', 'POLL_VOTE', 'IDEA_VOTE',
-          'IDEA_CREATED', 'ENDORSEMENT_SUBMITTED', 'ENDORSEMENT_APPROVED',
-          'ENDORSEMENT_REJECTED', 'BROADCAST_SENT',
+          'all',
+          'LOGIN_SUCCESS',
+          'LOGIN_FAILED',
+          'LOGOUT',
+          'REGISTER',
+          'SUPPORTER_APPROVED',
+          'SUPPORTER_SUSPENDED',
+          'COMMENT_APPROVED',
+          'COMMENT_REJECTED',
+          'COMMENT_CREATED',
+          'POLL_VOTE',
+          'IDEA_VOTE',
+          'IDEA_CREATED',
+          'ENDORSEMENT_SUBMITTED',
+          'ENDORSEMENT_APPROVED',
+          'ENDORSEMENT_REJECTED',
+          'BROADCAST_SENT',
         ].map((s) => (
           <button
             key={s}
             onClick={() => setFilter(s)}
             className={`px-3 py-1 rounded-full text-sm font-medium ${
-              filter === s
-                ? 'bg-navy text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
             {s.replace(/_/g, ' ').toLowerCase()}
@@ -37,27 +47,39 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
             <caption className="sr-only">Audit logs</caption>
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Event</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">IP Address</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Details</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Time
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Event
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  User
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  IP Address
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Details
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {auditLogs.map((log) => (
                 <tr key={log.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm text-gray-500">
-                    {formatDate(log.created_at)}
-                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-500">{formatDate(log.created_at)}</td>
                   <td className="px-4 py-3">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      log.event_type.includes('SUCCESS') || log.event_type.includes('APPROVED')
-                        ? 'bg-green-100 text-green-800'
-                        : log.event_type.includes('FAILED') || log.event_type.includes('SUSPENDED') || log.event_type.includes('REJECTED')
-                        ? 'bg-red-100 text-red-800'
-                        : 'bg-blue-100 text-blue-800'
-                    }`}>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        log.event_type.includes('SUCCESS') || log.event_type.includes('APPROVED')
+                          ? 'bg-green-100 text-green-800'
+                          : log.event_type.includes('FAILED') ||
+                              log.event_type.includes('SUSPENDED') ||
+                              log.event_type.includes('REJECTED')
+                            ? 'bg-red-100 text-red-800'
+                            : 'bg-blue-100 text-blue-800'
+                      }`}
+                    >
                       {log.event_type.replace(/_/g, ' ')}
                     </span>
                   </td>
@@ -77,7 +99,9 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
                         <Eye className="w-4 h-4" />
                         View
                       </button>
-                    ) : '-'}
+                    ) : (
+                      '-'
+                    )}
                   </td>
                 </tr>
               ))}

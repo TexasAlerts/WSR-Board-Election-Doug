@@ -21,7 +21,10 @@ export async function POST(request) {
     const body = await request.json();
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ ok: false, error: parsed.error.errors[0].message }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: parsed.error.errors[0].message },
+        { status: 400 }
+      );
     }
 
     const { email, name } = parsed.data;
@@ -36,11 +39,14 @@ export async function POST(request) {
       .single();
 
     if (supporter && supporter.email_verified_at) {
-      return NextResponse.json({
-        ok: false,
-        error: 'This email is registered as a supporter. Please sign in to vote.',
-        isRegistered: true,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          ok: false,
+          error: 'This email is registered as a supporter. Please sign in to vote.',
+          isRegistered: true,
+        },
+        { status: 400 }
+      );
     }
 
     // Check if already verified
@@ -77,22 +83,23 @@ export async function POST(request) {
         .eq('id', existing.id);
     } else {
       // Create new record
-      await supabase
-        .from('verified_voters')
-        .insert({
-          email: normalizedEmail,
-          name,
-          first_name,
-          last_initial,
-          verification_token: token,
-          token_expires_at: expiresAt.toISOString(),
-        });
+      await supabase.from('verified_voters').insert({
+        email: normalizedEmail,
+        name,
+        first_name,
+        last_initial,
+        verification_token: token,
+        token_expires_at: expiresAt.toISOString(),
+      });
     }
 
     // Send verification email
     const emailResult = await sendVoterVerificationEmail(normalizedEmail, name, token);
     if (!emailResult.success) {
-      return NextResponse.json({ ok: false, error: 'Failed to send verification email' }, { status: 500 });
+      return NextResponse.json(
+        { ok: false, error: 'Failed to send verification email' },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({

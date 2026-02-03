@@ -3,8 +3,12 @@ import ErrorBoundary from '../components/ErrorBoundary';
 
 // Suppress console.error for expected errors in tests
 const originalError = console.error;
-beforeAll(() => { console.error = jest.fn(); });
-afterAll(() => { console.error = originalError; });
+beforeAll(() => {
+  console.error = jest.fn();
+});
+afterAll(() => {
+  console.error = originalError;
+});
 
 function ThrowingChild() {
   throw new Error('Test error');
@@ -44,8 +48,11 @@ describe('ErrorBoundary', () => {
         <ThrowingChild />
       </ErrorBoundary>
     );
-    expect(global.fetch).toHaveBeenCalledWith('/api/errors', expect.objectContaining({
-      method: 'POST',
-    }));
+    expect(global.fetch).toHaveBeenCalledWith(
+      '/api/errors',
+      expect.objectContaining({
+        method: 'POST',
+      })
+    );
   });
 });
