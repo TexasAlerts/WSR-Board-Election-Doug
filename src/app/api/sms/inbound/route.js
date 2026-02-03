@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { sendSMS } from '../../../../lib/smsService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { rateLimit } from '../../../../lib/rateLimit';
 
 const OPT_OUT_KEYWORDS = ['stop', 'unsubscribe', 'cancel', 'end', 'quit'];
 const OPT_IN_KEYWORDS = ['start', 'unstop', 'subscribe'];
@@ -36,6 +37,13 @@ function validateTelnyxWebhook(body, request) {
 }
 
 export async function POST(request) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+
+  // Rate limit: 100 requests per minute per IP to prevent webhook flooding
+  if (!rateLimit(ip, { window: 60000, limit: 100 })) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+  }
+
   const supabase = getSupabase();
   try {
     const body = await request.json();

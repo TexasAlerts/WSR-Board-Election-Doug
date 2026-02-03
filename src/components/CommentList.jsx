@@ -32,9 +32,13 @@ export default function CommentList({ comments, isAuthenticated, onVote }) {
                   ? 'bg-green-100 text-green-700'
                   : 'text-gray-600 hover:bg-gray-100'
               } disabled:opacity-50`}
-              title={!isAuthenticated ? 'Sign in to vote' : 'Upvote'}
+              aria-label={
+                !isAuthenticated
+                  ? 'Sign in to upvote this comment'
+                  : `Upvote this comment (${comment.upvotes || 0} upvotes)`
+              }
             >
-              <ThumbsUp className="w-4 h-4" />
+              <ThumbsUp className="w-4 h-4" aria-hidden="true" />
               <span className="text-sm font-medium">{comment.upvotes || 0}</span>
             </button>
 
@@ -46,9 +50,13 @@ export default function CommentList({ comments, isAuthenticated, onVote }) {
                   ? 'bg-red-100 text-red-700'
                   : 'text-gray-600 hover:bg-gray-100'
               } disabled:opacity-50`}
-              title={!isAuthenticated ? 'Sign in to vote' : 'Downvote'}
+              aria-label={
+                !isAuthenticated
+                  ? 'Sign in to downvote this comment'
+                  : `Downvote this comment (${comment.downvotes || 0} downvotes)`
+              }
             >
-              <ThumbsDown className="w-4 h-4" />
+              <ThumbsDown className="w-4 h-4" aria-hidden="true" />
               <span className="text-sm font-medium">{comment.downvotes || 0}</span>
             </button>
 
