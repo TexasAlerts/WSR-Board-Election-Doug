@@ -59,12 +59,17 @@ export async function POST(request, { params }) {
     // Check if poll exists and is active
     const { data: poll, error: pollError } = await supabase
       .from('polls')
-      .select('id, title, poll_type, status, visibility, allow_comments')
+      .select('id, title, poll_type, status, visibility, allow_comments, closes_at')
       .eq('id', id)
       .single();
 
     if (pollError || !poll || poll.status !== 'active') {
       return NextResponse.json({ ok: false, error: 'Poll not available' }, { status: 400 });
+    }
+
+    // Check if poll has closed based on closes_at timestamp
+    if (poll.closes_at && new Date() > new Date(poll.closes_at)) {
+      return NextResponse.json({ ok: false, error: 'This poll has closed' }, { status: 400 });
     }
 
     // Check visibility permissions

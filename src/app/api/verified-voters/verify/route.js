@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { rateLimit } from '../../../../lib/rateLimit';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -8,6 +9,16 @@ const schema = z.object({
 });
 
 export async function POST(request) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+
+  // Rate limit: 10 attempts per minute per IP to prevent token enumeration
+  if (!rateLimit(ip, { window: 60000, limit: 10 })) {
+    return NextResponse.json(
+      { ok: false, error: 'Too many verification attempts. Please wait a minute.' },
+      { status: 429 }
+    );
+  }
+
   try {
     const body = await request.json();
     const parsed = schema.safeParse(body);
@@ -72,7 +83,7 @@ export async function POST(request) {
     response.cookies.set('verified_voter_id', voter.id, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: 'strict',
       maxAge: 365 * 24 * 60 * 60, // 1 year
       path: '/',
     });

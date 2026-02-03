@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { validateSMSCode, incrementSMSAttempt, createSession } from '../../../../lib/auth';
 import { sendWelcomeEmail, sendAdminNewRegistrationEmail } from '../../../../lib/emailService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { rateLimit } from '../../../../lib/rateLimit';
 
 const verifySchema = z.object({
   supporterId: z.string().uuid('Invalid supporter ID'),
@@ -11,6 +12,16 @@ const verifySchema = z.object({
 });
 
 export async function POST(request) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+
+  // Rate limit: 5 attempts per minute per IP to prevent brute force on 6-digit codes
+  if (!rateLimit(ip, { window: 60000, limit: 5 })) {
+    return NextResponse.json(
+      { ok: false, error: 'Too many verification attempts. Please wait a minute.' },
+      { status: 429 }
+    );
+  }
+
   const supabase = getSupabase();
   try {
     const body = await request.json();
@@ -113,7 +124,7 @@ export async function POST(request) {
     response.cookies.set('session_token', session.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: 'strict',
       expires: session.expiresAt,
       path: '/',
     });
