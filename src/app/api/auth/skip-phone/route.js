@@ -8,12 +8,22 @@ import {
   sendAdminNewRegistrationEmail,
 } from '../../../../lib/emailService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { rateLimit } from '../../../../lib/rateLimit';
 
 const skipSchema = z.object({
   supporterId: z.string().uuid('Invalid supporter ID'),
 });
 
 export async function POST(request) {
+  // Rate limit: 5 requests per 10 minutes per IP
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+  if (!rateLimit(`skip-phone:${ip}`, 5, 10 * 60 * 1000)) {
+    return NextResponse.json(
+      { ok: false, error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    );
+  }
+
   const supabase = getSupabase();
   try {
     const body = await request.json();

@@ -215,7 +215,7 @@ export default function GetInvolvedForm({
           </button>
 
           {submitMsg && !submitMsg.includes('Thank you') && (
-            <div role="alert" aria-live="polite" className="p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div role="alert" aria-live="assertive" className="p-4 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-800 font-medium">{submitMsg}</p>
             </div>
           )}

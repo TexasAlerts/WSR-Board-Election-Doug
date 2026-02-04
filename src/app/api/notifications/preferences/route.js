@@ -3,6 +3,7 @@ import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, getVerifiedVoter } from '../../../../lib/auth';
 import { logError, ErrorTypes } from '../../../../lib/logging';
 import { withCSRF } from '../../../../lib/withCSRF';
+import { rateLimit } from '../../../../lib/rateLimit';
 
 const ALL_PREF_FIELDS = [
   // Existing email prefs
@@ -50,6 +51,15 @@ export async function GET() {
 }
 
 async function patchHandler(request) {
+  // Rate limit: 10 requests per minute per IP
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+  if (!rateLimit(`notif-prefs:${ip}`, 10, 60 * 1000)) {
+    return NextResponse.json(
+      { ok: false, error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    );
+  }
+
   const supabase = getSupabase();
   const supporter = await getCurrentSupporter();
   const voter = !supporter ? await getVerifiedVoter() : null;

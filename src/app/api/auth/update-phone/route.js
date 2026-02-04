@@ -4,6 +4,7 @@ import { getCurrentSupporter, createSMSVerification } from '../../../../lib/auth
 import { validatePhoneNumber } from '../../../../lib/phoneValidation';
 import { sendVerificationSMS } from '../../../../lib/smsService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { rateLimit } from '../../../../lib/rateLimit';
 import { z } from 'zod';
 
 const updatePhoneSchema = z.object({
@@ -11,6 +12,15 @@ const updatePhoneSchema = z.object({
 });
 
 export async function POST(request) {
+  // Rate limit: 5 requests per 10 minutes per IP
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+  if (!rateLimit(`update-phone:${ip}`, 5, 10 * 60 * 1000)) {
+    return NextResponse.json(
+      { ok: false, error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    );
+  }
+
   const supabase = getSupabase();
   try {
     const supporter = await getCurrentSupporter();
