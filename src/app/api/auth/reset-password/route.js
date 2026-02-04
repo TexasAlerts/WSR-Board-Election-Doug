@@ -8,9 +8,19 @@ import {
   deleteAllSessions,
 } from '../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { rateLimit } from '../../../../lib/rateLimit';
 
 // GET - Validate token (for page load)
 export async function GET(req) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+
+  // Rate limit: 10 attempts per minute per IP
+  if (!rateLimit(ip, { window: 60000, limit: 10 })) {
+    return NextResponse.json(
+      { ok: false, error: 'Too many requests. Please wait a minute.' },
+      { status: 429 }
+    );
+  }
   const { searchParams } = new URL(req.url);
   const token = searchParams.get('token');
 
@@ -43,6 +53,16 @@ export async function GET(req) {
 
 // POST - Reset password
 export async function POST(req) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+
+  // Rate limit: 5 attempts per minute per IP to prevent brute force
+  if (!rateLimit(ip, { window: 60000, limit: 5 })) {
+    return NextResponse.json(
+      { ok: false, error: 'Too many reset attempts. Please wait a minute.' },
+      { status: 429 }
+    );
+  }
+
   try {
     const schema = z.object({
       token: z.string().min(1, 'Token is required'),
