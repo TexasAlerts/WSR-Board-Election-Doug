@@ -1,19 +1,35 @@
-import DOMPurify from 'isomorphic-dompurify';
-
 /**
- * Sanitize user input using DOMPurify to prevent XSS attacks.
- * This works in both browser and Node.js environments via isomorphic-dompurify.
- * Removes all HTML tags and returns only plain text.
+ * Sanitize user input to prevent XSS attacks.
+ * Strips all HTML tags and decodes HTML entities, returning only plain text.
+ * Works in serverless environments without DOM dependencies.
  */
 export function sanitizeText(input: string | null | undefined): string {
   if (typeof input !== 'string') return '';
 
-  // Configure DOMPurify to strip all HTML tags
-  const clean = DOMPurify.sanitize(input, {
-    ALLOWED_TAGS: [], // No HTML tags allowed
-    ALLOWED_ATTR: [], // No attributes allowed
-    KEEP_CONTENT: true, // Keep text content when removing tags
-  });
+  // Strip all HTML tags
+  let clean = input.replace(/<[^>]*>/g, '');
+
+  // Decode common HTML entities
+  const entities: Record<string, string> = {
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&#39;': "'",
+    '&#x27;': "'",
+    '&apos;': "'",
+    '&#x2F;': '/',
+    '&#47;': '/',
+    '&nbsp;': ' ',
+  };
+
+  for (const [entity, char] of Object.entries(entities)) {
+    clean = clean.replace(new RegExp(entity, 'gi'), char);
+  }
+
+  // Decode numeric HTML entities (&#NNN; and &#xHHH;)
+  clean = clean.replace(/&#(\d+);/g, (_, num) => String.fromCharCode(parseInt(num, 10)));
+  clean = clean.replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
 
   return clean.trim();
 }
