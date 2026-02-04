@@ -4,7 +4,7 @@ import Link from 'next/link';
 export const metadata = {
   title: 'Track Record - Doug Charles for Prosper Town Council',
   description:
-    'Doug Charles proven track record of community service: Planning & Zoning Commission, HOA Board President, and years of civic leadership in Prosper.',
+    'Doug Charles proven track record of community service: Planning & Zoning Commission, Windsong Ranch Board Member, and years of civic leadership in Prosper.',
   alternates: { canonical: '/track-record' },
 };
 
