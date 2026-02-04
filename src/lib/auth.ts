@@ -94,7 +94,7 @@ export async function validateSession(token: string): Promise<Supporter | null> 
     .select(
       `
       *,
-      supporter:supporters(id, first_name, last_name, email, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at)
+      supporter:supporters(id, first_name, last_name, email, phone, phone_verified, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at)
     `
     )
     .eq('token', token)
