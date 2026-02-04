@@ -54,7 +54,7 @@ export default function GetInvolvedForm({
         <button
           type="button"
           onClick={onClose}
-          className="text-gray-400 hover:text-gray-600 text-xl font-bold min-w-[44px] min-h-[44px] flex items-center justify-center"
+          className="text-gray-600 hover:text-gray-700 text-xl font-bold min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-label="Close form"
         >
           ×
@@ -114,6 +114,7 @@ export default function GetInvolvedForm({
               id="phone"
               type="tel"
               required={selectedAction === 'meeting'}
+              aria-required={selectedAction === 'meeting' ? 'true' : undefined}
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
               className="form-input"
@@ -140,6 +141,7 @@ export default function GetInvolvedForm({
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
                 className="form-input"
                 placeholder="Street address in Prosper"
+                autoComplete="street-address"
               />
             </div>
           )}

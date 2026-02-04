@@ -4,9 +4,10 @@ import { getCurrentSupporter } from '../../../../../lib/auth';
 import { z } from 'zod';
 import { rateLimit } from '../../../../../lib/rateLimit';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../../lib/logging';
+import { withCSRF } from '../../../../../lib/withCSRF';
 
 // POST: Vote on an idea (up or down) - supporters only
-export async function POST(request, { params }) {
+async function postHandler(request, { params }) {
   const supabase = getSupabase();
   const { id: ideaId } = await params;
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
@@ -158,3 +159,5 @@ export async function POST(request, { params }) {
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }
+
+export const POST = withCSRF(postHandler);

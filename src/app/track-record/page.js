@@ -66,7 +66,7 @@ export default function TrackRecordPage() {
                     Planning & Zoning Commission voted{' '}
                     <strong className="text-navy">7-0 against</strong> the proposal.
                   </p>
-                  <p className="text-gray-500 italic text-sm">
+                  <p className="text-gray-600 italic text-sm">
                     "Thank you for being engaged and active in keeping Prosper the envy of the
                     area." — Prosper Town Council Member
                   </p>
@@ -90,7 +90,7 @@ export default function TrackRecordPage() {
                     Spoke at Town Council questioning whether new home designs fit existing{' '}
                     <strong className="text-navy">neighborhood character</strong>.
                   </p>
-                  <p className="text-gray-500 italic text-sm">
+                  <p className="text-gray-600 italic text-sm">
                     "Not questioning the quality of the product or even the look of the product. I'm
                     just questioning does it really fit our subdivision." — Prosper Press News
                   </p>
@@ -188,7 +188,7 @@ export default function TrackRecordPage() {
                     agreed—passing three propositions while{' '}
                     <strong className="text-navy">rejecting the $102 million stadium bond</strong>.
                   </p>
-                  <p className="text-gray-500 italic text-sm">
+                  <p className="text-gray-600 italic text-sm">
                     "We need smart spending that maximizes benefits for our students without
                     unnecessary burdens on our finances." —{' '}
                     <a
@@ -227,7 +227,7 @@ export default function TrackRecordPage() {
                     Morning News Editorial Board noted my transparency, contrasting it with
                     secretive outside groups.
                   </p>
-                  <p className="text-gray-500 italic text-sm">
+                  <p className="text-gray-600 italic text-sm">
                     "$115,000 just didn't randomly show up from Washington, D.C., into Prosper ISD.
                     There's an agenda." —{' '}
                     <a
@@ -279,7 +279,7 @@ export default function TrackRecordPage() {
                     <strong className="text-navy">infrastructure and public safety bonds</strong>{' '}
                     while rejecting undersized facilities.
                   </p>
-                  <p className="text-gray-500 italic text-sm">
+                  <p className="text-gray-600 italic text-sm">
                     "Let's build it once, not twice—unless we're going to build it once and expand
                     it with a thoughtful plan that's communicated." —{' '}
                     <a
@@ -318,7 +318,7 @@ export default function TrackRecordPage() {
                     signing the petition, Prosper ISD Board approved unanimously on December 15,
                     2025. Now awaiting TEA Commissioner final decision.
                   </p>
-                  <p className="text-gray-500 italic text-sm mb-2">
+                  <p className="text-gray-600 italic text-sm mb-2">
                     "Students already attend and have full access to Prosper ISD, yet property tax
                     revenue flows to Denton ISD, which educates none of these children."
                   </p>

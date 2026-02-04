@@ -3,6 +3,7 @@ import { getSupabase } from '../../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../../lib/auth';
 import { z } from 'zod';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../../lib/logging';
+import { withCSRF } from '../../../../../lib/withCSRF';
 
 // GET - Get single poll with details
 export async function GET(request, { params }) {
@@ -95,7 +96,7 @@ export async function GET(request, { params }) {
 }
 
 // PUT - Update poll
-export async function PUT(request, { params }) {
+async function putHandler(request, { params }) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
@@ -241,7 +242,7 @@ export async function PUT(request, { params }) {
 }
 
 // DELETE - Delete poll
-export async function DELETE(request, { params }) {
+async function deleteHandler(request, { params }) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
@@ -307,3 +308,6 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
+
+export const PUT = withCSRF(putHandler);
+export const DELETE = withCSRF(deleteHandler);

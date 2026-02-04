@@ -429,7 +429,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
                 </h2>
                 <button
                   onClick={() => setShowSubmitForm(false)}
-                  className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
+                  className="text-gray-600 hover:text-gray-700 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
                   aria-label="Close form"
                 >
                   ×
@@ -597,7 +597,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
                 </h2>
                 <button
                   onClick={() => setShowSupportModal(false)}
-                  className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
+                  className="text-gray-600 hover:text-gray-700 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
                   aria-label="Close"
                 >
                   ×

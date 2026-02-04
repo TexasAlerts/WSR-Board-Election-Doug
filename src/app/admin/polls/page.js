@@ -258,7 +258,7 @@ export default function AdminPollsPage() {
                 </h2>
                 <button
                   onClick={resetForm}
-                  className="text-gray-400 hover:text-gray-600 text-2xl"
+                  className="text-gray-600 hover:text-gray-700 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
                   aria-label="Close form"
                 >
                   &times;

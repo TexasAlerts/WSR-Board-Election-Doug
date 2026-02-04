@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin, isSuperAdmin } from '../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { withCSRF } from '../../../../lib/withCSRF';
 
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
@@ -56,7 +57,7 @@ export async function GET(request) {
   }
 }
 
-export async function PUT(request) {
+async function putHandler(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
@@ -173,7 +174,7 @@ export async function PUT(request) {
   }
 }
 
-export async function DELETE(request) {
+async function deleteHandler(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
@@ -315,3 +316,6 @@ export async function DELETE(request) {
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }
+
+export const PUT = withCSRF(putHandler);
+export const DELETE = withCSRF(deleteHandler);

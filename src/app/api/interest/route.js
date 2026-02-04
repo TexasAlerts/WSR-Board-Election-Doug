@@ -59,6 +59,7 @@ import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
 import { sanitizeText } from '../../../lib/sanitize';
 import { verifyCaptcha } from '../../../lib/recaptcha';
+import { validatePhoneNumber } from '../../../lib/phoneValidation';
 
 export async function POST(req) {
   const supabase = getSupabase();
@@ -120,13 +121,27 @@ export async function POST(req) {
     }
     const name = sanitizeText(rawName);
     const message = rawMessage ? sanitizeText(rawMessage) : null;
+
+    // Validate phone number if provided
+    let formattedPhone = null;
+    if (phone && phone.trim()) {
+      const phoneValidation = validatePhoneNumber(phone);
+      if (!phoneValidation.valid) {
+        return NextResponse.json(
+          { ok: false, error: 'Invalid phone number format. Please use a valid US phone number.' },
+          { status: 400 }
+        );
+      }
+      formattedPhone = phoneValidation.formatted;
+    }
+
     const { data: interestRecord, error } = await supabase
       .from('interest')
       .insert({
         type,
         name,
         email,
-        phone: phone ?? null,
+        phone: formattedPhone,
         message,
         consent_email: consentEmail,
         consent_sms: consentSms,

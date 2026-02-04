@@ -12,7 +12,7 @@ export async function POST(request) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   // Rate limit: 10 attempts per minute per IP to prevent token enumeration
-  if (!rateLimit(ip, { window: 60000, limit: 10 })) {
+  if (!rateLimit(ip, 10, 60000)) {
     return NextResponse.json(
       { ok: false, error: 'Too many verification attempts. Please wait a minute.' },
       { status: 429 }

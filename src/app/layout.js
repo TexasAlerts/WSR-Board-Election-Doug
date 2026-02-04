@@ -33,7 +33,7 @@ export const metadata = {
   },
   title: 'Doug Charles for Prosper Town Council - Place 5',
   description:
-    'Doug Charles for Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. Election May 2, 2026.',
+    'Doug Charles for Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. May 2, 2026 Election.',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '32x32' },
@@ -46,7 +46,7 @@ export const metadata = {
   openGraph: {
     title: 'Doug Charles for Prosper Town Council - Place 5',
     description:
-      'Doug Charles for Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. Election May 2, 2026.',
+      'Doug Charles for Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. May 2, 2026 Election.',
     url: 'https://www.dougcharles.com',
     siteName: 'Doug Charles for Prosper',
     locale: 'en_US',
@@ -209,7 +209,7 @@ export default function RootLayout({ children }) {
                     doug@dougcharles.com
                   </a>
                 </p>
-                <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 pt-2">
+                <nav aria-label="Footer navigation" className="flex flex-wrap justify-center gap-x-4 gap-y-1 pt-2">
                   <Link href="/about" className="text-white hover:text-gray-300 hover:underline">
                     About
                   </Link>
@@ -228,7 +228,7 @@ export default function RootLayout({ children }) {
                   <Link href="/donate" className="text-white hover:text-gray-300 hover:underline">
                     Donate
                   </Link>
-                </div>
+                </nav>
                 <p>
                   © {new Date().getFullYear()} Doug Charles for Prosper Town Council
                   {' | '}

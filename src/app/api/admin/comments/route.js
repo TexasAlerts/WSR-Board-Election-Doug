@@ -7,6 +7,7 @@ import {
   notifyParticipantsOfNewComment,
   notifyParentCommentAuthor,
 } from '../../../../lib/notifications';
+import { withCSRF } from '../../../../lib/withCSRF';
 
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
@@ -103,7 +104,7 @@ export async function GET(request) {
   }
 }
 
-export async function PUT(request) {
+async function putHandler(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
@@ -236,3 +237,5 @@ export async function PUT(request) {
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 400 });
   }
 }
+
+export const PUT = withCSRF(putHandler);

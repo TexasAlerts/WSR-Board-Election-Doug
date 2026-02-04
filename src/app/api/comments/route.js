@@ -51,6 +51,7 @@ import { sendNotificationEmail } from '../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
 import { sanitizeText } from '../../../lib/sanitize';
 import { getUserDisplayName } from '../../../lib/formatDisplayName';
+import { withCSRF } from '../../../lib/withCSRF';
 
 // GET: Fetch comments for a poll or idea
 export async function GET(request) {
@@ -148,7 +149,7 @@ export async function GET(request) {
 }
 
 // POST: Create a new comment (supporters only)
-export async function POST(request) {
+async function postHandler(request) {
   const supabase = getSupabase();
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
@@ -298,3 +299,5 @@ export async function POST(request) {
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }
+
+export const POST = withCSRF(postHandler);

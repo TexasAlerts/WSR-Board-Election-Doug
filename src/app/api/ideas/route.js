@@ -7,6 +7,7 @@ import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
 import { sanitizeText } from '../../../lib/sanitize';
 import { verifyCaptcha } from '../../../lib/recaptcha';
+import { withCSRF } from '../../../lib/withCSRF';
 
 // API routes should be dynamic
 export const dynamic = 'force-dynamic';
@@ -90,7 +91,7 @@ export async function GET(request) {
   return response;
 }
 
-export async function POST(request) {
+async function postHandler(request) {
   const supabase = getSupabase();
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
@@ -238,3 +239,5 @@ export async function POST(request) {
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }
+
+export const POST = withCSRF(postHandler);

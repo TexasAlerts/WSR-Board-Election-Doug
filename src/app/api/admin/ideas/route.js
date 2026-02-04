@@ -3,6 +3,7 @@ import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { sendEmail } from '../../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { withCSRF } from '../../../../lib/withCSRF';
 
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
@@ -52,7 +53,7 @@ export async function GET(request) {
   }
 }
 
-export async function POST(request) {
+async function postHandler(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
@@ -213,3 +214,5 @@ export async function POST(request) {
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 400 });
   }
 }
+
+export const POST = withCSRF(postHandler);

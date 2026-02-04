@@ -15,7 +15,7 @@ export async function GET(req) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   // Rate limit: 10 attempts per minute per IP
-  if (!rateLimit(ip, { window: 60000, limit: 10 })) {
+  if (!rateLimit(ip, 10, 60000)) {
     return NextResponse.json(
       { ok: false, error: 'Too many requests. Please wait a minute.' },
       { status: 429 }
@@ -56,7 +56,7 @@ export async function POST(req) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   // Rate limit: 5 attempts per minute per IP to prevent brute force
-  if (!rateLimit(ip, { window: 60000, limit: 5 })) {
+  if (!rateLimit(ip, 5, 60000)) {
     return NextResponse.json(
       { ok: false, error: 'Too many reset attempts. Please wait a minute.' },
       { status: 429 }

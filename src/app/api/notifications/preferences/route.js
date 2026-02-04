@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, getVerifiedVoter } from '../../../../lib/auth';
 import { logError, ErrorTypes } from '../../../../lib/logging';
+import { withCSRF } from '../../../../lib/withCSRF';
 
 const ALL_PREF_FIELDS = [
   // Existing email prefs
@@ -48,7 +49,7 @@ export async function GET() {
   return NextResponse.json({ ok: true, data: merged });
 }
 
-export async function PATCH(request) {
+async function patchHandler(request) {
   const supabase = getSupabase();
   const supporter = await getCurrentSupporter();
   const voter = !supporter ? await getVerifiedVoter() : null;
@@ -102,3 +103,5 @@ export async function PATCH(request) {
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }
+
+export const PATCH = withCSRF(patchHandler);

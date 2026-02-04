@@ -3,6 +3,7 @@ import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter } from '../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 import { z } from 'zod';
+import { withCSRF } from '../../../../lib/withCSRF';
 
 const profileSchema = z.object({
   firstName: z.string().min(1, 'First name is required').max(100),
@@ -13,7 +14,7 @@ const profileSchema = z.object({
   zipCode: z.string().min(5, 'ZIP code is required').max(10),
 });
 
-export async function PATCH(request) {
+async function patchHandler(request) {
   const supabase = getSupabase();
   try {
     const supporter = await getCurrentSupporter();
@@ -85,3 +86,5 @@ export async function PATCH(request) {
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }
+
+export const PATCH = withCSRF(patchHandler);
