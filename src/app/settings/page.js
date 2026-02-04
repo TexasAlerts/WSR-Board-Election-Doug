@@ -192,11 +192,11 @@ export default function SettingsPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Verification failed');
-      setPhoneMsg({ type: 'success', text: 'Phone number verified successfully!' });
       setShowPhoneVerify(false);
       setEditingPhone(false);
       setSmsCode('');
-      refreshAuth();
+      await refreshAuth();
+      setPhoneMsg({ type: 'success', text: 'Phone number verified successfully! SMS notifications are now available.' });
     } catch (err) {
       await logApiError('/api/auth/verify-phone-update', 'POST', err.status || 500, err.message, { context: 'phoneVerify' });
       setPhoneMsg({ type: 'error', text: err.message });
