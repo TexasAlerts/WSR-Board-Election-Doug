@@ -53,6 +53,7 @@ export default function AdminDashboard() {
   const [ideas, setIdeas] = useState([]);
   const [interest, setInterest] = useState([]);
   const [verifiedVoters, setVerifiedVoters] = useState([]);
+  const [currentUserRole, setCurrentUserRole] = useState(null);
   const [supporterFilter, setSupporterFilter] = useState('all');
   const [endorsementFilter, setEndorsementFilter] = useState('pending');
   const [questionFilter, setQuestionFilter] = useState('pending');
@@ -276,6 +277,22 @@ export default function AdminDashboard() {
     router,
   ]);
 
+  // Fetch current user role on mount
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const res = await fetch('/api/auth/me');
+        const data = await res.json();
+        if (res.ok && data.authenticated && data.supporter) {
+          setCurrentUserRole(data.supporter.role);
+        }
+      } catch (err) {
+        // Silent fail - role defaults to null (most restrictive)
+      }
+    };
+    fetchUserRole();
+  }, []);
+
   useEffect(() => {
     loadData();
   }, [loadData]);
@@ -308,6 +325,21 @@ export default function AdminDashboard() {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, reason }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      loadData();
+    } catch (err) {
+      showConfirm('Error', err.message);
+    }
+  };
+
+  const changeUserRole = async (id, newRole) => {
+    try {
+      const res = await fetch('/api/admin/supporters', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, role: newRole }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
@@ -565,6 +597,8 @@ export default function AdminDashboard() {
             deleteSupporter={deleteSupporter}
             formatDate={formatDate}
             statusColors={statusColors}
+            currentUserRole={currentUserRole}
+            onRoleChange={changeUserRole}
           />
         )}
 
@@ -577,6 +611,7 @@ export default function AdminDashboard() {
             handleSuspendVoter={handleSuspendVoter}
             handleDeleteVoter={handleDeleteVoter}
             formatDate={formatDate}
+            currentUserRole={currentUserRole}
           />
         )}
 

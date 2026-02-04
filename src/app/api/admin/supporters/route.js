@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
-import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
+import { getCurrentSupporter, isAdmin, isSuperAdmin } from '../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
 export async function GET(request) {
@@ -88,6 +88,22 @@ export async function PUT(request) {
       .eq('id', id)
       .single();
 
+    // Only SuperAdmin can change roles
+    if (role && role !== oldSupporter?.role && !isSuperAdmin(supporter)) {
+      return NextResponse.json(
+        { ok: false, error: 'Only Super Admins can change user roles' },
+        { status: 403 }
+      );
+    }
+
+    // Only SuperAdmin can suspend users
+    if (status === 'suspended' && !isSuperAdmin(supporter)) {
+      return NextResponse.json(
+        { ok: false, error: 'Only Super Admins can suspend users' },
+        { status: 403 }
+      );
+    }
+
     const updates = {};
     if (status) {
       updates.status = status;
@@ -161,6 +177,14 @@ export async function DELETE(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
+  }
+
+  // Only SuperAdmin can delete supporters
+  if (!isSuperAdmin(supporter)) {
+    return NextResponse.json(
+      { ok: false, error: 'Only Super Admins can delete supporters' },
+      { status: 403 }
+    );
   }
 
   const supabase = getSupabase();

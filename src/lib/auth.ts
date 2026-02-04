@@ -452,6 +452,30 @@ export function isSuperAdmin(supporter: Supporter | null): boolean {
   return supporter?.role === 'super_admin';
 }
 
+/**
+ * Check if a supporter can manage roles (assign admin/super_admin)
+ * Only super_admins can assign or modify roles
+ */
+export function canManageRoles(supporter: Supporter | null): boolean {
+  return supporter?.role === 'super_admin';
+}
+
+/**
+ * Check if a supporter can moderate content (approve/reject comments, ideas, polls)
+ * Both admins and super_admins can moderate content
+ */
+export function canModerateContent(supporter: Supporter | null): boolean {
+  return supporter?.role === 'admin' || supporter?.role === 'super_admin';
+}
+
+/**
+ * Check if a supporter can delete/suspend supporters or verified voters
+ * Only super_admins can delete or suspend users
+ */
+export function canDeleteSupporters(supporter: Supporter | null): boolean {
+  return supporter?.role === 'super_admin';
+}
+
 // Get verified voter from cookie (lightweight email-verified user for polls)
 export async function getVerifiedVoter(): Promise<VerifiedVoter | null> {
   const cookieStore = await cookies();

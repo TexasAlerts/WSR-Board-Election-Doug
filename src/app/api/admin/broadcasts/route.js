@@ -3,6 +3,7 @@ import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { sendEmail } from '../../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { rateLimit } from '../../../../lib/rateLimit';
 
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
@@ -54,6 +55,15 @@ export async function POST(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
+  }
+
+  // Rate limit: 5 broadcasts per hour per admin
+  const rateLimitKey = `broadcast-${supporter.id}`;
+  if (!rateLimit(rateLimitKey, 5, 3600000)) {
+    return NextResponse.json(
+      { ok: false, error: 'Too many broadcasts. Maximum 5 per hour.' },
+      { status: 429 }
+    );
   }
 
   const supabase = getSupabase();

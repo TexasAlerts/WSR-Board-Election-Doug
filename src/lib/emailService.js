@@ -681,3 +681,68 @@ export async function sendBroadcastEmail(subject, htmlBody, recipients) {
 
   return results;
 }
+
+/**
+ * Send error alert email to admin
+ * Used by the logging system to notify admins of critical errors
+ *
+ * @param {string} email - Admin email address
+ * @param {Object} error - Error details
+ * @param {string} error.errorId - Error log ID
+ * @param {string} error.errorType - Error type
+ * @param {string} error.errorMessage - Error message
+ * @param {string} error.endpoint - API endpoint where error occurred
+ * @param {string} error.userEmail - Email of user who triggered error (if any)
+ * @param {Object} error.deviceInfo - Device information
+ */
+export async function sendErrorAlertEmail(email, error) {
+  const client = getResendClient();
+  if (!client) return { success: false, error: 'Email service not configured' };
+
+  const deviceStr = error.deviceInfo
+    ? `${error.deviceInfo.type} / ${error.deviceInfo.browser} / ${error.deviceInfo.os}`
+    : 'Unknown';
+
+  try {
+    const { data, error: sendError } = await client.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: `[Error Alert] ${error.errorType}: ${(error.errorMessage || '').substring(0, 50)}...`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #c41e3a;">Website Error Alert</h2>
+          <p>A new error has occurred on the campaign website:</p>
+
+          <div style="background: #f5f5f5; padding: 15px; border-radius: 6px; margin: 15px 0;">
+            <p style="margin: 5px 0;"><strong>Error ID:</strong> ${escapeHtml(error.errorId || 'N/A')}</p>
+            <p style="margin: 5px 0;"><strong>Type:</strong> ${escapeHtml(error.errorType || 'Unknown')}</p>
+            <p style="margin: 5px 0;"><strong>Endpoint:</strong> ${escapeHtml(error.endpoint || 'Unknown')}</p>
+            <p style="margin: 5px 0;"><strong>Message:</strong> ${escapeHtml(error.errorMessage || 'No message')}</p>
+            <p style="margin: 5px 0;"><strong>User:</strong> ${escapeHtml(error.userEmail || 'Anonymous')}</p>
+            <p style="margin: 5px 0;"><strong>Device:</strong> ${escapeHtml(deviceStr)}</p>
+            <p style="margin: 5px 0;"><strong>Time:</strong> ${new Date().toLocaleString()}</p>
+          </div>
+
+          <p>Please review and resolve this error in the admin dashboard.</p>
+
+          <p style="margin: 20px 0;">
+            <a href="${SITE_URL}/admin/errors" style="background-color: #1e3a5f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block;">
+              View Error Details
+            </a>
+          </p>
+
+          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+          <p style="color: #999; font-size: 12px;">
+            Doug Charles for Prosper Town Council - Admin Alert<br>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
+          </p>
+        </div>
+      `,
+    });
+
+    if (sendError) return { success: false, error: sendError.message };
+    return { success: true, id: data?.id };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}

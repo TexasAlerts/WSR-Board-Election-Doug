@@ -21,6 +21,7 @@
 
 import { getSupabase } from './supabase';
 import { sendEmail } from './sendEmail';
+import { sendErrorAlertSMS } from './smsService';
 
 /**
  * Parse user agent to determine device type
@@ -451,7 +452,7 @@ export async function logError({
 }
 
 /**
- * Notify superusers of a new error
+ * Notify superusers and admins of a new error via email and SMS
  */
 async function notifySuperusersOfError({
   errorId,
@@ -464,16 +465,15 @@ async function notifySuperusersOfError({
   try {
     const supabase = getSupabase();
 
-    // Get superusers
-    const { data: superusers } = await supabase
+    // Get all admins and super_admins for notifications
+    const { data: admins } = await supabase
       .from('supporters')
-      .select('email, first_name')
-      .eq('role', 'super_admin')
-      .eq('status', 'approved')
-      .eq('email_consent', true);
+      .select('email, phone, first_name, role, sms_consent')
+      .in('role', ['admin', 'super_admin'])
+      .eq('status', 'approved');
 
-    if (!superusers || superusers.length === 0) {
-      console.log('No superusers to notify');
+    if (!admins || admins.length === 0) {
+      console.log('No admins to notify');
       return;
     }
 
@@ -481,7 +481,7 @@ async function notifySuperusersOfError({
       ? `${deviceInfo.type} / ${deviceInfo.browser} / ${deviceInfo.os}`
       : 'Unknown';
 
-    const subject = `[Error Alert] ${errorType}: ${errorMessage.substring(0, 50)}...`;
+    const subject = `[Error Alert] ${errorType}: ${(errorMessage || '').substring(0, 50)}...`;
     const body = `
 A new error has occurred on the campaign website:
 
@@ -496,11 +496,27 @@ Time: ${new Date().toLocaleString()}
 Please review and resolve this error in the admin dashboard.
     `.trim();
 
-    for (const superuser of superusers) {
+    const errorDetails = {
+      errorType,
+      errorMessage,
+      endpoint,
+    };
+
+    for (const admin of admins) {
+      // Send email notification
       try {
-        await sendEmail(superuser.email, subject, body);
+        await sendEmail(admin.email, subject, body);
       } catch (err) {
-        console.error(`Failed to notify ${superuser.email}:`, err);
+        console.error(`Failed to email ${admin.email}:`, err);
+      }
+
+      // Send SMS notification if admin has phone and SMS consent
+      if (admin.phone && admin.sms_consent) {
+        try {
+          await sendErrorAlertSMS(admin.phone, errorDetails);
+        } catch (err) {
+          console.error(`Failed to SMS ${admin.phone}:`, err);
+        }
       }
     }
 
@@ -510,7 +526,7 @@ Please review and resolve this error in the admin dashboard.
       .update({ notified_at: new Date().toISOString() })
       .eq('id', errorId);
   } catch (err) {
-    console.error('Failed to notify superusers:', err);
+    console.error('Failed to notify admins:', err);
   }
 }
 

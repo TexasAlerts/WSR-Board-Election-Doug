@@ -121,3 +121,21 @@ export async function sendBroadcastSMS(phones, message) {
 
   return results;
 }
+
+/**
+ * Send error alert SMS to admin
+ * Used by the logging system to notify admins of critical errors
+ *
+ * @param {string} phone - Admin phone number in E.164 format
+ * @param {Object} error - Error details
+ * @param {string} error.errorType - Error type
+ * @param {string} error.errorMessage - Error message
+ * @param {string} error.endpoint - API endpoint where error occurred
+ */
+export async function sendErrorAlertSMS(phone, error) {
+  // Truncate message to fit SMS limits (160 chars)
+  const truncatedMessage = (error.errorMessage || 'Unknown error').slice(0, 80);
+  const message = `[DougCharles.com Alert] ${error.errorType}: ${truncatedMessage}`;
+
+  return sendSMS(phone, message);
+}

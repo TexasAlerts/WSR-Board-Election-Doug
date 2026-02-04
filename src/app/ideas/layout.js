@@ -2,11 +2,11 @@ export const metadata = {
   alternates: { canonical: '/ideas' },
   title: 'Community Ideas | Doug Charles for Prosper Town Council',
   description:
-    'Submit your ideas for making Prosper better. Doug Charles believes great ideas come from neighbors. Share your vision for roads, parks, development, and more.',
+    "Submit your ideas for making Prosper better. Vote on community suggestions and help shape our town's future.",
   openGraph: {
     title: 'Community Ideas | Doug Charles for Prosper Town Council',
     description:
-      'Submit your ideas for making Prosper better. Doug Charles believes great ideas come from neighbors. Share your vision for roads, parks, development, and more.',
+      "Submit your ideas for making Prosper better. Vote on community suggestions and help shape our town's future.",
     url: 'https://www.dougcharles.com/ideas',
     type: 'website',
     siteName: 'Doug Charles for Prosper',

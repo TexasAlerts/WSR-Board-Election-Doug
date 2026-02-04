@@ -40,7 +40,7 @@ export async function POST(request) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   // Rate limit: 100 requests per minute per IP to prevent webhook flooding
-  if (!rateLimit(ip, { window: 60000, limit: 100 })) {
+  if (!rateLimit(ip, 100, 60000)) {
     return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
   }
 
