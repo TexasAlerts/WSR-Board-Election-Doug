@@ -130,14 +130,18 @@ export default function TrackRecordPage() {
                     Advocated for Tax Relief & Public Safety Investment
                   </h3>
                   <p className="text-gray-600 mb-2">
-                    Appeared before Town Council to advocate for a{' '}
-                    <strong className="text-navy">4-cent property tax rate reduction</strong> while
-                    simultaneously calling for a{' '}
-                    <strong className="text-prosper-red">
-                      7% pay increase for Police and Fire
-                    </strong>{' '}
-                    personnel. Challenged the Town's excessive reserves, arguing taxpayer money
-                    should be returned or invested in infrastructure—not hoarded.
+                    Appeared before Town Council pushing for a{' '}
+                    <strong className="text-navy">4-cent tax rate reduction</strong> and{' '}
+                    <strong className="text-prosper-red">higher Police and Fire pay</strong>.
+                    Challenged the Town's excessive reserves—taxpayer money should be invested to
+                    accelerate infrastructure or returned via rate reductions, not hoarded. Working
+                    with council leaders, we achieved the{' '}
+                    <strong className="text-navy">first tax rate decrease in 14 years</strong> and
+                    moved the proposed public safety pay increase to{' '}
+                    <strong className="text-navy">5%</strong>.
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    I'm a fiscal hawk—but I'll invest wisely to grow our town smartly.
                   </p>
                 </div>
               </div>
