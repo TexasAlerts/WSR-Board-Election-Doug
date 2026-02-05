@@ -139,7 +139,8 @@ export default function TrackRecordPage() {
                     personnel. Challenged the Town's excessive reserves, arguing taxpayer money
                     should be returned or invested in infrastructure—not hoarded. This{' '}
                     <strong className="text-navy">consistent support for public safety</strong>{' '}
-                    continued in 2025, when I advocated for the public safety bond propositions.
+                    continued in 2025, when I advocated for the police headquarters expansion
+                    bond—though voters ultimately rejected it.
                   </p>
                 </div>
               </div>
@@ -274,21 +275,34 @@ export default function TrackRecordPage() {
                     Common Sense on Bond Proposals
                   </h3>
                   <p className="text-gray-600 mb-2">
-                    When some 2025 bond proposals seemed undersized, I said publicly: voters agreed,
-                    passing{' '}
-                    <strong className="text-navy">infrastructure and public safety bonds</strong>{' '}
-                    while rejecting undersized facilities.
+                    Prosper voters sent a clear message:{' '}
+                    <strong className="text-navy">
+                      plan smarter, communicate better, and build it right the first time—or with a
+                      clear plan that voters understand and can support.
+                    </strong>{' '}
+                    Only Props A (Streets) and F (Downtown) passed—grounded in real need. Voters
+                    rejected the other bonds mostly due to a lack of planning and the absence of a
+                    strong communication and engagement plan.
+                  </p>
+                  <p className="text-gray-600 mb-2">
+                    I supported streets, downtown, and public safety—but strongly opposed the
+                    undersized library proposal. I support a modern library that meets the Town's
+                    Master Plan (49,000 sq ft), not one built too small from the start (33,000 sq
+                    ft).
+                  </p>
+                  <p className="text-gray-600 italic text-sm mb-1">
+                    "You don't build small when you already know it's too small. That's not
+                    progress, that's poor planning and lacks common sense!"
                   </p>
                   <p className="text-gray-600 italic text-sm">
-                    "Let's build it once, not twice—unless we're going to build it once and expand
-                    it with a thoughtful plan that's communicated." —{' '}
+                    "They failed to communicate. They failed to engage." —{' '}
                     <a
-                      href="https://communityimpact.com/dallas-fort-worth/prosper-celina/government/2025/11/21/prosper-officials-consider-next-steps-alternative-funding-after-partial-bond-failure/"
+                      href="https://www.dallasnews.com/opinion/commentary/2025/11/12/damm-far-north-suburbs-try-to-balance-growth-taxes/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-navy hover:underline"
                     >
-                      Community Impact
+                      Dallas Morning News
                     </a>
                   </p>
                 </div>
