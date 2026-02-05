@@ -137,10 +137,7 @@ export default function TrackRecordPage() {
                       7% pay increase for Police and Fire
                     </strong>{' '}
                     personnel. Challenged the Town's excessive reserves, arguing taxpayer money
-                    should be returned or invested in infrastructure—not hoarded. This{' '}
-                    <strong className="text-navy">consistent support for public safety</strong>{' '}
-                    continued in 2025, when I advocated for the police headquarters expansion
-                    bond—though voters ultimately rejected it.
+                    should be returned or invested in infrastructure—not hoarded.
                   </p>
                 </div>
               </div>
