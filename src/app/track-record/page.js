@@ -135,9 +135,10 @@ export default function TrackRecordPage() {
                     <strong className="text-prosper-red">higher Police and Fire pay</strong>.
                     Challenged the Town's excessive reserves—taxpayer money should be invested to
                     accelerate infrastructure or returned via rate reductions, not hoarded. Working
-                    with council leaders, we achieved the{' '}
-                    <strong className="text-navy">first tax rate decrease in 14 years</strong> and
-                    moved the proposed public safety pay increase to{' '}
+                    with council leaders, we achieved a{' '}
+                    <strong className="text-navy">1-cent rate reduction</strong>—the{' '}
+                    <strong className="text-navy">first decrease in 14 years</strong>—and moved the
+                    proposed public safety pay increase to{' '}
                     <strong className="text-navy">5%</strong>.
                   </p>
                   <p className="text-gray-600 text-sm">
