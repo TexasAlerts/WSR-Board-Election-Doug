@@ -280,15 +280,15 @@ export default function TrackRecordPage() {
                       plan smarter, communicate better, and build it right the first time—or with a
                       clear plan that voters understand and can support.
                     </strong>{' '}
-                    Only Props A (Streets) and F (Downtown) passed—grounded in real need. Voters
-                    rejected the other bonds mostly due to a lack of planning and the absence of a
-                    strong communication and engagement plan.
+                    I strongly advocated for{' '}
+                    <strong className="text-navy">Props A (Streets) and F (Downtown)</strong>—and
+                    voters agreed, passing both. The other bonds failed mostly due to a lack of
+                    planning and the absence of a strong communication and engagement plan.
                   </p>
                   <p className="text-gray-600 mb-2">
-                    I supported streets, downtown, and public safety—but strongly opposed the
-                    undersized library proposal. I support a modern library that meets the Town's
-                    Master Plan (49,000 sq ft), not one built too small from the start (33,000 sq
-                    ft).
+                    I strongly opposed the undersized library. The Town's Master Plan called for
+                    49,000 sq ft; the bond proposed just 33,000. That's not smart growth—it's bad
+                    planning.
                   </p>
                   <p className="text-gray-600 italic text-sm mb-1">
                     "You don't build small when you already know it's too small. That's not
