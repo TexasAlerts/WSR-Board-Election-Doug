@@ -48,12 +48,12 @@ export default function PollCard({ poll, hasVoted, onVoteClick }) {
           {hasVoted ? (
             <Link
               href={`/polls/${poll.id}`}
-              className="inline-flex items-center px-4 py-2.5 sm:py-2 min-h-[44px] sm:min-h-auto text-sm font-semibold text-navy bg-navy/10 rounded-lg hover:bg-navy/20 transition-colors"
+              className="inline-flex items-center px-4 py-2.5 min-h-[44px] text-sm font-semibold text-navy bg-navy/10 rounded-lg hover:bg-navy/20 transition-colors"
             >
               View Results →
             </Link>
           ) : (
-            <button onClick={() => onVoteClick(poll)} className="btn-primary text-sm px-4 py-2.5 sm:py-2 min-h-[44px] sm:min-h-auto">
+            <button onClick={() => onVoteClick(poll)} className="btn-primary text-sm px-4 py-2.5 min-h-[44px]">
               Vote Now
             </button>
           )}
@@ -64,17 +64,17 @@ export default function PollCard({ poll, hasVoted, onVoteClick }) {
               {(poll.comment_count || 0) > 0 && (
                 <Link
                   href={`/polls/${poll.id}#comments`}
-                  className="inline-flex items-center gap-1.5 px-4 py-2.5 sm:py-2 min-h-[44px] sm:min-h-auto text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
                 >
-                  <MessageSquare className="w-4 h-4" />
+                  <MessageSquare className="w-4 h-4" aria-hidden="true" />
                   Review Comments
                 </Link>
               )}
               <Link
                 href={`/polls/${poll.id}#comments`}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 sm:py-2 min-h-[44px] sm:min-h-auto text-sm font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] text-sm font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <PenLine className="w-4 h-4" />
+                <PenLine className="w-4 h-4" aria-hidden="true" />
                 Add Comment
               </Link>
             </>

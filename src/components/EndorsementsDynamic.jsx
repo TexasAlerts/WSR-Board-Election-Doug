@@ -69,7 +69,9 @@ export default function EndorsementsDynamic() {
         retries: 2,
         onRetry: (attempt, error) => {
           setRetryCount(attempt);
-          console.log(`[Endorsements] Retry ${attempt}: ${error.message}`);
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`[Endorsements] Retry ${attempt}: ${error.message}`);
+          }
         },
       });
 

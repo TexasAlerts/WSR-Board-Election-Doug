@@ -91,16 +91,17 @@ export default function Comment({
             <button
               onClick={() => handleCommentVoteClick(comment.id, 'up')}
               disabled={(!isAuthenticated && !verifiedVoter) || isVoting}
-              className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
+              className={`flex items-center gap-1 px-2 py-1 min-h-[44px] rounded transition-colors ${
                 userVote === 'up'
                   ? 'bg-green-100 text-green-700'
                   : 'text-gray-600 hover:bg-gray-100'
               } disabled:opacity-50`}
+              aria-label={`Upvote this comment (${comment.upvotes || 0} upvotes)`}
               title={
                 !isAuthenticated && !verifiedVoter ? 'Sign in or verify email to vote' : 'Upvote'
               }
             >
-              <ThumbsUp className="w-4 h-4" />
+              <ThumbsUp className="w-4 h-4" aria-hidden="true" />
               <span className="text-sm font-medium">{comment.upvotes || 0}</span>
             </button>
 
@@ -108,14 +109,15 @@ export default function Comment({
             <button
               onClick={() => handleCommentVoteClick(comment.id, 'down')}
               disabled={(!isAuthenticated && !verifiedVoter) || isVoting}
-              className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
+              className={`flex items-center gap-1 px-2 py-1 min-h-[44px] rounded transition-colors ${
                 userVote === 'down' ? 'bg-red-100 text-red-700' : 'text-gray-600 hover:bg-gray-100'
               } disabled:opacity-50`}
+              aria-label={`Downvote this comment (${comment.downvotes || 0} downvotes)`}
               title={
                 !isAuthenticated && !verifiedVoter ? 'Sign in or verify email to vote' : 'Downvote'
               }
             >
-              <ThumbsDown className="w-4 h-4" />
+              <ThumbsDown className="w-4 h-4" aria-hidden="true" />
               <span className="text-sm font-medium">{comment.downvotes || 0}</span>
             </button>
 
@@ -173,24 +175,26 @@ export default function Comment({
           <button
             onClick={() => handleCommentVoteClick(comment.id, 'up')}
             disabled={!isAuthenticated}
-            className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
+            className={`flex items-center gap-1 px-2 py-1 min-h-[44px] rounded transition-colors ${
               userVote === 'up' ? 'bg-green-100 text-green-700' : 'text-gray-600 hover:bg-gray-100'
             } disabled:opacity-50`}
+            aria-label={`Upvote this comment (${comment.upvotes || 0} upvotes)`}
             title={!isAuthenticated ? 'Sign in to vote' : 'Upvote'}
           >
-            <ThumbsUp className="w-4 h-4" />
+            <ThumbsUp className="w-4 h-4" aria-hidden="true" />
             <span className="text-sm font-medium">{comment.upvotes || 0}</span>
           </button>
 
           <button
             onClick={() => handleCommentVoteClick(comment.id, 'down')}
             disabled={!isAuthenticated}
-            className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
+            className={`flex items-center gap-1 px-2 py-1 min-h-[44px] rounded transition-colors ${
               userVote === 'down' ? 'bg-red-100 text-red-700' : 'text-gray-600 hover:bg-gray-100'
             } disabled:opacity-50`}
+            aria-label={`Downvote this comment (${comment.downvotes || 0} downvotes)`}
             title={!isAuthenticated ? 'Sign in to vote' : 'Downvote'}
           >
-            <ThumbsDown className="w-4 h-4" />
+            <ThumbsDown className="w-4 h-4" aria-hidden="true" />
             <span className="text-sm font-medium">{comment.downvotes || 0}</span>
           </button>
 

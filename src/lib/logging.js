@@ -473,7 +473,6 @@ async function notifySuperusersOfError({
       .eq('status', 'approved');
 
     if (!admins || admins.length === 0) {
-      console.log('No admins to notify');
       return;
     }
 

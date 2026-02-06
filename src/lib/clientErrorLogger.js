@@ -266,11 +266,15 @@ export function setupGlobalErrorHandlers() {
 
     // Listen for online/offline events
     window.addEventListener('online', () => {
-      console.log('[Network] Connection restored');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[Network] Connection restored');
+      }
     });
 
     window.addEventListener('offline', () => {
-      console.log('[Network] Connection lost');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[Network] Connection lost');
+      }
     });
   }
 }
