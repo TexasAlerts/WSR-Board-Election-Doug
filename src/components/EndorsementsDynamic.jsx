@@ -6,6 +6,8 @@ import { logApiError } from '@/lib/clientErrorLogger';
 export default function EndorsementsDynamic() {
   const { getToken, isReady } = useRecaptcha();
   const [endorsements, setEndorsements] = useState([]);
+  const [loadError, setLoadError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({
     name: '',
@@ -19,17 +21,27 @@ export default function EndorsementsDynamic() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef(null);
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const res = await fetch('/api/endorsements', { cache: 'no-store' });
-        const data = await res.json();
-        setEndorsements(Array.isArray(data.data) ? data.data : []);
-      } catch (err) {
+  async function loadEndorsements() {
+    setLoadError(false);
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/endorsements', { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      setEndorsements(Array.isArray(data.data) ? data.data : []);
+    } catch (err) {
+      setLoadError(true);
+      // Only log if it's not a network/browser extension issue
+      if (!err.message?.includes('Load failed') && !err.message?.includes('NetworkError')) {
         await logApiError('/api/endorsements', 'GET', err.status || 500, err.message, { context: 'loadEndorsements' });
       }
+    } finally {
+      setIsLoading(false);
     }
-    load();
+  }
+
+  useEffect(() => {
+    loadEndorsements();
   }, []);
 
   function handleEndorseClick() {
@@ -261,7 +273,22 @@ export default function EndorsementsDynamic() {
       {/* Endorsements List */}
       <section className="py-12 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          {endorsements.length === 0 ? (
+          {isLoading ? (
+            <p className="text-center text-gray-500">Loading endorsements...</p>
+          ) : loadError ? (
+            <div className="text-center">
+              <p className="text-gray-600 mb-3">
+                Unable to load endorsements. Please check your connection.
+              </p>
+              <button
+                type="button"
+                onClick={loadEndorsements}
+                className="text-navy font-medium hover:underline"
+              >
+                Try again →
+              </button>
+            </div>
+          ) : endorsements.length === 0 ? (
             <p className="text-center text-gray-600">
               No endorsements yet. Be the first to show your support!
             </p>

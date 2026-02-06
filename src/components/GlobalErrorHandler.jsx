@@ -64,6 +64,10 @@ export default function GlobalErrorHandler() {
         'ChunkLoadError', // Webpack chunk loading
         'recaptcha', // reCAPTCHA issues
         'grecaptcha', // reCAPTCHA issues
+        'runtime.sendMessage', // Browser extension errors
+        'Extension context', // Browser extension errors
+        'message channel closed', // Browser extension errors
+        'Tab not found', // Browser extension errors
       ];
 
       if (ignoredPatterns.some((pattern) => errorMessage.includes(pattern))) {
