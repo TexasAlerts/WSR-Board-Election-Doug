@@ -12,11 +12,12 @@ export default function InterestTab({
 }) {
   return (
     <div>
-      <div className="flex gap-2 mb-4 flex-wrap">
+      <div className="flex gap-2 mb-4 flex-wrap" role="group" aria-label="Filter interest by type">
         {['all', 'updates', 'volunteer', 'yardsign', 'meeting'].map((s) => (
           <button
             key={s}
             onClick={() => setFilter(s)}
+            aria-pressed={filter === s}
             className={`px-3 py-1 rounded-full text-sm font-medium ${
               filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
@@ -94,8 +95,9 @@ export default function InterestTab({
                         onClick={() => handleDeleteInterest(i.id)}
                         className="text-red-600 hover:text-red-800 p-2"
                         title="Delete"
+                        aria-label={`Delete ${i.name}'s interest record`}
                       >
-                        <XCircle className="w-5 h-5" />
+                        <XCircle className="w-5 h-5" aria-hidden="true" />
                       </button>
                     </td>
                   </tr>
@@ -133,8 +135,9 @@ export default function InterestTab({
                     onClick={() => handleDeleteInterest(i.id)}
                     className="text-red-600 hover:text-red-800 p-2 -mr-2"
                     title="Delete"
+                    aria-label={`Delete ${i.name}'s interest record`}
                   >
-                    <XCircle className="w-5 h-5" />
+                    <XCircle className="w-5 h-5" aria-hidden="true" />
                   </button>
                 </div>
                 <div className="font-medium text-gray-900">{i.name}</div>

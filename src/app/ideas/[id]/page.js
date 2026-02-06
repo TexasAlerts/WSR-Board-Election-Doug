@@ -44,7 +44,7 @@ export async function generateMetadata({ params }) {
         title,
         description,
         url: canonical,
-        siteName: 'Doug Charles for Prosper Town Council',
+        siteName: 'Doug Charles for Prosper',
         type: 'article',
         publishedTime: idea.created_at,
         images: [

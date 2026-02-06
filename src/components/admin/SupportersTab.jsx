@@ -30,11 +30,12 @@ export default function SupportersTab({
 
   return (
     <div>
-      <div className="flex gap-2 mb-4 flex-wrap">
+      <div className="flex gap-2 mb-4 flex-wrap" role="group" aria-label="Filter supporters by status">
         {['all', 'pending_email', 'pending_phone', 'approved', 'suspended'].map((s) => (
           <button
             key={s}
             onClick={() => setFilter(s)}
+            aria-pressed={filter === s}
             className={`px-3 py-1 rounded-full text-sm font-medium ${
               filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}

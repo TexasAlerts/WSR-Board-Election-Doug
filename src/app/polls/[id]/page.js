@@ -45,7 +45,7 @@ export async function generateMetadata({ params }) {
         title,
         description,
         url: canonical,
-        siteName: 'Doug Charles for Prosper Town Council',
+        siteName: 'Doug Charles for Prosper',
         type: 'article',
         publishedTime: poll.published_at || poll.created_at,
         images: [

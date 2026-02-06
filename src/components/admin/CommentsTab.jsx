@@ -14,11 +14,12 @@ export default function CommentsTab({
 }) {
   return (
     <div>
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-4" role="group" aria-label="Filter comments by status">
         {['pending', 'approved', 'rejected', 'all'].map((s) => (
           <button
             key={s}
             onClick={() => setFilter(s)}
+            aria-pressed={filter === s}
             className={`px-3 py-1 rounded-full text-sm font-medium ${
               filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
@@ -59,8 +60,9 @@ export default function CommentsTab({
                     <button
                       onClick={() => moderateComment(c.id, 'approved')}
                       className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
+                      aria-label={`Approve comment by ${c.name}`}
                     >
-                      <CheckCircle className="w-4 h-4" />
+                      <CheckCircle className="w-4 h-4" aria-hidden="true" />
                       Approve
                     </button>
                     <button
@@ -72,8 +74,9 @@ export default function CommentsTab({
                         moderateComment(c.id, 'rejected', reason);
                       }}
                       className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
+                      aria-label={`Reject comment by ${c.name}`}
                     >
-                      <XCircle className="w-4 h-4" />
+                      <XCircle className="w-4 h-4" aria-hidden="true" />
                       Reject
                     </button>
                   </div>

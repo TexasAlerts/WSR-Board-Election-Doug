@@ -53,19 +53,23 @@ export default function ReportsTab() {
   return (
     <div>
       <div className="flex flex-wrap gap-4 items-center mb-6">
-        <select
-          value={reportType}
-          onChange={(e) => {
-            setReportType(e.target.value);
-            setReportData(null);
-          }}
-          className="border rounded-md px-3 py-2 text-sm"
-        >
-          <option value="engagement">Engagement Overview</option>
-          <option value="polls">Poll Results</option>
-          <option value="comments">Comments</option>
-          <option value="ideas">Ideas</option>
-        </select>
+        <div>
+          <label htmlFor="report-type" className="sr-only">Report Type</label>
+          <select
+            id="report-type"
+            value={reportType}
+            onChange={(e) => {
+              setReportType(e.target.value);
+              setReportData(null);
+            }}
+            className="border rounded-md px-3 py-2 text-sm"
+          >
+            <option value="engagement">Engagement Overview</option>
+            <option value="polls">Poll Results</option>
+            <option value="comments">Comments</option>
+            <option value="ideas">Ideas</option>
+          </select>
+        </div>
 
         <button
           onClick={loadReport}

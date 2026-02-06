@@ -13,11 +13,12 @@ export default function ErrorLogsTab({
 }) {
   return (
     <div>
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-4" role="group" aria-label="Filter error logs by status">
         {['new', 'investigating', 'resolved', 'wont_fix', 'all'].map((s) => (
           <button
             key={s}
             onClick={() => setFilter(s)}
+            aria-pressed={filter === s}
             className={`px-3 py-1 rounded-full text-sm font-medium ${
               filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
