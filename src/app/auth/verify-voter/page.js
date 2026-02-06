@@ -8,10 +8,11 @@ export default function VerifyVoterPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4" role="status" aria-live="polite">
           <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-navy mx-auto mb-4" />
-            <h1 className="text-xl font-semibold text-navy">Loading...</h1>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-navy mx-auto mb-4" aria-hidden="true" />
+            <p className="text-xl font-semibold text-navy">Loading...</p>
+            <span className="sr-only">Loading verification status</span>
           </div>
         </div>
       }

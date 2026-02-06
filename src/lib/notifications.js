@@ -93,7 +93,11 @@ export async function notifyParticipantsOfNewComment(comment) {
       contextTitle,
       contextUrl,
       token
-    ).catch(() => {});
+    ).catch((err) => {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('[Notifications] Failed to send comment notification:', err.message);
+      }
+    });
   }
 }
 
@@ -138,5 +142,9 @@ export async function notifyParentCommentAuthor(replyComment) {
     parentPreview,
     contextUrl,
     token
-  ).catch(() => {});
+  ).catch((err) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('[Notifications] Failed to send reply notification:', err.message);
+    }
+  });
 }

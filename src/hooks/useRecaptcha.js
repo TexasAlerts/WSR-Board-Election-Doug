@@ -28,8 +28,6 @@ export function useRecaptcha() {
       } catch (error) {
         return null;
       }
-
-      return null;
     },
     [executeRecaptcha]
   );

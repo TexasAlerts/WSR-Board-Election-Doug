@@ -4,7 +4,7 @@ import GetInvolvedDynamic from '../../components/GetInvolvedDynamic';
 export const metadata = {
   title: 'Get Involved - Doug Charles for Prosper',
   description:
-    'Volunteer, host an event, request a yard sign, or endorse Doug Charles for Town of Prosper Town Council Place 5 Place 5. Every action makes a difference.',
+    'Volunteer, host an event, request a yard sign, or endorse Doug Charles for Town of Prosper Town Council Place 5. Every action makes a difference.',
   alternates: { canonical: '/get-involved' },
 };
 

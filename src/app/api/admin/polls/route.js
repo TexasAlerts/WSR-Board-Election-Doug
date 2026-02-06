@@ -21,7 +21,7 @@ export async function GET(request) {
       .from('polls')
       .select(
         `
-        *,
+        id, title, description, poll_type, visibility, status, allow_comments, show_results_before_vote, closes_at, created_at, updated_at, created_by, published_at,
         poll_choices (id, choice_text, display_order),
         poll_votes (id)
       `

@@ -36,5 +36,5 @@ export const ANONYMOUS_VOTER_COOKIE_OPTIONS = {
   secure: process.env.NODE_ENV === 'production',
   sameSite: 'lax',
   path: '/',
-  maxAge: 365 * 24 * 60 * 60, // 1 year
+  maxAge: 90 * 24 * 60 * 60, // 90 days
 };
