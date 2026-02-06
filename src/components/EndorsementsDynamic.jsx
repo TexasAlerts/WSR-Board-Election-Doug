@@ -272,7 +272,7 @@ export default function EndorsementsDynamic() {
                       autoComplete="tel"
                       aria-describedby="endorsement-phone-hint"
                     />
-                    <p id="endorsement-phone-hint" className="text-sm text-gray-500 mt-1">
+                    <p id="endorsement-phone-hint" className="text-sm text-gray-700 mt-1">
                       US phone numbers only
                     </p>
                   </div>
@@ -350,9 +350,9 @@ export default function EndorsementsDynamic() {
         <div className="max-w-4xl mx-auto">
           {isLoading ? (
             <div className="text-center" role="status" aria-live="polite">
-              <p className="text-gray-500">Loading endorsements...</p>
+              <p className="text-gray-700">Loading endorsements...</p>
               {retryCount > 0 && (
-                <p className="text-gray-400 text-sm mt-1">Retrying... (attempt {retryCount})</p>
+                <p className="text-gray-700 text-sm mt-1">Retrying... (attempt {retryCount})</p>
               )}
             </div>
           ) : loadError ? (

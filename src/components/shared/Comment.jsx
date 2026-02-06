@@ -126,6 +126,7 @@ export default function Comment({
               <button
                 onClick={() => setReplyTo(comment)}
                 className="text-sm text-navy hover:underline ml-2"
+                aria-label={`Reply to comment by ${comment.display_name}`}
               >
                 Reply
               </button>

@@ -66,7 +66,7 @@ export default function HomeDynamic() {
                 <div key={q.id} className="card">
                   <h3 className="font-semibold text-navy text-lg mb-3">{q.question}</h3>
                   <p className="text-gray-700 leading-relaxed">{q.answer}</p>
-                  <p className="text-sm text-gray-500 mt-3">— Asked by {q.name}</p>
+                  <p className="text-sm text-gray-700 mt-3">— Asked by {q.name}</p>
                 </div>
               ))}
             </div>

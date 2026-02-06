@@ -89,7 +89,7 @@ export default function DonateDynamic() {
                 aria-describedby="custom-amount-hint"
               />
             </div>
-            <p id="custom-amount-hint" className="text-xs text-gray-500 text-center mt-2">
+            <p id="custom-amount-hint" className="text-xs text-gray-700 text-center mt-2">
               Minimum $1
             </p>
           </div>

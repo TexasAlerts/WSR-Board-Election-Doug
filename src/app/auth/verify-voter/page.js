@@ -88,7 +88,7 @@ function VerifyVoterContent() {
           <>
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-navy mx-auto mb-4" />
             <h1 className="text-xl font-semibold text-navy">Verifying your email...</h1>
-            <p className="text-gray-500 mt-2">Please wait a moment.</p>
+            <p className="text-gray-700 mt-2">Please wait a moment.</p>
           </>
         )}
 
@@ -99,7 +99,7 @@ function VerifyVoterContent() {
             <p className="text-gray-600 mt-2">
               Your email has been verified. You can now vote on community polls.
             </p>
-            <p className="text-gray-400 text-sm mt-4">Redirecting to polls...</p>
+            <p className="text-gray-700 text-sm mt-4">Redirecting to polls...</p>
           </div>
         )}
 

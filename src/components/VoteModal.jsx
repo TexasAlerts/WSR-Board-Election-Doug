@@ -214,7 +214,7 @@ export default function VoteModal({
 
               {poll.poll_type === 'ranked_choice' && (
                 <div className="mt-2">
-                  <p className="text-sm text-gray-500 mb-3">
+                  <p className="text-sm text-gray-700 mb-3">
                     Click choices in order of preference. Your first click is your top choice.
                   </p>
                   <div className="space-y-2">
@@ -330,7 +330,7 @@ export default function VoteModal({
                   className="form-input"
                   placeholder="Share your thoughts..."
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-700 mt-1">
                   Comments are only available for registered users
                 </p>
               </div>

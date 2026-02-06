@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { Mail, MessageCircle } from 'lucide-react';
 
 export const metadata = {
-  title: 'Support the Campaign - Doug Charles for Town of Prosper Town Council Place 5',
+  title: 'Support the Campaign - Doug Charles for Prosper',
   description:
     'Support Doug Charles for Town of Prosper Town Council Place 5. Your contribution helps bring Common Sense leadership to ALL of Prosper.',
   alternates: { canonical: '/donate' },
@@ -113,7 +113,7 @@ export default function DonatePage() {
                   <Mail className="w-5 h-5" />
                   Share via Email
                 </a>
-                <p className="text-sm text-gray-500 mt-3">
+                <p className="text-sm text-gray-700 mt-3">
                   Opens your email app with a pre-written message. Choose who to send it to.
                 </p>
               </div>
@@ -127,13 +127,13 @@ export default function DonatePage() {
                   <MessageCircle className="w-5 h-5" />
                   Share via Text
                 </a>
-                <p className="text-sm text-gray-500 mt-3">
+                <p className="text-sm text-gray-700 mt-3">
                   Opens your messaging app with a pre-written text. Select your contacts.
                 </p>
               </div>
             </div>
 
-            <p className="text-center text-xs text-gray-400 mt-6">
+            <p className="text-center text-xs text-gray-700 mt-6">
               Personal recommendations are the most powerful way to reach voters!
             </p>
           </div>

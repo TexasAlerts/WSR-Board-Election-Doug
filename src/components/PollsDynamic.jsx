@@ -213,7 +213,7 @@ export default function PollsDynamic({ initialPolls = [] }) {
           {loading ? (
             <div className="flex flex-col items-center justify-center py-12 gap-3" role="status" aria-live="polite">
               <Loader2 className="w-8 h-8 animate-spin text-navy" aria-hidden="true" />
-              <span className="text-gray-500">Loading polls...</span>
+              <span className="text-gray-700">Loading polls...</span>
             </div>
           ) : polls.length === 0 ? (
             <div className="card text-center py-12">

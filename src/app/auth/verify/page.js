@@ -270,7 +270,7 @@ function VerifyContent() {
                 aria-describedby="verify-password-hint"
               />
             </div>
-            <p id="verify-password-hint" className="text-xs text-gray-500 mt-1">
+            <p id="verify-password-hint" className="text-xs text-gray-700 mt-1">
               At least 8 characters with uppercase, lowercase, and a number
             </p>
           </div>
@@ -371,7 +371,7 @@ function VerifyContent() {
                 aria-describedby="sms-code-hint"
               />
             </div>
-            <p id="sms-code-hint" className="text-xs text-gray-500 mt-1 text-center">
+            <p id="sms-code-hint" className="text-xs text-gray-700 mt-1 text-center">
               Code expires in 10 minutes
             </p>
           </div>
@@ -413,18 +413,18 @@ function VerifyContent() {
           </div>
 
           <div className="mt-4 pt-4 border-t border-gray-200 text-center">
-            <p className="text-sm text-gray-500 mb-2">
+            <p className="text-sm text-gray-700 mb-2">
               Don&apos;t have a cell phone or can&apos;t receive texts?
             </p>
             <button
               type="button"
               onClick={handleSkipPhone}
               disabled={loading}
-              className="text-sm text-gray-500 hover:text-navy underline"
+              className="text-sm text-gray-700 hover:text-navy underline"
             >
               Skip phone verification for now
             </button>
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-gray-700 mt-1">
               You can add a cell phone later in your account settings.
             </p>
           </div>

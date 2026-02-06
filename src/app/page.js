@@ -67,7 +67,7 @@ export default function Home() {
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">20</div>
                 <div className="stat-label">Years in Prosper</div>
-                <div className="text-xs text-gray-500 mt-1 leading-snug">
+                <div className="text-xs text-gray-700 mt-1 leading-snug">
                   20-year resident · <strong className="text-navy">Active advocate</strong> since
                   2019
                 </div>
@@ -77,7 +77,7 @@ export default function Home() {
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">P&Z</div>
                 <div className="stat-label">Planning & Zoning</div>
-                <div className="text-xs text-gray-500 mt-1 leading-snug">
+                <div className="text-xs text-gray-700 mt-1 leading-snug">
                   <strong className="text-navy">Commissioner</strong> for 3 years
                 </div>
               </div>
@@ -86,7 +86,7 @@ export default function Home() {
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">$210M</div>
                 <div className="stat-label">Bond Committee</div>
-                <div className="text-xs text-gray-500 mt-1 leading-snug">
+                <div className="text-xs text-gray-700 mt-1 leading-snug">
                   2020 Election — <strong className="text-navy">all bonds passed</strong>
                 </div>
               </div>
@@ -95,7 +95,7 @@ export default function Home() {
               <div className="stat-card h-full flex flex-col justify-center">
                 <div className="stat-number">$6.5M</div>
                 <div className="stat-label">New Annual Tax Revenue</div>
-                <div className="text-xs text-gray-500 mt-1 leading-snug">
+                <div className="text-xs text-gray-700 mt-1 leading-snug">
                   Lead <strong className="text-navy">Windsong Annexation</strong> Petitioner ·
                   Passed PISD, now with <strong className="text-navy">TEA</strong>
                 </div>

@@ -520,7 +520,7 @@ export default function SettingsPage() {
                 placeholder="000000"
                 autoComplete="one-time-code"
               />
-              <p className="text-xs text-gray-500 mt-1 text-center">
+              <p className="text-xs text-gray-700 mt-1 text-center">
                 Enter the 6-digit code sent to your phone
               </p>
             </div>
@@ -564,10 +564,10 @@ export default function SettingsPage() {
                 placeholder="(972) 555-1234"
                 autoComplete="tel"
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-700 mt-1">
                 Must be a cell phone that can receive text messages.
               </p>
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-gray-700 mt-2">
                 By updating your phone number, you consent to receive SMS verification codes,
                 campaign updates, and donation solicitations from Doug Charles for Prosper Town
                 Council. Message frequency may vary. Msg &amp; data rates may apply. Reply STOP to
@@ -627,7 +627,7 @@ export default function SettingsPage() {
         {prefs ? (
           <div className="space-y-4">
             {/* Header */}
-            <div className="grid grid-cols-[1fr_auto_auto] gap-4 items-center text-sm font-semibold text-gray-500 border-b pb-2">
+            <div className="grid grid-cols-[1fr_auto_auto] gap-4 items-center text-sm font-semibold text-gray-700 border-b pb-2">
               <span>Type</span>
               <span className="w-16 text-center">Email</span>
               <span className="w-16 text-center">Text</span>
@@ -665,7 +665,7 @@ export default function SettingsPage() {
                       />
                     ) : (
                       <span
-                        className="text-xs text-gray-500"
+                        className="text-xs text-gray-700"
                         title="Verify your phone to enable text notifications"
                       >
                         —
@@ -677,7 +677,7 @@ export default function SettingsPage() {
             })}
 
             {!phoneVerified && (
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-gray-700 mt-2">
                 Text message notifications require a verified cell phone number.{' '}
                 <button
                   type="button"
@@ -704,7 +704,7 @@ export default function SettingsPage() {
             </button>
           </div>
         ) : (
-          <div className="text-center py-4 text-gray-500">
+          <div className="text-center py-4 text-gray-700">
             <Loader2 className="w-6 h-6 animate-spin mx-auto" />
           </div>
         )}
@@ -742,7 +742,7 @@ export default function SettingsPage() {
             <Loader2 className="w-6 h-6 animate-spin text-navy mx-auto" />
           </div>
         ) : activity.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-gray-700">
             <p>No {activeTab} yet.</p>
             {activeTab === 'votes' && (
               <Link href="/polls" className="text-navy underline text-sm mt-2 inline-block">
@@ -817,7 +817,7 @@ function ActivityItem({ item, type }) {
         className="block p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
       >
         <p className="font-medium text-navy text-sm">{poll?.title || 'Poll'}</p>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-gray-700 mt-1">
           Voted {new Date(item.created_at).toLocaleDateString()}
           {item.other_text && <span> — &quot;{item.other_text}&quot;</span>}
         </p>
@@ -847,7 +847,7 @@ function ActivityItem({ item, type }) {
             {item.status}
           </span>
         </div>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-gray-700 mt-1">
           Submitted {new Date(item.created_at).toLocaleDateString()}
           {item.upvotes > 0 && (
             <span>
@@ -868,11 +868,11 @@ function ActivityItem({ item, type }) {
         href={item.poll_id ? '/polls' : '/ideas'}
         className="block p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
       >
-        <p className="text-xs text-gray-500 mb-1">
+        <p className="text-xs text-gray-700 mb-1">
           {isReply ? 'Reply' : 'Comment'} on <span className="font-medium text-navy">{target}</span>
         </p>
         <p className="text-sm text-gray-700 line-clamp-2">{item.content}</p>
-        <p className="text-xs text-gray-400 mt-1">
+        <p className="text-xs text-gray-700 mt-1">
           {new Date(item.created_at).toLocaleDateString()}
           <span
             className={`ml-2 ${item.status === 'approved' ? 'text-green-600' : item.status === 'rejected' ? 'text-red-600' : 'text-yellow-600'}`}
