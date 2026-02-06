@@ -131,7 +131,7 @@ export default function StickyNav() {
                   }
                 }
               }}
-              className={`flex items-center gap-1 transition-colors ${isAboutSection ? 'text-navy font-semibold' : 'text-gray-600 hover:text-navy'}`}
+              className={`flex items-center gap-1 transition-colors ${isAboutSection ? 'text-navy font-semibold' : 'text-gray-700 hover:text-navy'}`}
               aria-expanded={aboutMenuOpen}
               aria-haspopup="true"
               aria-controls="about-dropdown-menu"
@@ -189,35 +189,35 @@ export default function StickyNav() {
           <Link
             href="/polls"
             aria-current={isCurrentPage('/polls') ? 'page' : undefined}
-            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/polls') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-600 hover:text-navy hover:bg-gray-100'}`}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/polls') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700 hover:text-navy hover:bg-gray-100'}`}
           >
             Polls
           </Link>
           <Link
             href="/ideas"
             aria-current={isCurrentPage('/ideas') ? 'page' : undefined}
-            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/ideas') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-600 hover:text-navy hover:bg-gray-100'}`}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/ideas') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700 hover:text-navy hover:bg-gray-100'}`}
           >
             Ideas
           </Link>
           <Link
             href="/qna"
             aria-current={isCurrentPage('/qna') ? 'page' : undefined}
-            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/qna') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-600 hover:text-navy hover:bg-gray-100'}`}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/qna') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700 hover:text-navy hover:bg-gray-100'}`}
           >
             Q&A
           </Link>
           <Link
             href="/endorsements"
             aria-current={isCurrentPage('/endorsements') ? 'page' : undefined}
-            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/endorsements') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-600 hover:text-navy hover:bg-gray-100'}`}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/endorsements') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700 hover:text-navy hover:bg-gray-100'}`}
           >
             Endorsements
           </Link>
           <Link
             href="/get-involved"
             aria-current={isCurrentPage('/get-involved') ? 'page' : undefined}
-            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/get-involved') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-600 hover:text-navy hover:bg-gray-100'}`}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/get-involved') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700 hover:text-navy hover:bg-gray-100'}`}
           >
             Get Involved
           </Link>
@@ -248,7 +248,7 @@ export default function StickyNav() {
                       }
                     }
                   }}
-                  className="flex items-center gap-2 text-gray-600 hover:text-navy transition-colors"
+                  className="flex items-center gap-2 text-gray-700 hover:text-navy transition-colors"
                   aria-expanded={userMenuOpen}
                   aria-haspopup="true"
                   aria-controls="user-dropdown-menu"
@@ -294,7 +294,7 @@ export default function StickyNav() {
                 )}
               </div>
             ) : (
-              <Link href="/auth/login" className="text-gray-600 hover:text-navy transition-colors">
+              <Link href="/auth/login" className="text-gray-700 hover:text-navy transition-colors">
                 Sign In
               </Link>
             ))}

@@ -24,7 +24,7 @@ export default function PollCard({ poll, hasVoted, onVoteClick }) {
         </div>
       </div>
 
-      {poll.description && <p className="text-gray-600 mb-4">{poll.description}</p>}
+      {poll.description && <p className="text-gray-700 mb-4">{poll.description}</p>}
 
       <div className="flex flex-col gap-3 pt-4 border-t border-gray-100">
         {/* Stats row */}
@@ -33,8 +33,8 @@ export default function PollCard({ poll, hasVoted, onVoteClick }) {
             {poll.vote_count} vote{poll.vote_count !== 1 ? 's' : ''}
           </span>
           {poll.allow_comments && (
-            <span className="flex items-center gap-1.5 text-gray-500">
-              <MessageSquare className="w-4 h-4" />
+            <span className="flex items-center gap-1.5 text-gray-700">
+              <MessageSquare className="w-4 h-4" aria-hidden="true" />
               <span className="text-sm">
                 {poll.comment_count || 0} comment{(poll.comment_count || 0) !== 1 ? 's' : ''}
               </span>
@@ -48,12 +48,17 @@ export default function PollCard({ poll, hasVoted, onVoteClick }) {
           {hasVoted ? (
             <Link
               href={`/polls/${poll.id}`}
+              aria-label={`View results for poll: ${poll.title}`}
               className="inline-flex items-center px-4 py-2.5 min-h-[44px] text-sm font-semibold text-navy bg-navy/10 rounded-lg hover:bg-navy/20 transition-colors"
             >
               View Results →
             </Link>
           ) : (
-            <button onClick={() => onVoteClick(poll)} className="btn-primary text-sm px-4 py-2.5 min-h-[44px]">
+            <button
+              onClick={() => onVoteClick(poll)}
+              aria-label={`Vote on poll: ${poll.title}`}
+              className="btn-primary text-sm px-4 py-2.5 min-h-[44px]"
+            >
               Vote Now
             </button>
           )}
@@ -64,6 +69,7 @@ export default function PollCard({ poll, hasVoted, onVoteClick }) {
               {(poll.comment_count || 0) > 0 && (
                 <Link
                   href={`/polls/${poll.id}#comments`}
+                  aria-label={`Review ${poll.comment_count || 0} comments on poll: ${poll.title}`}
                   className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
                 >
                   <MessageSquare className="w-4 h-4" aria-hidden="true" />
@@ -72,7 +78,8 @@ export default function PollCard({ poll, hasVoted, onVoteClick }) {
               )}
               <Link
                 href={`/polls/${poll.id}#comments`}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] text-sm font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                aria-label={`Add comment to poll: ${poll.title}`}
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] text-sm font-medium text-gray-700 border border-gray-400 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <PenLine className="w-4 h-4" aria-hidden="true" />
                 Add Comment

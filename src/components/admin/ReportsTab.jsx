@@ -95,7 +95,11 @@ export default function ReportsTab() {
         )}
       </div>
 
-      {error && <div className="bg-red-50 text-red-700 p-3 rounded-md mb-4">{error}</div>}
+      {error && (
+        <div role="alert" aria-live="assertive" className="bg-red-50 text-red-700 p-3 rounded-md mb-4">
+          {error}
+        </div>
+      )}
 
       {reportData && reportType === 'engagement' && <EngagementReport data={reportData} />}
 
@@ -212,12 +216,12 @@ function CommentsReport({ data }) {
         <caption className="sr-only">Reported comments</caption>
         <thead>
           <tr className="border-b text-left">
-            <th className="p-2">Name</th>
-            <th className="p-2">Content</th>
-            <th className="p-2">Context</th>
-            <th className="p-2">Status</th>
-            <th className="p-2">Votes</th>
-            <th className="p-2">Date</th>
+            <th scope="col" className="p-2">Name</th>
+            <th scope="col" className="p-2">Content</th>
+            <th scope="col" className="p-2">Context</th>
+            <th scope="col" className="p-2">Status</th>
+            <th scope="col" className="p-2">Votes</th>
+            <th scope="col" className="p-2">Date</th>
           </tr>
         </thead>
         <tbody>
@@ -259,13 +263,13 @@ function IdeasReport({ data }) {
         <caption className="sr-only">Reported ideas</caption>
         <thead>
           <tr className="border-b text-left">
-            <th className="p-2">Title</th>
-            <th className="p-2">Author</th>
-            <th className="p-2">Category</th>
-            <th className="p-2">Status</th>
-            <th className="p-2">Votes</th>
-            <th className="p-2">Comments</th>
-            <th className="p-2">Date</th>
+            <th scope="col" className="p-2">Title</th>
+            <th scope="col" className="p-2">Author</th>
+            <th scope="col" className="p-2">Category</th>
+            <th scope="col" className="p-2">Status</th>
+            <th scope="col" className="p-2">Votes</th>
+            <th scope="col" className="p-2">Comments</th>
+            <th scope="col" className="p-2">Date</th>
           </tr>
         </thead>
         <tbody>

@@ -16,7 +16,10 @@ export async function GET(request) {
   const status = searchParams.get('status') || 'pending';
 
   try {
-    let query = supabase.from('ideas').select('*').order('created_at', { ascending: false });
+    let query = supabase
+      .from('ideas')
+      .select('id, name, email, category, title, content, status, admin_response, is_public, support_count, created_at')
+      .order('created_at', { ascending: false });
 
     if (status !== 'all') {
       query = query.eq('status', status);

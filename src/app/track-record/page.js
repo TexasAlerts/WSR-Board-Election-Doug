@@ -185,7 +185,7 @@ export default function TrackRecordPage() {
                   <p className="text-gray-600 mb-2">
                     Consistent advocacy for{' '}
                     <strong className="text-navy">fiscal responsibility</strong> means being willing
-                    to take a stand where <strong className="text-prosper-red">common sense</strong>{' '}
+                    to take a stand where <strong className="text-prosper-red">Common Sense</strong>{' '}
                     matters. During the <strong className="text-navy">$2.7 billion</strong> PISD
                     bond election, I spoke publicly about smart spending priorities. Voters
                     agreed—passing three propositions while{' '}

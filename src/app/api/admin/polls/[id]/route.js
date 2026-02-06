@@ -20,8 +20,8 @@ export async function GET(request, { params }) {
       .from('polls')
       .select(
         `
-        *,
-        poll_choices (id, choice_text, display_order),
+        id, title, description, poll_type, visibility, status, allow_comments, show_results_before_vote, published_at, closes_at, created_at,
+        poll_choices (id, choice_text, display_order, is_other_option),
         poll_votes (id, vote_data, created_at, voter_email)
       `
       )

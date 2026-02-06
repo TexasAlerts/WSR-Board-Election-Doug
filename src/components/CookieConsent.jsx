@@ -44,7 +44,7 @@ export default function CookieConsent() {
   return (
     <div
       role="dialog"
-      aria-live="polite"
+      aria-modal="true"
       aria-label="Cookie consent"
       className="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t-2 border-navy shadow-[0_-4px_20px_rgba(0,0,0,0.15)] animate-slide-up"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
@@ -56,7 +56,7 @@ export default function CookieConsent() {
               <strong>We value your privacy.</strong> This website uses cookies to enhance your
               experience, analyze site traffic, and provide basic analytics.
             </p>
-            <p className="text-xs sm:text-sm text-gray-600">
+            <p className="text-xs sm:text-sm text-gray-700">
               By clicking "Accept", you consent to our use of cookies. Learn more in our{' '}
               <Link href="/privacy" className="text-navy underline hover:text-prosper-red">
                 Privacy Policy

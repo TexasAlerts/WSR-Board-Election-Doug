@@ -148,11 +148,11 @@ export default function GetInvolvedForm({
 
           {selectedAction === 'endorsement' && (
             <div>
-              <label htmlFor="message" className="form-label">
+              <label htmlFor="endorsement-message" className="form-label">
                 Why I support Doug (optional)
               </label>
               <textarea
-                id="message"
+                id="endorsement-message"
                 rows={3}
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -164,11 +164,11 @@ export default function GetInvolvedForm({
 
           {(selectedAction === 'volunteer' || selectedAction === 'meeting') && (
             <div>
-              <label htmlFor="message" className="form-label">
+              <label htmlFor="volunteer-message" className="form-label">
                 {selectedAction === 'meeting' ? 'Preferred time or message' : 'Message (optional)'}
               </label>
               <textarea
-                id="message"
+                id="volunteer-message"
                 rows={3}
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}

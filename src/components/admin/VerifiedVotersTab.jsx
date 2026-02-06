@@ -13,7 +13,12 @@ export default function VerifiedVotersTab({
   const isSuperAdmin = currentUserRole === 'super_admin';
 
   if (loading) {
-    return <div className="text-center py-8">Loading verified voters...</div>;
+    return (
+      <div className="text-center py-8" role="status" aria-live="polite">
+        <span className="sr-only">Loading</span>
+        Loading verified voters...
+      </div>
+    );
   }
 
   return (

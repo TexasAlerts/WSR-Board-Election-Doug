@@ -100,8 +100,9 @@ export default function BroadcastsTab({
       <div>
         <h2 className="text-xl font-bold text-navy mb-4">Recent Broadcasts</h2>
         {loading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-navy" />
+          <div role="status" aria-live="polite" className="flex justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-navy" aria-hidden="true" />
+            <span className="sr-only">Loading broadcasts...</span>
           </div>
         ) : (
           <div className="space-y-4">

@@ -97,7 +97,11 @@ class ErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-[50vh] flex items-center justify-center px-4">
+        <div
+          className="min-h-[50vh] flex items-center justify-center px-4"
+          role="alert"
+          aria-live="assertive"
+        >
           <div className="text-center max-w-md">
             <h2 className="text-2xl font-bold text-navy mb-4">Something went wrong</h2>
             <p className="text-gray-600 mb-6">
@@ -106,18 +110,20 @@ class ErrorBoundary extends Component {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <button
+                type="button"
                 onClick={() => {
                   this.setState({ hasError: false, error: null });
                 }}
-                className="bg-navy text-white px-6 py-3 rounded-lg font-semibold hover:bg-navy-light transition-colors"
+                className="bg-navy text-white px-6 py-3 min-h-[44px] rounded-lg font-semibold hover:bg-navy-light transition-colors"
               >
                 Try Again
               </button>
               <button
+                type="button"
                 onClick={() => {
                   window.location.reload();
                 }}
-                className="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+                className="bg-gray-200 text-gray-700 px-6 py-3 min-h-[44px] rounded-lg font-semibold hover:bg-gray-300 transition-colors"
               >
                 Refresh Page
               </button>

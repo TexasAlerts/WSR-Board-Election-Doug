@@ -32,8 +32,9 @@ export default function InterestTab({
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-navy" />
+        <div role="status" aria-live="polite" className="flex justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-navy" aria-hidden="true" />
+          <span className="sr-only">Loading interest submissions...</span>
         </div>
       ) : (
         <>
@@ -43,22 +44,22 @@ export default function InterestTab({
               <caption className="sr-only">Interest submissions</caption>
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                     Type
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                     Name
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                     Contact
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                     Message
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                     Date
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                     Actions
                   </th>
                 </tr>

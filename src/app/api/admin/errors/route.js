@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { withCSRF } from '../../../../lib/withCSRF';
 
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
@@ -50,7 +51,7 @@ export async function GET(request) {
   return NextResponse.json({ ok: true, data });
 }
 
-export async function PUT(request) {
+async function putHandler(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
@@ -122,3 +123,5 @@ export async function PUT(request) {
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 400 });
   }
 }
+
+export const PUT = withCSRF(putHandler);

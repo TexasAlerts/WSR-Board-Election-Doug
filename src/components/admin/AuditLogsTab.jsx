@@ -39,8 +39,9 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-navy" />
+        <div role="status" aria-live="polite" className="flex justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-navy" aria-hidden="true" />
+          <span className="sr-only">Loading audit logs...</span>
         </div>
       ) : (
         <div className="bg-white rounded-xl shadow overflow-hidden">
@@ -48,19 +49,19 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
             <caption className="sr-only">Audit logs</caption>
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Time
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Event
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   User
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   IP Address
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Details
                 </th>
               </tr>

@@ -51,7 +51,7 @@ export default function DonateDynamic() {
                     setCustomAmount('');
                   }}
                   aria-pressed={selectedAmount === amount}
-                  className={`px-4 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ${
+                  className={`px-4 py-4 min-h-[44px] rounded-lg font-semibold text-lg transition-all duration-300 ${
                     selectedAmount === amount
                       ? 'bg-gradient-red text-white shadow-lg scale-105'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-[1.02]'
@@ -85,7 +85,7 @@ export default function DonateDynamic() {
                   setCustomAmount(e.target.value);
                   setSelectedAmount(null);
                 }}
-                className="form-input text-center text-lg pl-10"
+                className="form-input text-center text-lg pl-10 min-h-[44px]"
                 aria-describedby="custom-amount-hint"
               />
             </div>

@@ -5,7 +5,7 @@ import { ThumbsUp, ThumbsDown, MessageSquare } from 'lucide-react';
 export default function CommentList({ comments, isAuthenticated, onVote }) {
   if (!comments || comments.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500 mb-8">
+      <div role="status" aria-live="polite" className="text-center py-8 text-gray-700 mb-8">
         No comments yet. Be the first to comment!
       </div>
     );
@@ -27,11 +27,11 @@ export default function CommentList({ comments, isAuthenticated, onVote }) {
             <button
               onClick={() => onVote(comment.id, 'up')}
               disabled={!isAuthenticated}
-              className={`flex items-center gap-1 px-2 py-1 min-h-[44px] rounded transition-colors ${
+              className={`flex items-center gap-1 px-2 py-1 min-h-[44px] min-w-[44px] rounded transition-colors ${
                 comment.user_vote === 'up'
                   ? 'bg-green-100 text-green-700'
-                  : 'text-gray-600 hover:bg-gray-100'
-              } disabled:opacity-50`}
+                  : 'text-gray-700 hover:bg-gray-100'
+              } disabled:opacity-70`}
               aria-label={
                 !isAuthenticated
                   ? 'Sign in to upvote this comment'
@@ -45,11 +45,11 @@ export default function CommentList({ comments, isAuthenticated, onVote }) {
             <button
               onClick={() => onVote(comment.id, 'down')}
               disabled={!isAuthenticated}
-              className={`flex items-center gap-1 px-2 py-1 min-h-[44px] rounded transition-colors ${
+              className={`flex items-center gap-1 px-2 py-1 min-h-[44px] min-w-[44px] rounded transition-colors ${
                 comment.user_vote === 'down'
                   ? 'bg-red-100 text-red-700'
-                  : 'text-gray-600 hover:bg-gray-100'
-              } disabled:opacity-50`}
+                  : 'text-gray-700 hover:bg-gray-100'
+              } disabled:opacity-70`}
               aria-label={
                 !isAuthenticated
                   ? 'Sign in to downvote this comment'

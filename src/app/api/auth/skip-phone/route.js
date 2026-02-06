@@ -39,7 +39,7 @@ export async function POST(request) {
     // Get supporter
     const { data: supporter, error: fetchError } = await supabase
       .from('supporters')
-      .select('*')
+      .select('id, email, first_name, last_name, phone, status')
       .eq('id', supporterId)
       .single();
 

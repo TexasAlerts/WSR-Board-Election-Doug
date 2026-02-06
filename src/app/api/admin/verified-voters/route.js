@@ -22,7 +22,7 @@ export async function GET(request) {
 
     let query = supabase
       .from('verified_voters')
-      .select('*')
+      .select('id, email, name, verified_at, suspended_at, created_at')
       .order('created_at', { ascending: false });
 
     // Filter by suspension status

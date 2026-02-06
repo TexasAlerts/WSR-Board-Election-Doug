@@ -349,7 +349,7 @@ export default function EndorsementsDynamic() {
       <section className="py-12 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {isLoading ? (
-            <div className="text-center">
+            <div className="text-center" role="status" aria-live="polite">
               <p className="text-gray-500">Loading endorsements...</p>
               {retryCount > 0 && (
                 <p className="text-gray-400 text-sm mt-1">Retrying... (attempt {retryCount})</p>

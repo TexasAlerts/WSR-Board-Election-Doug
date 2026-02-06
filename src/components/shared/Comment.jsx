@@ -162,7 +162,7 @@ export default function Comment({
     const userVote = comment.user_vote;
 
     return (
-      <div className="bg-gray-50 rounded-lg p-4">
+      <article className="bg-gray-50 rounded-lg p-4">
         <div className="flex justify-between items-start mb-2">
           <span className="font-medium text-gray-800">{comment.name}</span>
           <span className="text-sm text-gray-500">
@@ -207,7 +207,7 @@ export default function Comment({
             </div>
           )}
         </div>
-      </div>
+      </article>
     );
   }
 
@@ -258,8 +258,8 @@ export default function Comment({
   const organizedComments = organizeComments(comments);
 
   return (
-    <div className="card">
-      <h2 className="text-2xl font-bold text-navy mb-6">
+    <section className="card" aria-labelledby="comments-heading">
+      <h2 id="comments-heading" className="text-2xl font-bold text-navy mb-6">
         Comments {comments.length > 0 && `(${comments.length})`}
       </h2>
 
@@ -346,6 +346,6 @@ export default function Comment({
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 }

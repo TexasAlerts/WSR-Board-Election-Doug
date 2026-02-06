@@ -3,6 +3,7 @@ import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { sendEmail } from '../../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { withCSRF } from '../../../../lib/withCSRF';
 
 export async function GET(req) {
   const supporter = await getCurrentSupporter();
@@ -15,7 +16,10 @@ export async function GET(req) {
   const status = searchParams.get('status') || 'pending';
 
   try {
-    let query = supabase.from('questions').select('*').order('created_at', { ascending: false });
+    let query = supabase
+      .from('questions')
+      .select('id, name, email, question, answer, status, rejection_reason, created_at')
+      .order('created_at', { ascending: false });
 
     if (status !== 'all') {
       query = query.eq('status', status);
@@ -50,7 +54,7 @@ export async function GET(req) {
   }
 }
 
-export async function POST(req) {
+async function postHandler(req) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
@@ -191,3 +195,5 @@ export async function POST(req) {
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 400 });
   }
 }
+
+export const POST = withCSRF(postHandler);

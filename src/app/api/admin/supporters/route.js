@@ -3,6 +3,7 @@ import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin, isSuperAdmin } from '../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 import { withCSRF } from '../../../../lib/withCSRF';
+import { z } from 'zod';
 
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
@@ -67,20 +68,21 @@ async function putHandler(request) {
 
   try {
     const body = await request.json();
-    const { id, status, role } = body;
 
-    if (!id) {
-      return NextResponse.json({ ok: false, error: 'Supporter ID required' }, { status: 400 });
+    // Zod validation for PUT body
+    const putSchema = z.object({
+      id: z.string().uuid('Invalid supporter ID'),
+      status: z.enum(['pending', 'approved', 'suspended']).optional(),
+      role: z.enum(['supporter', 'admin', 'super_admin']).optional(),
+    });
+
+    const parsed = putSchema.safeParse(body);
+    if (!parsed.success) {
+      const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
+      return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 
-    const VALID_STATUSES = ['pending', 'approved', 'suspended'];
-    const VALID_ROLES = ['supporter', 'admin', 'super_admin'];
-    if (status && !VALID_STATUSES.includes(status)) {
-      return NextResponse.json({ ok: false, error: 'Invalid status value' }, { status: 400 });
-    }
-    if (role && !VALID_ROLES.includes(role)) {
-      return NextResponse.json({ ok: false, error: 'Invalid role value' }, { status: 400 });
-    }
+    const { id, status, role } = parsed.data;
 
     // Get old values for audit
     const { data: oldSupporter } = await supabase

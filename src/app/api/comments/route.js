@@ -29,7 +29,7 @@
  * POST Response (Error):
  * - 400: Missing required fields or validation error
  * - 401: Not authenticated
- * - 429: Too many comments (5 per hour per user)
+ * - 429: Too many comments (10 per minute per IP)
  * - 500: Server error
  *
  * Security Features:

@@ -387,8 +387,9 @@ export default function IdeasClient({ initialIdeas = [] }) {
                       </button>
                       {idea.comment_count !== undefined && idea.comment_count > 0 && (
                         <div className="flex items-center gap-1.5 text-gray-600">
-                          <MessageSquare className="w-4 h-4" />
+                          <MessageSquare className="w-4 h-4" aria-hidden="true" />
                           <span className="text-sm font-medium">{idea.comment_count}</span>
+                          <span className="sr-only">comments</span>
                         </div>
                       )}
                       <span className="text-sm text-gray-500">by {idea.name}</span>

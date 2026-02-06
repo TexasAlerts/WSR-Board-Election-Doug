@@ -1,12 +1,22 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { logApiError } from '@/lib/clientErrorLogger';
 
 export function useCommentThread(ideaId) {
   const [commentForm, setCommentForm] = useState({ content: '' });
   const [commentMsg, setCommentMsg] = useState('');
   const [submittingComment, setSubmittingComment] = useState(false);
+  const timeoutRef = useRef(null);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleCommentSubmit = useCallback(
     async (e) => {
@@ -74,12 +84,14 @@ export function useCommentThread(ideaId) {
         return { ok: true, comments: updatedComments };
       }
       setCommentMsg(result.error || 'Error voting on comment');
-      setTimeout(() => setCommentMsg(''), 3000);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => setCommentMsg(''), 3000);
       return { ok: false };
     } catch (err) {
       await logApiError(`/api/comments/${commentId}/vote`, 'POST', err.status || 500, err.message, { context: 'handleCommentVote' });
       setCommentMsg('Error voting on comment');
-      setTimeout(() => setCommentMsg(''), 3000);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => setCommentMsg(''), 3000);
       return { ok: false };
     }
   }, []);

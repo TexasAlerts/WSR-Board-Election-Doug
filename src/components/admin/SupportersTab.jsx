@@ -46,8 +46,9 @@ export default function SupportersTab({
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-navy" />
+        <div role="status" aria-live="polite" className="flex justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-navy" aria-hidden="true" />
+          <span className="sr-only">Loading supporters...</span>
         </div>
       ) : (
         <div className="bg-white rounded-xl shadow overflow-hidden overflow-x-auto">
@@ -55,25 +56,25 @@ export default function SupportersTab({
             <caption className="sr-only">Supporters list</caption>
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Name
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Contact
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Address
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Status
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Role
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Consent
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Actions
                 </th>
               </tr>
