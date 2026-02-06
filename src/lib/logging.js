@@ -301,11 +301,13 @@ export async function logAudit({
       session_id: sessionId,
     });
 
-    if (error) {
+    if (error && process.env.NODE_ENV === 'development') {
       console.error('Failed to log audit event:', error);
     }
   } catch (err) {
-    console.error('Audit logging error:', err);
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Audit logging error:', err);
+    }
   }
 }
 
@@ -428,7 +430,9 @@ export async function logError({
       .single();
 
     if (error) {
-      console.error('Failed to log error:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to log error:', error);
+      }
       return null;
     }
 
@@ -446,7 +450,9 @@ export async function logError({
 
     return newError.id;
   } catch (err) {
-    console.error('Error logging error:', err);
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error logging error:', err);
+    }
     return null;
   }
 }
@@ -506,7 +512,9 @@ Please review and resolve this error in the admin dashboard.
       try {
         await sendEmail(admin.email, subject, body);
       } catch (err) {
-        console.error(`Failed to email ${admin.email}:`, err);
+        if (process.env.NODE_ENV === 'development') {
+          console.error(`Failed to email ${admin.email}:`, err);
+        }
       }
 
       // Send SMS notification if admin has phone and SMS consent
@@ -514,7 +522,9 @@ Please review and resolve this error in the admin dashboard.
         try {
           await sendErrorAlertSMS(admin.phone, errorDetails);
         } catch (err) {
-          console.error(`Failed to SMS ${admin.phone}:`, err);
+          if (process.env.NODE_ENV === 'development') {
+            console.error(`Failed to SMS ${admin.phone}:`, err);
+          }
         }
       }
     }
@@ -525,7 +535,9 @@ Please review and resolve this error in the admin dashboard.
       .update({ notified_at: new Date().toISOString() })
       .eq('id', errorId);
   } catch (err) {
-    console.error('Failed to notify admins:', err);
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Failed to notify admins:', err);
+    }
   }
 }
 

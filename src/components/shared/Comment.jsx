@@ -313,6 +313,8 @@ export default function Comment({
                 value={commentForm.content}
                 onChange={(e) => setCommentForm({ content: e.target.value })}
                 required
+                aria-required="true"
+                aria-describedby={commentMsg ? 'comment-message' : undefined}
                 className="form-input"
                 placeholder="Share your thoughts..."
               />
@@ -320,6 +322,9 @@ export default function Comment({
 
             {commentMsg && (
               <div
+                id="comment-message"
+                role="alert"
+                aria-live="polite"
                 className={`p-4 rounded-lg ${commentMsg.includes('submitted') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}
               >
                 {commentMsg}

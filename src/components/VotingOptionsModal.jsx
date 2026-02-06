@@ -85,6 +85,7 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
             {/* Option 1: Register for Full Access */}
             <button
               onClick={() => onOptionSelected('register')}
+              aria-label="Register for full access - vote, comment, and get notified"
               className="w-full text-left p-6 rounded-xl border-2 border-navy/20 hover:border-navy hover:bg-navy/5 transition-all group"
             >
               <div className="flex items-start gap-4">
@@ -130,6 +131,7 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
             {/* Option 2: Verify Email */}
             <button
               onClick={() => onOptionSelected('verify')}
+              aria-label="Verify email to vote and get notified"
               className="w-full text-left p-6 rounded-xl border-2 border-navy/20 hover:border-navy hover:bg-navy/5 transition-all group"
             >
               <div className="flex items-start gap-4">
@@ -167,6 +169,7 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
             {/* Option 3: Vote Anonymously */}
             <button
               onClick={() => onOptionSelected('anonymous')}
+              aria-label="Vote anonymously without registration"
               className="w-full text-left p-6 rounded-xl border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all group"
             >
               <div className="flex items-start gap-4">
