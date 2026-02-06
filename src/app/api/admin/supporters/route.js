@@ -216,7 +216,7 @@ async function deleteHandler(request) {
     // Fetch target supporter
     const { data: target, error: fetchError } = await supabase
       .from('supporters')
-      .select('*')
+      .select('id, first_name, last_name, email, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at')
       .eq('id', id)
       .single();
 

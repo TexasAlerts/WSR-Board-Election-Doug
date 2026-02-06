@@ -27,7 +27,7 @@ export default function CommentList({ comments, isAuthenticated, onVote }) {
             <button
               onClick={() => onVote(comment.id, 'up')}
               disabled={!isAuthenticated}
-              className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
+              className={`flex items-center gap-1 px-2 py-1 min-h-[44px] rounded transition-colors ${
                 comment.user_vote === 'up'
                   ? 'bg-green-100 text-green-700'
                   : 'text-gray-600 hover:bg-gray-100'
@@ -45,7 +45,7 @@ export default function CommentList({ comments, isAuthenticated, onVote }) {
             <button
               onClick={() => onVote(comment.id, 'down')}
               disabled={!isAuthenticated}
-              className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
+              className={`flex items-center gap-1 px-2 py-1 min-h-[44px] rounded transition-colors ${
                 comment.user_vote === 'down'
                   ? 'bg-red-100 text-red-700'
                   : 'text-gray-600 hover:bg-gray-100'

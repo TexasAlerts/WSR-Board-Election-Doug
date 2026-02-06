@@ -223,6 +223,7 @@ export default function Home() {
                   alt="Doug Charles"
                   width={400}
                   height={500}
+                  loading="lazy"
                   className="relative rounded-xl shadow-navy-lg mx-auto w-full max-w-[320px]"
                 />
               </div>

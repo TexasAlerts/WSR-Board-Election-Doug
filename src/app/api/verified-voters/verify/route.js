@@ -31,7 +31,7 @@ export async function POST(request) {
 
     const { data: voter, error } = await supabase
       .from('verified_voters')
-      .select('*')
+      .select('id, email, name, first_name, last_name, address, verification_token, token_expires_at, verified_at')
       .eq('verification_token', token)
       .gt('token_expires_at', new Date().toISOString())
       .is('verified_at', null)

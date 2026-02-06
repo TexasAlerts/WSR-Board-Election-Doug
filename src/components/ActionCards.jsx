@@ -54,7 +54,7 @@ export default function ActionCards({ selectedAction, onCardClick }) {
             className="card h-full text-center cursor-pointer transition-all duration-300 hover:shadow-navy-lg active:scale-[0.98] border-2 border-transparent p-4 sm:p-6"
           >
             <div className="icon-container mx-auto mb-3 sm:mb-4 w-12 h-12 sm:w-14 sm:h-14">
-              <span className="text-xl sm:text-2xl">{card.icon}</span>
+              <span className="text-xl sm:text-2xl" aria-hidden="true">{card.icon}</span>
             </div>
             <h3 className="text-base sm:text-lg font-bold text-navy mb-1 sm:mb-2">
               {card.title}
@@ -73,7 +73,7 @@ export default function ActionCards({ selectedAction, onCardClick }) {
             }`}
           >
             <div className="icon-container mx-auto mb-3 sm:mb-4 w-12 h-12 sm:w-14 sm:h-14">
-              <span className="text-xl sm:text-2xl">{card.icon}</span>
+              <span className="text-xl sm:text-2xl" aria-hidden="true">{card.icon}</span>
             </div>
             <h3 className="text-base sm:text-lg font-bold text-navy mb-1 sm:mb-2">
               {card.title}

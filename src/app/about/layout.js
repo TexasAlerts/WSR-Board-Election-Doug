@@ -6,7 +6,7 @@ export const metadata = {
   openGraph: {
     title: 'About Doug Charles | Prosper Town Council Place 5 Candidate',
     description:
-      'Meet Doug Charles: 20-year Prosper resident, former P&Z Commissioner, 2020 Bond Committee member. Common sense leadership for all of Prosper.',
+      'Meet Doug Charles: 20-year Prosper resident, former P&Z Commissioner, 2020 Bond Committee member. Common Sense leadership for ALL of Prosper.',
     url: 'https://www.dougcharles.com/about',
     type: 'website',
     siteName: 'Doug Charles for Prosper',
@@ -24,7 +24,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'About Doug Charles | Prosper Town Council Candidate',
     description:
-      '20-year Prosper resident, former P&Z Commissioner. Common sense leadership for all of Prosper.',
+      '20-year Prosper resident, former P&Z Commissioner. Common Sense leadership for ALL of Prosper.',
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };

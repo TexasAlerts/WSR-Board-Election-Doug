@@ -67,7 +67,7 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Doug Charles for Prosper Town Council - Place 5',
-    description: 'A Common Sense Leader for All of Prosper',
+    description: 'A Common Sense Leader for ALL of Prosper',
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };
@@ -148,7 +148,7 @@ export default function RootLayout({ children }) {
                   "@type": "WebSite",
                   "name": "Doug Charles for Prosper Town Council",
                   "url": "https://www.dougcharles.com",
-                  "description": "Official campaign site for Doug Charles, candidate for Prosper Town Council Place 5. A Common Sense Leader for All of Prosper.",
+                  "description": "Official campaign site for Doug Charles, candidate for Prosper Town Council Place 5. A Common Sense Leader for ALL of Prosper.",
                   "publisher": {
                     "@id": "https://www.dougcharles.com/#person"
                   }
