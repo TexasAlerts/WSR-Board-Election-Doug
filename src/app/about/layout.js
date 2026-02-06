@@ -9,14 +9,14 @@ export const metadata = {
       'Meet Doug Charles: 20-year Prosper resident, former P&Z Commissioner, 2020 Bond Committee member. Common Sense leadership for ALL of Prosper.',
     url: 'https://www.dougcharles.com/about',
     type: 'website',
-    siteName: 'Doug Charles for Prosper',
+    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
     locale: 'en_US',
     images: [
       {
         url: 'https://www.dougcharles.com/campaign-preview.png',
         width: 1200,
         height: 630,
-        alt: 'Doug Charles for Prosper Town Council Place 5 - A Common Sense Leader for ALL of Prosper',
+        alt: 'Doug Charles for Town of Prosper Town Council Place 5 - A Common Sense Leader for ALL of Prosper',
       },
     ],
   },

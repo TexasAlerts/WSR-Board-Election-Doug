@@ -31,9 +31,9 @@ export const metadata = {
   alternates: {
     canonical: '/',
   },
-  title: 'Doug Charles for Prosper Town Council - Place 5',
+  title: 'Doug Charles for Town of Prosper Town Council Place 5',
   description:
-    'Doug Charles for Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. May 2, 2026 Election.',
+    'Doug Charles for Town of Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. May 2, 2026 Election.',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '32x32' },
@@ -44,11 +44,11 @@ export const metadata = {
     apple: '/apple-touch-icon.png',
   },
   openGraph: {
-    title: 'Doug Charles for Prosper Town Council - Place 5',
+    title: 'Doug Charles for Town of Prosper Town Council Place 5',
     description:
-      'Doug Charles for Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. May 2, 2026 Election.',
+      'Doug Charles for Town of Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. May 2, 2026 Election.',
     url: 'https://www.dougcharles.com',
-    siteName: 'Doug Charles for Prosper',
+    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
     locale: 'en_US',
     type: 'website',
     images: [
@@ -56,7 +56,7 @@ export const metadata = {
         url: 'https://www.dougcharles.com/campaign-preview.png',
         width: 1200,
         height: 630,
-        alt: 'Doug Charles for Prosper Town Council Place 5 - A Common Sense Leader for ALL of Prosper',
+        alt: 'Doug Charles for Town of Prosper Town Council Place 5 - A Common Sense Leader for ALL of Prosper',
       },
     ],
   },
@@ -66,7 +66,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Doug Charles for Prosper Town Council - Place 5',
+    title: 'Doug Charles for Town of Prosper Town Council Place 5',
     description: 'A Common Sense Leader for ALL of Prosper',
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
@@ -146,7 +146,7 @@ export default function RootLayout({ children }) {
               "@graph": [
                 {
                   "@type": "WebSite",
-                  "name": "Doug Charles for Prosper Town Council",
+                  "name": "Doug Charles for Town of Prosper Town Council Place 5",
                   "url": "https://www.dougcharles.com",
                   "description": "Official campaign site for Doug Charles, candidate for Prosper Town Council Place 5. A Common Sense Leader for ALL of Prosper.",
                   "publisher": {
@@ -211,7 +211,7 @@ export default function RootLayout({ children }) {
             >
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-center space-y-2">
                 <p>
-                  Political advertising paid for by Doug Charles for Prosper Town Council Place 5.
+                  Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.
                 </p>
                 <p>
                   Questions? Email{' '}

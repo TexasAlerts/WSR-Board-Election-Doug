@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Terms of Use - Doug Charles for Prosper Town Council',
+  title: 'Terms of Use - Doug Charles for Town of Prosper Town Council Place 5',
   description:
     'Terms of use for the Doug Charles campaign website, including content moderation, user submissions, SMS terms, and political contribution compliance.',
   alternates: { canonical: '/terms' },
@@ -19,7 +19,7 @@ export default function TermsOfUse() {
       <section className="space-y-4">
         <h2 className="text-xl font-bold text-navy">Introduction</h2>
         <p>
-          Welcome to the official campaign website for Doug Charles for Prosper Town Council ("the
+          Welcome to the official campaign website for Doug Charles for Town of Prosper Town Council Place 5 ("the
           Campaign," "we," "us," or "our"). By accessing or using this website at dougcharles.com
           (the "Site"), you agree to be bound by these Terms of Use. If you do not agree with these
           terms, please do not use this Site.
@@ -32,7 +32,7 @@ export default function TermsOfUse() {
           <strong>
             This is a private campaign communication platform, not a government public forum.
           </strong>{' '}
-          This Site is operated by the Doug Charles for Prosper Town Council campaign as a private
+          This Site is operated by the Doug Charles for Town of Prosper Town Council Place 5 campaign as a private
           entity for the purpose of political speech and campaign activities. The Campaign reserves
           all rights afforded to private speakers under the First Amendment.
         </p>
@@ -107,12 +107,12 @@ export default function TermsOfUse() {
       <section className="space-y-4">
         <h2 className="text-xl font-bold text-navy">SMS/Text Messaging Terms</h2>
         <p>
-          By opting in to receive SMS messages from Doug Charles for Prosper Town Council, you agree
+          By opting in to receive SMS messages from Doug Charles for Town of Prosper Town Council Place 5, you agree
           to the following:
         </p>
         <ul className="list-disc pl-6 space-y-2">
           <li>
-            <strong>Program name:</strong> Doug Charles for Prosper Town Council
+            <strong>Program name:</strong> Doug Charles for Town of Prosper Town Council Place 5
           </li>
           <li>
             <strong>Product description:</strong> Campaign updates, alerts, event notifications,
@@ -245,7 +245,7 @@ export default function TermsOfUse() {
         <h2 className="text-xl font-bold text-navy">Contact Us</h2>
         <p>If you have questions about these Terms of Use, please contact us:</p>
         <p>
-          <strong>Doug Charles for Prosper Town Council</strong>
+          <strong>Doug Charles for Town of Prosper Town Council Place 5</strong>
           <br />
           Email:{' '}
           <a href="mailto:doug@dougcharles.com" className="text-navy underline">
@@ -261,7 +261,7 @@ export default function TermsOfUse() {
 
       <section className="mt-8 pt-8 border-t border-gray-200">
         <p className="text-sm text-charcoal/70">
-          Political advertising paid for by Doug Charles for Prosper Town Council.
+          Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.
         </p>
       </section>
     </div>

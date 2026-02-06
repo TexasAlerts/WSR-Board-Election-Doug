@@ -10,7 +10,7 @@ export default function Home() {
       <section className="hero-gradient text-center py-10 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           <div>
-            <h1 className="sr-only">Doug Charles for Prosper Town Council Place 5</h1>
+            <h1 className="sr-only">Doug Charles for Town of Prosper Town Council Place 5</h1>
             <Image
               src="/campaign-logo.webp"
               alt=""

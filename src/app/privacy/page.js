@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Privacy Policy - Doug Charles for Prosper Town Council',
+  title: 'Privacy Policy - Doug Charles for Town of Prosper Town Council Place 5',
   description:
     'Comprehensive privacy policy for the Doug Charles campaign website, covering data collection, cookies, SMS messaging, and your rights under the Texas Data Privacy and Security Act.',
   alternates: { canonical: '/privacy' },
@@ -19,7 +19,7 @@ export default function PrivacyPolicy() {
       <section className="space-y-4">
         <h2 className="text-xl font-bold text-navy">Introduction</h2>
         <p>
-          This Privacy Policy describes how Doug Charles for Prosper Town Council ("the Campaign,"
+          This Privacy Policy describes how Doug Charles for Town of Prosper Town Council Place 5 ("the Campaign,"
           "we," "us," or "our") collects, uses, and protects information gathered through our
           website at dougcharles.com (the "Site").
         </p>
@@ -116,7 +116,7 @@ export default function PrivacyPolicy() {
         </p>
         <ul className="list-disc pl-6 space-y-2">
           <li>
-            <strong>Program name:</strong> Doug Charles for Prosper Town Council
+            <strong>Program name:</strong> Doug Charles for Town of Prosper Town Council Place 5
           </li>
           <li>
             <strong>Message frequency:</strong> May vary based on campaign activity
@@ -275,7 +275,7 @@ export default function PrivacyPolicy() {
           contact us:
         </p>
         <p>
-          <strong>Doug Charles for Prosper Town Council</strong>
+          <strong>Doug Charles for Town of Prosper Town Council Place 5</strong>
           <br />
           Email:{' '}
           <a href="mailto:doug@dougcharles.com" className="text-navy underline">
@@ -291,7 +291,7 @@ export default function PrivacyPolicy() {
 
       <section className="mt-8 pt-8 border-t border-gray-200">
         <p className="text-sm text-charcoal/70">
-          Political advertising paid for by Doug Charles for Prosper Town Council.
+          Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.
         </p>
       </section>
     </div>

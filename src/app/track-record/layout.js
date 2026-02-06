@@ -1,28 +1,28 @@
 export const metadata = {
   alternates: { canonical: '/track-record' },
-  title: 'Track Record | Doug Charles for Prosper Town Council',
+  title: 'Track Record | Doug Charles for Town of Prosper Town Council Place 5',
   description:
     "Doug Charles's proven track record: organized 585 residents, P&Z Commissioner, $210M bond committee, PISD annexation victory. Results, not just promises.",
   openGraph: {
-    title: 'Track Record | Doug Charles for Prosper Town Council',
+    title: 'Track Record | Doug Charles for Town of Prosper Town Council Place 5',
     description:
       "Doug Charles's proven track record: organized 585 residents, P&Z Commissioner, $210M bond committee, PISD annexation victory. Results, not just promises.",
     url: 'https://www.dougcharles.com/track-record',
     type: 'website',
-    siteName: 'Doug Charles for Prosper',
+    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
     locale: 'en_US',
     images: [
       {
         url: 'https://www.dougcharles.com/campaign-preview.png',
         width: 1200,
         height: 630,
-        alt: 'Doug Charles for Prosper Town Council Place 5 - Track Record',
+        alt: 'Doug Charles for Town of Prosper Town Council Place 5 - Track Record',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Track Record | Doug Charles for Prosper Town Council',
+    title: 'Track Record | Doug Charles for Town of Prosper Town Council Place 5',
     description:
       'Proven results: P&Z Commissioner, $210M bond committee, PISD annexation victory. Results, not just promises.',
     images: ['https://www.dougcharles.com/campaign-preview.png'],
