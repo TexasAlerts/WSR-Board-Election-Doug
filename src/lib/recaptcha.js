@@ -25,13 +25,20 @@ export async function verifyCaptcha(token, action) {
   }
 
   try {
+    // Add timeout to prevent hanging if Google is slow/unresponsive
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
     const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: `secret=${secretKey}&response=${token}`,
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     const data = await response.json();
 
@@ -69,6 +76,14 @@ export async function verifyCaptcha(token, action) {
       score: data.score,
     };
   } catch (error) {
+    // Handle timeout specifically
+    if (error.name === 'AbortError') {
+      return {
+        success: false,
+        error: 'reCAPTCHA verification timed out',
+        errorCode: 'TIMEOUT',
+      };
+    }
     return {
       success: false,
       error: 'reCAPTCHA verification request failed',

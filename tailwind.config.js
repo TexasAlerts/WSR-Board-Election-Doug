@@ -87,14 +87,6 @@ module.exports = {
           '0%': { opacity: '0', transform: 'scale(0.95)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-5px)' },
-        },
-        shimmer: {
-          '0%': { backgroundPosition: '-200% 0' },
-          '100%': { backgroundPosition: '200% 0' },
-        },
         pulse: {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.7' },
@@ -108,8 +100,6 @@ module.exports = {
         'slide-in-left': 'slideInLeft 0.6s ease-out forwards',
         'slide-in-right': 'slideInRight 0.6s ease-out forwards',
         'scale-in': 'scaleIn 0.5s ease-out forwards',
-        'float': 'float 3s ease-in-out infinite',
-        'shimmer': 'shimmer 2s linear infinite',
         'pulse-slow': 'pulse 3s ease-in-out infinite',
       },
     },

@@ -10,14 +10,18 @@ export const metadata = {
   alternates: { canonical: '/qna' },
 };
 
-// Enable dynamic rendering to support SSR
-export const dynamic = 'force-dynamic';
-// Enable ISR with 60 second revalidation
+// Enable ISR with 60 second revalidation for fresh Q&A data
 export const revalidate = 60;
 
 // Server component that fetches questions data
 async function getQuestions() {
   const supabase = getSupabase();
+
+  // Return empty during build when Supabase isn't available
+  // ISR will fetch real data on first request
+  if (!supabase) {
+    return [];
+  }
 
   try {
     const { data, error } = await supabase

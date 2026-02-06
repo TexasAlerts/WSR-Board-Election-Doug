@@ -75,6 +75,8 @@ export const metadata = {
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
   themeColor: '#1B3A5D',
 };
 
@@ -90,6 +92,9 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
+        {/* Resource hints for external services */}
+        <link rel="preconnect" href="https://www.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://www.recaptcha.net" />
       </head>
       <body>
         <RecaptchaProvider>

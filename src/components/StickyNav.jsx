@@ -151,7 +151,7 @@ export default function StickyNav() {
                   href="/about"
                   role="menuitem"
                   aria-current={isCurrentPage('/about') ? 'page' : undefined}
-                  className={`block px-4 py-2 hover:bg-gray-50 ${isCurrentPage('/about') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700'}`}
+                  className={`flex items-center px-4 py-3 min-h-[44px] hover:bg-gray-50 ${isCurrentPage('/about') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700'}`}
                   onClick={() => setAboutMenuOpen(false)}
                 >
                   About Doug
@@ -160,7 +160,7 @@ export default function StickyNav() {
                   href="/why"
                   role="menuitem"
                   aria-current={isCurrentPage('/why') ? 'page' : undefined}
-                  className={`block px-4 py-2 hover:bg-gray-50 ${isCurrentPage('/why') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700'}`}
+                  className={`flex items-center px-4 py-3 min-h-[44px] hover:bg-gray-50 ${isCurrentPage('/why') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700'}`}
                   onClick={() => setAboutMenuOpen(false)}
                 >
                   Why I'm Running
@@ -169,7 +169,7 @@ export default function StickyNav() {
                   href="/priorities"
                   role="menuitem"
                   aria-current={isCurrentPage('/priorities') ? 'page' : undefined}
-                  className={`block px-4 py-2 hover:bg-gray-50 ${isCurrentPage('/priorities') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700'}`}
+                  className={`flex items-center px-4 py-3 min-h-[44px] hover:bg-gray-50 ${isCurrentPage('/priorities') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700'}`}
                   onClick={() => setAboutMenuOpen(false)}
                 >
                   Priorities
@@ -178,7 +178,7 @@ export default function StickyNav() {
                   href="/track-record"
                   role="menuitem"
                   aria-current={isCurrentPage('/track-record') ? 'page' : undefined}
-                  className={`block px-4 py-2 hover:bg-gray-50 ${isCurrentPage('/track-record') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700'}`}
+                  className={`flex items-center px-4 py-3 min-h-[44px] hover:bg-gray-50 ${isCurrentPage('/track-record') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700'}`}
                   onClick={() => setAboutMenuOpen(false)}
                 >
                   Track Record
@@ -189,35 +189,35 @@ export default function StickyNav() {
           <Link
             href="/polls"
             aria-current={isCurrentPage('/polls') ? 'page' : undefined}
-            className={`transition-colors ${isCurrentPage('/polls') ? 'text-navy font-semibold' : 'text-gray-600 hover:text-navy'}`}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/polls') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-600 hover:text-navy hover:bg-gray-100'}`}
           >
             Polls
           </Link>
           <Link
             href="/ideas"
             aria-current={isCurrentPage('/ideas') ? 'page' : undefined}
-            className={`transition-colors ${isCurrentPage('/ideas') ? 'text-navy font-semibold' : 'text-gray-600 hover:text-navy'}`}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/ideas') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-600 hover:text-navy hover:bg-gray-100'}`}
           >
             Ideas
           </Link>
           <Link
             href="/qna"
             aria-current={isCurrentPage('/qna') ? 'page' : undefined}
-            className={`transition-colors ${isCurrentPage('/qna') ? 'text-navy font-semibold' : 'text-gray-600 hover:text-navy'}`}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/qna') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-600 hover:text-navy hover:bg-gray-100'}`}
           >
             Q&A
           </Link>
           <Link
             href="/endorsements"
             aria-current={isCurrentPage('/endorsements') ? 'page' : undefined}
-            className={`transition-colors ${isCurrentPage('/endorsements') ? 'text-navy font-semibold' : 'text-gray-600 hover:text-navy'}`}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/endorsements') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-600 hover:text-navy hover:bg-gray-100'}`}
           >
             Endorsements
           </Link>
           <Link
             href="/get-involved"
             aria-current={isCurrentPage('/get-involved') ? 'page' : undefined}
-            className={`transition-colors ${isCurrentPage('/get-involved') ? 'text-navy font-semibold' : 'text-gray-600 hover:text-navy'}`}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/get-involved') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-600 hover:text-navy hover:bg-gray-100'}`}
           >
             Get Involved
           </Link>
@@ -265,7 +265,7 @@ export default function StickyNav() {
                     <Link
                       href="/settings"
                       role="menuitem"
-                      className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
+                      className="flex items-center gap-2 px-4 py-3 min-h-[44px] text-gray-700 hover:bg-gray-50"
                       onClick={() => setUserMenuOpen(false)}
                     >
                       <Settings className="w-4 h-4" />
@@ -275,7 +275,7 @@ export default function StickyNav() {
                       <Link
                         href="/admin/dashboard"
                         role="menuitem"
-                        className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
+                        className="flex items-center gap-2 px-4 py-3 min-h-[44px] text-gray-700 hover:bg-gray-50"
                         onClick={() => setUserMenuOpen(false)}
                       >
                         <Settings className="w-4 h-4" />
@@ -285,7 +285,7 @@ export default function StickyNav() {
                     <button
                       onClick={handleLogout}
                       role="menuitem"
-                      className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50 w-full text-left"
+                      className="flex items-center gap-2 px-4 py-3 min-h-[44px] text-gray-700 hover:bg-gray-50 w-full text-left"
                     >
                       <LogOut className="w-4 h-4" />
                       Sign Out

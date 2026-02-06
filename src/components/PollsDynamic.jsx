@@ -2,12 +2,25 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import VerifiedVoterModal from './VerifiedVoterModal';
-import VotingOptionsModal from './VotingOptionsModal';
+import dynamic from 'next/dynamic';
 import PollCard from './PollCard';
-import VoteModal from './VoteModal';
 import { usePollVoting } from '../hooks/usePollVoting';
 import { logApiError } from '@/lib/clientErrorLogger';
+import { Loader2 } from 'lucide-react';
+
+// Lazy load modals - they're only needed on user interaction
+const VerifiedVoterModal = dynamic(() => import('./VerifiedVoterModal'), {
+  loading: () => null,
+  ssr: false,
+});
+const VotingOptionsModal = dynamic(() => import('./VotingOptionsModal'), {
+  loading: () => null,
+  ssr: false,
+});
+const VoteModal = dynamic(() => import('./VoteModal'), {
+  loading: () => null,
+  ssr: false,
+});
 
 export default function PollsDynamic({ initialPolls = [] }) {
   const [polls, setPolls] = useState(initialPolls);
@@ -198,8 +211,9 @@ export default function PollsDynamic({ initialPolls = [] }) {
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {loading ? (
-            <div className="text-center py-12 text-gray-500" role="status" aria-live="polite">
-              Loading polls...
+            <div className="flex flex-col items-center justify-center py-12 gap-3" role="status" aria-live="polite">
+              <Loader2 className="w-8 h-8 animate-spin text-navy" aria-hidden="true" />
+              <span className="text-gray-500">Loading polls...</span>
             </div>
           ) : polls.length === 0 ? (
             <div className="card text-center py-12">

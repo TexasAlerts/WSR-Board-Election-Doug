@@ -25,21 +25,38 @@ if (typeof cleanupTimer !== 'number') {
 }
 
 /**
- * Basic in-memory IP rate limiter.
+ * Basic in-memory IP rate limiter with retry-after support.
  * @param {string} ip - Client IP address
  * @param {number} limit - Number of allowed requests per window
  * @param {number} windowMs - Window size in milliseconds
- * @returns {boolean} - true if within limit, false otherwise
+ * @returns {{ allowed: boolean, retryAfter: number }} - Whether allowed and seconds until reset
  */
-export function rateLimit(ip, limit = 5, windowMs = 60_000) {
+export function rateLimitWithRetry(ip, limit = 5, windowMs = 60_000) {
   const now = Date.now();
   const entry = requests.get(ip) || { count: 0, startTime: now };
+
   if (now - entry.startTime > windowMs) {
     entry.count = 1;
     entry.startTime = now;
   } else {
     entry.count += 1;
   }
+
   requests.set(ip, entry);
-  return entry.count <= limit;
+
+  const allowed = entry.count <= limit;
+  const retryAfter = allowed ? 0 : Math.ceil((entry.startTime + windowMs - now) / 1000);
+
+  return { allowed, retryAfter };
+}
+
+/**
+ * Basic in-memory IP rate limiter (backward compatible).
+ * @param {string} ip - Client IP address
+ * @param {number} limit - Number of allowed requests per window
+ * @param {number} windowMs - Window size in milliseconds
+ * @returns {boolean} - true if within limit, false otherwise
+ */
+export function rateLimit(ip, limit = 5, windowMs = 60_000) {
+  return rateLimitWithRetry(ip, limit, windowMs).allowed;
 }

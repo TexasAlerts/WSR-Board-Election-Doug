@@ -3,6 +3,74 @@
  * Sends errors to the server for admin dashboard tracking and superuser notifications
  */
 
+import { getNetworkInfo, isOnline } from './fetchWithRetry';
+
+/**
+ * Get browser and environment info
+ */
+function getBrowserContext() {
+  if (typeof window === 'undefined') return {};
+
+  const context = {
+    url: window.location.href,
+    pathname: window.location.pathname,
+    referrer: document.referrer || null,
+    screenWidth: window.screen?.width,
+    screenHeight: window.screen?.height,
+    viewportWidth: window.innerWidth,
+    viewportHeight: window.innerHeight,
+    devicePixelRatio: window.devicePixelRatio,
+    language: navigator.language,
+    cookiesEnabled: navigator.cookieEnabled,
+    doNotTrack: navigator.doNotTrack === '1',
+    isOnline: isOnline(),
+    networkInfo: getNetworkInfo(),
+  };
+
+  // Page visibility
+  context.pageVisible = document.visibilityState === 'visible';
+
+  // Time on page
+  if (window.performance?.timing?.navigationStart) {
+    context.timeOnPage = Math.round(Date.now() - window.performance.timing.navigationStart);
+  }
+
+  // Memory info (Chrome only)
+  if (window.performance?.memory) {
+    context.memoryUsed = Math.round(window.performance.memory.usedJSHeapSize / 1048576); // MB
+    context.memoryTotal = Math.round(window.performance.memory.totalJSHeapSize / 1048576); // MB
+  }
+
+  return context;
+}
+
+/**
+ * Get performance metrics if available
+ */
+function getPerformanceMetrics() {
+  if (typeof window === 'undefined' || !window.performance) return null;
+
+  const metrics = {};
+
+  // Navigation timing
+  const timing = window.performance.timing;
+  if (timing) {
+    metrics.pageLoadTime = timing.loadEventEnd - timing.navigationStart;
+    metrics.domContentLoaded = timing.domContentLoadedEventEnd - timing.navigationStart;
+    metrics.firstByte = timing.responseStart - timing.navigationStart;
+  }
+
+  // Core Web Vitals (if available via PerformanceObserver)
+  const entries = window.performance.getEntriesByType?.('paint') || [];
+  entries.forEach((entry) => {
+    if (entry.name === 'first-contentful-paint') {
+      metrics.fcp = Math.round(entry.startTime);
+    }
+  });
+
+  return Object.keys(metrics).length > 0 ? metrics : null;
+}
+
 /**
  * Log an error from the client side
  * @param {Object} params
@@ -12,6 +80,7 @@
  * @param {string} [params.endpoint] - API endpoint or page where error occurred
  * @param {string} [params.component] - React component where error occurred
  * @param {Object} [params.context] - Additional context (user action, form data, etc.)
+ * @param {Object} [params.networkContext] - Network/retry context from fetchWithRetry
  */
 export async function logClientError({
   errorType,
@@ -20,6 +89,7 @@ export async function logClientError({
   endpoint = null,
   component = null,
   context = null,
+  networkContext = null,
 }) {
   try {
     // Don't log in development to avoid spam
@@ -27,6 +97,18 @@ export async function logClientError({
       console.error('[DEV] Client Error:', { errorType, errorMessage, component, context });
       return;
     }
+
+    // Gather comprehensive context
+    const browserContext = getBrowserContext();
+    const performanceMetrics = getPerformanceMetrics();
+
+    const enrichedContext = {
+      ...browserContext,
+      ...(context || {}),
+      ...(networkContext || {}),
+      performanceMetrics,
+      timestamp: new Date().toISOString(),
+    };
 
     await fetch('/api/errors', {
       method: 'POST',
@@ -36,7 +118,7 @@ export async function logClientError({
         error_message: errorMessage,
         error_stack: errorStack,
         endpoint: endpoint || window.location.pathname,
-        context: context ? JSON.stringify(context) : null,
+        context: JSON.stringify(enrichedContext),
         component,
       }),
     });
@@ -62,9 +144,16 @@ export async function logValidationError(formName, fieldName, errorMessage, cont
 }
 
 /**
- * Log an API error response
+ * Log an API error response with network context
  */
-export async function logApiError(endpoint, method, statusCode, errorMessage, requestData = null) {
+export async function logApiError(
+  endpoint,
+  method,
+  statusCode,
+  errorMessage,
+  requestData = null,
+  networkContext = null
+) {
   return logClientError({
     errorType: 'api_error',
     errorMessage: `API Error: ${method} ${endpoint} - ${statusCode}: ${errorMessage}`,
@@ -74,6 +163,7 @@ export async function logApiError(endpoint, method, statusCode, errorMessage, re
       statusCode,
       requestData: requestData ? sanitizeRequestData(requestData) : null,
     },
+    networkContext,
   });
 }
 
@@ -119,6 +209,23 @@ function sanitizeRequestData(data) {
 }
 
 /**
+ * Log a network/fetch error with full context
+ */
+export async function logNetworkError(url, error, retryAttempts = 0) {
+  return logClientError({
+    errorType: 'network_error',
+    errorMessage: `Network Error: ${error.name || 'Unknown'} - ${error.message}`,
+    errorStack: error.stack,
+    endpoint: url,
+    networkContext: {
+      errorName: error.name,
+      retryAttempts,
+      ...error.context,
+    },
+  });
+}
+
+/**
  * Setup global error handlers
  * Call this once in the root layout
  */
@@ -126,6 +233,9 @@ export function setupGlobalErrorHandlers() {
   // Catch unhandled promise rejections
   if (typeof window !== 'undefined') {
     window.addEventListener('unhandledrejection', (event) => {
+      // Extract network context if available
+      const networkContext = event.reason?.context || null;
+
       logClientError({
         errorType: 'client_error',
         errorMessage: `Unhandled Promise Rejection: ${event.reason?.message || event.reason}`,
@@ -133,6 +243,7 @@ export function setupGlobalErrorHandlers() {
         context: {
           promiseRejection: true,
         },
+        networkContext,
       });
     });
 
@@ -151,6 +262,15 @@ export function setupGlobalErrorHandlers() {
           column: event.colno,
         },
       });
+    });
+
+    // Listen for online/offline events
+    window.addEventListener('online', () => {
+      console.log('[Network] Connection restored');
+    });
+
+    window.addEventListener('offline', () => {
+      console.log('[Network] Connection lost');
     });
   }
 }

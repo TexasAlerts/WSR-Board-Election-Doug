@@ -7,7 +7,7 @@ export async function generateMetadata({ params }) {
 
   try {
     const res = await fetch(`${SITE_URL}/api/ideas/${id}`, {
-      cache: 'no-store',
+      next: { revalidate: 60 },
     });
 
     if (!res.ok) {
