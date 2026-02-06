@@ -545,7 +545,7 @@ export default function AdminPollsPage() {
 
               {/* Choices preview */}
               <div className="mb-4">
-                <div className="text-sm text-gray-500 mb-2">Choices:</div>
+                <div className="text-sm text-gray-700 mb-2">Choices:</div>
                 <div className="flex flex-wrap gap-2">
                   {poll.poll_choices?.map((choice) => (
                     <span
@@ -560,7 +560,7 @@ export default function AdminPollsPage() {
 
               {/* Stats & Actions */}
               <div className="flex items-center justify-between pt-4 border-t">
-                <div className="flex items-center gap-6 text-sm text-gray-500">
+                <div className="flex items-center gap-6 text-sm text-gray-700">
                   <span className="flex items-center gap-1">
                     <Users className="w-4 h-4" />
                     {poll.vote_count} votes
@@ -621,7 +621,7 @@ export default function AdminPollsPage() {
                 </div>
               </div>
 
-              <div className="text-xs text-gray-400 mt-3">
+              <div className="text-xs text-gray-700 mt-3">
                 Created {formatDate(poll.created_at)}
                 {poll.published_at && ` · Published ${formatDate(poll.published_at)}`}
               </div>
@@ -629,7 +629,7 @@ export default function AdminPollsPage() {
           ))}
 
           {polls.length === 0 && (
-            <div className="text-center py-12 text-gray-500">
+            <div className="text-center py-12 text-gray-700">
               <BarChart3 className="w-12 h-12 mx-auto mb-4 text-gray-300" />
               <p>No polls found</p>
               <button

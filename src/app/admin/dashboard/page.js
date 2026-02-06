@@ -556,7 +556,7 @@ export default function AdminDashboard() {
               className={`flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 font-medium border-b-2 transition-colors whitespace-nowrap text-sm md:text-base ${
                 activeTab === id
                   ? 'border-navy text-navy'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
+                  : 'border-transparent text-gray-700 hover:text-gray-900'
               }`}
             >
               <Icon className="w-4 h-4 md:w-5 md:h-5" />
@@ -572,7 +572,7 @@ export default function AdminDashboard() {
           ))}
           <Link
             href="/admin/polls"
-            className="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 font-medium border-b-2 transition-colors whitespace-nowrap text-sm md:text-base border-transparent text-gray-500 hover:text-gray-700"
+            className="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 font-medium border-b-2 transition-colors whitespace-nowrap text-sm md:text-base border-transparent text-gray-700 hover:text-gray-900"
           >
             <BarChart3 className="w-4 h-4 md:w-5 md:h-5" />
             Polls

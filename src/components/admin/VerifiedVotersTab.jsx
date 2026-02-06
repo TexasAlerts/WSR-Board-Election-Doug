@@ -49,7 +49,7 @@ export default function VerifiedVotersTab({
       {voters.length === 0 ? (
         <div className="text-center py-12">
           <UserCheck className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-          <p className="text-gray-500">No verified voters found.</p>
+          <p className="text-gray-700">No verified voters found.</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -142,7 +142,7 @@ export default function VerifiedVotersTab({
                   )}
                   {/* Non-SuperAdmin sees no action buttons */}
                   {!isSuperAdmin && (
-                    <span className="text-xs text-gray-400 italic">View only</span>
+                    <span className="text-xs text-gray-700 italic">View only</span>
                   )}
                 </div>
               </div>

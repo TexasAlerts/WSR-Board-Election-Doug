@@ -98,7 +98,7 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
       >
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl min-w-[44px] min-h-[44px] flex items-center justify-center"
+          className="absolute top-3 right-3 text-gray-700 hover:text-gray-900 text-xl min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-label="Close verification form"
         >
           &times;

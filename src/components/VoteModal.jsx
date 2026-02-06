@@ -237,7 +237,7 @@ export default function VoteModal({
                                 className={`w-11 h-11 rounded-full border-2 flex items-center justify-center font-bold text-base sm:text-lg ${
                                   rank !== null
                                     ? 'border-navy bg-navy text-white'
-                                    : 'border-gray-300 text-gray-500'
+                                    : 'border-gray-300 text-gray-700'
                                 }`}
                                 aria-label={
                                   rank !== null ? `Ranked number ${rank}` : 'Not yet ranked'

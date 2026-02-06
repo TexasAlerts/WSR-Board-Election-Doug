@@ -127,19 +127,19 @@ function EngagementReport({ data }) {
         <h3 className="font-semibold text-navy mb-2">Last 7 Days</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
           <div>
-            <span className="text-gray-500">Votes:</span>{' '}
+            <span className="text-gray-700">Votes:</span>{' '}
             <strong>{data.recentActivity?.votes || 0}</strong>
           </div>
           <div>
-            <span className="text-gray-500">Comments:</span>{' '}
+            <span className="text-gray-700">Comments:</span>{' '}
             <strong>{data.recentActivity?.comments || 0}</strong>
           </div>
           <div>
-            <span className="text-gray-500">Ideas:</span>{' '}
+            <span className="text-gray-700">Ideas:</span>{' '}
             <strong>{data.recentActivity?.ideas || 0}</strong>
           </div>
           <div>
-            <span className="text-gray-500">Sign-ups:</span>{' '}
+            <span className="text-gray-700">Sign-ups:</span>{' '}
             <strong>{data.recentActivity?.signups || 0}</strong>
           </div>
         </div>
@@ -152,7 +152,7 @@ function StatCard({ label, value }) {
   return (
     <div className="bg-white border rounded-lg p-4">
       <p className="text-2xl font-bold text-navy">{value}</p>
-      <p className="text-sm text-gray-500">{label}</p>
+      <p className="text-sm text-gray-700">{label}</p>
     </div>
   );
 }
@@ -166,7 +166,7 @@ function PollsReport({ data }) {
             <h3 className="font-semibold text-navy">{poll.title}</h3>
             <span className="text-sm px-2 py-1 bg-navy/10 rounded">{poll.status}</span>
           </div>
-          <p className="text-sm text-gray-500 mb-3">
+          <p className="text-sm text-gray-700 mb-3">
             {poll.total_votes} votes &middot; {poll.approved_comments} comments &middot;{' '}
             {poll.poll_type}
           </p>
@@ -204,7 +204,7 @@ function PollsReport({ data }) {
           )}
         </div>
       ))}
-      {data.length === 0 && <p className="text-gray-500">No polls found.</p>}
+      {data.length === 0 && <p className="text-gray-700">No polls found.</p>}
     </div>
   );
 }
@@ -230,7 +230,7 @@ function CommentsReport({ data }) {
               <td className="p-2">
                 {c.name}
                 <br />
-                <span className="text-xs text-gray-400">{c.email}</span>
+                <span className="text-xs text-gray-700">{c.email}</span>
               </td>
               <td className="p-2 max-w-xs truncate">{c.content}</td>
               <td className="p-2 text-xs">
@@ -251,7 +251,7 @@ function CommentsReport({ data }) {
           ))}
         </tbody>
       </table>
-      {data.length === 0 && <p className="text-gray-500 p-4">No comments found.</p>}
+      {data.length === 0 && <p className="text-gray-700 p-4">No comments found.</p>}
     </div>
   );
 }
@@ -279,7 +279,7 @@ function IdeasReport({ data }) {
               <td className="p-2">
                 {i.name}
                 <br />
-                <span className="text-xs text-gray-400">{i.email}</span>
+                <span className="text-xs text-gray-700">{i.email}</span>
               </td>
               <td className="p-2 text-xs">{i.category}</td>
               <td className="p-2">
@@ -298,7 +298,7 @@ function IdeasReport({ data }) {
           ))}
         </tbody>
       </table>
-      {data.length === 0 && <p className="text-gray-500 p-4">No ideas found.</p>}
+      {data.length === 0 && <p className="text-gray-700 p-4">No ideas found.</p>}
     </div>
   );
 }

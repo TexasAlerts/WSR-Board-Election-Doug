@@ -41,7 +41,7 @@ export default function QuestionsTab({
               <div className="flex justify-between items-start mb-2">
                 <div>
                   <span className="font-medium">{q.name}</span>
-                  <span className="text-gray-500 text-sm ml-2">{q.email}</span>
+                  <span className="text-gray-700 text-sm ml-2">{q.email}</span>
                 </div>
                 <span
                   className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[q.status]}`}
@@ -56,7 +56,7 @@ export default function QuestionsTab({
                 </div>
               )}
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-500">{formatDate(q.created_at)}</span>
+                <span className="text-xs text-gray-700">{formatDate(q.created_at)}</span>
                 {q.status === 'pending' && (
                   <div className="flex gap-2">
                     <button
@@ -97,7 +97,7 @@ export default function QuestionsTab({
             </div>
           ))}
           {questions.length === 0 && (
-            <div className="text-center py-12 text-gray-500">No questions found</div>
+            <div className="text-center py-12 text-gray-700">No questions found</div>
           )}
         </div>
       )}

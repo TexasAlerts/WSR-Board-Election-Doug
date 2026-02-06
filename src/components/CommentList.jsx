@@ -17,7 +17,7 @@ export default function CommentList({ comments, isAuthenticated, onVote }) {
         <div key={comment.id} className="bg-gray-50 rounded-lg p-4">
           <div className="flex justify-between items-start mb-2">
             <span className="font-medium text-gray-800">{comment.name}</span>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-700">
               {new Date(comment.created_at).toLocaleDateString()}
             </span>
           </div>

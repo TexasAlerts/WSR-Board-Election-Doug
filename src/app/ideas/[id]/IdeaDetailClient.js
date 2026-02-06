@@ -228,7 +228,7 @@ export default function IdeaDetailClient() {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16">
-        <div className="text-center text-gray-500">Loading idea...</div>
+        <div className="text-center text-gray-700">Loading idea...</div>
       </div>
     );
   }
@@ -308,7 +308,7 @@ export default function IdeaDetailClient() {
             isAuthenticated={isAuthenticated}
           />
 
-          <span className="text-sm text-gray-500">by {idea.name}</span>
+          <span className="text-sm text-gray-700">by {idea.name}</span>
         </div>
       </div>
 

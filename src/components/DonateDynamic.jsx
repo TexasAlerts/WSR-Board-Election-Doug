@@ -70,7 +70,7 @@ export default function DonateDynamic() {
             </label>
             <div className="relative max-w-[200px] mx-auto">
               <span
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold text-lg"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700 font-semibold text-lg"
                 aria-hidden="true"
               >
                 $

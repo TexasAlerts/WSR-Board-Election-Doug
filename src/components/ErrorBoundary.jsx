@@ -129,7 +129,7 @@ class ErrorBoundary extends Component {
               </button>
             </div>
             {process.env.NODE_ENV === 'development' && this.state.error && (
-              <details className="mt-6 text-left text-sm text-gray-500">
+              <details className="mt-6 text-left text-sm text-gray-700">
                 <summary className="cursor-pointer">Error Details</summary>
                 <pre className="mt-2 p-3 bg-gray-100 rounded overflow-auto max-h-40 text-xs">
                   {this.state.error.toString()}

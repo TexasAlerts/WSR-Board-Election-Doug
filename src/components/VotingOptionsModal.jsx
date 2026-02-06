@@ -158,8 +158,8 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
                       </span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="text-gray-500">○</span>
-                      <span className="text-gray-500">Comments require full registration</span>
+                      <span className="text-gray-700">○</span>
+                      <span className="text-gray-700">Comments require full registration</span>
                     </li>
                   </ul>
                 </div>
@@ -189,15 +189,15 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
                       </span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="text-gray-500">○</span>
-                      <span className="text-gray-500">No notifications about results</span>
+                      <span className="text-gray-700">○</span>
+                      <span className="text-gray-700">No notifications about results</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="text-gray-500">○</span>
-                      <span className="text-gray-500">Cannot comment or reply</span>
+                      <span className="text-gray-700">○</span>
+                      <span className="text-gray-700">Cannot comment or reply</span>
                     </li>
                   </ul>
-                  <p className="text-xs text-gray-500 mt-3 italic">
+                  <p className="text-xs text-gray-700 mt-3 italic">
                     Note: A cookie is used to prevent duplicate votes from the same browser.
                   </p>
                 </div>

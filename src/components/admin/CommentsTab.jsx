@@ -41,7 +41,7 @@ export default function CommentsTab({
               <div className="flex justify-between items-start mb-2">
                 <div>
                   <span className="font-medium">{c.name}</span>
-                  <span className="text-gray-500 text-sm ml-2">{c.email}</span>
+                  <span className="text-gray-700 text-sm ml-2">{c.email}</span>
                 </div>
                 <span
                   className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[c.status]}`}
@@ -51,11 +51,11 @@ export default function CommentsTab({
               </div>
               <div className="text-sm text-gray-600 mb-2">
                 On: {c.poll_title || c.idea_title || 'Unknown'}
-                {c.parent_id && <span className="ml-2 text-gray-400">(reply)</span>}
+                {c.parent_id && <span className="ml-2 text-gray-700">(reply)</span>}
               </div>
               <p className="text-gray-800 mb-3 whitespace-pre-wrap">{c.content}</p>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-500">{formatDate(c.created_at)}</span>
+                <span className="text-xs text-gray-700">{formatDate(c.created_at)}</span>
                 {c.status === 'pending' && (
                   <div className="flex gap-2">
                     <button
@@ -86,7 +86,7 @@ export default function CommentsTab({
             </div>
           ))}
           {comments.length === 0 && (
-            <div className="text-center py-12 text-gray-500">No comments found</div>
+            <div className="text-center py-12 text-gray-700">No comments found</div>
           )}
         </div>
       )}

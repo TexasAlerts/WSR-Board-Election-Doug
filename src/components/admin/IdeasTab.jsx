@@ -43,7 +43,7 @@ export default function IdeasTab({
               <div className="flex justify-between items-start mb-2">
                 <div>
                   <span className="font-medium">{idea.name}</span>
-                  <span className="text-gray-500 text-sm ml-2">{idea.email}</span>
+                  <span className="text-gray-700 text-sm ml-2">{idea.email}</span>
                   <span className="ml-2 px-2 py-0.5 rounded bg-gray-100 text-xs text-gray-600">
                     {idea.category}
                   </span>
@@ -62,7 +62,7 @@ export default function IdeasTab({
                 </div>
               )}
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-500">{formatDate(idea.created_at)}</span>
+                <span className="text-xs text-gray-700">{formatDate(idea.created_at)}</span>
                 {idea.status === 'pending' && (
                   <div className="flex gap-2">
                     <button
@@ -118,7 +118,7 @@ export default function IdeasTab({
             </div>
           ))}
           {ideas.length === 0 && (
-            <div className="text-center py-12 text-gray-500">No ideas found</div>
+            <div className="text-center py-12 text-gray-700">No ideas found</div>
           )}
         </div>
       )}

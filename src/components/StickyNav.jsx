@@ -400,7 +400,7 @@ export default function StickyNav() {
             {!loading &&
               (isAuthenticated ? (
                 <>
-                  <div className="px-4 py-2 text-sm text-gray-500 bg-gray-50 rounded-lg">
+                  <div className="px-4 py-2 text-sm text-gray-700 bg-gray-50 rounded-lg">
                     Signed in as{' '}
                     <span className="font-medium text-navy">
                       {supporter?.first_name} {supporter?.last_name}

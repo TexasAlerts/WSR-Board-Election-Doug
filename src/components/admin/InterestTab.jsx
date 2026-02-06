@@ -44,22 +44,22 @@ export default function InterestTab({
               <caption className="sr-only">Interest submissions</caption>
               <thead className="bg-gray-50">
                 <tr>
-                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                     Type
                   </th>
-                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                     Name
                   </th>
-                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                     Contact
                   </th>
-                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                     Message
                   </th>
-                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                     Date
                   </th>
-                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                     Actions
                   </th>
                 </tr>
@@ -85,12 +85,12 @@ export default function InterestTab({
                     <td className="px-4 py-3 font-medium">{i.name}</td>
                     <td className="px-4 py-3">
                       <div className="text-sm">{i.email}</div>
-                      {i.phone && <div className="text-sm text-gray-500">{i.phone}</div>}
+                      {i.phone && <div className="text-sm text-gray-700">{i.phone}</div>}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-600 max-w-xs truncate">
                       {i.message || '-'}
                     </td>
-                    <td className="px-4 py-3 text-xs text-gray-500">{formatDate(i.created_at)}</td>
+                    <td className="px-4 py-3 text-xs text-gray-700">{formatDate(i.created_at)}</td>
                     <td className="px-4 py-3">
                       <button
                         onClick={() => handleDeleteInterest(i.id)}
@@ -105,7 +105,7 @@ export default function InterestTab({
                 ))}
                 {interest.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
+                    <td colSpan={6} className="px-4 py-8 text-center text-gray-700">
                       No interest records found
                     </td>
                   </tr>
@@ -143,15 +143,15 @@ export default function InterestTab({
                 </div>
                 <div className="font-medium text-gray-900">{i.name}</div>
                 <div className="text-sm text-gray-600">{i.email}</div>
-                {i.phone && <div className="text-sm text-gray-500">{i.phone}</div>}
+                {i.phone && <div className="text-sm text-gray-700">{i.phone}</div>}
                 {i.message && (
                   <p className="text-sm text-gray-600 mt-2 line-clamp-2">{i.message}</p>
                 )}
-                <div className="text-xs text-gray-400 mt-2">{formatDate(i.created_at)}</div>
+                <div className="text-xs text-gray-700 mt-2">{formatDate(i.created_at)}</div>
               </div>
             ))}
             {interest.length === 0 && (
-              <div className="text-center py-12 text-gray-500">No interest records found</div>
+              <div className="text-center py-12 text-gray-700">No interest records found</div>
             )}
           </div>
         </>

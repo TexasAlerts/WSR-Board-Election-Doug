@@ -63,11 +63,11 @@ export default function ErrorLogsTab({
                   >
                     {err.status.replace('_', ' ')}
                   </span>
-                  <span className="ml-2 text-xs text-gray-500">
+                  <span className="ml-2 text-xs text-gray-700">
                     {err.occurrence_count > 1 && `${err.occurrence_count}x`}
                   </span>
                 </div>
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-gray-700">
                   {formatDate(err.last_occurred_at || err.created_at)}
                 </span>
               </div>
@@ -87,7 +87,7 @@ export default function ErrorLogsTab({
                 <p className="text-sm text-gray-600 mb-2">User: {err.user_email}</p>
               )}
 
-              <div className="text-xs text-gray-500 mb-3 font-mono">
+              <div className="text-xs text-gray-700 mb-3 font-mono">
                 IP: {err.ip_address || '-'}
               </div>
 
@@ -144,7 +144,7 @@ export default function ErrorLogsTab({
             </div>
           ))}
           {errorLogs.length === 0 && (
-            <div className="text-center py-12 text-gray-500">No errors found</div>
+            <div className="text-center py-12 text-gray-700">No errors found</div>
           )}
         </div>
       )}

@@ -49,19 +49,19 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
             <caption className="sr-only">Audit logs</caption>
             <thead className="bg-gray-50">
               <tr>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   Time
                 </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   Event
                 </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   User
                 </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   IP Address
                 </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   Details
                 </th>
               </tr>
@@ -69,7 +69,7 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
             <tbody className="divide-y divide-gray-200">
               {auditLogs.map((log) => (
                 <tr key={log.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm text-gray-500">{formatDate(log.created_at)}</td>
+                  <td className="px-4 py-3 text-sm text-gray-700">{formatDate(log.created_at)}</td>
                   <td className="px-4 py-3">
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -87,7 +87,7 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
                   </td>
                   <td className="px-4 py-3">
                     <div className="text-sm font-medium">{log.supporter_name || '-'}</div>
-                    <div className="text-xs text-gray-500">{log.supporter_email || '-'}</div>
+                    <div className="text-xs text-gray-700">{log.supporter_email || '-'}</div>
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-600 font-mono">
                     {log.ip_address || '-'}
@@ -109,7 +109,7 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
               ))}
               {auditLogs.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                  <td colSpan={5} className="px-4 py-8 text-center text-gray-700">
                     No audit logs found
                   </td>
                 </tr>

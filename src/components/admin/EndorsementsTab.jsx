@@ -41,7 +41,7 @@ export default function EndorsementsTab({
               <div className="flex justify-between items-start mb-2">
                 <div>
                   <span className="font-medium">{e.name}</span>
-                  <span className="text-gray-500 text-sm ml-2">{e.email}</span>
+                  <span className="text-gray-700 text-sm ml-2">{e.email}</span>
                 </div>
                 <span
                   className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[e.status]}`}
@@ -60,7 +60,7 @@ export default function EndorsementsTab({
                 </div>
               )}
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-500">{formatDate(e.created_at)}</span>
+                <span className="text-xs text-gray-700">{formatDate(e.created_at)}</span>
                 {e.status === 'pending' && (
                   <div className="flex gap-2">
                     <button
@@ -89,7 +89,7 @@ export default function EndorsementsTab({
             </div>
           ))}
           {endorsements.length === 0 && (
-            <div className="text-center py-12 text-gray-500">No endorsements found</div>
+            <div className="text-center py-12 text-gray-700">No endorsements found</div>
           )}
         </div>
       )}

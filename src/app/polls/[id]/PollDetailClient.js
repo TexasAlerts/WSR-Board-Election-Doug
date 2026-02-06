@@ -145,7 +145,7 @@ export default function PollDetailClient() {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16">
-        <div className="text-center text-gray-500">Loading poll...</div>
+        <div className="text-center text-gray-700">Loading poll...</div>
       </div>
     );
   }
@@ -189,7 +189,7 @@ export default function PollDetailClient() {
 
         {poll.description && <p className="text-gray-600 mb-6">{poll.description}</p>}
 
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-gray-700">
           {poll.total_votes} vote{poll.total_votes !== 1 ? 's' : ''}
         </div>
       </div>
@@ -210,7 +210,7 @@ export default function PollDetailClient() {
                   style={{ width: `${choice.percentage}%` }}
                 ></div>
               </div>
-              <div className="text-sm text-gray-500 mt-1">
+              <div className="text-sm text-gray-700 mt-1">
                 {choice.votes} vote{choice.votes !== 1 ? 's' : ''}
               </div>
             </div>

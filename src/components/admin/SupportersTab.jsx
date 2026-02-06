@@ -56,25 +56,25 @@ export default function SupportersTab({
             <caption className="sr-only">Supporters list</caption>
             <thead className="bg-gray-50">
               <tr>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   Name
                 </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   Contact
                 </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   Address
                 </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   Status
                 </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   Role
                 </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   Consent
                 </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   Actions
                 </th>
               </tr>
@@ -86,11 +86,11 @@ export default function SupportersTab({
                     <div className="font-medium">
                       {s.first_name} {s.last_name}
                     </div>
-                    <div className="text-xs text-gray-500">{formatDate(s.created_at)}</div>
+                    <div className="text-xs text-gray-700">{formatDate(s.created_at)}</div>
                   </td>
                   <td className="px-4 py-3">
                     <div className="text-sm">{s.email}</div>
-                    <div className="text-sm text-gray-500">{s.phone}</div>
+                    <div className="text-sm text-gray-700">{s.phone}</div>
                   </td>
                   <td className="px-4 py-3 text-sm">
                     {s.street_address}, {s.city}, {s.state} {s.zip_code}
@@ -171,7 +171,7 @@ export default function SupportersTab({
               ))}
               {supporters.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-gray-500">
+                  <td colSpan={7} className="px-4 py-8 text-center text-gray-700">
                     No supporters found
                   </td>
                 </tr>

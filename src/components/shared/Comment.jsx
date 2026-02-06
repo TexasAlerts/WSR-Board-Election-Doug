@@ -79,7 +79,7 @@ export default function Comment({
             <span className="font-medium text-gray-800">
               {comment.display_name || comment.name}
             </span>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-700">
               {new Date(comment.created_at).toLocaleDateString()}
             </span>
           </div>
@@ -166,7 +166,7 @@ export default function Comment({
       <article className="bg-gray-50 rounded-lg p-4">
         <div className="flex justify-between items-start mb-2">
           <span className="font-medium text-gray-800">{comment.name}</span>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-700">
             {new Date(comment.created_at).toLocaleDateString()}
           </span>
         </div>
@@ -274,7 +274,7 @@ export default function Comment({
             : comments.map((comment) => <SimpleComment key={comment.id} comment={comment} />)}
         </div>
       ) : (
-        <div className="text-center py-8 text-gray-500 mb-8">
+        <div className="text-center py-8 text-gray-700 mb-8">
           No comments yet. Be the first to comment!
         </div>
       )}
