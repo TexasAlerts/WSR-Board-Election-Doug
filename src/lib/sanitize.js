@@ -2,15 +2,19 @@
  * Sanitize user input to prevent XSS attacks.
  * Strips all HTML tags and decodes HTML entities, returning only plain text.
  * Works in serverless environments without DOM dependencies.
+ *
+ * @param {string | null | undefined} input
+ * @returns {string}
  */
-export function sanitizeText(input: string | null | undefined): string {
+export function sanitizeText(input) {
   if (typeof input !== 'string') return '';
 
   // Strip all HTML tags
   let clean = input.replace(/<[^>]*>/g, '');
 
   // Decode common HTML entities
-  const entities: Record<string, string> = {
+  /** @type {Record<string, string>} */
+  const entities = {
     '&amp;': '&',
     '&lt;': '<',
     '&gt;': '>',
@@ -37,13 +41,16 @@ export function sanitizeText(input: string | null | undefined): string {
 /**
  * Sanitize all string values in an object (shallow, one level deep).
  * Non-string values are preserved as-is.
+ *
+ * @template {Record<string, unknown>} T
+ * @param {T} obj
+ * @returns {T}
  */
-export function sanitizeObject<T extends Record<string, unknown>>(obj: T): T {
-  const result = {} as T;
+export function sanitizeObject(obj) {
+  /** @type {Record<string, unknown>} */
+  const result = {};
   for (const [key, value] of Object.entries(obj)) {
-    result[key as keyof T] = (
-      typeof value === 'string' ? sanitizeText(value) : value
-    ) as T[keyof T];
+    result[key] = typeof value === 'string' ? sanitizeText(value) : value;
   }
-  return result;
+  return /** @type {T} */ (result);
 }

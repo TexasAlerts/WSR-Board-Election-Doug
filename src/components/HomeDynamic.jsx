@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { HelpCircle } from 'lucide-react';
 import { logApiError } from '@/lib/clientErrorLogger';
+import { HomeSkeleton } from './shared/Skeleton';
 
 export default function HomeDynamic() {
   const [endorsements, setEndorsements] = useState([]);
   const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
@@ -24,10 +26,22 @@ export default function HomeDynamic() {
         await logApiError('/api/endorsements', 'GET', err.status || 500, err.message, {
           userAgent: navigator.userAgent,
         });
+      } finally {
+        setLoading(false);
       }
     }
     loadData();
   }, []);
+
+  // Show skeleton while loading
+  if (loading) {
+    return <HomeSkeleton />;
+  }
+
+  // Don't render anything if no data
+  if (questions.length === 0 && endorsements.length === 0) {
+    return null;
+  }
 
   return (
     <>

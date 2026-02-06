@@ -95,6 +95,14 @@ export default function RootLayout({ children }) {
         {/* Resource hints for external services */}
         <link rel="preconnect" href="https://www.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.recaptcha.net" />
+        {/* Preload hero image for LCP optimization */}
+        <link
+          rel="preload"
+          href="/campaign-logo.webp"
+          as="image"
+          type="image/webp"
+          fetchPriority="high"
+        />
       </head>
       <body>
         <RecaptchaProvider>
