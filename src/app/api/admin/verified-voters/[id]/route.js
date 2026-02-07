@@ -11,8 +11,8 @@ import { withCSRF } from '../../../../../lib/withCSRF';
  */
 async function patchHandler(request, { params }) {
   const supporter = await getCurrentSupporter();
-  if (!supporter || !isAdmin(supporter)) {
-    return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
+  if (!supporter || !isSuperAdmin(supporter)) {
+    return NextResponse.json({ ok: false, error: 'Only Super Admins can suspend/unsuspend verified voters' }, { status: 403 });
   }
 
   const { id } = await params;
