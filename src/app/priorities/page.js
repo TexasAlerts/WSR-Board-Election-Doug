@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import Script from 'next/script';
 import { Ear, ClipboardList, ShieldCheck } from 'lucide-react';
 
 export const metadata = {
@@ -7,11 +8,36 @@ export const metadata = {
   description:
     'Doug Charles priorities for Prosper: responsible growth, infrastructure, public safety, fiscal accountability, and transparent governance.',
   alternates: { canonical: '/priorities' },
+  openGraph: {
+    title: 'My Priorities - Doug Charles for Prosper Town Council',
+    description: 'Listen. Plan. Protect. Doug Charles priorities for responsible growth, fiscal accountability, and transparent governance.',
+    url: 'https://www.dougcharles.com/priorities',
+    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    locale: 'en_US',
+    type: 'website',
+    images: [{ url: 'https://www.dougcharles.com/campaign-preview.png', width: 1200, height: 630, alt: 'Doug Charles for Prosper Town Council - My Priorities' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'My Priorities - Doug Charles for Prosper Town Council',
+    description: 'Listen. Plan. Protect. Responsible growth, fiscal accountability, and transparent governance.',
+    images: ['https://www.dougcharles.com/campaign-preview.png'],
+  },
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.dougcharles.com' },
+    { '@type': 'ListItem', position: 2, name: 'Priorities', item: 'https://www.dougcharles.com/priorities' },
+  ],
 };
 
 export default function PrioritiesPage() {
   return (
     <div className="space-y-0">
+      <Script id="priorities-breadcrumb" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {/* Hero */}
       <section className="hero-pattern hero-gradient text-center py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">

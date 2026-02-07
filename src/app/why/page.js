@@ -1,16 +1,42 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import Script from 'next/script';
 
 export const metadata = {
   title: 'Why I\'m Running - Doug Charles for Town of Prosper Town Council Place 5',
   description:
     'Why Doug Charles is running for Prosper Town Council Place 5. A 20-year resident committed to listening, planning, and protecting our community.',
   alternates: { canonical: '/why' },
+  openGraph: {
+    title: 'Why I\'m Running - Doug Charles for Prosper Town Council',
+    description: 'A 20-year Prosper resident committed to listening, planning, and protecting our community. Common Sense leadership for ALL of Prosper.',
+    url: 'https://www.dougcharles.com/why',
+    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    locale: 'en_US',
+    type: 'website',
+    images: [{ url: 'https://www.dougcharles.com/campaign-preview.png', width: 1200, height: 630, alt: 'Doug Charles - Why I\'m Running for Prosper Town Council' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Why I\'m Running - Doug Charles for Prosper Town Council',
+    description: 'A 20-year resident committed to listening, planning, and protecting our community.',
+    images: ['https://www.dougcharles.com/campaign-preview.png'],
+  },
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.dougcharles.com' },
+    { '@type': 'ListItem', position: 2, name: 'Why I\'m Running', item: 'https://www.dougcharles.com/why' },
+  ],
 };
 
 export default function WhyPage() {
   return (
     <div className="space-y-0">
+      <Script id="why-breadcrumb" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {/* Hero */}
       <section className="hero-pattern hero-gradient text-center py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">

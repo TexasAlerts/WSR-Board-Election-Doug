@@ -150,7 +150,38 @@ export default function RootLayout({ children }) {
                   "url": "https://www.dougcharles.com",
                   "description": "Official campaign site for Doug Charles, candidate for Prosper Town Council Place 5. A Common Sense Leader for ALL of Prosper.",
                   "publisher": {
-                    "@id": "https://www.dougcharles.com/#person"
+                    "@id": "https://www.dougcharles.com/#organization"
+                  }
+                },
+                {
+                  "@type": "Organization",
+                  "@id": "https://www.dougcharles.com/#organization",
+                  "name": "Doug Charles for Town of Prosper Town Council Place 5",
+                  "url": "https://www.dougcharles.com",
+                  "logo": "https://www.dougcharles.com/campaign-logo.webp",
+                  "description": "Official campaign committee for Doug Charles, candidate for Prosper Town Council Place 5.",
+                  "sameAs": ["https://www.facebook.com/profile.php?id=61587237416382"],
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "4360 Mill Branch Drive",
+                    "addressLocality": "Prosper",
+                    "addressRegion": "TX",
+                    "postalCode": "75078",
+                    "addressCountry": "US"
+                  },
+                  "contactPoint": {
+                    "@type": "ContactPoint",
+                    "contactType": "Campaign Inquiries",
+                    "email": "doug@dougcharles.com"
+                  },
+                  "foundingDate": "2025",
+                  "areaServed": {
+                    "@type": "City",
+                    "name": "Prosper",
+                    "containedInPlace": {
+                      "@type": "State",
+                      "name": "Texas"
+                    }
                   }
                 },
                 {
