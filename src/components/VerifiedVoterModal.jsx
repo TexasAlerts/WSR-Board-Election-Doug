@@ -94,7 +94,7 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
       <div
         ref={modalRef}
         tabIndex={-1}
-        className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative outline-none"
+        className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto p-6 pb-safe relative outline-none"
       >
         <button
           onClick={onClose}

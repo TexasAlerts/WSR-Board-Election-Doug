@@ -616,6 +616,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
                     id="support-email"
                     type="email"
                     required
+                    aria-required="true"
                     value={supportEmail}
                     onChange={(e) => setSupportEmail(e.target.value)}
                     className="form-input"
