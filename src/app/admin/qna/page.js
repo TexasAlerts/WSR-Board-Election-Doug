@@ -1,7 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useCSRF } from '../../../hooks/useCSRF';
 
 export default function AdminQna() {
+  const { token: csrfToken, refreshToken } = useCSRF();
   const [pending, setPending] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -36,10 +38,11 @@ export default function AdminQna() {
     try {
       const res = await fetch('/api/admin/qna', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ id, action, answer }),
       });
       if (res.ok) {
+        await refreshToken();
         setPending((prev) => prev.filter((q) => q.id !== id));
       }
     } catch (err) {}

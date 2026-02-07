@@ -1,7 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useCSRF } from '../../../hooks/useCSRF';
 
 export default function AdminEndorsements() {
+  const { token: csrfToken, refreshToken } = useCSRF();
   const [pending, setPending] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -30,10 +32,11 @@ export default function AdminEndorsements() {
     try {
       const res = await fetch('/api/admin/endorsements', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ id, action }),
       });
       if (res.ok) {
+        await refreshToken();
         setPending((prev) => prev.filter((e) => e.id !== id));
       }
     } catch (err) {}
