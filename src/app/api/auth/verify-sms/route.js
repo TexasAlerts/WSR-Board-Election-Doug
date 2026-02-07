@@ -5,13 +5,14 @@ import { validateSMSCode, incrementSMSAttempt, createSession } from '../../../..
 import { sendWelcomeEmail, sendAdminNewRegistrationEmail } from '../../../../lib/emailService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 import { rateLimit } from '../../../../lib/rateLimit';
+import { withCSRF } from '../../../../lib/withCSRF';
 
 const verifySchema = z.object({
   supporterId: z.string().uuid('Invalid supporter ID'),
   code: z.string().length(6, 'Code must be 6 digits').regex(/^\d+$/, 'Code must be numeric'),
 });
 
-export async function POST(request) {
+async function postHandler(request) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   // Rate limit: 5 attempts per minute per IP to prevent brute force on 6-digit codes
@@ -142,3 +143,5 @@ export async function POST(request) {
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }
+
+export const POST = withCSRF(postHandler);

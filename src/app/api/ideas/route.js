@@ -166,22 +166,26 @@ async function postHandler(request) {
       recaptchaToken,
     } = parsed.data;
 
-    // Verify reCAPTCHA if token is provided
-    if (recaptchaToken) {
-      const captchaResult = await verifyCaptcha(recaptchaToken, 'submit_idea');
-      if (!captchaResult.success) {
-        await logError({
-          errorType: ErrorTypes.EXTERNAL_SERVICE,
-          errorMessage: 'reCAPTCHA verification failed',
-          endpoint: '/api/ideas',
-          method: 'POST',
-          request,
-        });
-        return NextResponse.json(
-          { ok: false, error: 'Security verification failed. Please try again.' },
-          { status: 400 }
-        );
-      }
+    // Require reCAPTCHA verification
+    if (!recaptchaToken) {
+      return NextResponse.json(
+        { ok: false, error: 'reCAPTCHA verification required' },
+        { status: 400 }
+      );
+    }
+    const captchaResult = await verifyCaptcha(recaptchaToken, 'submit_idea');
+    if (!captchaResult.success) {
+      await logError({
+        errorType: ErrorTypes.EXTERNAL_SERVICE,
+        errorMessage: 'reCAPTCHA verification failed',
+        endpoint: '/api/ideas',
+        method: 'POST',
+        request,
+      });
+      return NextResponse.json(
+        { ok: false, error: 'Security verification failed. Please try again.' },
+        { status: 400 }
+      );
     }
     const name = `${supporter.first_name} ${supporter.last_name}`;
     const email = supporter.email;
