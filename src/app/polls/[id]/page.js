@@ -2,6 +2,23 @@ import PollDetailClient from './PollDetailClient';
 
 const SITE_URL = 'https://www.dougcharles.com';
 
+// Pre-generate static params for build-time optimization
+export async function generateStaticParams() {
+  try {
+    const res = await fetch(`${SITE_URL}/api/polls`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    if (!data.ok || !data.data) return [];
+    return data.data.slice(0, 50).map((poll) => ({
+      id: poll.id.toString(),
+    }));
+  } catch {
+    return [];
+  }
+}
+
 export async function generateMetadata({ params }) {
   const { id } = await params;
 
