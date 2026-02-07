@@ -4,11 +4,13 @@ import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Lock, Phone, CheckCircle, AlertCircle, Loader2, RefreshCw } from 'lucide-react';
+import { useCSRF } from '../../../hooks/useCSRF';
 
 function VerifyContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
+  const { token: csrfToken, refreshToken: refreshCSRF } = useCSRF();
 
   const [step, setStep] = useState('loading'); // loading, password, sms, success, error
   const [supporter, setSupporter] = useState(null);
@@ -93,7 +95,10 @@ function VerifyContent() {
     try {
       const response = await fetch('/api/auth/verify-sms', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-csrf-token': csrfToken,
+        },
         body: JSON.stringify({ supporterId: supporter.id, code: smsCode }),
       });
 
@@ -110,6 +115,7 @@ function VerifyContent() {
       }, 2000);
     } catch (err) {
       setError(err.message);
+      await refreshCSRF();
     } finally {
       setLoading(false);
     }
@@ -150,7 +156,10 @@ function VerifyContent() {
     try {
       const response = await fetch('/api/auth/send-sms-code', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-csrf-token': csrfToken,
+        },
         body: JSON.stringify({ supporterId: supporter.id }),
       });
 
@@ -162,8 +171,10 @@ function VerifyContent() {
 
       setError(''); // Clear any previous errors
       alert('New code sent!');
+      await refreshCSRF();
     } catch (err) {
       setError(err.message);
+      await refreshCSRF();
     } finally {
       setResending(false);
     }

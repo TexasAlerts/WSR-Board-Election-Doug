@@ -2,13 +2,11 @@
 /**
  * Verify Anonymous Voting Migration
  * Checks if the database schema supports anonymous voting
+ *
+ * Usage: SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... node verify-and-migrate.mjs
  */
 
 import { createClient } from '@supabase/supabase-js';
-import { config } from 'dotenv';
-
-// Load environment variables from .env file
-config();
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;

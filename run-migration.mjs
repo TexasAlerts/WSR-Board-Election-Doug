@@ -2,14 +2,12 @@
 /**
  * Run Anonymous Voting Database Migration
  * Executes the SQL migration to add anonymous voting columns
+ *
+ * Usage: SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... node run-migration.mjs
  */
 
 import { createClient } from '@supabase/supabase-js';
-import { config } from 'dotenv';
 import fs from 'fs';
-
-// Load environment variables from .env file
-config();
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
