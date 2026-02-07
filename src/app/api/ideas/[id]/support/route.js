@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { rateLimit } from '../../../../../lib/rateLimit';
 import { logError, ErrorTypes } from '../../../../../lib/logging';
 import { withCSRF } from '../../../../../lib/withCSRF';
+import { getCurrentSupporter, getVerifiedVoter } from '../../../../../lib/auth';
 
 const idSchema = z.string().uuid('Invalid idea ID format');
 
@@ -23,19 +24,21 @@ async function postHandler(request, { params }) {
   }
 
   try {
-    const body = await request.json();
+    // Require authentication - use session email to prevent spoofing
+    const supporter = await getCurrentSupporter();
+    const verifiedVoter = await getVerifiedVoter();
 
-    const schema = z.object({
-      email: z.string().email('Valid email required'),
-    });
-
-    const parsed = schema.safeParse(body);
-    if (!parsed.success) {
-      const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
-      return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
+    let email;
+    if (supporter) {
+      email = supporter.email.toLowerCase();
+    } else if (verifiedVoter) {
+      email = verifiedVoter.email.toLowerCase();
+    } else {
+      return NextResponse.json(
+        { ok: false, error: 'Please sign in to support ideas' },
+        { status: 401 }
+      );
     }
-
-    const { email } = parsed.data;
 
     // Check if idea exists and is public
     const { data: idea, error: ideaError } = await supabase
@@ -115,19 +118,21 @@ async function deleteHandler(request, { params }) {
   }
 
   try {
-    const body = await request.json();
+    // Require authentication - use session email to prevent spoofing
+    const supporter = await getCurrentSupporter();
+    const verifiedVoter = await getVerifiedVoter();
 
-    const schema = z.object({
-      email: z.string().email('Valid email required'),
-    });
-
-    const parsed = schema.safeParse(body);
-    if (!parsed.success) {
-      const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
-      return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
+    let email;
+    if (supporter) {
+      email = supporter.email.toLowerCase();
+    } else if (verifiedVoter) {
+      email = verifiedVoter.email.toLowerCase();
+    } else {
+      return NextResponse.json(
+        { ok: false, error: 'Please sign in to remove support' },
+        { status: 401 }
+      );
     }
-
-    const { email } = parsed.data;
 
     // Get current support count
     const { data: idea, error: ideaError } = await supabase

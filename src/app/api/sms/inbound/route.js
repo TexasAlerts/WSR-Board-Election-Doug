@@ -3,6 +3,7 @@ import { getSupabase } from '../../../../lib/supabase';
 import { sendSMS } from '../../../../lib/smsService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 import { rateLimit } from '../../../../lib/rateLimit';
+import crypto from 'crypto';
 
 const OPT_OUT_KEYWORDS = ['stop', 'unsubscribe', 'cancel', 'end', 'quit'];
 const OPT_IN_KEYWORDS = ['start', 'unstop', 'subscribe'];
@@ -16,21 +17,59 @@ const AUTO_RESPONSES = {
   help: 'Doug Charles for Prosper Town Council SMS Program. Campaign updates, alerts & donation solicitations. Msg freq varies. Msg & data rates apply. Reply STOP to opt out. Contact: doug@dougcharles.com Website: https://www.dougcharles.com',
 };
 
-function validateTelnyxWebhook(body, request) {
-  const secret = process.env.TELNYX_WEBHOOK_SECRET;
-  if (!secret) {
-    return NextResponse.json({ error: 'Webhook secret not configured' }, { status: 500 });
+/**
+ * Verify Telnyx webhook signature using ED25519
+ * Telnyx uses ED25519 signatures with their public key
+ */
+function validateTelnyxWebhook(rawBody, request) {
+  const publicKey = process.env.TELNYX_PUBLIC_KEY;
+
+  // If no public key configured, log warning but allow in development
+  if (!publicKey) {
+    if (process.env.NODE_ENV === 'production') {
+      return NextResponse.json({ error: 'Webhook public key not configured' }, { status: 500 });
+    }
+    // In development, skip signature verification but still validate structure
+    console.warn('TELNYX_PUBLIC_KEY not configured - skipping signature verification');
+    return null;
   }
 
-  // Check for Telnyx signature header
+  // Check for required Telnyx signature headers
   const signature = request.headers.get('telnyx-signature-ed25519');
-  if (!signature) {
-    return NextResponse.json({ error: 'Missing webhook signature' }, { status: 401 });
+  const timestamp = request.headers.get('telnyx-timestamp');
+
+  if (!signature || !timestamp) {
+    return NextResponse.json({ error: 'Missing webhook signature headers' }, { status: 401 });
   }
 
-  // Validate payload structure matches Telnyx webhook format
-  if (!body?.data?.event_type || !body?.data?.payload) {
-    return NextResponse.json({ error: 'Invalid webhook payload structure' }, { status: 401 });
+  // Check timestamp to prevent replay attacks (5 minute tolerance)
+  const timestampAge = Math.abs(Date.now() / 1000 - parseInt(timestamp, 10));
+  if (timestampAge > 300) {
+    return NextResponse.json({ error: 'Webhook timestamp expired' }, { status: 401 });
+  }
+
+  try {
+    // Construct the signed payload: timestamp|payload
+    const signedPayload = `${timestamp}|${rawBody}`;
+    const signatureBuffer = Buffer.from(signature, 'base64');
+
+    // Verify ED25519 signature
+    const isValid = crypto.verify(
+      null, // ED25519 doesn't use a digest algorithm
+      Buffer.from(signedPayload),
+      {
+        key: publicKey,
+        format: 'pem',
+      },
+      signatureBuffer
+    );
+
+    if (!isValid) {
+      return NextResponse.json({ error: 'Invalid webhook signature' }, { status: 401 });
+    }
+  } catch (err) {
+    console.error('Telnyx signature verification error:', err.message);
+    return NextResponse.json({ error: 'Signature verification failed' }, { status: 401 });
   }
 
   return null; // Validation passed
@@ -46,12 +85,19 @@ export async function POST(request) {
 
   const supabase = getSupabase();
   try {
-    const body = await request.json();
+    // Get raw body for signature verification
+    const rawBody = await request.text();
+    const body = JSON.parse(rawBody);
 
-    // Validate Telnyx webhook if secret is configured
-    const validationError = validateTelnyxWebhook(body, request);
+    // Validate Telnyx webhook signature
+    const validationError = validateTelnyxWebhook(rawBody, request);
     if (validationError) {
       return validationError;
+    }
+
+    // Validate payload structure
+    if (!body?.data?.event_type || !body?.data?.payload) {
+      return NextResponse.json({ error: 'Invalid webhook payload structure' }, { status: 400 });
     }
 
     const payload = body?.data?.payload;

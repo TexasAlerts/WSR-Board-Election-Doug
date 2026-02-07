@@ -59,22 +59,26 @@ export async function POST(req) {
     }
     const { name, email, question, recaptchaToken } = parsed.data;
 
-    // Verify reCAPTCHA if token is provided
-    if (recaptchaToken) {
-      const captchaResult = await verifyCaptcha(recaptchaToken, 'submit_question');
-      if (!captchaResult.success) {
-        await logError({
-          errorType: ErrorTypes.EXTERNAL_SERVICE,
-          errorMessage: 'reCAPTCHA verification failed',
-          endpoint: '/api/questions',
-          method: 'POST',
-          request: req,
-        });
-        return NextResponse.json(
-          { ok: false, error: 'Security verification failed. Please try again.' },
-          { status: 400 }
-        );
-      }
+    // Require reCAPTCHA verification
+    if (!recaptchaToken) {
+      return NextResponse.json(
+        { ok: false, error: 'reCAPTCHA verification required' },
+        { status: 400 }
+      );
+    }
+    const captchaResult = await verifyCaptcha(recaptchaToken, 'submit_question');
+    if (!captchaResult.success) {
+      await logError({
+        errorType: ErrorTypes.EXTERNAL_SERVICE,
+        errorMessage: 'reCAPTCHA verification failed',
+        endpoint: '/api/questions',
+        method: 'POST',
+        request: req,
+      });
+      return NextResponse.json(
+        { ok: false, error: 'Security verification failed. Please try again.' },
+        { status: 400 }
+      );
     }
     const { error } = await supabase
       .from('questions')

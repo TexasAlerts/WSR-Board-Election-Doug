@@ -5,16 +5,45 @@ import { rateLimit } from '../../../../lib/rateLimit';
 import { createSMSVerification } from '../../../../lib/auth';
 import { sendVerificationSMS } from '../../../../lib/smsService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { withCSRF } from '../../../../lib/withCSRF';
 
 const sendCodeSchema = z.object({
   supporterId: z.string().uuid('Invalid supporter ID'),
 });
 
-export async function POST(request) {
+// Per-supporterId rate limiting to prevent spam attacks on specific accounts
+const supporterRateLimits = new Map();
+
+function rateLimitBySupporterId(supporterId) {
+  const now = Date.now();
+  const windowMs = 10 * 60 * 1000; // 10 minutes
+  const maxAttempts = 3;
+
+  const attempts = supporterRateLimits.get(supporterId) || [];
+  const recentAttempts = attempts.filter((t) => now - t < windowMs);
+
+  if (recentAttempts.length >= maxAttempts) return false;
+
+  recentAttempts.push(now);
+  supporterRateLimits.set(supporterId, recentAttempts);
+
+  // Clean up old entries periodically
+  if (supporterRateLimits.size > 1000) {
+    for (const [key, val] of supporterRateLimits.entries()) {
+      if (val.every((t) => now - t >= windowMs)) {
+        supporterRateLimits.delete(key);
+      }
+    }
+  }
+
+  return true;
+}
+
+async function postHandler(request) {
   const supabase = getSupabase();
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
-  // Rate limit: 3 SMS per supporter per 10 minutes
+  // Rate limit: 3 SMS per IP per 10 minutes
   if (!rateLimit(`sms-${ip}`, 3, 600000)) {
     return NextResponse.json(
       { ok: false, error: 'Too many requests. Please wait before requesting another code.' },
@@ -39,6 +68,14 @@ export async function POST(request) {
     }
 
     const { supporterId } = parsed.data;
+
+    // Per-supporterId rate limit to prevent targeting specific accounts
+    if (!rateLimitBySupporterId(supporterId)) {
+      return NextResponse.json(
+        { ok: false, error: 'Too many SMS requests for this account. Please wait 10 minutes.' },
+        { status: 429 }
+      );
+    }
 
     // Get supporter
     const { data: supporter, error: fetchError } = await supabase
@@ -108,3 +145,5 @@ export async function POST(request) {
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }
+
+export const POST = withCSRF(postHandler);
