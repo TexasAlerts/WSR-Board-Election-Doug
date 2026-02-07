@@ -21,6 +21,7 @@ import {
   X,
 } from 'lucide-react';
 import { logApiError } from '@/lib/clientErrorLogger';
+import { useCSRF } from '../../hooks/useCSRF';
 
 const NOTIFICATION_TYPES = [
   { label: 'New Polls', emailKey: 'email_on_new_poll', smsKey: 'sms_on_new_poll' },
@@ -44,6 +45,7 @@ const ACTIVITY_TABS = [
 export default function SettingsPage() {
   const { supporter, isAuthenticated, loading: authLoading, refreshAuth } = useAuth();
   const router = useRouter();
+  const { token: csrfToken, refreshToken } = useCSRF();
 
   // Profile state
   const [profile, setProfile] = useState({
@@ -137,11 +139,12 @@ export default function SettingsPage() {
     try {
       const res = await fetch('/api/auth/update-profile', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify(profile),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to update');
+      await refreshToken();
       setProfileMsg({ type: 'success', text: 'Profile updated successfully!' });
       await refreshAuth();
       setEditingProfile(false);
@@ -161,11 +164,12 @@ export default function SettingsPage() {
     try {
       const res = await fetch('/api/auth/update-phone', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ phone }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to update phone');
+      await refreshToken();
       setShowPhoneVerify(true);
       setPhoneMsg({
         type: 'success',
@@ -187,11 +191,12 @@ export default function SettingsPage() {
     try {
       const res = await fetch('/api/auth/verify-phone-update', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ code: smsCode }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Verification failed');
+      await refreshToken();
       setShowPhoneVerify(false);
       setEditingPhone(false);
       setSmsCode('');
@@ -212,11 +217,12 @@ export default function SettingsPage() {
     try {
       const res = await fetch('/api/notifications/preferences', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify(prefs),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to save preferences');
+      await refreshToken();
       setPrefsMsg({ type: 'success', text: 'Notification preferences saved!' });
     } catch (err) {
       await logApiError('/api/notifications/preferences', 'PATCH', err.status || 500, err.message, { context: 'prefsSave' });

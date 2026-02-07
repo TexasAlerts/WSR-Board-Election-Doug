@@ -2,10 +2,12 @@
 
 import { useState, useCallback } from 'react';
 import { logApiError } from '@/lib/clientErrorLogger';
+import { useCSRF } from './useCSRF';
 
 export function useIdeaVoting(ideaId) {
   const [votingIdea, setVotingIdea] = useState(false);
   const [error, setError] = useState('');
+  const { token: csrfToken, refreshToken } = useCSRF();
 
   const handleIdeaVote = useCallback(
     async (voteType) => {
@@ -15,13 +17,14 @@ export function useIdeaVoting(ideaId) {
       try {
         const res = await fetch(`/api/ideas/${ideaId}/vote`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
           body: JSON.stringify({ vote_type: voteType }),
         });
 
         const result = await res.json();
 
         if (result.ok) {
+          await refreshToken();
           const ideaRes = await fetch(`/api/ideas/${ideaId}`);
           const ideaData = await ideaRes.json();
           if (ideaData.ok) {
@@ -38,7 +41,7 @@ export function useIdeaVoting(ideaId) {
         setVotingIdea(false);
       }
     },
-    [ideaId]
+    [ideaId, csrfToken, refreshToken]
   );
 
   return {
