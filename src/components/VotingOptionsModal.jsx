@@ -71,7 +71,7 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
             <button
               onClick={onClose}
               aria-label="Close voting options"
-              className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
+              className="text-gray-600 hover:text-gray-700 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
             >
               ×
             </button>
@@ -85,6 +85,7 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
             {/* Option 1: Register for Full Access */}
             <button
               onClick={() => onOptionSelected('register')}
+              aria-label="Register for full access - vote, comment, and get notified"
               className="w-full text-left p-6 rounded-xl border-2 border-navy/20 hover:border-navy hover:bg-navy/5 transition-all group"
             >
               <div className="flex items-start gap-4">
@@ -130,6 +131,7 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
             {/* Option 2: Verify Email */}
             <button
               onClick={() => onOptionSelected('verify')}
+              aria-label="Verify email to vote and get notified"
               className="w-full text-left p-6 rounded-xl border-2 border-navy/20 hover:border-navy hover:bg-navy/5 transition-all group"
             >
               <div className="flex items-start gap-4">
@@ -156,8 +158,8 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
                       </span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="text-gray-400">○</span>
-                      <span className="text-gray-400">Comments require full registration</span>
+                      <span className="text-gray-700">○</span>
+                      <span className="text-gray-700">Comments require full registration</span>
                     </li>
                   </ul>
                 </div>
@@ -167,6 +169,7 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
             {/* Option 3: Vote Anonymously */}
             <button
               onClick={() => onOptionSelected('anonymous')}
+              aria-label="Vote anonymously without registration"
               className="w-full text-left p-6 rounded-xl border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all group"
             >
               <div className="flex items-start gap-4">
@@ -186,15 +189,15 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
                       </span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="text-gray-400">○</span>
-                      <span className="text-gray-400">No notifications about results</span>
+                      <span className="text-gray-700">○</span>
+                      <span className="text-gray-700">No notifications about results</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="text-gray-400">○</span>
-                      <span className="text-gray-400">Cannot comment or reply</span>
+                      <span className="text-gray-700">○</span>
+                      <span className="text-gray-700">Cannot comment or reply</span>
                     </li>
                   </ul>
-                  <p className="text-xs text-gray-500 mt-3 italic">
+                  <p className="text-xs text-gray-700 mt-3 italic">
                     Note: A cookie is used to prevent duplicate votes from the same browser.
                   </p>
                 </div>

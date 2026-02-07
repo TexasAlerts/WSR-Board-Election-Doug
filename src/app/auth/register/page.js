@@ -6,7 +6,7 @@ import { User, Mail, Phone, MapPin, CheckCircle, AlertCircle, Loader2 } from 'lu
 
 export default function RegisterPage() {
   useEffect(() => {
-    document.title = 'Register | Doug Charles for Prosper Town Council';
+    document.title = 'Register | Doug Charles for Town of Prosper Town Council Place 5';
   }, []);
 
   const [formData, setFormData] = useState({
@@ -96,7 +96,7 @@ export default function RegisterPage() {
         {error && (
           <div
             role="alert"
-            aria-live="polite"
+            aria-live="assertive"
             className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3"
           >
             <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
@@ -302,7 +302,7 @@ export default function RegisterPage() {
             />
             <span className="text-sm text-gray-600">
               By checking this box, you consent to receive SMS campaign updates, alerts, and
-              donation solicitations from Doug Charles for Prosper Town Council at the number
+              donation solicitations from Doug Charles for Town of Prosper Town Council Place 5 at the number
               provided, including messages sent by autodialer. Message frequency may vary. Standard
               message and data rates may apply. Carriers are not liable for delayed or undelivered
               messages. Reply STOP to opt out. Reply HELP for help. Consent is not a condition of

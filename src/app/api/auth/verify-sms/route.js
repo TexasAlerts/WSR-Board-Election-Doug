@@ -15,7 +15,7 @@ export async function POST(request) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   // Rate limit: 5 attempts per minute per IP to prevent brute force on 6-digit codes
-  if (!rateLimit(ip, { window: 60000, limit: 5 })) {
+  if (!rateLimit(ip, 5, 60000)) {
     return NextResponse.json(
       { ok: false, error: 'Too many verification attempts. Please wait a minute.' },
       { status: 429 }

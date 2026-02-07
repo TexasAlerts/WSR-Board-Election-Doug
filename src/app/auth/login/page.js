@@ -12,7 +12,7 @@ export default function LoginPage() {
   const { refreshAuth } = useAuth();
 
   useEffect(() => {
-    document.title = 'Sign In | Doug Charles for Prosper Town Council';
+    document.title = 'Sign In | Doug Charles for Town of Prosper Town Council Place 5';
   }, []);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -86,7 +86,7 @@ export default function LoginPage() {
             {error && (
               <div
                 role="alert"
-                aria-live="polite"
+                aria-live="assertive"
                 className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3"
               >
                 <AlertCircle
@@ -113,6 +113,7 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   aria-required="true"
+                  aria-invalid={!!error}
                   className="w-full pl-10 pr-4 py-2.5 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                   placeholder="you@example.com"
                   autoComplete="email"
@@ -139,6 +140,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   aria-required="true"
+                  aria-invalid={!!error}
                   className="w-full pl-10 pr-4 py-2.5 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
                   placeholder="Enter your password"
                   autoComplete="current-password"

@@ -66,7 +66,7 @@ export default function TrackRecordPage() {
                     Planning & Zoning Commission voted{' '}
                     <strong className="text-navy">7-0 against</strong> the proposal.
                   </p>
-                  <p className="text-gray-500 italic text-sm">
+                  <p className="text-gray-600 italic text-sm">
                     "Thank you for being engaged and active in keeping Prosper the envy of the
                     area." — Prosper Town Council Member
                   </p>
@@ -90,7 +90,7 @@ export default function TrackRecordPage() {
                     Spoke at Town Council questioning whether new home designs fit existing{' '}
                     <strong className="text-navy">neighborhood character</strong>.
                   </p>
-                  <p className="text-gray-500 italic text-sm">
+                  <p className="text-gray-600 italic text-sm">
                     "Not questioning the quality of the product or even the look of the product. I'm
                     just questioning does it really fit our subdivision." — Prosper Press News
                   </p>
@@ -130,16 +130,19 @@ export default function TrackRecordPage() {
                     Advocated for Tax Relief & Public Safety Investment
                   </h3>
                   <p className="text-gray-600 mb-2">
-                    Appeared before Town Council to advocate for a{' '}
-                    <strong className="text-navy">4-cent property tax rate reduction</strong> while
-                    simultaneously calling for a{' '}
-                    <strong className="text-prosper-red">
-                      7% pay increase for Police and Fire
-                    </strong>{' '}
-                    personnel. Challenged the Town's excessive reserves, arguing taxpayer money
-                    should be returned or invested in infrastructure—not hoarded. This{' '}
-                    <strong className="text-navy">consistent support for public safety</strong>{' '}
-                    continued in 2025, when I advocated for the public safety bond propositions.
+                    Appeared before Town Council pushing for a{' '}
+                    <strong className="text-navy">4-cent tax rate reduction</strong> and{' '}
+                    <strong className="text-prosper-red">higher Police and Fire pay</strong>.
+                    Challenged the Town's excessive reserves—taxpayer money should be invested to
+                    accelerate infrastructure or returned via rate reductions, not hoarded. Working
+                    with council leaders, we achieved a{' '}
+                    <strong className="text-navy">1-cent rate reduction</strong>—the{' '}
+                    <strong className="text-navy">first decrease in 14 years</strong>—and moved the
+                    proposed public safety pay increase to{' '}
+                    <strong className="text-navy">5%</strong>.
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    I'm a fiscal hawk—but I'll invest wisely to grow our town smartly.
                   </p>
                 </div>
               </div>
@@ -182,13 +185,13 @@ export default function TrackRecordPage() {
                   <p className="text-gray-600 mb-2">
                     Consistent advocacy for{' '}
                     <strong className="text-navy">fiscal responsibility</strong> means being willing
-                    to take a stand where <strong className="text-prosper-red">common sense</strong>{' '}
+                    to take a stand where <strong className="text-prosper-red">Common Sense</strong>{' '}
                     matters. During the <strong className="text-navy">$2.7 billion</strong> PISD
                     bond election, I spoke publicly about smart spending priorities. Voters
                     agreed—passing three propositions while{' '}
                     <strong className="text-navy">rejecting the $102 million stadium bond</strong>.
                   </p>
-                  <p className="text-gray-500 italic text-sm">
+                  <p className="text-gray-600 italic text-sm">
                     "We need smart spending that maximizes benefits for our students without
                     unnecessary burdens on our finances." —{' '}
                     <a
@@ -227,7 +230,7 @@ export default function TrackRecordPage() {
                     Morning News Editorial Board noted my transparency, contrasting it with
                     secretive outside groups.
                   </p>
-                  <p className="text-gray-500 italic text-sm">
+                  <p className="text-gray-600 italic text-sm">
                     "$115,000 just didn't randomly show up from Washington, D.C., into Prosper ISD.
                     There's an agenda." —{' '}
                     <a
@@ -274,21 +277,34 @@ export default function TrackRecordPage() {
                     Common Sense on Bond Proposals
                   </h3>
                   <p className="text-gray-600 mb-2">
-                    When some 2025 bond proposals seemed undersized, I said publicly: voters agreed,
-                    passing{' '}
-                    <strong className="text-navy">infrastructure and public safety bonds</strong>{' '}
-                    while rejecting undersized facilities.
+                    Prosper voters sent a clear message:{' '}
+                    <strong className="text-navy">
+                      plan smarter, communicate better, and build it right the first time—or with a
+                      clear plan that voters understand and can support.
+                    </strong>{' '}
+                    I strongly advocated for{' '}
+                    <strong className="text-navy">Props A (Streets) and F (Downtown)</strong>—and
+                    voters agreed, passing both. The other bonds failed mostly due to a lack of
+                    planning and the absence of a strong communication and engagement plan.
                   </p>
-                  <p className="text-gray-500 italic text-sm">
-                    "Let's build it once, not twice—unless we're going to build it once and expand
-                    it with a thoughtful plan that's communicated." —{' '}
+                  <p className="text-gray-600 mb-2">
+                    I strongly opposed the undersized library. The Town's Master Plan called for
+                    49,000 sq ft; the bond proposed just 33,000. That's not smart growth—it's bad
+                    planning.
+                  </p>
+                  <p className="text-gray-600 italic text-sm mb-1">
+                    "You don't build small when you already know it's too small. That's not
+                    progress, that's poor planning and lacks common sense!"
+                  </p>
+                  <p className="text-gray-600 italic text-sm">
+                    "They failed to communicate. They failed to engage." —{' '}
                     <a
-                      href="https://communityimpact.com/dallas-fort-worth/prosper-celina/government/2025/11/21/prosper-officials-consider-next-steps-alternative-funding-after-partial-bond-failure/"
+                      href="https://www.dallasnews.com/opinion/commentary/2025/11/12/damm-far-north-suburbs-try-to-balance-growth-taxes/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-navy hover:underline"
                     >
-                      Community Impact
+                      Dallas Morning News
                     </a>
                   </p>
                 </div>
@@ -318,7 +334,7 @@ export default function TrackRecordPage() {
                     signing the petition, Prosper ISD Board approved unanimously on December 15,
                     2025. Now awaiting TEA Commissioner final decision.
                   </p>
-                  <p className="text-gray-500 italic text-sm mb-2">
+                  <p className="text-gray-600 italic text-sm mb-2">
                     "Students already attend and have full access to Prosper ISD, yet property tax
                     revenue flows to Denton ISD, which educates none of these children."
                   </p>

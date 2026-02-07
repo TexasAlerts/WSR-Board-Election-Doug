@@ -8,9 +8,17 @@ export default function VerifiedVotersTab({
   handleSuspendVoter,
   handleDeleteVoter,
   formatDate,
+  currentUserRole,
 }) {
+  const isSuperAdmin = currentUserRole === 'super_admin';
+
   if (loading) {
-    return <div className="text-center py-8">Loading verified voters...</div>;
+    return (
+      <div className="text-center py-8" role="status" aria-live="polite">
+        <span className="sr-only">Loading</span>
+        Loading verified voters...
+      </div>
+    );
   }
 
   return (
@@ -41,7 +49,7 @@ export default function VerifiedVotersTab({
       {voters.length === 0 ? (
         <div className="text-center py-12">
           <UserCheck className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-          <p className="text-gray-500">No verified voters found.</p>
+          <p className="text-gray-700">No verified voters found.</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -60,17 +68,17 @@ export default function VerifiedVotersTab({
                         Suspended
                       </span>
                     )}
-                    {voter.verified_at && <CheckCircle className="w-4 h-4 text-green-500" />}
+                    {voter.verified_at && <CheckCircle className="w-4 h-4 text-green-500" aria-label="Verified" />}
                   </div>
 
                   <div className="space-y-1 text-sm text-gray-600">
                     <div className="flex items-center gap-2">
-                      <Mail className="w-4 h-4" />
+                      <Mail className="w-4 h-4" aria-hidden="true" />
                       <span>{voter.email}</span>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
+                      <Calendar className="w-4 h-4" aria-hidden="true" />
                       <span>
                         Verified:{' '}
                         {voter.verified_at ? formatDate(voter.verified_at) : 'Not verified'}
@@ -79,7 +87,7 @@ export default function VerifiedVotersTab({
 
                     {voter.suspended_at && (
                       <div className="flex items-center gap-2 text-red-600">
-                        <Ban className="w-4 h-4" />
+                        <Ban className="w-4 h-4" aria-hidden="true" />
                         <span>Suspended: {formatDate(voter.suspended_at)}</span>
                       </div>
                     )}
@@ -96,34 +104,46 @@ export default function VerifiedVotersTab({
 
                 {/* Actions */}
                 <div className="flex gap-2">
-                  {!voter.suspended_at ? (
-                    <button
-                      onClick={() => handleSuspendVoter(voter.id, 'suspend')}
-                      className="btn-secondary text-sm flex items-center gap-2"
-                      title="Suspend voter"
-                    >
-                      <Ban className="w-4 h-4" />
-                      <span className="hidden sm:inline">Suspend</span>
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleSuspendVoter(voter.id, 'unsuspend')}
-                      className="btn-primary text-sm flex items-center gap-2"
-                      title="Unsuspend voter"
-                    >
-                      <UserCheck className="w-4 h-4" />
-                      <span className="hidden sm:inline">Unsuspend</span>
-                    </button>
-                  )}
+                  {/* Only SuperAdmin can suspend/unsuspend voters */}
+                  {isSuperAdmin && (
+                    <>
+                      {!voter.suspended_at ? (
+                        <button
+                          onClick={() => handleSuspendVoter(voter.id, 'suspend')}
+                          className="btn-secondary text-sm flex items-center gap-2"
+                          title="Suspend voter"
+                          aria-label={`Suspend ${voter.name}`}
+                        >
+                          <Ban className="w-4 h-4" />
+                          <span className="hidden sm:inline">Suspend</span>
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleSuspendVoter(voter.id, 'unsuspend')}
+                          className="btn-primary text-sm flex items-center gap-2"
+                          title="Unsuspend voter"
+                          aria-label={`Unsuspend ${voter.name}`}
+                        >
+                          <UserCheck className="w-4 h-4" />
+                          <span className="hidden sm:inline">Unsuspend</span>
+                        </button>
+                      )}
 
-                  <button
-                    onClick={() => handleDeleteVoter(voter.id, voter.email)}
-                    className="px-3 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors flex items-center gap-2"
-                    title="Delete voter"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                    <span className="hidden sm:inline">Delete</span>
-                  </button>
+                      <button
+                        onClick={() => handleDeleteVoter(voter.id, voter.email)}
+                        className="px-3 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors flex items-center gap-2"
+                        title="Delete voter"
+                        aria-label={`Delete ${voter.name}`}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        <span className="hidden sm:inline">Delete</span>
+                      </button>
+                    </>
+                  )}
+                  {/* Non-SuperAdmin sees no action buttons */}
+                  {!isSuperAdmin && (
+                    <span className="text-xs text-gray-700 italic">View only</span>
+                  )}
                 </div>
               </div>
             </div>

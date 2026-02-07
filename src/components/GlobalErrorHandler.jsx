@@ -50,6 +50,31 @@ export default function GlobalErrorHandler() {
      */
     const handleUnhandledRejection = (event) => {
       const error = event.reason;
+      const errorMessage = error?.message || String(error);
+
+      // Filter out known third-party/browser errors we can't control
+      const ignoredPatterns = [
+        'performanceMetrics', // Vercel Speed Insights on privacy browsers
+        'Timeout', // Generic network timeouts
+        'ResizeObserver', // Chrome layout bug
+        'Script error', // Cross-origin script errors
+        'Load failed', // Network failures
+        'NetworkError', // Network failures
+        'AbortError', // User navigated away
+        'ChunkLoadError', // Webpack chunk loading
+        'recaptcha', // reCAPTCHA issues
+        'grecaptcha', // reCAPTCHA issues
+        'runtime.sendMessage', // Browser extension errors
+        'Extension context', // Browser extension errors
+        'message channel closed', // Browser extension errors
+        'Tab not found', // Browser extension errors
+      ];
+
+      if (ignoredPatterns.some((pattern) => errorMessage.includes(pattern))) {
+        // Don't log these - they're from third-party code or network issues
+        event.preventDefault();
+        return;
+      }
 
       fetch('/api/errors', {
         method: 'POST',

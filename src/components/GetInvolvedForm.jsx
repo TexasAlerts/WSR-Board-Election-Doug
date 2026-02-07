@@ -54,7 +54,7 @@ export default function GetInvolvedForm({
         <button
           type="button"
           onClick={onClose}
-          className="text-gray-400 hover:text-gray-600 text-xl font-bold min-w-[44px] min-h-[44px] flex items-center justify-center"
+          className="text-gray-600 hover:text-gray-700 text-xl font-bold min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-label="Close form"
         >
           ×
@@ -114,6 +114,7 @@ export default function GetInvolvedForm({
               id="phone"
               type="tel"
               required={selectedAction === 'meeting'}
+              aria-required={selectedAction === 'meeting' ? 'true' : undefined}
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
               className="form-input"
@@ -121,7 +122,7 @@ export default function GetInvolvedForm({
               aria-describedby="phone-hint"
               autoComplete="tel"
             />
-            <p id="phone-hint" className="text-sm text-gray-500 mt-1">
+            <p id="phone-hint" className="text-sm text-gray-700 mt-1">
               US phone numbers only
             </p>
           </div>
@@ -140,17 +141,18 @@ export default function GetInvolvedForm({
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
                 className="form-input"
                 placeholder="Street address in Prosper"
+                autoComplete="street-address"
               />
             </div>
           )}
 
           {selectedAction === 'endorsement' && (
             <div>
-              <label htmlFor="message" className="form-label">
+              <label htmlFor="endorsement-message" className="form-label">
                 Why I support Doug (optional)
               </label>
               <textarea
-                id="message"
+                id="endorsement-message"
                 rows={3}
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -162,11 +164,11 @@ export default function GetInvolvedForm({
 
           {(selectedAction === 'volunteer' || selectedAction === 'meeting') && (
             <div>
-              <label htmlFor="message" className="form-label">
+              <label htmlFor="volunteer-message" className="form-label">
                 {selectedAction === 'meeting' ? 'Preferred time or message' : 'Message (optional)'}
               </label>
               <textarea
-                id="message"
+                id="volunteer-message"
                 rows={3}
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -213,7 +215,7 @@ export default function GetInvolvedForm({
           </button>
 
           {submitMsg && !submitMsg.includes('Thank you') && (
-            <div role="alert" aria-live="polite" className="p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div role="alert" aria-live="assertive" className="p-4 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-800 font-medium">{submitMsg}</p>
             </div>
           )}

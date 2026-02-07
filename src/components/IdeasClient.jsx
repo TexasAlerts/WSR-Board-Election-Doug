@@ -305,7 +305,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {loading ? (
-            <div className="text-center py-12 text-gray-500" role="status" aria-live="polite">
+            <div className="text-center py-12 text-gray-700" role="status" aria-live="polite">
               Loading ideas...
             </div>
           ) : filteredIdeas.length === 0 ? (
@@ -335,7 +335,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
                         {idea.status.replace('_', ' ')}
                       </span>
                     </div>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-gray-700">
                       {new Date(idea.created_at).toLocaleDateString()}
                     </span>
                   </div>
@@ -387,11 +387,12 @@ export default function IdeasClient({ initialIdeas = [] }) {
                       </button>
                       {idea.comment_count !== undefined && idea.comment_count > 0 && (
                         <div className="flex items-center gap-1.5 text-gray-600">
-                          <MessageSquare className="w-4 h-4" />
+                          <MessageSquare className="w-4 h-4" aria-hidden="true" />
                           <span className="text-sm font-medium">{idea.comment_count}</span>
+                          <span className="sr-only">comments</span>
                         </div>
                       )}
-                      <span className="text-sm text-gray-500">by {idea.name}</span>
+                      <span className="text-sm text-gray-700">by {idea.name}</span>
                     </div>
                     <Link
                       href={`/ideas/${idea.id}`}
@@ -429,7 +430,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
                 </h2>
                 <button
                   onClick={() => setShowSubmitForm(false)}
-                  className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
+                  className="text-gray-600 hover:text-gray-700 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
                   aria-label="Close form"
                 >
                   ×
@@ -514,7 +515,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
                     placeholder="Give your idea a clear title"
                     aria-describedby="title-hint"
                   />
-                  <p id="title-hint" className="text-xs text-gray-500 mt-1">
+                  <p id="title-hint" className="text-xs text-gray-700 mt-1">
                     At least 5 characters
                   </p>
                 </div>
@@ -535,7 +536,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
                     placeholder="Describe your idea in detail..."
                     aria-describedby="content-hint"
                   />
-                  <p id="content-hint" className="text-xs text-gray-500 mt-1">
+                  <p id="content-hint" className="text-xs text-gray-700 mt-1">
                     At least 20 characters
                   </p>
                 </div>
@@ -597,7 +598,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
                 </h2>
                 <button
                   onClick={() => setShowSupportModal(false)}
-                  className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
+                  className="text-gray-600 hover:text-gray-700 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
                   aria-label="Close"
                 >
                   ×

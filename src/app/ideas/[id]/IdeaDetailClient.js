@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import IdeaMetadata from '@/components/IdeaMetadata';
@@ -22,6 +22,8 @@ export default function IdeaDetailClient() {
   const [supportMsg, setSupportMsg] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authenticatedSupporter, setAuthenticatedSupporter] = useState(null);
+  const supportModalRef = useRef(null);
+  const supportTriggerRef = useRef(null);
 
   const { votingIdea, handleIdeaVote } = useIdeaVoting(params.id);
   const {
@@ -73,6 +75,30 @@ export default function IdeaDetailClient() {
     loadIdea();
     checkAuth();
 
+    // Handle escape key and focus trap for support modal
+    function handleKeyDown(e) {
+      if (e.key === 'Escape' && showSupportModal) {
+        setShowSupportModal(false);
+        supportTriggerRef.current?.focus();
+      }
+      if (e.key === 'Tab' && supportModalRef.current && showSupportModal) {
+        const focusable = supportModalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
+
     // Load supported ideas from localStorage
     try {
       const supported = JSON.parse(localStorage.getItem('supportedIdeas') || '{}');
@@ -80,7 +106,22 @@ export default function IdeaDetailClient() {
     } catch {
       setSupportedIdeas({});
     }
-  }, [params.id]);
+
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [params.id, showSupportModal]);
+
+  // Handle scroll lock and focus when modal opens
+  useEffect(() => {
+    if (showSupportModal) {
+      document.body.style.overflow = 'hidden';
+      supportModalRef.current?.focus();
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showSupportModal]);
 
   async function handleSupport() {
     const email = supportedIdeas[params.id];
@@ -187,7 +228,7 @@ export default function IdeaDetailClient() {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16">
-        <div className="text-center text-gray-500">Loading idea...</div>
+        <div className="text-center text-gray-700">Loading idea...</div>
       </div>
     );
   }
@@ -230,7 +271,14 @@ export default function IdeaDetailClient() {
 
         <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-gray-100">
           <button
+            ref={supportTriggerRef}
             onClick={handleSupport}
+            aria-label={
+              supportedIdeas[params.id]
+                ? `Remove support for ${idea.title}`
+                : `Support ${idea.title}`
+            }
+            aria-pressed={!!supportedIdeas[params.id]}
             className={`flex items-center gap-2 px-4 py-3 rounded-lg font-medium transition-all ${
               supportedIdeas[params.id]
                 ? 'bg-prosper-red text-white'
@@ -260,7 +308,7 @@ export default function IdeaDetailClient() {
             isAuthenticated={isAuthenticated}
           />
 
-          <span className="text-sm text-gray-500">by {idea.name}</span>
+          <span className="text-sm text-gray-700">by {idea.name}</span>
         </div>
       </div>
 
@@ -290,18 +338,30 @@ export default function IdeaDetailClient() {
       {showSupportModal && (
         <div
           className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4"
-          onClick={() => setShowSupportModal(false)}
+          onClick={() => {
+            setShowSupportModal(false);
+            supportTriggerRef.current?.focus();
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="support-modal-title"
         >
           <div
-            className="bg-white rounded-xl shadow-2xl max-w-sm w-full"
+            ref={supportModalRef}
+            tabIndex={-1}
+            className="bg-white rounded-xl shadow-2xl max-w-sm w-full outline-none"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-6">
               <div className="flex justify-between items-start mb-4">
-                <h2 className="text-xl font-bold text-navy">Support This Idea</h2>
+                <h2 id="support-modal-title" className="text-xl font-bold text-navy">Support This Idea</h2>
                 <button
-                  onClick={() => setShowSupportModal(false)}
-                  className="text-gray-400 hover:text-gray-600 text-2xl"
+                  onClick={() => {
+                    setShowSupportModal(false);
+                    supportTriggerRef.current?.focus();
+                  }}
+                  aria-label="Close support dialog"
+                  className="text-gray-600 hover:text-gray-700 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
                 >
                   ×
                 </button>
@@ -311,21 +371,23 @@ export default function IdeaDetailClient() {
               </p>
               <form onSubmit={submitSupport} className="space-y-4">
                 <div>
-                  <label htmlFor="support-email" className="form-label">
-                    Email
+                  <label htmlFor="support-email-detail" className="form-label">
+                    Email *
                   </label>
                   <input
-                    id="support-email"
+                    id="support-email-detail"
                     type="email"
                     required
+                    aria-required="true"
                     value={supportEmail}
                     onChange={(e) => setSupportEmail(e.target.value)}
                     className="form-input"
                     placeholder="you@example.com"
+                    autoComplete="email"
                   />
                 </div>
                 {supportMsg && (
-                  <div className="p-3 bg-red-50 text-red-700 rounded-lg text-sm">{supportMsg}</div>
+                  <div role="alert" aria-live="polite" className="p-3 bg-red-50 text-red-700 rounded-lg text-sm">{supportMsg}</div>
                 )}
                 <button type="submit" className="btn-primary w-full">
                   Support Idea

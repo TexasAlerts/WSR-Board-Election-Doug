@@ -3,6 +3,8 @@ import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { sendEmail } from '../../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { rateLimit } from '../../../../lib/rateLimit';
+import { withCSRF } from '../../../../lib/withCSRF';
 
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
@@ -50,10 +52,19 @@ export async function GET(request) {
   }
 }
 
-export async function POST(request) {
+async function postHandler(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
+  }
+
+  // Rate limit: 5 broadcasts per hour per admin
+  const rateLimitKey = `broadcast-${supporter.id}`;
+  if (!rateLimit(rateLimitKey, 5, 3600000)) {
+    return NextResponse.json(
+      { ok: false, error: 'Too many broadcasts. Maximum 5 per hour.' },
+      { status: 429 }
+    );
   }
 
   const supabase = getSupabase();
@@ -98,22 +109,28 @@ export async function POST(request) {
       smsRecipients = smsSupporters || [];
     }
 
-    // Send emails
+    // Send emails in parallel with Promise.allSettled
     let emailsSent = 0;
     let emailsFailed = 0;
     if (emailRecipients.length > 0) {
-      for (const recipient of emailRecipients) {
-        try {
-          await sendEmail(
-            recipient.email,
-            subject,
-            `Hi ${recipient.first_name},\n\n${message}\n\n--\nDoug Charles\nCandidate for Prosper Town Council, Place 5\n\nTo unsubscribe, reply with STOP.`
-          );
+      const emailPromises = emailRecipients.map((recipient) =>
+        sendEmail(
+          recipient.email,
+          subject,
+          `Hi ${recipient.first_name},\n\n${message}\n\n--\nDoug Charles\nCandidate for Prosper Town Council, Place 5\n\nTo unsubscribe, reply with STOP.`
+        )
+          .then(() => ({ success: true, email: recipient.email }))
+          .catch((err) => ({ success: false, email: recipient.email, error: err.message }))
+      );
+
+      const results = await Promise.allSettled(emailPromises);
+      results.forEach((result) => {
+        if (result.status === 'fulfilled' && result.value.success) {
           emailsSent++;
-        } catch (err) {
+        } else {
           emailsFailed++;
         }
-      }
+      });
     }
 
     // SMS broadcasts not yet configured
@@ -181,3 +198,5 @@ export async function POST(request) {
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 400 });
   }
 }
+
+export const POST = withCSRF(postHandler);

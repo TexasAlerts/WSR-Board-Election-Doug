@@ -5,7 +5,7 @@ import { Eye, Loader2 } from 'lucide-react';
 export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, formatDate }) {
   return (
     <div>
-      <div className="flex gap-2 mb-4 flex-wrap">
+      <div className="flex gap-2 mb-4 flex-wrap" role="group" aria-label="Filter audit logs by event type">
         {[
           'all',
           'LOGIN_SUCCESS',
@@ -28,6 +28,7 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
           <button
             key={s}
             onClick={() => setFilter(s)}
+            aria-pressed={filter === s}
             className={`px-3 py-1 rounded-full text-sm font-medium ${
               filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
@@ -38,8 +39,9 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-navy" />
+        <div role="status" aria-live="polite" className="flex justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-navy" aria-hidden="true" />
+          <span className="sr-only">Loading audit logs...</span>
         </div>
       ) : (
         <div className="bg-white rounded-xl shadow overflow-hidden">
@@ -47,19 +49,19 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
             <caption className="sr-only">Audit logs</caption>
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   Time
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   Event
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   User
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   IP Address
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
                   Details
                 </th>
               </tr>
@@ -67,7 +69,7 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
             <tbody className="divide-y divide-gray-200">
               {auditLogs.map((log) => (
                 <tr key={log.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm text-gray-500">{formatDate(log.created_at)}</td>
+                  <td className="px-4 py-3 text-sm text-gray-700">{formatDate(log.created_at)}</td>
                   <td className="px-4 py-3">
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -85,7 +87,7 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
                   </td>
                   <td className="px-4 py-3">
                     <div className="text-sm font-medium">{log.supporter_name || '-'}</div>
-                    <div className="text-xs text-gray-500">{log.supporter_email || '-'}</div>
+                    <div className="text-xs text-gray-700">{log.supporter_email || '-'}</div>
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-600 font-mono">
                     {log.ip_address || '-'}
@@ -107,7 +109,7 @@ export default function AuditLogsTab({ auditLogs, loading, filter, setFilter, fo
               ))}
               {auditLogs.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                  <td colSpan={5} className="px-4 py-8 text-center text-gray-700">
                     No audit logs found
                   </td>
                 </tr>

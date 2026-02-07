@@ -54,7 +54,7 @@ export function usePollVoting() {
       const existingIndex = currentRankings.indexOf(choiceId);
 
       if (existingIndex !== -1) {
-        currentRankings.splice(existingIndex);
+        currentRankings.splice(existingIndex, 1);
       } else {
         currentRankings.push(choiceId);
       }

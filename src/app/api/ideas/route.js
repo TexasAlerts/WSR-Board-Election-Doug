@@ -7,90 +7,110 @@ import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
 import { sanitizeText } from '../../../lib/sanitize';
 import { verifyCaptcha } from '../../../lib/recaptcha';
+import { withCSRF } from '../../../lib/withCSRF';
 
 // API routes should be dynamic
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export async function GET(request) {
-  const supabase = getSupabase();
-  const supporter = await getCurrentSupporter();
-  const { searchParams } = new URL(request.url);
-  const category = searchParams.get('category');
+  try {
+    const supabase = getSupabase();
+    const supporter = await getCurrentSupporter();
+    const { searchParams } = new URL(request.url);
+    const category = searchParams.get('category');
 
-  let query = supabase
-    .from('ideas')
-    .select(
-      'id, name, category, title, content, status, support_count, upvotes, downvotes, admin_response, created_at'
-    )
-    .in('status', ['published', 'under_review', 'planned', 'completed', 'declined'])
-    .eq('is_public', true)
-    .order('created_at', { ascending: false });
+    let query = supabase
+      .from('ideas')
+      .select(
+        'id, name, category, title, content, status, support_count, upvotes, downvotes, admin_response, created_at'
+      )
+      .in('status', ['published', 'under_review', 'planned', 'completed', 'declined'])
+      .eq('is_public', true)
+      .order('created_at', { ascending: false });
 
-  if (category && category !== 'all') {
-    query = query.eq('category', category);
-  }
+    if (category && category !== 'all') {
+      query = query.eq('category', category);
+    }
 
-  const { data, error } = await query;
+    const { data, error } = await query;
 
-  if (error) {
+    if (error) {
+      await logError({
+        errorType: ErrorTypes.DATABASE_ERROR,
+        errorMessage: error.message,
+        endpoint: '/api/ideas',
+        method: 'GET',
+        request,
+      });
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
+    }
+
+    // Get comment counts for each idea
+    let commentCountMap = {};
+    if (data && data.length > 0) {
+      const ideaIds = data.map((i) => i.id);
+      const { data: commentCounts } = await supabase
+        .from('comments')
+        .select('idea_id')
+        .eq('status', 'approved')
+        .in('idea_id', ideaIds);
+
+      if (commentCounts) {
+        commentCounts.forEach((c) => {
+          commentCountMap[c.idea_id] = (commentCountMap[c.idea_id] || 0) + 1;
+        });
+      }
+    }
+
+    // Get user's votes if authenticated
+    let userVotes = {};
+    if (supporter && data && data.length > 0) {
+      const ideaIds = data.map((i) => i.id);
+      const { data: votes } = await supabase
+        .from('idea_votes')
+        .select('idea_id, vote_type')
+        .eq('supporter_id', supporter.id)
+        .in('idea_id', ideaIds);
+
+      if (votes) {
+        votes.forEach((v) => {
+          userVotes[v.idea_id] = v.vote_type;
+        });
+      }
+    }
+
+    // Add user vote info and comment counts to ideas
+    const ideasWithVotes = (data || []).map((idea) => ({
+      ...idea,
+      user_vote: userVotes[idea.id] || null,
+      comment_count: commentCountMap[idea.id] || 0,
+    }));
+
+    const response = NextResponse.json({
+      ok: true,
+      data: ideasWithVotes,
+      isAuthenticated: !!supporter,
+    });
+
+    // Add Cache-Control headers
+    response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120');
+
+    return response;
+  } catch (err) {
+    await logError({
+      errorType: ErrorTypes.SERVER_ERROR,
+      errorMessage: err.message,
+      errorStack: err.stack,
+      endpoint: '/api/ideas',
+      method: 'GET',
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
-
-  // Get comment counts for each idea
-  let commentCountMap = {};
-  if (data.length > 0) {
-    const ideaIds = data.map((i) => i.id);
-    const { data: commentCounts } = await supabase
-      .from('comments')
-      .select('idea_id')
-      .eq('status', 'approved')
-      .in('idea_id', ideaIds);
-
-    if (commentCounts) {
-      commentCounts.forEach((c) => {
-        commentCountMap[c.idea_id] = (commentCountMap[c.idea_id] || 0) + 1;
-      });
-    }
-  }
-
-  // Get user's votes if authenticated
-  let userVotes = {};
-  if (supporter && data.length > 0) {
-    const ideaIds = data.map((i) => i.id);
-    const { data: votes } = await supabase
-      .from('idea_votes')
-      .select('idea_id, vote_type')
-      .eq('supporter_id', supporter.id)
-      .in('idea_id', ideaIds);
-
-    if (votes) {
-      votes.forEach((v) => {
-        userVotes[v.idea_id] = v.vote_type;
-      });
-    }
-  }
-
-  // Add user vote info and comment counts to ideas
-  const ideasWithVotes = data.map((idea) => ({
-    ...idea,
-    user_vote: userVotes[idea.id] || null,
-    comment_count: commentCountMap[idea.id] || 0,
-  }));
-
-  const response = NextResponse.json({
-    ok: true,
-    data: ideasWithVotes,
-    isAuthenticated: !!supporter,
-  });
-
-  // Add Cache-Control headers
-  response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120');
-
-  return response;
 }
 
-export async function POST(request) {
+async function postHandler(request) {
   const supabase = getSupabase();
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
@@ -238,3 +258,5 @@ export async function POST(request) {
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }
+
+export const POST = withCSRF(postHandler);

@@ -1,11 +1,17 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
 import { useRecaptcha } from '../hooks/useRecaptcha';
-import { logApiError } from '@/lib/clientErrorLogger';
+import { logApiError, logNetworkError } from '@/lib/clientErrorLogger';
+import { fetchWithRetry, isOnline } from '@/lib/fetchWithRetry';
 
 export default function EndorsementsDynamic() {
   const { getToken, isReady } = useRecaptcha();
   const [endorsements, setEndorsements] = useState([]);
+  const [loadError, setLoadError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [isOffline, setIsOffline] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({
     name: '',
@@ -19,17 +25,85 @@ export default function EndorsementsDynamic() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef(null);
 
+  // Listen for online/offline events
   useEffect(() => {
-    async function load() {
-      try {
-        const res = await fetch('/api/endorsements', { cache: 'no-store' });
-        const data = await res.json();
-        setEndorsements(Array.isArray(data.data) ? data.data : []);
-      } catch (err) {
-        await logApiError('/api/endorsements', 'GET', err.status || 500, err.message, { context: 'loadEndorsements' });
+    const handleOnline = () => {
+      setIsOffline(false);
+      // Auto-retry when connection restored
+      if (loadError) {
+        loadEndorsements();
       }
+    };
+    const handleOffline = () => setIsOffline(true);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    // Check initial state
+    setIsOffline(!isOnline());
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, [loadError]);
+
+  async function loadEndorsements() {
+    setLoadError(false);
+    setErrorMessage('');
+    setIsLoading(true);
+
+    // Check if offline first
+    if (!isOnline()) {
+      setIsOffline(true);
+      setLoadError(true);
+      setErrorMessage('You appear to be offline. Please check your connection.');
+      setIsLoading(false);
+      return;
     }
-    load();
+
+    try {
+      const res = await fetchWithRetry('/api/endorsements', {
+        cache: 'no-store',
+        timeout: 15000,
+        retries: 2,
+        onRetry: (attempt, error) => {
+          setRetryCount(attempt);
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`[Endorsements] Retry ${attempt}: ${error.message}`);
+          }
+        },
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      setEndorsements(Array.isArray(data.data) ? data.data : []);
+      setRetryCount(0);
+    } catch (err) {
+      setLoadError(true);
+      setRetryCount(0);
+
+      // Set user-friendly error message based on error type
+      if (err.name === 'OfflineError' || !isOnline()) {
+        setErrorMessage('You appear to be offline. Please check your connection.');
+        setIsOffline(true);
+      } else if (err.name === 'TimeoutError') {
+        setErrorMessage('The request timed out. Please try again.');
+      } else if (err.status >= 500) {
+        setErrorMessage('Our server is having trouble. Please try again in a moment.');
+        await logApiError('/api/endorsements', 'GET', err.status, err.message, null, err.context);
+      } else {
+        setErrorMessage('Unable to load endorsements. Please try again.');
+        // Log network errors with full context
+        await logNetworkError('/api/endorsements', err, err.context?.attempt || 0);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadEndorsements();
   }, []);
 
   function handleEndorseClick() {
@@ -45,11 +119,18 @@ export default function EndorsementsDynamic() {
     setSubmitMsg('');
     setIsSubmitting(true);
 
+    // Check if offline
+    if (!isOnline()) {
+      setSubmitMsg('You appear to be offline. Please check your connection and try again.');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       // Get reCAPTCHA token
       const recaptchaToken = await getToken('submit_endorsement');
 
-      const res = await fetch('/api/endorsements', {
+      const res = await fetchWithRetry('/api/endorsements', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -61,7 +142,10 @@ export default function EndorsementsDynamic() {
           consentSms: form.consentSms,
           recaptchaToken,
         }),
+        timeout: 20000,
+        retries: 1, // Only 1 retry for POST to avoid duplicate submissions
       });
+
       const data = await res.json();
       if (res.ok && data.ok) {
         setSubmitMsg('Thank you! Your endorsement has been received.');
@@ -74,17 +158,20 @@ export default function EndorsementsDynamic() {
           consentSms: false,
         });
         // Reload endorsements to show the new one
-        const reloadRes = await fetch('/api/endorsements', { cache: 'no-store' });
-        const reloadData = await reloadRes.json();
-        setEndorsements(Array.isArray(reloadData.data) ? reloadData.data : []);
+        loadEndorsements();
       } else {
         setSubmitMsg(data.error || 'Something went wrong. Please try again.');
       }
     } catch (err) {
-      await logApiError('/api/endorsements', 'POST', err.status || 500, err.message, {
-        userAgent: navigator.userAgent,
-      });
-      setSubmitMsg('Something went wrong. Our team has been notified.');
+      // Set user-friendly message based on error type
+      if (err.name === 'OfflineError') {
+        setSubmitMsg('You appear to be offline. Please check your connection and try again.');
+      } else if (err.name === 'TimeoutError') {
+        setSubmitMsg('The request timed out. Please try again.');
+      } else {
+        await logApiError('/api/endorsements', 'POST', err.status || 500, err.message, null, err.context);
+        setSubmitMsg('Something went wrong. Our team has been notified.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -115,7 +202,7 @@ export default function EndorsementsDynamic() {
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="text-gray-400 hover:text-gray-600 text-xl font-bold min-w-[44px] min-h-[44px] flex items-center justify-center"
+                  className="text-gray-600 hover:text-gray-700 text-xl font-bold min-w-[44px] min-h-[44px] flex items-center justify-center"
                   aria-label="Close form"
                 >
                   ×
@@ -185,7 +272,7 @@ export default function EndorsementsDynamic() {
                       autoComplete="tel"
                       aria-describedby="endorsement-phone-hint"
                     />
-                    <p id="endorsement-phone-hint" className="text-sm text-gray-500 mt-1">
+                    <p id="endorsement-phone-hint" className="text-sm text-gray-700 mt-1">
                       US phone numbers only
                     </p>
                   </div>
@@ -261,7 +348,36 @@ export default function EndorsementsDynamic() {
       {/* Endorsements List */}
       <section className="py-12 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          {endorsements.length === 0 ? (
+          {isLoading ? (
+            <div className="text-center" role="status" aria-live="polite">
+              <p className="text-gray-700">Loading endorsements...</p>
+              {retryCount > 0 && (
+                <p className="text-gray-700 text-sm mt-1">Retrying... (attempt {retryCount})</p>
+              )}
+            </div>
+          ) : loadError ? (
+            <div className="text-center">
+              {isOffline && (
+                <div className="inline-flex items-center gap-2 text-amber-600 mb-2">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636a9 9 0 010 12.728m-3.536-3.536a4 4 0 010-5.656m-7.072 7.072a9 9 0 010-12.728m3.536 3.536a4 4 0 010 5.656" />
+                  </svg>
+                  <span className="font-medium">Offline</span>
+                </div>
+              )}
+              <p className="text-gray-600 mb-3">
+                {errorMessage || 'Unable to load endorsements. Please check your connection.'}
+              </p>
+              <button
+                type="button"
+                onClick={loadEndorsements}
+                disabled={isOffline}
+                className="text-navy font-medium hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isOffline ? 'Waiting for connection...' : 'Try again →'}
+              </button>
+            </div>
+          ) : endorsements.length === 0 ? (
             <p className="text-center text-gray-600">
               No endorsements yet. Be the first to show your support!
             </p>

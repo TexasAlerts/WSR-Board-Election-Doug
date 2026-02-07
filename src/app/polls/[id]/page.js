@@ -7,12 +7,12 @@ export async function generateMetadata({ params }) {
 
   try {
     const res = await fetch(`${SITE_URL}/api/polls/${id}`, {
-      cache: 'no-store',
+      next: { revalidate: 60 },
     });
 
     if (!res.ok) {
       return {
-        title: 'Poll Not Found | Doug Charles for Prosper Town Council',
+        title: 'Poll Not Found | Doug Charles for Town of Prosper Town Council Place 5',
         description: 'This poll could not be found.',
         robots: 'noindex',
       };
@@ -22,14 +22,14 @@ export async function generateMetadata({ params }) {
 
     if (!data.ok || !data.data) {
       return {
-        title: 'Poll Not Found | Doug Charles for Prosper Town Council',
+        title: 'Poll Not Found | Doug Charles for Town of Prosper Town Council Place 5',
         description: 'This poll could not be found.',
         robots: 'noindex',
       };
     }
 
     const poll = data.data;
-    const title = `${poll.title} | Polls | Doug Charles for Prosper Town Council`;
+    const title = `${poll.title} | Polls | Doug Charles for Town of Prosper Town Council Place 5`;
     const description = poll.description
       ? poll.description.slice(0, 160)
       : `Vote on ${poll.title}. ${poll.total_votes} vote${poll.total_votes !== 1 ? 's' : ''} so far.`;
@@ -45,19 +45,28 @@ export async function generateMetadata({ params }) {
         title,
         description,
         url: canonical,
-        siteName: 'Doug Charles for Prosper Town Council',
+        siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
         type: 'article',
         publishedTime: poll.published_at || poll.created_at,
+        images: [
+          {
+            url: `${SITE_URL}/campaign-preview.png`,
+            width: 1200,
+            height: 630,
+            alt: title,
+          },
+        ],
       },
       twitter: {
-        card: 'summary',
+        card: 'summary_large_image',
         title,
         description,
+        images: [`${SITE_URL}/campaign-preview.png`],
       },
     };
   } catch (error) {
     return {
-      title: 'Poll | Doug Charles for Prosper Town Council',
+      title: 'Poll | Doug Charles for Town of Prosper Town Council Place 5',
       description: 'View poll results and share your opinion.',
     };
   }

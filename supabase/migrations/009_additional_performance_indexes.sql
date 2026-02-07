@@ -38,3 +38,17 @@ CREATE INDEX IF NOT EXISTS idx_broadcasts_sent_at ON broadcasts(sent_at DESC);
 CREATE INDEX IF NOT EXISTS idx_thread_subs_supporter ON thread_subscriptions(supporter_id);
 CREATE INDEX IF NOT EXISTS idx_thread_subs_poll ON thread_subscriptions(poll_id) WHERE poll_id IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_thread_subs_idea ON thread_subscriptions(idea_id) WHERE idea_id IS NOT NULL;
+
+-- Additional indexes from comprehensive audit
+-- Comments: poll_id and idea_id for join queries
+CREATE INDEX IF NOT EXISTS idx_comments_poll_id ON comments(poll_id) WHERE poll_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_comments_idea_id ON comments(idea_id) WHERE idea_id IS NOT NULL;
+
+-- Poll votes: poll_id for counting queries
+CREATE INDEX IF NOT EXISTS idx_poll_votes_poll_id ON poll_votes(poll_id);
+
+-- Email verifications: token lookup for verification flow
+CREATE INDEX IF NOT EXISTS idx_email_verifications_token ON email_verifications(token);
+
+-- SMS verifications: code lookup for verification flow
+CREATE INDEX IF NOT EXISTS idx_sms_verifications_code ON sms_verifications(code);

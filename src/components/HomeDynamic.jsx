@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { HelpCircle } from 'lucide-react';
 import { logApiError } from '@/lib/clientErrorLogger';
+import { HomeSkeleton } from './shared/Skeleton';
 
 export default function HomeDynamic() {
   const [endorsements, setEndorsements] = useState([]);
   const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
@@ -24,10 +26,22 @@ export default function HomeDynamic() {
         await logApiError('/api/endorsements', 'GET', err.status || 500, err.message, {
           userAgent: navigator.userAgent,
         });
+      } finally {
+        setLoading(false);
       }
     }
     loadData();
   }, []);
+
+  // Show skeleton while loading
+  if (loading) {
+    return <HomeSkeleton />;
+  }
+
+  // Don't render anything if no data
+  if (questions.length === 0 && endorsements.length === 0) {
+    return null;
+  }
 
   return (
     <>
@@ -52,7 +66,7 @@ export default function HomeDynamic() {
                 <div key={q.id} className="card">
                   <h3 className="font-semibold text-navy text-lg mb-3">{q.question}</h3>
                   <p className="text-gray-700 leading-relaxed">{q.answer}</p>
-                  <p className="text-sm text-gray-500 mt-3">— Asked by {q.name}</p>
+                  <p className="text-sm text-gray-700 mt-3">— Asked by {q.name}</p>
                 </div>
               ))}
             </div>

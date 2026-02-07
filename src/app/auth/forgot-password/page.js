@@ -88,7 +88,7 @@ export default function ForgotPasswordPage() {
               {error && (
                 <div
                   role="alert"
-                  aria-live="polite"
+                  aria-live="assertive"
                   className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3"
                 >
                   <AlertCircle

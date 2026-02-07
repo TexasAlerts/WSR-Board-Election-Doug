@@ -19,10 +19,13 @@ export async function GET(request) {
 
   try {
     const supabase = getSupabase();
+    if (!supabase) {
+      return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+    }
 
     let query = supabase
       .from('verified_voters')
-      .select('*')
+      .select('id, email, name, verified_at, suspended_at, created_at')
       .order('created_at', { ascending: false });
 
     // Filter by suspension status
@@ -35,6 +38,16 @@ export async function GET(request) {
     const { data: voters, error } = await query;
 
     if (error) {
+      await logError({
+        errorType: ErrorTypes.DATABASE_ERROR,
+        errorMessage: error.message,
+        errorStack: error.stack,
+        endpoint: '/api/admin/verified-voters',
+        method: 'GET',
+        userId: supporter.id,
+        userEmail: supporter.email,
+        request,
+      });
       return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
     }
 

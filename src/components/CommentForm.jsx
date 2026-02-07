@@ -43,6 +43,7 @@ export default function CommentForm({
           value={commentForm.content}
           onChange={(e) => setCommentForm({ content: e.target.value })}
           required
+          aria-required="true"
           className="form-input"
           placeholder="Share your thoughts..."
           aria-describedby={commentMsg ? 'comment-message' : undefined}

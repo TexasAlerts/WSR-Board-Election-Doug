@@ -212,7 +212,7 @@ export default function AboutPage() {
               budgets, and <strong className="text-navy">deliver results</strong>.
             </p>
             <p className="text-lg text-gray-700 leading-relaxed">
-              I bring that same <strong className="text-navy">common sense</strong> approach to
+              I bring that same <strong className="text-navy">Common Sense</strong> approach to
               local government—for <strong className="text-prosper-red">ALL</strong> of Prosper:
               understand the problem, gather input, develop solutions, and execute. No
               grandstanding, no games—just get it done, and done right.

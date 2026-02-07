@@ -13,11 +13,12 @@ export default function ErrorLogsTab({
 }) {
   return (
     <div>
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-4" role="group" aria-label="Filter error logs by status">
         {['new', 'investigating', 'resolved', 'wont_fix', 'all'].map((s) => (
           <button
             key={s}
             onClick={() => setFilter(s)}
+            aria-pressed={filter === s}
             className={`px-3 py-1 rounded-full text-sm font-medium ${
               filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
@@ -28,8 +29,9 @@ export default function ErrorLogsTab({
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-navy" />
+        <div role="status" aria-live="polite" className="flex justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-navy" aria-hidden="true" />
+          <span className="sr-only">Loading error logs...</span>
         </div>
       ) : (
         <div className="space-y-4">
@@ -61,11 +63,11 @@ export default function ErrorLogsTab({
                   >
                     {err.status.replace('_', ' ')}
                   </span>
-                  <span className="ml-2 text-xs text-gray-500">
+                  <span className="ml-2 text-xs text-gray-700">
                     {err.occurrence_count > 1 && `${err.occurrence_count}x`}
                   </span>
                 </div>
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-gray-700">
                   {formatDate(err.last_occurred_at || err.created_at)}
                 </span>
               </div>
@@ -85,7 +87,7 @@ export default function ErrorLogsTab({
                 <p className="text-sm text-gray-600 mb-2">User: {err.user_email}</p>
               )}
 
-              <div className="text-xs text-gray-500 mb-3 font-mono">
+              <div className="text-xs text-gray-700 mb-3 font-mono">
                 IP: {err.ip_address || '-'}
               </div>
 
@@ -142,7 +144,7 @@ export default function ErrorLogsTab({
             </div>
           ))}
           {errorLogs.length === 0 && (
-            <div className="text-center py-12 text-gray-500">No errors found</div>
+            <div className="text-center py-12 text-gray-700">No errors found</div>
           )}
         </div>
       )}

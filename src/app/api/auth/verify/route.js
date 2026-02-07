@@ -9,9 +9,20 @@ import {
 } from '../../../../lib/auth';
 import { sendVerificationSMS } from '../../../../lib/smsService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { rateLimit } from '../../../../lib/rateLimit';
 
 // GET: Check if token is valid
 export async function GET(request) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+
+  // Rate limit: 10 token validations per minute per IP
+  if (!rateLimit(ip, 10, 60000)) {
+    return NextResponse.json(
+      { ok: false, error: 'Too many verification attempts. Please wait.' },
+      { status: 429 }
+    );
+  }
+
   const { searchParams } = new URL(request.url);
   const token = searchParams.get('token');
 

@@ -23,16 +23,16 @@ export default function IdeaMetadata({ idea }) {
   return (
     <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
       <div className="flex flex-wrap gap-2">
-        <span className="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full font-medium capitalize">
+        <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full font-medium capitalize">
           {categoryInfo.icon} {categoryInfo.label}
         </span>
         <span
-          className={`px-3 py-1 text-sm rounded-full font-medium capitalize ${STATUS_COLORS[idea.status] || 'bg-gray-100 text-gray-600'}`}
+          className={`px-3 py-1 text-sm rounded-full font-medium capitalize ${STATUS_COLORS[idea.status] || 'bg-gray-100 text-gray-700'}`}
         >
           {idea.status.replace('_', ' ')}
         </span>
       </div>
-      <span className="text-sm text-gray-500">
+      <span className="text-sm text-gray-700">
         {new Date(idea.created_at).toLocaleDateString()}
       </span>
     </div>

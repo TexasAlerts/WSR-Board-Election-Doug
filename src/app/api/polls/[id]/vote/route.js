@@ -12,8 +12,9 @@ import {
   ANONYMOUS_VOTER_COOKIE,
   ANONYMOUS_VOTER_COOKIE_OPTIONS,
 } from '../../../../../lib/anonymousVoting';
+import { withCSRF } from '../../../../../lib/withCSRF';
 
-export async function POST(request, { params }) {
+async function postHandler(request, { params }) {
   const supabase = getSupabase();
   const { id } = await params;
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
@@ -303,3 +304,5 @@ export async function POST(request, { params }) {
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }
+
+export const POST = withCSRF(postHandler);

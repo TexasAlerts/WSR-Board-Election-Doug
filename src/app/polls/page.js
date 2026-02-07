@@ -10,14 +10,18 @@ export const metadata = {
   alternates: { canonical: '/polls' },
 };
 
-// Enable dynamic rendering to support SSR
-export const dynamic = 'force-dynamic';
-// Enable ISR with 60 second revalidation
+// Enable ISR with 60 second revalidation for fresh poll data
 export const revalidate = 60;
 
 // Server component that fetches polls data
 async function getPolls() {
   const supabase = getSupabase();
+
+  // Return empty during build when Supabase isn't available
+  // ISR will fetch real data on first request
+  if (!supabase) {
+    return [];
+  }
 
   try {
     // Fetch active polls with their choices

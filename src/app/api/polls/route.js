@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../lib/supabase';
-import { getCurrentSupporter } from '../../../lib/auth';
+import { getCurrentSupporter, getVerifiedVoter } from '../../../lib/auth';
 import { logError, ErrorTypes } from '../../../lib/logging';
+import {
+  ANONYMOUS_VOTER_COOKIE,
+  generateAnonymousVoterFingerprint,
+} from '../../../lib/anonymousVoting';
 
 // API routes should be dynamic
 export const dynamic = 'force-dynamic';
@@ -11,6 +15,17 @@ export async function GET(request) {
   const supabase = getSupabase();
   const supporter = await getCurrentSupporter();
   const isAuthenticated = !!supporter;
+  const verifiedVoter = await getVerifiedVoter();
+
+  // Get anonymous voter token from cookie
+  const cookies = request.headers.get('cookie') || '';
+  const cookieMatch = cookies.match(new RegExp(`${ANONYMOUS_VOTER_COOKIE}=([^;]+)`));
+  const anonymousVoterToken = cookieMatch ? cookieMatch[1] : null;
+
+  // Generate fingerprint for anonymous voters
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+  const userAgent = request.headers.get('user-agent') || '';
+  const anonymousVoterFingerprint = generateAnonymousVoterFingerprint(ip, userAgent);
 
   // Get active polls with their choices
   let query = supabase
@@ -116,18 +131,49 @@ export async function GET(request) {
   }
 
   // Check if current user has voted on any polls
+  // Supports: authenticated supporters, verified voters, and anonymous voters
   let userVotedPolls = {};
-  if (supporter) {
-    const { data: userVotes } = await supabase
-      .from('poll_votes')
-      .select('poll_id')
-      .eq('supporter_id', supporter.id)
-      .in('poll_id', pollIds);
 
-    if (userVotes) {
-      userVotes.forEach((v) => {
-        userVotedPolls[v.poll_id] = true;
-      });
+  if (pollIds.length > 0) {
+    let votesQuery = null;
+
+    if (supporter) {
+      // Authenticated user - check by supporter_id
+      votesQuery = supabase
+        .from('poll_votes')
+        .select('poll_id')
+        .eq('supporter_id', supporter.id)
+        .in('poll_id', pollIds);
+    } else if (verifiedVoter) {
+      // Verified voter - check by email
+      votesQuery = supabase
+        .from('poll_votes')
+        .select('poll_id')
+        .eq('voter_email', verifiedVoter.email.toLowerCase())
+        .in('poll_id', pollIds);
+    } else if (anonymousVoterToken || anonymousVoterFingerprint) {
+      // Anonymous voter - check by token OR fingerprint
+      const orConditions = [];
+      if (anonymousVoterToken) {
+        orConditions.push(`anonymous_voter_token.eq.${anonymousVoterToken}`);
+      }
+      if (anonymousVoterFingerprint) {
+        orConditions.push(`anonymous_voter_fingerprint.eq.${anonymousVoterFingerprint}`);
+      }
+      votesQuery = supabase
+        .from('poll_votes')
+        .select('poll_id')
+        .or(orConditions.join(','))
+        .in('poll_id', pollIds);
+    }
+
+    if (votesQuery) {
+      const { data: userVotes } = await votesQuery;
+      if (userVotes) {
+        userVotes.forEach((v) => {
+          userVotedPolls[v.poll_id] = true;
+        });
+      }
     }
   }
 

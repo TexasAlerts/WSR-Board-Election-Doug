@@ -3,6 +3,7 @@ import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { z } from 'zod';
 import { logAudit, logError, ErrorTypes } from '../../../../lib/logging';
+import { withCSRF } from '../../../../lib/withCSRF';
 
 // GET - List all polls for admin
 export async function GET(request) {
@@ -12,6 +13,9 @@ export async function GET(request) {
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const { searchParams } = new URL(request.url);
   const status = searchParams.get('status') || 'all';
 
@@ -20,7 +24,7 @@ export async function GET(request) {
       .from('polls')
       .select(
         `
-        *,
+        id, title, description, poll_type, visibility, status, allow_comments, show_results_before_vote, closes_at, created_at, updated_at, created_by, published_at,
         poll_choices (id, choice_text, display_order),
         poll_votes (id)
       `
@@ -70,13 +74,16 @@ export async function GET(request) {
 }
 
 // POST - Create new poll
-export async function POST(request) {
+async function postHandler(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
 
   try {
     const schema = z.object({
@@ -194,3 +201,5 @@ export async function POST(request) {
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
+
+export const POST = withCSRF(postHandler);

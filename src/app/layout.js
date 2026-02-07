@@ -31,9 +31,9 @@ export const metadata = {
   alternates: {
     canonical: '/',
   },
-  title: 'Doug Charles for Prosper Town Council - Place 5',
+  title: 'Doug Charles for Town of Prosper Town Council Place 5',
   description:
-    'Doug Charles for Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. Election May 2, 2026.',
+    'Doug Charles for Town of Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. May 2, 2026 Election.',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '32x32' },
@@ -44,11 +44,11 @@ export const metadata = {
     apple: '/apple-touch-icon.png',
   },
   openGraph: {
-    title: 'Doug Charles for Prosper Town Council - Place 5',
+    title: 'Doug Charles for Town of Prosper Town Council Place 5',
     description:
-      'Doug Charles for Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. Election May 2, 2026.',
+      'Doug Charles for Town of Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. May 2, 2026 Election.',
     url: 'https://www.dougcharles.com',
-    siteName: 'Doug Charles for Prosper',
+    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
     locale: 'en_US',
     type: 'website',
     images: [
@@ -56,7 +56,7 @@ export const metadata = {
         url: 'https://www.dougcharles.com/campaign-preview.png',
         width: 1200,
         height: 630,
-        alt: 'Doug Charles for Prosper Town Council Place 5 - A Common Sense Leader for ALL of Prosper',
+        alt: 'Doug Charles for Town of Prosper Town Council Place 5 - A Common Sense Leader for ALL of Prosper',
       },
     ],
   },
@@ -66,8 +66,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Doug Charles for Prosper Town Council - Place 5',
-    description: 'A Common Sense Leader for All of Prosper',
+    title: 'Doug Charles for Town of Prosper Town Council Place 5',
+    description: 'A Common Sense Leader for ALL of Prosper',
     images: ['https://www.dougcharles.com/campaign-preview.png'],
   },
 };
@@ -75,6 +75,8 @@ export const metadata = {
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
   themeColor: '#1B3A5D',
 };
 
@@ -90,6 +92,17 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
+        {/* Resource hints for external services */}
+        <link rel="preconnect" href="https://www.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://www.recaptcha.net" />
+        {/* Preload hero image for LCP optimization */}
+        <link
+          rel="preload"
+          href="/campaign-logo.webp"
+          as="image"
+          type="image/webp"
+          fetchPriority="high"
+        />
       </head>
       <body>
         <RecaptchaProvider>
@@ -133,9 +146,9 @@ export default function RootLayout({ children }) {
               "@graph": [
                 {
                   "@type": "WebSite",
-                  "name": "Doug Charles for Prosper Town Council",
+                  "name": "Doug Charles for Town of Prosper Town Council Place 5",
                   "url": "https://www.dougcharles.com",
-                  "description": "Official campaign site for Doug Charles, candidate for Prosper Town Council Place 5. A Common Sense Leader for All of Prosper.",
+                  "description": "Official campaign site for Doug Charles, candidate for Prosper Town Council Place 5. A Common Sense Leader for ALL of Prosper.",
                   "publisher": {
                     "@id": "https://www.dougcharles.com/#person"
                   }
@@ -198,7 +211,7 @@ export default function RootLayout({ children }) {
             >
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-center space-y-2">
                 <p>
-                  Political advertising paid for by Doug Charles for Prosper Town Council Place 5.
+                  Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.
                 </p>
                 <p>
                   Questions? Email{' '}
@@ -209,7 +222,7 @@ export default function RootLayout({ children }) {
                     doug@dougcharles.com
                   </a>
                 </p>
-                <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 pt-2">
+                <nav aria-label="Footer navigation" className="flex flex-wrap justify-center gap-x-4 gap-y-1 pt-2">
                   <Link href="/about" className="text-white hover:text-gray-300 hover:underline">
                     About
                   </Link>
@@ -228,7 +241,7 @@ export default function RootLayout({ children }) {
                   <Link href="/donate" className="text-white hover:text-gray-300 hover:underline">
                     Donate
                   </Link>
-                </div>
+                </nav>
                 <p>
                   © {new Date().getFullYear()} Doug Charles for Prosper Town Council
                   {' | '}
@@ -243,7 +256,11 @@ export default function RootLayout({ children }) {
               </div>
             </footer>
             {/* Mobile call to action - Dual CTA for conversion */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 py-3 px-4 pb-safe sm:hidden z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
+            <div
+              role="region"
+              aria-label="Mobile call to action"
+              className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 py-3 px-4 pb-safe sm:hidden z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]"
+            >
               <div className="flex gap-3 max-w-md mx-auto">
                 <Link
                   href="/get-involved"

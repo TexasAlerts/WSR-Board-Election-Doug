@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
-import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
+import { getCurrentSupporter, isAdmin, isSuperAdmin } from '../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { withCSRF } from '../../../../lib/withCSRF';
+import { z } from 'zod';
 
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
@@ -10,6 +12,9 @@ export async function GET(request) {
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const { searchParams } = new URL(request.url);
   const status = searchParams.get('status');
 
@@ -56,30 +61,34 @@ export async function GET(request) {
   }
 }
 
-export async function PUT(request) {
+async function putHandler(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
 
   try {
     const body = await request.json();
-    const { id, status, role } = body;
 
-    if (!id) {
-      return NextResponse.json({ ok: false, error: 'Supporter ID required' }, { status: 400 });
+    // Zod validation for PUT body
+    const putSchema = z.object({
+      id: z.string().uuid('Invalid supporter ID'),
+      status: z.enum(['pending', 'approved', 'suspended']).optional(),
+      role: z.enum(['supporter', 'admin', 'super_admin']).optional(),
+    });
+
+    const parsed = putSchema.safeParse(body);
+    if (!parsed.success) {
+      const errorMessage = parsed.error.errors.map((e) => e.message).join(', ');
+      return NextResponse.json({ ok: false, error: errorMessage }, { status: 400 });
     }
 
-    const VALID_STATUSES = ['pending', 'approved', 'suspended'];
-    const VALID_ROLES = ['supporter', 'admin', 'super_admin'];
-    if (status && !VALID_STATUSES.includes(status)) {
-      return NextResponse.json({ ok: false, error: 'Invalid status value' }, { status: 400 });
-    }
-    if (role && !VALID_ROLES.includes(role)) {
-      return NextResponse.json({ ok: false, error: 'Invalid role value' }, { status: 400 });
-    }
+    const { id, status, role } = parsed.data;
 
     // Get old values for audit
     const { data: oldSupporter } = await supabase
@@ -87,6 +96,22 @@ export async function PUT(request) {
       .select('status, role, email, first_name, last_name')
       .eq('id', id)
       .single();
+
+    // Only SuperAdmin can change roles
+    if (role && role !== oldSupporter?.role && !isSuperAdmin(supporter)) {
+      return NextResponse.json(
+        { ok: false, error: 'Only Super Admins can change user roles' },
+        { status: 403 }
+      );
+    }
+
+    // Only SuperAdmin can suspend users
+    if (status === 'suspended' && !isSuperAdmin(supporter)) {
+      return NextResponse.json(
+        { ok: false, error: 'Only Super Admins can suspend users' },
+        { status: 403 }
+      );
+    }
 
     const updates = {};
     if (status) {
@@ -153,17 +178,28 @@ export async function PUT(request) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
 
-export async function DELETE(request) {
+async function deleteHandler(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
+  // Only SuperAdmin can delete supporters
+  if (!isSuperAdmin(supporter)) {
+    return NextResponse.json(
+      { ok: false, error: 'Only Super Admins can delete supporters' },
+      { status: 403 }
+    );
+  }
+
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
 
   try {
     const body = await request.json();
@@ -191,7 +227,7 @@ export async function DELETE(request) {
     // Fetch target supporter
     const { data: target, error: fetchError } = await supabase
       .from('supporters')
-      .select('*')
+      .select('id, first_name, last_name, email, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at')
       .eq('id', id)
       .single();
 
@@ -291,3 +327,6 @@ export async function DELETE(request) {
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }
+
+export const PUT = withCSRF(putHandler);
+export const DELETE = withCSRF(deleteHandler);

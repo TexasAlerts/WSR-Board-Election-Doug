@@ -4,7 +4,7 @@ import EndorsementsDynamic from '../../components/EndorsementsDynamic';
 export const metadata = {
   title: 'Endorsements - Doug Charles for Prosper Town Council',
   description:
-    'See who supports Doug Charles for Prosper Town Council Place 5. Add your endorsement and show your support for common sense leadership.',
+    'See who supports Doug Charles for Prosper Town Council Place 5. Add your endorsement and show your support for Common Sense leadership.',
   alternates: { canonical: '/endorsements' },
 };
 

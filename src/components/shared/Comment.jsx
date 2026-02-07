@@ -79,7 +79,7 @@ export default function Comment({
             <span className="font-medium text-gray-800">
               {comment.display_name || comment.name}
             </span>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-700">
               {new Date(comment.created_at).toLocaleDateString()}
             </span>
           </div>
@@ -91,16 +91,17 @@ export default function Comment({
             <button
               onClick={() => handleCommentVoteClick(comment.id, 'up')}
               disabled={(!isAuthenticated && !verifiedVoter) || isVoting}
-              className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
+              className={`flex items-center gap-1 px-2 py-1 min-h-[44px] rounded transition-colors ${
                 userVote === 'up'
                   ? 'bg-green-100 text-green-700'
                   : 'text-gray-600 hover:bg-gray-100'
               } disabled:opacity-50`}
+              aria-label={`Upvote this comment (${comment.upvotes || 0} upvotes)`}
               title={
                 !isAuthenticated && !verifiedVoter ? 'Sign in or verify email to vote' : 'Upvote'
               }
             >
-              <ThumbsUp className="w-4 h-4" />
+              <ThumbsUp className="w-4 h-4" aria-hidden="true" />
               <span className="text-sm font-medium">{comment.upvotes || 0}</span>
             </button>
 
@@ -108,14 +109,15 @@ export default function Comment({
             <button
               onClick={() => handleCommentVoteClick(comment.id, 'down')}
               disabled={(!isAuthenticated && !verifiedVoter) || isVoting}
-              className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
+              className={`flex items-center gap-1 px-2 py-1 min-h-[44px] rounded transition-colors ${
                 userVote === 'down' ? 'bg-red-100 text-red-700' : 'text-gray-600 hover:bg-gray-100'
               } disabled:opacity-50`}
+              aria-label={`Downvote this comment (${comment.downvotes || 0} downvotes)`}
               title={
                 !isAuthenticated && !verifiedVoter ? 'Sign in or verify email to vote' : 'Downvote'
               }
             >
-              <ThumbsDown className="w-4 h-4" />
+              <ThumbsDown className="w-4 h-4" aria-hidden="true" />
               <span className="text-sm font-medium">{comment.downvotes || 0}</span>
             </button>
 
@@ -124,6 +126,7 @@ export default function Comment({
               <button
                 onClick={() => setReplyTo(comment)}
                 className="text-sm text-navy hover:underline ml-2"
+                aria-label={`Reply to comment by ${comment.display_name}`}
               >
                 Reply
               </button>
@@ -160,10 +163,10 @@ export default function Comment({
     const userVote = comment.user_vote;
 
     return (
-      <div className="bg-gray-50 rounded-lg p-4">
+      <article className="bg-gray-50 rounded-lg p-4">
         <div className="flex justify-between items-start mb-2">
           <span className="font-medium text-gray-800">{comment.name}</span>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-700">
             {new Date(comment.created_at).toLocaleDateString()}
           </span>
         </div>
@@ -173,24 +176,26 @@ export default function Comment({
           <button
             onClick={() => handleCommentVoteClick(comment.id, 'up')}
             disabled={!isAuthenticated}
-            className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
+            className={`flex items-center gap-1 px-2 py-1 min-h-[44px] rounded transition-colors ${
               userVote === 'up' ? 'bg-green-100 text-green-700' : 'text-gray-600 hover:bg-gray-100'
             } disabled:opacity-50`}
+            aria-label={`Upvote this comment (${comment.upvotes || 0} upvotes)`}
             title={!isAuthenticated ? 'Sign in to vote' : 'Upvote'}
           >
-            <ThumbsUp className="w-4 h-4" />
+            <ThumbsUp className="w-4 h-4" aria-hidden="true" />
             <span className="text-sm font-medium">{comment.upvotes || 0}</span>
           </button>
 
           <button
             onClick={() => handleCommentVoteClick(comment.id, 'down')}
             disabled={!isAuthenticated}
-            className={`flex items-center gap-1 px-2 py-1 rounded transition-colors ${
+            className={`flex items-center gap-1 px-2 py-1 min-h-[44px] rounded transition-colors ${
               userVote === 'down' ? 'bg-red-100 text-red-700' : 'text-gray-600 hover:bg-gray-100'
             } disabled:opacity-50`}
+            aria-label={`Downvote this comment (${comment.downvotes || 0} downvotes)`}
             title={!isAuthenticated ? 'Sign in to vote' : 'Downvote'}
           >
-            <ThumbsDown className="w-4 h-4" />
+            <ThumbsDown className="w-4 h-4" aria-hidden="true" />
             <span className="text-sm font-medium">{comment.downvotes || 0}</span>
           </button>
 
@@ -203,7 +208,7 @@ export default function Comment({
             </div>
           )}
         </div>
-      </div>
+      </article>
     );
   }
 
@@ -254,8 +259,8 @@ export default function Comment({
   const organizedComments = organizeComments(comments);
 
   return (
-    <div className="card">
-      <h2 className="text-2xl font-bold text-navy mb-6">
+    <section className="card" aria-labelledby="comments-heading">
+      <h2 id="comments-heading" className="text-2xl font-bold text-navy mb-6">
         Comments {comments.length > 0 && `(${comments.length})`}
       </h2>
 
@@ -269,7 +274,7 @@ export default function Comment({
             : comments.map((comment) => <SimpleComment key={comment.id} comment={comment} />)}
         </div>
       ) : (
-        <div className="text-center py-8 text-gray-500 mb-8">
+        <div className="text-center py-8 text-gray-700 mb-8">
           No comments yet. Be the first to comment!
         </div>
       )}
@@ -309,6 +314,8 @@ export default function Comment({
                 value={commentForm.content}
                 onChange={(e) => setCommentForm({ content: e.target.value })}
                 required
+                aria-required="true"
+                aria-describedby={commentMsg ? 'comment-message' : undefined}
                 className="form-input"
                 placeholder="Share your thoughts..."
               />
@@ -316,6 +323,9 @@ export default function Comment({
 
             {commentMsg && (
               <div
+                id="comment-message"
+                role="alert"
+                aria-live="polite"
                 className={`p-4 rounded-lg ${commentMsg.includes('submitted') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}
               >
                 {commentMsg}
@@ -337,6 +347,6 @@ export default function Comment({
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 }

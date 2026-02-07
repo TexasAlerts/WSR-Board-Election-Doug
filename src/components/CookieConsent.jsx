@@ -6,10 +6,12 @@ import Link from 'next/link';
 /**
  * GDPR-compliant Cookie Consent Banner
  * Shows on first visit and stores consent in localStorage
+ *
+ * @returns {React.JSX.Element | null}
  */
-export default function CookieConsent(): React.JSX.Element | null {
-  const [showBanner, setShowBanner] = useState<boolean>(false);
-  const [isClient, setIsClient] = useState<boolean>(false);
+export default function CookieConsent() {
+  const [showBanner, setShowBanner] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -20,13 +22,15 @@ export default function CookieConsent(): React.JSX.Element | null {
     }
   }, []);
 
-  const handleAccept = (): void => {
+  /** @returns {void} */
+  const handleAccept = () => {
     localStorage.setItem('cookieConsent', 'accepted');
     localStorage.setItem('cookieConsentDate', new Date().toISOString());
     setShowBanner(false);
   };
 
-  const handleDecline = (): void => {
+  /** @returns {void} */
+  const handleDecline = () => {
     localStorage.setItem('cookieConsent', 'declined');
     localStorage.setItem('cookieConsentDate', new Date().toISOString());
     setShowBanner(false);
@@ -40,7 +44,7 @@ export default function CookieConsent(): React.JSX.Element | null {
   return (
     <div
       role="dialog"
-      aria-live="polite"
+      aria-modal="true"
       aria-label="Cookie consent"
       className="fixed bottom-0 left-0 right-0 z-[100] bg-white border-t-2 border-navy shadow-[0_-4px_20px_rgba(0,0,0,0.15)] animate-slide-up"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
@@ -52,7 +56,7 @@ export default function CookieConsent(): React.JSX.Element | null {
               <strong>We value your privacy.</strong> This website uses cookies to enhance your
               experience, analyze site traffic, and provide basic analytics.
             </p>
-            <p className="text-xs sm:text-sm text-gray-600">
+            <p className="text-xs sm:text-sm text-gray-700">
               By clicking "Accept", you consent to our use of cookies. Learn more in our{' '}
               <Link href="/privacy" className="text-navy underline hover:text-prosper-red">
                 Privacy Policy

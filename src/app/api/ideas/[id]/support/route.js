@@ -4,10 +4,18 @@ import { z } from 'zod';
 import { rateLimit } from '../../../../../lib/rateLimit';
 import { logError, ErrorTypes } from '../../../../../lib/logging';
 
+const idSchema = z.string().uuid('Invalid idea ID format');
+
 export async function POST(request, { params }) {
   const supabase = getSupabase();
   const { id } = await params;
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+
+  // Validate UUID format
+  const idParsed = idSchema.safeParse(id);
+  if (!idParsed.success) {
+    return NextResponse.json({ ok: false, error: 'Invalid idea ID' }, { status: 400 });
+  }
 
   if (!rateLimit(ip)) {
     return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });
@@ -94,6 +102,12 @@ export async function DELETE(request, { params }) {
   const supabase = getSupabase();
   const { id } = await params;
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
+
+  // Validate UUID format
+  const idParsed = idSchema.safeParse(id);
+  if (!idParsed.success) {
+    return NextResponse.json({ ok: false, error: 'Invalid idea ID' }, { status: 400 });
+  }
 
   if (!rateLimit(ip)) {
     return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });

@@ -14,11 +14,12 @@ export default function EndorsementsTab({
 }) {
   return (
     <div>
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-4" role="group" aria-label="Filter endorsements by status">
         {['pending', 'approved', 'rejected', 'all'].map((s) => (
           <button
             key={s}
             onClick={() => setFilter(s)}
+            aria-pressed={filter === s}
             className={`px-3 py-1 rounded-full text-sm font-medium ${
               filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
@@ -29,8 +30,9 @@ export default function EndorsementsTab({
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-navy" />
+        <div role="status" aria-live="polite" className="flex justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-navy" aria-hidden="true" />
+          <span className="sr-only">Loading endorsements...</span>
         </div>
       ) : (
         <div className="space-y-4">
@@ -39,7 +41,7 @@ export default function EndorsementsTab({
               <div className="flex justify-between items-start mb-2">
                 <div>
                   <span className="font-medium">{e.name}</span>
-                  <span className="text-gray-500 text-sm ml-2">{e.email}</span>
+                  <span className="text-gray-700 text-sm ml-2">{e.email}</span>
                 </div>
                 <span
                   className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[e.status]}`}
@@ -58,7 +60,7 @@ export default function EndorsementsTab({
                 </div>
               )}
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-500">{formatDate(e.created_at)}</span>
+                <span className="text-xs text-gray-700">{formatDate(e.created_at)}</span>
                 {e.status === 'pending' && (
                   <div className="flex gap-2">
                     <button
@@ -87,7 +89,7 @@ export default function EndorsementsTab({
             </div>
           ))}
           {endorsements.length === 0 && (
-            <div className="text-center py-12 text-gray-500">No endorsements found</div>
+            <div className="text-center py-12 text-gray-700">No endorsements found</div>
           )}
         </div>
       )}

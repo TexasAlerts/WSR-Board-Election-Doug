@@ -98,7 +98,7 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
       >
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl min-w-[44px] min-h-[44px] flex items-center justify-center"
+          className="absolute top-3 right-3 text-gray-700 hover:text-gray-900 text-xl min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-label="Close verification form"
         >
           &times;
@@ -147,7 +147,7 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
                 Send Verification Email
               </button>
             </form>
-            <p className="text-xs text-gray-500 mt-3 text-center">
+            <p className="text-xs text-gray-700 mt-3 text-center">
               Already a registered supporter?{' '}
               <a href="/auth/login" className="text-navy underline">
                 Sign in
@@ -171,7 +171,7 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
               We sent a verification link to <strong>{email}</strong>. Click the link to verify and
               then return here to vote.
             </p>
-            <p className="text-gray-500 text-xs mt-4">
+            <p className="text-gray-700 text-xs mt-4">
               Didn&apos;t receive it? Check your spam folder or{' '}
               <button
                 onClick={() => {

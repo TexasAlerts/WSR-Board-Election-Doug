@@ -118,7 +118,7 @@ export default function QnaDynamic({ initialQuestions = [] }) {
                     autoComplete="email"
                     aria-describedby="email-hint"
                   />
-                  <p id="email-hint" className="text-sm text-gray-500 mt-1">
+                  <p id="email-hint" className="text-sm text-gray-700 mt-1">
                     Your email won't be published.
                   </p>
                 </div>
@@ -169,7 +169,7 @@ export default function QnaDynamic({ initialQuestions = [] }) {
           <h2 className="section-title text-center mb-12">Published Answers</h2>
 
           {loading ? (
-            <div className="text-center text-gray-500" role="status" aria-live="polite">
+            <div className="text-center text-gray-700" role="status" aria-live="polite">
               Loading questions...
             </div>
           ) : questions.length > 0 ? (
@@ -186,7 +186,7 @@ export default function QnaDynamic({ initialQuestions = [] }) {
                     </div>
                     <p className="text-gray-700 leading-relaxed">{q.answer}</p>
                   </div>
-                  <p className="text-sm text-gray-500 mt-4">— Asked by {q.name}</p>
+                  <p className="text-sm text-gray-700 mt-4">— Asked by {q.name}</p>
                 </div>
               ))}
             </div>

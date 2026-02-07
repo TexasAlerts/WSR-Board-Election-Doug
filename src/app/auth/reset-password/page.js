@@ -123,7 +123,7 @@ function ResetPasswordContent() {
               <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <AlertCircle className="w-8 h-8 text-red-600" />
               </div>
-              <h2 className="text-xl font-bold text-navy mb-2">Invalid Reset Link</h2>
+              <h1 className="text-xl font-bold text-navy mb-2">Invalid Reset Link</h1>
               <p className="text-gray-600 mb-6">{tokenError}</p>
               <Link
                 href="/auth/forgot-password"
@@ -150,7 +150,7 @@ function ResetPasswordContent() {
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle className="w-8 h-8 text-green-600" />
               </div>
-              <h2 className="text-xl font-bold text-navy mb-2">Password Reset Successfully</h2>
+              <h1 className="text-xl font-bold text-navy mb-2">Password Reset Successfully</h1>
               <p className="text-gray-600 mb-6">
                 Your password has been updated. Redirecting to sign in...
               </p>
@@ -248,7 +248,7 @@ function ResetPasswordContent() {
               <p className="text-sm font-medium text-gray-700">Password must have:</p>
               <ul className="space-y-1 text-sm">
                 <li
-                  className={`flex items-center gap-2 ${hasMinLength ? 'text-green-600' : 'text-gray-500'}`}
+                  className={`flex items-center gap-2 ${hasMinLength ? 'text-green-600' : 'text-gray-700'}`}
                 >
                   <span
                     className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${hasMinLength ? 'bg-green-100' : 'bg-gray-200'}`}
@@ -258,7 +258,7 @@ function ResetPasswordContent() {
                   At least 8 characters
                 </li>
                 <li
-                  className={`flex items-center gap-2 ${hasUppercase ? 'text-green-600' : 'text-gray-500'}`}
+                  className={`flex items-center gap-2 ${hasUppercase ? 'text-green-600' : 'text-gray-700'}`}
                 >
                   <span
                     className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${hasUppercase ? 'bg-green-100' : 'bg-gray-200'}`}
@@ -268,7 +268,7 @@ function ResetPasswordContent() {
                   One uppercase letter
                 </li>
                 <li
-                  className={`flex items-center gap-2 ${hasLowercase ? 'text-green-600' : 'text-gray-500'}`}
+                  className={`flex items-center gap-2 ${hasLowercase ? 'text-green-600' : 'text-gray-700'}`}
                 >
                   <span
                     className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${hasLowercase ? 'bg-green-100' : 'bg-gray-200'}`}
@@ -278,7 +278,7 @@ function ResetPasswordContent() {
                   One lowercase letter
                 </li>
                 <li
-                  className={`flex items-center gap-2 ${hasNumber ? 'text-green-600' : 'text-gray-500'}`}
+                  className={`flex items-center gap-2 ${hasNumber ? 'text-green-600' : 'text-gray-700'}`}
                 >
                   <span
                     className={`w-4 h-4 rounded-full flex items-center justify-center text-xs ${hasNumber ? 'bg-green-100' : 'bg-gray-200'}`}

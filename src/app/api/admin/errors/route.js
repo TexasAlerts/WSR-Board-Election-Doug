@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { withCSRF } from '../../../../lib/withCSRF';
 
 export async function GET(request) {
   const supporter = await getCurrentSupporter();
@@ -10,6 +11,9 @@ export async function GET(request) {
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const { searchParams } = new URL(request.url);
   const status = searchParams.get('status') || 'new';
 
@@ -44,19 +48,31 @@ export async function GET(request) {
   const { data, error } = await query;
 
   if (error) {
+    await logError({
+      errorType: ErrorTypes.DATABASE_ERROR,
+      errorMessage: error.message,
+      endpoint: '/api/admin/errors',
+      method: 'GET',
+      userId: supporter.id,
+      userEmail: supporter.email,
+      request,
+    });
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true, data });
 }
 
-export async function PUT(request) {
+async function putHandler(request) {
   const supporter = await getCurrentSupporter();
   if (!supporter || !isAdmin(supporter)) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
 
   try {
     const body = await request.json();
@@ -119,6 +135,8 @@ export async function PUT(request) {
       method: 'PUT',
       request,
     });
-    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
+
+export const PUT = withCSRF(putHandler);

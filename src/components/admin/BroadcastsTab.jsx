@@ -100,8 +100,9 @@ export default function BroadcastsTab({
       <div>
         <h2 className="text-xl font-bold text-navy mb-4">Recent Broadcasts</h2>
         {loading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-navy" />
+          <div role="status" aria-live="polite" className="flex justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-navy" aria-hidden="true" />
+            <span className="sr-only">Loading broadcasts...</span>
           </div>
         ) : (
           <div className="space-y-4">
@@ -109,10 +110,10 @@ export default function BroadcastsTab({
               <div key={b.id} className="bg-white rounded-xl shadow p-4">
                 <div className="flex justify-between items-start mb-2">
                   <span className="font-medium">{b.subject || '(SMS)'}</span>
-                  <span className="text-xs text-gray-500">{formatDate(b.sent_at)}</span>
+                  <span className="text-xs text-gray-700">{formatDate(b.sent_at)}</span>
                 </div>
                 <p className="text-sm text-gray-600 mb-2 line-clamp-2">{b.body}</p>
-                <div className="flex gap-4 text-xs text-gray-500">
+                <div className="flex gap-4 text-xs text-gray-700">
                   <span className="flex items-center gap-1">
                     <Mail className="w-3 h-3" />
                     {b.email_recipient_count} emails
@@ -125,7 +126,7 @@ export default function BroadcastsTab({
               </div>
             ))}
             {broadcasts.length === 0 && (
-              <div className="text-center py-12 text-gray-500">No broadcasts sent yet</div>
+              <div className="text-center py-12 text-gray-700">No broadcasts sent yet</div>
             )}
           </div>
         )}

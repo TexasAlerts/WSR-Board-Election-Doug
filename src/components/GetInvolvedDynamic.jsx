@@ -165,7 +165,7 @@ function GetInvolvedDynamicContent() {
                   <Mail className="w-5 h-5" />
                   Share via Email
                 </a>
-                <p className="text-xs sm:text-sm text-gray-500 mt-2 sm:mt-3">
+                <p className="text-xs sm:text-sm text-gray-700 mt-2 sm:mt-3">
                   Opens your email app with a pre-written message
                 </p>
               </div>
@@ -179,13 +179,13 @@ function GetInvolvedDynamicContent() {
                   <MessageCircle className="w-5 h-5" />
                   Share via Text
                 </a>
-                <p className="text-xs sm:text-sm text-gray-500 mt-2 sm:mt-3">
+                <p className="text-xs sm:text-sm text-gray-700 mt-2 sm:mt-3">
                   Opens your messaging app with a pre-written text
                 </p>
               </div>
             </div>
 
-            <p className="text-center text-xs text-gray-500 mt-6">
+            <p className="text-center text-xs text-gray-700 mt-6">
               Personal recommendations are the most powerful way to reach voters!
             </p>
           </div>

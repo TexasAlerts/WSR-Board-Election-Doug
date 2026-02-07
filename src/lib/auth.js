@@ -2,65 +2,90 @@ import { getSupabase } from './supabase';
 import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
 import { validateAdminSession } from './admin-session';
-import type { Supporter, EmailVerification, SMSVerification, VerifiedVoter } from '@/types';
 
-interface SessionData {
-  token: string;
-  expiresAt: Date;
-}
+/**
+ * @typedef {import('@/types').Supporter} Supporter
+ * @typedef {import('@/types').EmailVerification} EmailVerification
+ * @typedef {import('@/types').SMSVerification} SMSVerification
+ * @typedef {import('@/types').VerifiedVoter} VerifiedVoter
+ */
 
-interface ValidationResult {
-  valid: boolean;
-  reason?: string;
-  verification?: SMSVerification;
-}
+/**
+ * @typedef {Object} SessionData
+ * @property {string} token
+ * @property {Date} expiresAt
+ */
 
-interface RequestHeaders {
-  headers?: {
-    get: (key: string) => string | null;
-  };
-}
+/**
+ * @typedef {Object} ValidationResult
+ * @property {boolean} valid
+ * @property {string} [reason]
+ * @property {SMSVerification} [verification]
+ */
 
-// Generate secure random token
-export function generateToken(length: number = 32): string {
+/**
+ * @typedef {Object} RequestHeaders
+ * @property {{ get: (key: string) => string | null }} [headers]
+ */
+
+/**
+ * Generate secure random token
+ * @param {number} [length=32] - Token length
+ * @returns {string}
+ */
+export function generateToken(length = 32) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let token = '';
   const array = new Uint8Array(length);
   crypto.getRandomValues(array);
   for (let i = 0; i < length; i++) {
-    token += chars[array[i]! % chars.length];
+    token += chars[array[i] % chars.length];
   }
   return token;
 }
 
-// Generate 6-digit SMS code using cryptographically secure random
-export function generateSMSCode(): string {
+/**
+ * Generate 6-digit SMS code using cryptographically secure random
+ * @returns {string}
+ */
+export function generateSMSCode() {
   const array = new Uint32Array(1);
   crypto.getRandomValues(array);
   // Generate number between 100000 and 999999
-  const code = 100000 + (array[0]! % 900000);
+  const code = 100000 + (array[0] % 900000);
   return code.toString();
 }
 
-// Hash password
-export async function hashPassword(password: string): Promise<string> {
+/**
+ * Hash password
+ * @param {string} password
+ * @returns {Promise<string>}
+ */
+export async function hashPassword(password) {
   return bcrypt.hash(password, 12);
 }
 
-// Verify password
-export async function verifyPassword(password: string, hash: string): Promise<boolean> {
+/**
+ * Verify password
+ * @param {string} password
+ * @param {string} hash
+ * @returns {Promise<boolean>}
+ */
+export async function verifyPassword(password, hash) {
   return bcrypt.compare(password, hash);
 }
 
-// Create session
-export async function createSession(
-  supporterId: string,
-  request?: RequestHeaders
-): Promise<SessionData | null> {
+/**
+ * Create session
+ * @param {string} supporterId
+ * @param {RequestHeaders} [request]
+ * @returns {Promise<SessionData | null>}
+ */
+export async function createSession(supporterId, request) {
   const supabase = getSupabase();
   const token = generateToken(64);
   const expiresAt = new Date();
-  expiresAt.setHours(expiresAt.getHours() + (parseInt(process.env.SESSION_EXPIRY_HOURS!) || 48));
+  expiresAt.setHours(expiresAt.getHours() + (parseInt(process.env.SESSION_EXPIRY_HOURS) || 48));
 
   const ip = request?.headers?.get('x-forwarded-for')?.split(',')[0] || 'unknown';
   const userAgent = request?.headers?.get('user-agent') || 'unknown';
@@ -84,8 +109,12 @@ export async function createSession(
   return { token, expiresAt };
 }
 
-// Validate session and get supporter
-export async function validateSession(token: string): Promise<Supporter | null> {
+/**
+ * Validate session and get supporter
+ * @param {string} token
+ * @returns {Promise<Supporter | null>}
+ */
+export async function validateSession(token) {
   if (!token) return null;
 
   const supabase = getSupabase();
@@ -103,7 +132,7 @@ export async function validateSession(token: string): Promise<Supporter | null> 
 
   if (error || !session) return null;
 
-  return session.supporter as unknown as Supporter;
+  return /** @type {Supporter} */ (session.supporter);
 }
 
 /**
@@ -115,7 +144,7 @@ export async function validateSession(token: string): Promise<Supporter | null> 
  *
  * Returns a synthetic admin object for admin sessions.
  *
- * @returns {Promise<Supporter|null>} Supporter object, synthetic admin object, or null
+ * @returns {Promise<Supporter | null>} Supporter object, synthetic admin object, or null
  *
  * @example
  * const currentUser = await getCurrentSupporter();
@@ -123,7 +152,7 @@ export async function validateSession(token: string): Promise<Supporter | null> 
  *   // Show admin features
  * }
  */
-export async function getCurrentSupporter(): Promise<Supporter | null> {
+export async function getCurrentSupporter() {
   const cookieStore = await cookies();
 
   // Check supporter session first
@@ -137,7 +166,7 @@ export async function getCurrentSupporter(): Promise<Supporter | null> {
   const adminToken = cookieStore.get('admin_session')?.value;
   if (adminToken && (await validateAdminSession(adminToken))) {
     // Return a synthetic admin supporter object
-    return {
+    return /** @type {Supporter} */ ({
       id: 'admin',
       role: 'super_admin',
       first_name: 'Admin',
@@ -155,7 +184,7 @@ export async function getCurrentSupporter(): Promise<Supporter | null> {
       email_verified_at: null,
       phone_verified_at: null,
       approved_at: null,
-    } as Supporter;
+    });
   }
 
   return null;
@@ -167,7 +196,7 @@ export async function getCurrentSupporter(): Promise<Supporter | null> {
  * @param {string} token - The session token to delete
  * @returns {Promise<boolean>} True if deletion succeeded
  */
-export async function deleteSession(token: string): Promise<boolean> {
+export async function deleteSession(token) {
   const supabase = getSupabase();
   const { error } = await supabase.from('sessions').delete().eq('token', token);
 
@@ -180,7 +209,7 @@ export async function deleteSession(token: string): Promise<boolean> {
  * @param {string} supporterId - The supporter's database ID
  * @returns {Promise<boolean>} True if deletion succeeded
  */
-export async function deleteAllSessions(supporterId: string): Promise<boolean> {
+export async function deleteAllSessions(supporterId) {
   const supabase = getSupabase();
   const { error } = await supabase.from('sessions').delete().eq('supporter_id', supporterId);
 
@@ -194,22 +223,19 @@ export async function deleteAllSessions(supporterId: string): Promise<boolean> {
  * Can be used for email verification or password reset flows.
  *
  * @param {string} supporterId - The supporter's database ID
- * @param {'verify'|'password_reset'} [purpose='verify'] - Purpose of the token
- * @returns {Promise<string|null>} The verification token or null on failure
+ * @param {'verify' | 'password_reset'} [purpose='verify'] - Purpose of the token
+ * @returns {Promise<string | null>} The verification token or null on failure
  *
  * @example
  * const token = await createEmailVerification(supporter.id, 'verify');
  * await sendVerificationEmail(supporter.email, supporter.first_name, token);
  */
-export async function createEmailVerification(
-  supporterId: string,
-  purpose: 'verify' | 'password_reset' = 'verify'
-): Promise<string | null> {
+export async function createEmailVerification(supporterId, purpose = 'verify') {
   const supabase = getSupabase();
   const token = generateToken(64);
   const expiresAt = new Date();
   expiresAt.setHours(
-    expiresAt.getHours() + (parseInt(process.env.VERIFICATION_EXPIRY_HOURS!) || 24)
+    expiresAt.getHours() + (parseInt(process.env.VERIFICATION_EXPIRY_HOURS) || 24)
   );
 
   const { error } = await supabase
@@ -237,13 +263,10 @@ export async function createEmailVerification(
  * Returns the verification record with associated supporter data.
  *
  * @param {string} token - The verification token to validate
- * @param {'verify'|'password_reset'} [purpose='verify'] - Expected purpose of the token
- * @returns {Promise<EmailVerification|null>} Verification object or null if invalid
+ * @param {'verify' | 'password_reset'} [purpose='verify'] - Expected purpose of the token
+ * @returns {Promise<EmailVerification | null>} Verification object or null if invalid
  */
-export async function validateEmailVerification(
-  token: string,
-  purpose: 'verify' | 'password_reset' = 'verify'
-): Promise<EmailVerification | null> {
+export async function validateEmailVerification(token, purpose = 'verify') {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('email_verifications')
@@ -256,7 +279,7 @@ export async function validateEmailVerification(
 
   if (error || !data) return null;
 
-  return data as unknown as EmailVerification;
+  return /** @type {EmailVerification} */ (data);
 }
 
 /**
@@ -267,7 +290,7 @@ export async function validateEmailVerification(
  * @param {string} id - The verification record ID
  * @returns {Promise<boolean>} True if update succeeded
  */
-export async function markEmailVerificationUsed(id: string): Promise<boolean> {
+export async function markEmailVerificationUsed(id) {
   const supabase = getSupabase();
   const { error } = await supabase
     .from('email_verifications')
@@ -285,21 +308,18 @@ export async function markEmailVerificationUsed(id: string): Promise<boolean> {
  *
  * @param {string} supporterId - The supporter's database ID
  * @param {string} phone - Phone number in E.164 format
- * @returns {Promise<string|null>} The 6-digit code or null on failure
+ * @returns {Promise<string | null>} The 6-digit code or null on failure
  *
  * @example
  * const code = await createSMSVerification(supporter.id, '+19725551234');
  * await sendVerificationSMS(phone, code);
  */
-export async function createSMSVerification(
-  supporterId: string,
-  phone: string
-): Promise<string | null> {
+export async function createSMSVerification(supporterId, phone) {
   const supabase = getSupabase();
   const code = generateSMSCode();
   const expiresAt = new Date();
   expiresAt.setMinutes(
-    expiresAt.getMinutes() + (parseInt(process.env.SMS_CODE_EXPIRY_MINUTES!) || 10)
+    expiresAt.getMinutes() + (parseInt(process.env.SMS_CODE_EXPIRY_MINUTES) || 10)
   );
 
   // Invalidate any existing codes for this supporter
@@ -323,11 +343,13 @@ export async function createSMSVerification(
   return code;
 }
 
-// Validate SMS code
-export async function validateSMSCode(
-  supporterId: string,
-  code: string
-): Promise<ValidationResult> {
+/**
+ * Validate SMS code
+ * @param {string} supporterId
+ * @param {string} code
+ * @returns {Promise<ValidationResult>}
+ */
+export async function validateSMSCode(supporterId, code) {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('sms_verifications')
@@ -350,11 +372,15 @@ export async function validateSMSCode(
     .update({ verified_at: new Date().toISOString() })
     .eq('id', data.id);
 
-  return { valid: true, verification: data as SMSVerification };
+  return { valid: true, verification: /** @type {SMSVerification} */ (data) };
 }
 
-// Increment SMS attempt counter
-export async function incrementSMSAttempt(supporterId: string): Promise<void> {
+/**
+ * Increment SMS attempt counter
+ * @param {string} supporterId
+ * @returns {Promise<void>}
+ */
+export async function incrementSMSAttempt(supporterId) {
   const supabase = getSupabase();
   const { data } = await supabase
     .from('sms_verifications')
@@ -373,13 +399,15 @@ export async function incrementSMSAttempt(supporterId: string): Promise<void> {
   }
 }
 
-// Log audit event
-export async function logAuditEvent(
-  supporterId: string | null,
-  eventType: string,
-  details: Record<string, unknown>,
-  request?: RequestHeaders
-): Promise<void> {
+/**
+ * Log audit event
+ * @param {string | null} supporterId
+ * @param {string} eventType
+ * @param {Record<string, unknown>} details
+ * @param {RequestHeaders} [request]
+ * @returns {Promise<void>}
+ */
+export async function logAuditEvent(supporterId, eventType, details, request) {
   const supabase = getSupabase();
   const ip = request?.headers?.get('x-forwarded-for')?.split(',')[0] || 'unknown';
   const userAgent = request?.headers?.get('user-agent') || 'unknown';
@@ -393,41 +421,51 @@ export async function logAuditEvent(
   });
 }
 
-// Get supporter by email
-export async function getSupporterByEmail(email: string): Promise<Supporter | null> {
+/**
+ * Get supporter by email
+ * @param {string} email
+ * @returns {Promise<Supporter | null>}
+ */
+export async function getSupporterByEmail(email) {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('supporters')
     .select(
-      'id, first_name, last_name, email, password_hash, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at'
+      'id, first_name, last_name, email, password_hash, phone, phone_verified, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at'
     )
     .eq('email', email.toLowerCase())
     .single();
 
   if (error) return null;
-  return data as Supporter;
+  return /** @type {Supporter} */ (data);
 }
 
-// Get supporter by ID
-export async function getSupporterById(id: string): Promise<Supporter | null> {
+/**
+ * Get supporter by ID
+ * @param {string} id
+ * @returns {Promise<Supporter | null>}
+ */
+export async function getSupporterById(id) {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('supporters')
     .select(
-      'id, first_name, last_name, email, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at'
+      'id, first_name, last_name, email, phone, phone_verified, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at'
     )
     .eq('id', id)
     .single();
 
   if (error) return null;
-  return data as Supporter;
+  return /** @type {Supporter} */ (data);
 }
 
-// Update supporter
-export async function updateSupporter(
-  id: string,
-  updates: Partial<Supporter>
-): Promise<Supporter | null> {
+/**
+ * Update supporter
+ * @param {string} id
+ * @param {Partial<Supporter>} updates
+ * @returns {Promise<Supporter | null>}
+ */
+export async function updateSupporter(id, updates) {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('supporters')
@@ -439,21 +477,62 @@ export async function updateSupporter(
   if (error) {
     return null;
   }
-  return data as Supporter;
+  return /** @type {Supporter} */ (data);
 }
 
-// Check if user is admin
-export function isAdmin(supporter: Supporter | null): boolean {
+/**
+ * Check if user is admin
+ * @param {Supporter | null} supporter
+ * @returns {boolean}
+ */
+export function isAdmin(supporter) {
   return supporter?.role === 'admin' || supporter?.role === 'super_admin';
 }
 
-// Check if user is super admin
-export function isSuperAdmin(supporter: Supporter | null): boolean {
+/**
+ * Check if user is super admin
+ * @param {Supporter | null} supporter
+ * @returns {boolean}
+ */
+export function isSuperAdmin(supporter) {
   return supporter?.role === 'super_admin';
 }
 
-// Get verified voter from cookie (lightweight email-verified user for polls)
-export async function getVerifiedVoter(): Promise<VerifiedVoter | null> {
+/**
+ * Check if a supporter can manage roles (assign admin/super_admin)
+ * Only super_admins can assign or modify roles
+ * @param {Supporter | null} supporter
+ * @returns {boolean}
+ */
+export function canManageRoles(supporter) {
+  return supporter?.role === 'super_admin';
+}
+
+/**
+ * Check if a supporter can moderate content (approve/reject comments, ideas, polls)
+ * Both admins and super_admins can moderate content
+ * @param {Supporter | null} supporter
+ * @returns {boolean}
+ */
+export function canModerateContent(supporter) {
+  return supporter?.role === 'admin' || supporter?.role === 'super_admin';
+}
+
+/**
+ * Check if a supporter can delete/suspend supporters or verified voters
+ * Only super_admins can delete or suspend users
+ * @param {Supporter | null} supporter
+ * @returns {boolean}
+ */
+export function canDeleteSupporters(supporter) {
+  return supporter?.role === 'super_admin';
+}
+
+/**
+ * Get verified voter from cookie (lightweight email-verified user for polls)
+ * @returns {Promise<VerifiedVoter | null>}
+ */
+export async function getVerifiedVoter() {
   const cookieStore = await cookies();
   const voterId = cookieStore.get('verified_voter_id')?.value;
   if (!voterId) return null;
@@ -467,5 +546,5 @@ export async function getVerifiedVoter(): Promise<VerifiedVoter | null> {
     .single();
 
   if (error || !data) return null;
-  return data as VerifiedVoter;
+  return /** @type {VerifiedVoter} */ (data);
 }

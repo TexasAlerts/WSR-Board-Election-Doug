@@ -1,17 +1,18 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../../lib/supabase';
-import { getCurrentSupporter, isAdmin } from '../../../../../lib/auth';
+import { getCurrentSupporter, isAdmin, isSuperAdmin } from '../../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../../lib/logging';
+import { withCSRF } from '../../../../../lib/withCSRF';
 
 /**
  * PATCH /api/admin/verified-voters/[id]
  * Suspend or unsuspend a verified voter
  * Body: { action: 'suspend' | 'unsuspend' }
  */
-export async function PATCH(request, { params }) {
+async function patchHandler(request, { params }) {
   const supporter = await getCurrentSupporter();
-  if (!supporter || !isAdmin(supporter)) {
-    return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
+  if (!supporter || !isSuperAdmin(supporter)) {
+    return NextResponse.json({ ok: false, error: 'Only Super Admins can suspend/unsuspend verified voters' }, { status: 403 });
   }
 
   const { id } = await params;
@@ -74,12 +75,12 @@ export async function PATCH(request, { params }) {
 
 /**
  * DELETE /api/admin/verified-voters/[id]
- * Delete a verified voter
+ * Delete a verified voter (SuperAdmin only)
  */
-export async function DELETE(request, { params }) {
+async function deleteHandler(request, { params }) {
   const supporter = await getCurrentSupporter();
-  if (!supporter || !isAdmin(supporter)) {
-    return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
+  if (!supporter || !isSuperAdmin(supporter)) {
+    return NextResponse.json({ ok: false, error: 'Only Super Admins can delete verified voters' }, { status: 403 });
   }
 
   const { id } = await params;
@@ -129,3 +130,6 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
+
+export const PATCH = withCSRF(patchHandler);
+export const DELETE = withCSRF(deleteHandler);

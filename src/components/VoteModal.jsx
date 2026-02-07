@@ -76,7 +76,7 @@ export default function VoteModal({
               ref={closeButtonRef}
               onClick={onClose}
               aria-label="Close vote form"
-              className="text-gray-400 hover:text-gray-600 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
+              className="text-gray-600 hover:text-gray-700 text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
             >
               ×
             </button>
@@ -214,7 +214,7 @@ export default function VoteModal({
 
               {poll.poll_type === 'ranked_choice' && (
                 <div className="mt-2">
-                  <p className="text-sm text-gray-500 mb-3">
+                  <p className="text-sm text-gray-700 mb-3">
                     Click choices in order of preference. Your first click is your top choice.
                   </p>
                   <div className="space-y-2">
@@ -237,7 +237,7 @@ export default function VoteModal({
                                 className={`w-11 h-11 rounded-full border-2 flex items-center justify-center font-bold text-base sm:text-lg ${
                                   rank !== null
                                     ? 'border-navy bg-navy text-white'
-                                    : 'border-gray-300 text-gray-400'
+                                    : 'border-gray-300 text-gray-700'
                                 }`}
                                 aria-label={
                                   rank !== null ? `Ranked number ${rank}` : 'Not yet ranked'
@@ -256,7 +256,7 @@ export default function VoteModal({
                                     moveRanking(choice.id, 'up');
                                   }}
                                   disabled={rank === 1}
-                                  className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg disabled:opacity-30"
+                                  className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-600 hover:text-navy hover:bg-gray-100 rounded-lg disabled:opacity-30"
                                   aria-label={`Move ${choice.text || choice.choice_text} up`}
                                   title="Move up"
                                 >
@@ -281,7 +281,7 @@ export default function VoteModal({
                                     moveRanking(choice.id, 'down');
                                   }}
                                   disabled={rank === voteForm.rankings.length}
-                                  className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg disabled:opacity-30"
+                                  className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-600 hover:text-navy hover:bg-gray-100 rounded-lg disabled:opacity-30"
                                   aria-label={`Move ${choice.text || choice.choice_text} down`}
                                   title="Move down"
                                 >
@@ -330,7 +330,7 @@ export default function VoteModal({
                   className="form-input"
                   placeholder="Share your thoughts..."
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-700 mt-1">
                   Comments are only available for registered users
                 </p>
               </div>

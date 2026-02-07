@@ -2,16 +2,16 @@ import Image from 'next/image';
 import { Mail, MessageCircle } from 'lucide-react';
 
 export const metadata = {
-  title: 'Support the Campaign - Doug Charles for Prosper Town Council',
+  title: 'Support the Campaign - Doug Charles for Prosper',
   description:
-    'Support Doug Charles for Prosper Town Council Place 5. Your contribution helps bring common sense leadership to all of Prosper.',
+    'Support Doug Charles for Town of Prosper Town Council Place 5. Your contribution helps bring Common Sense leadership to ALL of Prosper.',
   alternates: { canonical: '/donate' },
 };
 import DonateDynamic from '../../components/DonateDynamic';
 
 const SHARE_MESSAGE =
-  "I'm supporting Doug Charles for Prosper Town Council Place 5! Learn more about his Common Sense leadership for ALL of Prosper at www.dougcharles.com";
-const SHARE_SUBJECT = 'Check out Doug Charles for Prosper Town Council';
+  "I'm supporting Doug Charles for Town of Prosper Town Council Place 5! Learn more about his Common Sense leadership for ALL of Prosper at www.dougcharles.com";
+const SHARE_SUBJECT = 'Check out Doug Charles for Town of Prosper Town Council Place 5';
 
 export default function DonatePage() {
   return (
@@ -113,7 +113,7 @@ export default function DonatePage() {
                   <Mail className="w-5 h-5" />
                   Share via Email
                 </a>
-                <p className="text-sm text-gray-500 mt-3">
+                <p className="text-sm text-gray-700 mt-3">
                   Opens your email app with a pre-written message. Choose who to send it to.
                 </p>
               </div>
@@ -127,13 +127,13 @@ export default function DonatePage() {
                   <MessageCircle className="w-5 h-5" />
                   Share via Text
                 </a>
-                <p className="text-sm text-gray-500 mt-3">
+                <p className="text-sm text-gray-700 mt-3">
                   Opens your messaging app with a pre-written text. Select your contacts.
                 </p>
               </div>
             </div>
 
-            <p className="text-center text-xs text-gray-400 mt-6">
+            <p className="text-center text-xs text-gray-700 mt-6">
               Personal recommendations are the most powerful way to reach voters!
             </p>
           </div>
@@ -145,7 +145,7 @@ export default function DonatePage() {
         <div className="max-w-2xl mx-auto text-center">
           <div className="card bg-gray-50/50">
             <p className="text-sm text-gray-600 leading-relaxed">
-              Political advertising paid for by Doug Charles for Prosper Town Council.
+              Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.
               <br />
               <br />
               Under Texas law, contributions from corporations and labor organizations are

@@ -1,6 +1,6 @@
 /**
  * TypeScript Type Definitions
- * Database models and shared types for the WSR Board Election application
+ * Database models and shared types for Doug Charles for Prosper Town Council
  */
 
 // ============================================

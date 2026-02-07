@@ -10,7 +10,9 @@ import { usePathname } from 'next/navigation';
  * Uses multiple techniques to ensure scroll works:
  * 1. Disables browser scroll restoration
  * 2. Uses both window.scrollTo and documentElement.scrollTop
- * 3. Multiple timing attempts (immediate, RAF, setTimeout)
+ * 3. RAF callback after browser paint
+ *
+ * @returns {null}
  */
 export default function ScrollToTop() {
   const pathname = usePathname();
@@ -31,12 +33,13 @@ export default function ScrollToTop() {
       return;
     }
 
+    /** @returns {void} */
     const scrollToTop = () => {
       // Method 1: Standard scrollTo with instant behavior
       window.scrollTo({
         top: 0,
         left: 0,
-        behavior: 'instant'
+        behavior: 'instant',
       });
 
       // Method 2: Direct DOM manipulation as fallback
@@ -48,20 +51,7 @@ export default function ScrollToTop() {
     scrollToTop();
 
     // RAF scroll - after browser paint
-    requestAnimationFrame(() => {
-      scrollToTop();
-    });
-
-    // Delayed scroll - catch any late layout shifts
-    const timeout1 = setTimeout(scrollToTop, 0);
-    const timeout2 = setTimeout(scrollToTop, 50);
-    const timeout3 = setTimeout(scrollToTop, 100);
-
-    return () => {
-      clearTimeout(timeout1);
-      clearTimeout(timeout2);
-      clearTimeout(timeout3);
-    };
+    requestAnimationFrame(scrollToTop);
   }, [pathname]);
 
   return null;

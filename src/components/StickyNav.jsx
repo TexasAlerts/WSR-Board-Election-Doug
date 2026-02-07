@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import { Menu, X, Home as HomeIcon, User, LogOut, Settings, ChevronDown } from 'lucide-react';
 
@@ -14,6 +15,11 @@ export default function StickyNav() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [aboutMenuOpen, setAboutMenuOpen] = useState(false);
   const { supporter, isAuthenticated, isAdmin, logout, loading } = useAuth();
+  const pathname = usePathname();
+
+  // Helper to check if a path is current
+  const isCurrentPage = (path) => pathname === path;
+  const isAboutSection = ['/about', '/why', '/priorities', '/track-record'].includes(pathname);
 
   useEffect(() => {
     const navEl = navRef.current;
@@ -125,7 +131,7 @@ export default function StickyNav() {
                   }
                 }
               }}
-              className="flex items-center gap-1 text-gray-600 hover:text-navy transition-colors"
+              className={`flex items-center gap-1 transition-colors ${isAboutSection ? 'text-navy font-semibold' : 'text-gray-700 hover:text-navy'}`}
               aria-expanded={aboutMenuOpen}
               aria-haspopup="true"
               aria-controls="about-dropdown-menu"
@@ -144,7 +150,8 @@ export default function StickyNav() {
                 <Link
                   href="/about"
                   role="menuitem"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-50"
+                  aria-current={isCurrentPage('/about') ? 'page' : undefined}
+                  className={`flex items-center px-4 py-3 min-h-[44px] hover:bg-gray-50 ${isCurrentPage('/about') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700'}`}
                   onClick={() => setAboutMenuOpen(false)}
                 >
                   About Doug
@@ -152,7 +159,8 @@ export default function StickyNav() {
                 <Link
                   href="/why"
                   role="menuitem"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-50"
+                  aria-current={isCurrentPage('/why') ? 'page' : undefined}
+                  className={`flex items-center px-4 py-3 min-h-[44px] hover:bg-gray-50 ${isCurrentPage('/why') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700'}`}
                   onClick={() => setAboutMenuOpen(false)}
                 >
                   Why I'm Running
@@ -160,7 +168,8 @@ export default function StickyNav() {
                 <Link
                   href="/priorities"
                   role="menuitem"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-50"
+                  aria-current={isCurrentPage('/priorities') ? 'page' : undefined}
+                  className={`flex items-center px-4 py-3 min-h-[44px] hover:bg-gray-50 ${isCurrentPage('/priorities') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700'}`}
                   onClick={() => setAboutMenuOpen(false)}
                 >
                   Priorities
@@ -168,7 +177,8 @@ export default function StickyNav() {
                 <Link
                   href="/track-record"
                   role="menuitem"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-50"
+                  aria-current={isCurrentPage('/track-record') ? 'page' : undefined}
+                  className={`flex items-center px-4 py-3 min-h-[44px] hover:bg-gray-50 ${isCurrentPage('/track-record') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700'}`}
                   onClick={() => setAboutMenuOpen(false)}
                 >
                   Track Record
@@ -176,19 +186,39 @@ export default function StickyNav() {
               </div>
             )}
           </div>
-          <Link href="/polls" className="text-gray-600 hover:text-navy transition-colors">
+          <Link
+            href="/polls"
+            aria-current={isCurrentPage('/polls') ? 'page' : undefined}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/polls') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700 hover:text-navy hover:bg-gray-100'}`}
+          >
             Polls
           </Link>
-          <Link href="/ideas" className="text-gray-600 hover:text-navy transition-colors">
+          <Link
+            href="/ideas"
+            aria-current={isCurrentPage('/ideas') ? 'page' : undefined}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/ideas') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700 hover:text-navy hover:bg-gray-100'}`}
+          >
             Ideas
           </Link>
-          <Link href="/qna" className="text-gray-600 hover:text-navy transition-colors">
+          <Link
+            href="/qna"
+            aria-current={isCurrentPage('/qna') ? 'page' : undefined}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/qna') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700 hover:text-navy hover:bg-gray-100'}`}
+          >
             Q&A
           </Link>
-          <Link href="/endorsements" className="text-gray-600 hover:text-navy transition-colors">
+          <Link
+            href="/endorsements"
+            aria-current={isCurrentPage('/endorsements') ? 'page' : undefined}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/endorsements') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700 hover:text-navy hover:bg-gray-100'}`}
+          >
             Endorsements
           </Link>
-          <Link href="/get-involved" className="text-gray-600 hover:text-navy transition-colors">
+          <Link
+            href="/get-involved"
+            aria-current={isCurrentPage('/get-involved') ? 'page' : undefined}
+            className={`px-3 py-2 rounded-lg transition-colors ${isCurrentPage('/get-involved') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700 hover:text-navy hover:bg-gray-100'}`}
+          >
             Get Involved
           </Link>
 
@@ -218,7 +248,7 @@ export default function StickyNav() {
                       }
                     }
                   }}
-                  className="flex items-center gap-2 text-gray-600 hover:text-navy transition-colors"
+                  className="flex items-center gap-2 text-gray-700 hover:text-navy transition-colors"
                   aria-expanded={userMenuOpen}
                   aria-haspopup="true"
                   aria-controls="user-dropdown-menu"
@@ -235,7 +265,7 @@ export default function StickyNav() {
                     <Link
                       href="/settings"
                       role="menuitem"
-                      className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
+                      className="flex items-center gap-2 px-4 py-3 min-h-[44px] text-gray-700 hover:bg-gray-50"
                       onClick={() => setUserMenuOpen(false)}
                     >
                       <Settings className="w-4 h-4" />
@@ -245,7 +275,7 @@ export default function StickyNav() {
                       <Link
                         href="/admin/dashboard"
                         role="menuitem"
-                        className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
+                        className="flex items-center gap-2 px-4 py-3 min-h-[44px] text-gray-700 hover:bg-gray-50"
                         onClick={() => setUserMenuOpen(false)}
                       >
                         <Settings className="w-4 h-4" />
@@ -255,7 +285,7 @@ export default function StickyNav() {
                     <button
                       onClick={handleLogout}
                       role="menuitem"
-                      className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50 w-full text-left"
+                      className="flex items-center gap-2 px-4 py-3 min-h-[44px] text-gray-700 hover:bg-gray-50 w-full text-left"
                     >
                       <LogOut className="w-4 h-4" />
                       Sign Out
@@ -264,7 +294,7 @@ export default function StickyNav() {
                 )}
               </div>
             ) : (
-              <Link href="/auth/login" className="text-gray-600 hover:text-navy transition-colors">
+              <Link href="/auth/login" className="text-gray-700 hover:text-navy transition-colors">
                 Sign In
               </Link>
             ))}
@@ -289,28 +319,32 @@ export default function StickyNav() {
           </div>
           <Link
             href="/about"
-            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            aria-current={isCurrentPage('/about') ? 'page' : undefined}
+            className={`py-3.5 px-4 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px] ${isCurrentPage('/about') ? 'text-navy bg-navy/5 font-semibold' : 'text-gray-700'}`}
             onClick={() => setOpen(false)}
           >
             About Doug
           </Link>
           <Link
             href="/why"
-            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            aria-current={isCurrentPage('/why') ? 'page' : undefined}
+            className={`py-3.5 px-4 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px] ${isCurrentPage('/why') ? 'text-navy bg-navy/5 font-semibold' : 'text-gray-700'}`}
             onClick={() => setOpen(false)}
           >
             Why I'm Running
           </Link>
           <Link
             href="/priorities"
-            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            aria-current={isCurrentPage('/priorities') ? 'page' : undefined}
+            className={`py-3.5 px-4 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px] ${isCurrentPage('/priorities') ? 'text-navy bg-navy/5 font-semibold' : 'text-gray-700'}`}
             onClick={() => setOpen(false)}
           >
             Priorities
           </Link>
           <Link
             href="/track-record"
-            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            aria-current={isCurrentPage('/track-record') ? 'page' : undefined}
+            className={`py-3.5 px-4 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px] ${isCurrentPage('/track-record') ? 'text-navy bg-navy/5 font-semibold' : 'text-gray-700'}`}
             onClick={() => setOpen(false)}
           >
             Track Record
@@ -322,35 +356,40 @@ export default function StickyNav() {
           </div>
           <Link
             href="/polls"
-            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            aria-current={isCurrentPage('/polls') ? 'page' : undefined}
+            className={`py-3.5 px-4 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px] ${isCurrentPage('/polls') ? 'text-navy bg-navy/5 font-semibold' : 'text-gray-700'}`}
             onClick={() => setOpen(false)}
           >
             Polls
           </Link>
           <Link
             href="/ideas"
-            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            aria-current={isCurrentPage('/ideas') ? 'page' : undefined}
+            className={`py-3.5 px-4 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px] ${isCurrentPage('/ideas') ? 'text-navy bg-navy/5 font-semibold' : 'text-gray-700'}`}
             onClick={() => setOpen(false)}
           >
             Ideas
           </Link>
           <Link
             href="/qna"
-            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            aria-current={isCurrentPage('/qna') ? 'page' : undefined}
+            className={`py-3.5 px-4 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px] ${isCurrentPage('/qna') ? 'text-navy bg-navy/5 font-semibold' : 'text-gray-700'}`}
             onClick={() => setOpen(false)}
           >
             Q&A
           </Link>
           <Link
             href="/endorsements"
-            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            aria-current={isCurrentPage('/endorsements') ? 'page' : undefined}
+            className={`py-3.5 px-4 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px] ${isCurrentPage('/endorsements') ? 'text-navy bg-navy/5 font-semibold' : 'text-gray-700'}`}
             onClick={() => setOpen(false)}
           >
             Endorsements
           </Link>
           <Link
             href="/get-involved"
-            className="py-3.5 px-4 text-gray-700 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px]"
+            aria-current={isCurrentPage('/get-involved') ? 'page' : undefined}
+            className={`py-3.5 px-4 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px] ${isCurrentPage('/get-involved') ? 'text-navy bg-navy/5 font-semibold' : 'text-gray-700'}`}
             onClick={() => setOpen(false)}
           >
             Get Involved
@@ -361,7 +400,7 @@ export default function StickyNav() {
             {!loading &&
               (isAuthenticated ? (
                 <>
-                  <div className="px-4 py-2 text-sm text-gray-500 bg-gray-50 rounded-lg">
+                  <div className="px-4 py-2 text-sm text-gray-700 bg-gray-50 rounded-lg">
                     Signed in as{' '}
                     <span className="font-medium text-navy">
                       {supporter?.first_name} {supporter?.last_name}

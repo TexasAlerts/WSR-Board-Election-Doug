@@ -51,7 +51,7 @@ export default function DonateDynamic() {
                     setCustomAmount('');
                   }}
                   aria-pressed={selectedAmount === amount}
-                  className={`px-4 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ${
+                  className={`px-4 py-4 min-h-[44px] rounded-lg font-semibold text-lg transition-all duration-300 ${
                     selectedAmount === amount
                       ? 'bg-gradient-red text-white shadow-lg scale-105'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-[1.02]'
@@ -70,7 +70,7 @@ export default function DonateDynamic() {
             </label>
             <div className="relative max-w-[200px] mx-auto">
               <span
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold text-lg"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700 font-semibold text-lg"
                 aria-hidden="true"
               >
                 $
@@ -85,11 +85,11 @@ export default function DonateDynamic() {
                   setCustomAmount(e.target.value);
                   setSelectedAmount(null);
                 }}
-                className="form-input text-center text-lg pl-10"
+                className="form-input text-center text-lg pl-10 min-h-[44px]"
                 aria-describedby="custom-amount-hint"
               />
             </div>
-            <p id="custom-amount-hint" className="text-xs text-gray-500 text-center mt-2">
+            <p id="custom-amount-hint" className="text-xs text-gray-700 text-center mt-2">
               Minimum $1
             </p>
           </div>
