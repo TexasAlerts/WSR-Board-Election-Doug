@@ -10,9 +10,11 @@ import CommentForm from '@/components/CommentForm';
 import { useIdeaVoting } from '@/hooks/useIdeaVoting';
 import { useCommentThread } from '@/hooks/useCommentThread';
 import { logApiError } from '@/lib/clientErrorLogger';
+import { useCSRF } from '@/hooks/useCSRF';
 
 export default function IdeaDetailClient() {
   const params = useParams();
+  const { token: csrfToken, refreshToken } = useCSRF();
   const [idea, setIdea] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -131,11 +133,12 @@ export default function IdeaDetailClient() {
       try {
         const res = await fetch(`/api/ideas/${params.id}/support`, {
           method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
           body: JSON.stringify({ email }),
         });
         const result = await res.json();
         if (result.ok) {
+          await refreshToken();
           const newSupported = { ...supportedIdeas };
           delete newSupported[params.id];
           setSupportedIdeas(newSupported);
@@ -165,11 +168,12 @@ export default function IdeaDetailClient() {
     try {
       const res = await fetch(`/api/ideas/${params.id}/support`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ email: supportEmail }),
       });
       const result = await res.json();
       if (result.ok) {
+        await refreshToken();
         const newSupported = { ...supportedIdeas, [params.id]: supportEmail };
         setSupportedIdeas(newSupported);
         localStorage.setItem('supportedIdeas', JSON.stringify(newSupported));

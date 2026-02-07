@@ -3,10 +3,11 @@ import { getSupabase } from '../../../../../lib/supabase';
 import { z } from 'zod';
 import { rateLimit } from '../../../../../lib/rateLimit';
 import { logError, ErrorTypes } from '../../../../../lib/logging';
+import { withCSRF } from '../../../../../lib/withCSRF';
 
 const idSchema = z.string().uuid('Invalid idea ID format');
 
-export async function POST(request, { params }) {
+async function postHandler(request, { params }) {
   const supabase = getSupabase();
   const { id } = await params;
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
@@ -98,7 +99,7 @@ export async function POST(request, { params }) {
   }
 }
 
-export async function DELETE(request, { params }) {
+async function deleteHandler(request, { params }) {
   const supabase = getSupabase();
   const { id } = await params;
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
@@ -174,3 +175,6 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 400 });
   }
 }
+
+export const POST = withCSRF(postHandler);
+export const DELETE = withCSRF(deleteHandler);

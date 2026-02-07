@@ -2,13 +2,14 @@ import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, validateSMSCode, incrementSMSAttempt } from '../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { withCSRF } from '../../../../lib/withCSRF';
 import { z } from 'zod';
 
 const verifySchema = z.object({
   code: z.string().length(6, 'Code must be 6 digits').regex(/^\d+$/, 'Code must be numeric'),
 });
 
-export async function POST(request) {
+async function postHandler(request) {
   const supabase = getSupabase();
   try {
     const supporter = await getCurrentSupporter();
@@ -69,3 +70,5 @@ export async function POST(request) {
     return NextResponse.json({ ok: false, error: 'An unexpected error occurred' }, { status: 500 });
   }
 }
+
+export const POST = withCSRF(postHandler);

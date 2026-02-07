@@ -2,12 +2,14 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { logApiError } from '@/lib/clientErrorLogger';
+import { useCSRF } from './useCSRF';
 
 export function useCommentThread(ideaId) {
   const [commentForm, setCommentForm] = useState({ content: '' });
   const [commentMsg, setCommentMsg] = useState('');
   const [submittingComment, setSubmittingComment] = useState(false);
   const timeoutRef = useRef(null);
+  const { token: csrfToken, refreshToken } = useCSRF();
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -27,7 +29,7 @@ export function useCommentThread(ideaId) {
       try {
         const res = await fetch('/api/comments', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
           body: JSON.stringify({
             idea_id: ideaId,
             content: commentForm.content,
@@ -37,6 +39,7 @@ export function useCommentThread(ideaId) {
         const result = await res.json();
 
         if (result.ok) {
+          await refreshToken();
           setCommentMsg('Your comment has been submitted for review.');
           setCommentForm({ content: '' });
 
@@ -56,20 +59,21 @@ export function useCommentThread(ideaId) {
         setSubmittingComment(false);
       }
     },
-    [ideaId, commentForm.content]
+    [ideaId, commentForm.content, csrfToken, refreshToken]
   );
 
   const handleCommentVote = useCallback(async (commentId, voteType, comments) => {
     try {
       const res = await fetch(`/api/comments/${commentId}/vote`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ vote_type: voteType }),
       });
 
       const result = await res.json();
 
       if (result.ok) {
+        await refreshToken();
         const updatedComments = comments.map((c) => {
           if (c.id === commentId) {
             return {
@@ -94,7 +98,7 @@ export function useCommentThread(ideaId) {
       timeoutRef.current = setTimeout(() => setCommentMsg(''), 3000);
       return { ok: false };
     }
-  }, []);
+  }, [csrfToken, refreshToken]);
 
   const resetCommentForm = useCallback(() => {
     setCommentForm({ content: '' });

@@ -5,10 +5,12 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Comment from '@/components/shared/Comment';
 import { logApiError } from '@/lib/clientErrorLogger';
+import { useCSRF } from '@/hooks/useCSRF';
 
 export default function PollDetailClient() {
   const params = useParams();
   const router = useRouter();
+  const { token: csrfToken, refreshToken } = useCSRF();
   const [poll, setPoll] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -83,13 +85,14 @@ export default function PollDetailClient() {
 
       const res = await fetch('/api/comments', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify(payload),
       });
 
       const result = await res.json();
 
       if (result.ok) {
+        await refreshToken();
         // Reload poll to get updated comments
         const pollRes = await fetch(`/api/polls/${params.id}`);
         const pollData = await pollRes.json();
@@ -119,13 +122,14 @@ export default function PollDetailClient() {
   async function handleCommentVote(commentId, voteType) {
     const res = await fetch(`/api/comments/${commentId}/vote`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
       body: JSON.stringify({ vote_type: voteType }),
     });
 
     const result = await res.json();
 
     if (result.ok) {
+      await refreshToken();
       // Update the comment in poll.comments
       const updatedComments = poll.comments.map((c) => {
         if (c.id === commentId) {
