@@ -18,9 +18,11 @@ import {
   Users,
   MessageSquare,
 } from 'lucide-react';
+import { useCSRF } from '../../../hooks/useCSRF';
 
 export default function AdminPollsPage() {
   const router = useRouter();
+  const { token: csrfToken, refreshToken } = useCSRF();
   const [polls, setPolls] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -111,13 +113,14 @@ export default function AdminPollsPage() {
 
       const res = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify(payload),
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
 
+      await refreshToken();
       resetForm();
       loadPolls();
     } catch (err) {
@@ -154,9 +157,11 @@ export default function AdminPollsPage() {
     try {
       const res = await fetch(`/api/admin/polls/${poll.id}`, {
         method: 'DELETE',
+        headers: { 'x-csrf-token': csrfToken },
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      await refreshToken();
       loadPolls();
     } catch (err) {
       alert(err.message);
@@ -167,11 +172,12 @@ export default function AdminPollsPage() {
     try {
       const res = await fetch(`/api/admin/polls/${poll.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ status: newStatus }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      await refreshToken();
       loadPolls();
     } catch (err) {
       alert(err.message);

@@ -18,6 +18,7 @@ import {
   UserCheck,
 } from 'lucide-react';
 import { ConfirmModal, PromptModal } from '../../../components/AdminModal';
+import { useCSRF } from '../../../hooks/useCSRF';
 
 const SupportersTab = lazy(() => import('../../../components/admin/SupportersTab'));
 const CommentsTab = lazy(() => import('../../../components/admin/CommentsTab'));
@@ -41,6 +42,7 @@ function TabSpinner() {
 
 export default function AdminDashboard() {
   const router = useRouter();
+  const { token: csrfToken, refreshToken } = useCSRF();
   const [activeTab, setActiveTab] = useState('supporters');
   const [loading, setLoading] = useState(true);
   const [supporters, setSupporters] = useState([]);
@@ -301,11 +303,12 @@ export default function AdminDashboard() {
     try {
       const res = await fetch('/api/admin/supporters', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ id, ...updates }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      await refreshToken();
       loadData();
     } catch (err) {
       showConfirm('Error', err.message);
@@ -323,11 +326,12 @@ export default function AdminDashboard() {
     try {
       const res = await fetch('/api/admin/supporters', {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ id, reason }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      await refreshToken();
       loadData();
     } catch (err) {
       showConfirm('Error', err.message);
@@ -338,11 +342,12 @@ export default function AdminDashboard() {
     try {
       const res = await fetch('/api/admin/supporters', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ id, role: newRole }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      await refreshToken();
       loadData();
     } catch (err) {
       showConfirm('Error', err.message);
@@ -353,11 +358,12 @@ export default function AdminDashboard() {
     try {
       const res = await fetch('/api/admin/comments', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ id, status, rejection_reason }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      await refreshToken();
       loadData();
     } catch (err) {
       showConfirm('Error', err.message);
@@ -371,7 +377,7 @@ export default function AdminDashboard() {
     try {
       const res = await fetch('/api/admin/broadcasts', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({
           broadcast_type: broadcastType,
           subject: broadcastSubject,
@@ -380,6 +386,7 @@ export default function AdminDashboard() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      await refreshToken();
       showConfirm('Success', data.message);
       setBroadcastSubject('');
       setBroadcastMessage('');
@@ -395,11 +402,12 @@ export default function AdminDashboard() {
     try {
       const res = await fetch('/api/admin/errors', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ id, status, resolution_notes }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      await refreshToken();
       loadData();
     } catch (err) {
       showConfirm('Error', err.message);
@@ -410,11 +418,12 @@ export default function AdminDashboard() {
     try {
       const res = await fetch('/api/admin/endorsements', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ id, action, rejection_reason }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      await refreshToken();
       loadData();
     } catch (err) {
       showConfirm('Error', err.message);
@@ -425,11 +434,12 @@ export default function AdminDashboard() {
     try {
       const res = await fetch('/api/admin/qna', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ id, action, answer, rejection_reason }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      await refreshToken();
       loadData();
     } catch (err) {
       showConfirm('Error', err.message);
@@ -440,11 +450,12 @@ export default function AdminDashboard() {
     try {
       const res = await fetch('/api/admin/ideas', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ id, action, admin_response, rejection_reason }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      await refreshToken();
       loadData();
     } catch (err) {
       showConfirm('Error', err.message);
@@ -460,9 +471,11 @@ export default function AdminDashboard() {
     try {
       const res = await fetch(`/api/admin/interest?id=${id}`, {
         method: 'DELETE',
+        headers: { 'x-csrf-token': csrfToken },
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      await refreshToken();
       loadData();
     } catch (err) {
       showConfirm('Error', err.message);
@@ -479,11 +492,12 @@ export default function AdminDashboard() {
     try {
       const res = await fetch(`/api/admin/verified-voters/${id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
         body: JSON.stringify({ action }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      await refreshToken();
       loadData();
     } catch (err) {
       showConfirm('Error', err.message);
@@ -499,9 +513,11 @@ export default function AdminDashboard() {
     try {
       const res = await fetch(`/api/admin/verified-voters/${id}`, {
         method: 'DELETE',
+        headers: { 'x-csrf-token': csrfToken },
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      await refreshToken();
       loadData();
     } catch (err) {
       showConfirm('Error', err.message);
