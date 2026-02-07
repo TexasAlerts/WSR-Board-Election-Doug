@@ -12,6 +12,9 @@ export async function GET(request) {
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const { searchParams } = new URL(request.url);
   const status = searchParams.get('status');
 
@@ -65,6 +68,9 @@ async function putHandler(request) {
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
 
   try {
     const body = await request.json();
@@ -172,7 +178,7 @@ async function putHandler(request) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
 
@@ -191,6 +197,9 @@ async function deleteHandler(request) {
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
 
   try {
     const body = await request.json();

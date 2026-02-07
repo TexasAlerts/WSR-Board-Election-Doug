@@ -13,6 +13,9 @@ export async function GET(request) {
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const { searchParams } = new URL(request.url);
   const status = searchParams.get('status') || 'all';
 
@@ -78,6 +81,9 @@ async function postHandler(request) {
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
 
   try {
     const schema = z.object({

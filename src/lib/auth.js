@@ -431,7 +431,7 @@ export async function getSupporterByEmail(email) {
   const { data, error } = await supabase
     .from('supporters')
     .select(
-      'id, first_name, last_name, email, password_hash, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at'
+      'id, first_name, last_name, email, password_hash, phone, phone_verified, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at'
     )
     .eq('email', email.toLowerCase())
     .single();
@@ -450,7 +450,7 @@ export async function getSupporterById(id) {
   const { data, error } = await supabase
     .from('supporters')
     .select(
-      'id, first_name, last_name, email, phone, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at'
+      'id, first_name, last_name, email, phone, phone_verified, street_address, city, state, zip_code, status, role, email_consent, sms_consent, created_at, email_verified_at, phone_verified_at, approved_at'
     )
     .eq('id', id)
     .single();
