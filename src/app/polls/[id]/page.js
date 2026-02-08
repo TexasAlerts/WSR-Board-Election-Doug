@@ -19,6 +19,21 @@ export async function generateStaticParams() {
   }
 }
 
+// Server-side data fetching for SEO H1
+async function getPollData(id) {
+  try {
+    const res = await fetch(`${SITE_URL}/api/polls/${id}`, {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data.ok || !data.data) return null;
+    return data.data;
+  } catch {
+    return null;
+  }
+}
+
 export async function generateMetadata({ params }) {
   const { id } = await params;
 
@@ -89,6 +104,15 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default function PollDetailPage() {
-  return <PollDetailClient />;
+export default async function PollDetailPage({ params }) {
+  const { id } = await params;
+  const initialPoll = await getPollData(id);
+
+  return (
+    <>
+      {/* Server-rendered H1 for SEO - visible until client hydrates */}
+      <h1 className="sr-only">{initialPoll?.title || 'Community Poll'}</h1>
+      <PollDetailClient initialPoll={initialPoll} />
+    </>
+  );
 }

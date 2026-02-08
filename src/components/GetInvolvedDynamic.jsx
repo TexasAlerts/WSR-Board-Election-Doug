@@ -70,12 +70,13 @@ function GetInvolvedDynamicContent() {
       validatedPhone = formatted;
     }
 
+    // Define endpoint outside try block so it's accessible in catch block for error logging
+    const endpoint = selectedAction === 'endorsement' ? '/api/endorsements' : '/api/interest';
+
     try {
       // Get reCAPTCHA token
       const action = selectedAction === 'endorsement' ? 'submit_endorsement' : 'submit_interest';
       const recaptchaToken = await getToken(action);
-
-      const endpoint = selectedAction === 'endorsement' ? '/api/endorsements' : '/api/interest';
       const body =
         selectedAction === 'endorsement'
           ? {
