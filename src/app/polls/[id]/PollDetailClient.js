@@ -7,12 +7,12 @@ import Comment from '@/components/shared/Comment';
 import { logApiError } from '@/lib/clientErrorLogger';
 import { useCSRF } from '@/hooks/useCSRF';
 
-export default function PollDetailClient() {
+export default function PollDetailClient({ initialPoll = null }) {
   const params = useParams();
   const router = useRouter();
   const { token: csrfToken, refreshToken } = useCSRF();
-  const [poll, setPoll] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [poll, setPoll] = useState(initialPoll);
+  const [loading, setLoading] = useState(!initialPoll);
   const [error, setError] = useState('');
   const [verifiedVoter, setVerifiedVoter] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -20,6 +20,12 @@ export default function PollDetailClient() {
 
   useEffect(() => {
     async function loadPoll() {
+      // Skip loading if we have initial data from server
+      if (initialPoll) {
+        setLoading(false);
+        return;
+      }
+
       try {
         const res = await fetch(`/api/polls/${params.id}`);
         const data = await res.json();
@@ -69,7 +75,7 @@ export default function PollDetailClient() {
 
     loadPoll();
     checkAuth();
-  }, [params.id]);
+  }, [params.id, initialPoll]);
 
   async function handleCommentSubmit({ content, parent_id }) {
     try {
