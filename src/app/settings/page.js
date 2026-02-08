@@ -742,37 +742,39 @@ export default function SettingsPage() {
           })}
         </div>
 
-        {/* Activity content */}
-        {activityLoading ? (
-          <div className="text-center py-8" role="status" aria-live="polite">
-            <Loader2 className="w-6 h-6 animate-spin text-navy mx-auto" />
-          </div>
-        ) : activity.length === 0 ? (
-          <div className="text-center py-8 text-gray-700">
-            <p>No {activeTab} yet.</p>
-            {activeTab === 'votes' && (
-              <Link href="/polls" className="text-navy underline text-sm mt-2 inline-block">
-                View polls
-              </Link>
-            )}
-            {activeTab === 'ideas' && (
-              <Link href="/ideas" className="text-navy underline text-sm mt-2 inline-block">
-                Submit an idea
-              </Link>
-            )}
-            {activeTab === 'comments' && (
-              <Link href="/polls" className="text-navy underline text-sm mt-2 inline-block">
-                Join a discussion
-              </Link>
-            )}
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {activity.map((item) => (
-              <ActivityItem key={item.id} item={item} type={activeTab} />
-            ))}
-          </div>
-        )}
+        {/* Activity content - min-height prevents CLS */}
+        <div className="min-h-[200px]">
+          {activityLoading ? (
+            <div className="text-center py-8" role="status" aria-live="polite">
+              <Loader2 className="w-6 h-6 animate-spin text-navy mx-auto" />
+            </div>
+          ) : activity.length === 0 ? (
+            <div className="text-center py-8 text-gray-700">
+              <p>No {activeTab} yet.</p>
+              {activeTab === 'votes' && (
+                <Link href="/polls" className="text-navy underline text-sm mt-2 inline-block">
+                  View polls
+                </Link>
+              )}
+              {activeTab === 'ideas' && (
+                <Link href="/ideas" className="text-navy underline text-sm mt-2 inline-block">
+                  Submit an idea
+                </Link>
+              )}
+              {activeTab === 'comments' && (
+                <Link href="/polls" className="text-navy underline text-sm mt-2 inline-block">
+                  Join a discussion
+                </Link>
+              )}
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {activity.map((item) => (
+                <ActivityItem key={item.id} item={item} type={activeTab} />
+              ))}
+            </div>
+          )}
+        </div>
       </section>
     </div>
   );

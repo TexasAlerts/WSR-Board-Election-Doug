@@ -319,11 +319,13 @@ function ResetPasswordContent() {
                   aria-invalid={confirmPassword && !passwordsMatch ? 'true' : undefined}
                 />
               </div>
-              {confirmPassword && !passwordsMatch && (
-                <p id="password-mismatch-error" role="alert" className="text-red-500 text-sm mt-1">
-                  Passwords do not match
-                </p>
-              )}
+              <div className="min-h-[24px]">
+                {confirmPassword && !passwordsMatch && (
+                  <p id="password-mismatch-error" role="alert" className="text-red-500 text-sm mt-1">
+                    Passwords do not match
+                  </p>
+                )}
+              </div>
             </div>
 
             <button

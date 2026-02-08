@@ -216,9 +216,39 @@ function GetInvolvedDynamicContent() {
   );
 }
 
+function GetInvolvedSkeleton() {
+  return (
+    <>
+      {/* Action Cards Skeleton */}
+      <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="h-8 w-64 bg-gray-200 rounded mx-auto mb-4 animate-pulse" />
+          <div className="h-5 w-48 bg-gray-200 rounded mx-auto mb-12 animate-pulse" />
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="card h-full text-center p-4 sm:p-6">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-200 rounded-full mx-auto mb-3 sm:mb-4 animate-pulse" />
+                <div className="h-5 w-24 bg-gray-200 rounded mx-auto mb-2 animate-pulse" />
+                <div className="h-4 w-32 bg-gray-200 rounded mx-auto animate-pulse" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Spread the Word Skeleton */}
+      <section className="pb-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="card bg-gradient-to-br from-navy/5 to-prosper-red/5 min-h-[280px]" />
+        </div>
+      </section>
+    </>
+  );
+}
+
 export default function GetInvolvedDynamic() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<GetInvolvedSkeleton />}>
       <GetInvolvedDynamicContent />
     </Suspense>
   );
