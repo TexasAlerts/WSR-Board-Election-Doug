@@ -13,10 +13,10 @@ export const metadata = {
     locale: 'en_US',
     images: [
       {
-        url: 'https://www.dougcharles.com/campaign-preview.png',
-        width: 1200,
-        height: 630,
-        alt: 'Doug Charles for Town of Prosper Town Council Place 5 - A Common Sense Leader for ALL of Prosper',
+        url: 'https://www.dougcharles.com/headshot.webp',
+        width: 400,
+        height: 500,
+        alt: 'Doug Charles - Candidate for Prosper Town Council Place 5',
       },
     ],
   },
@@ -25,7 +25,7 @@ export const metadata = {
     title: 'About Doug Charles | Prosper Town Council Candidate',
     description:
       '20-year Prosper resident, former P&Z Commissioner. Common Sense leadership for ALL of Prosper.',
-    images: ['https://www.dougcharles.com/campaign-preview.png'],
+    images: ['https://www.dougcharles.com/headshot.webp'],
   },
 };
 

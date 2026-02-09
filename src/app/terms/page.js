@@ -1,3 +1,25 @@
+import Script from 'next/script';
+
+// Breadcrumb JSON-LD structured data
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://www.dougcharles.com',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Terms of Use',
+      item: 'https://www.dougcharles.com/terms',
+    },
+  ],
+};
+
 export const metadata = {
   title: 'Terms of Use - Doug Charles for Town of Prosper Town Council Place 5',
   description:
@@ -8,6 +30,13 @@ export const metadata = {
 export default function TermsOfUse() {
   return (
     <div className="max-w-3xl mx-auto space-y-8">
+      {/* Breadcrumb JSON-LD */}
+      <Script
+        id="terms-breadcrumb"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
       <h1 className="text-3xl sm:text-4xl font-bold text-navy">Terms of Use</h1>
       <p className="text-charcoal">
         <strong>Effective Date:</strong> January 2026
