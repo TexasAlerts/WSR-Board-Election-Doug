@@ -55,6 +55,7 @@ export default function GlobalErrorHandler() {
       // Filter out known third-party/browser errors we can't control
       const ignoredPatterns = [
         'performanceMetrics', // Vercel Speed Insights on privacy browsers
+        'feature named', // Vercel Speed Insights missing features
         'Timeout', // Generic network timeouts
         'ResizeObserver', // Chrome layout bug
         'Script error', // Cross-origin script errors

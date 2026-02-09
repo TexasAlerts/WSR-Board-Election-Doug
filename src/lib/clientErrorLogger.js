@@ -233,6 +233,32 @@ export function setupGlobalErrorHandlers() {
   // Catch unhandled promise rejections
   if (typeof window !== 'undefined') {
     window.addEventListener('unhandledrejection', (event) => {
+      const errorMessage = event.reason?.message || String(event.reason);
+
+      // Filter out known third-party/browser errors we can't control
+      const ignoredPatterns = [
+        'performanceMetrics', // Vercel Speed Insights on privacy browsers
+        'Timeout', // Generic network timeouts
+        'ResizeObserver', // Chrome layout bug
+        'Script error', // Cross-origin script errors
+        'Load failed', // Network failures
+        'NetworkError', // Network failures
+        'AbortError', // User navigated away
+        'ChunkLoadError', // Webpack chunk loading
+        'recaptcha', // reCAPTCHA issues
+        'grecaptcha', // reCAPTCHA issues
+        'runtime.sendMessage', // Browser extension errors
+        'Extension context', // Browser extension errors
+        'message channel closed', // Browser extension errors
+        'Tab not found', // Browser extension errors
+        'feature named', // Vercel Speed Insights missing features
+      ];
+
+      if (ignoredPatterns.some((pattern) => errorMessage.includes(pattern))) {
+        // Don't log these - they're from third-party code or browser issues
+        return;
+      }
+
       // Extract network context if available
       const networkContext = event.reason?.context || null;
 
