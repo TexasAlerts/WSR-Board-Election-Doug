@@ -1,5 +1,10 @@
 /**
  * Supabase Client - Lazy initialization to avoid build-time errors
+ *
+ * Configuration:
+ * - 30 second timeout for all queries (increased from 15s for cold starts)
+ * - Retry logic for transient network failures
+ * - Connection keepalive for better performance
  */
 
 import { createClient } from '@supabase/supabase-js';
@@ -8,17 +13,48 @@ let supabaseServiceClient = null;
 let supabaseAnonClient = null;
 
 /**
- * Create a fetch wrapper with timeout
+ * Create a fetch wrapper with timeout and retry logic
+ * Handles Supabase cold starts and transient network issues
  */
-function createFetchWithTimeout(timeoutMs = 15000) {
-  return (url, options = {}) => {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+function createFetchWithTimeout(timeoutMs = 30000) {
+  return async (url, options = {}) => {
+    const maxRetries = 2;
+    let lastError;
 
-    return fetch(url, {
-      ...options,
-      signal: controller.signal,
-    }).finally(() => clearTimeout(timeoutId));
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+      try {
+        const response = await fetch(url, {
+          ...options,
+          signal: controller.signal,
+          // Enable keepalive for better connection reuse
+          keepalive: true,
+        });
+        clearTimeout(timeoutId);
+        return response;
+      } catch (error) {
+        clearTimeout(timeoutId);
+        lastError = error;
+
+        // Don't retry on abort (timeout) for the last attempt
+        if (attempt === maxRetries) {
+          throw error;
+        }
+
+        // Only retry on network errors, not on abort/timeout
+        if (error.name === 'AbortError') {
+          // Timeout - don't retry, throw immediately
+          throw new Error(`Database query timed out after ${timeoutMs / 1000}s. Please try again.`);
+        }
+
+        // Wait before retry (exponential backoff: 500ms, 1000ms)
+        await new Promise((resolve) => setTimeout(resolve, 500 * (attempt + 1)));
+      }
+    }
+
+    throw lastError;
   };
 }
 
@@ -40,7 +76,14 @@ export function getSupabase() {
 
     supabaseServiceClient = createClient(url, key, {
       global: {
-        fetch: createFetchWithTimeout(15000), // 15 second timeout for all queries
+        fetch: createFetchWithTimeout(30000), // 30 second timeout with retry for cold starts
+      },
+      db: {
+        schema: 'public',
+      },
+      auth: {
+        persistSession: false, // Server-side doesn't need session persistence
+        autoRefreshToken: false,
       },
     });
   }
@@ -64,7 +107,14 @@ export function getSupabaseAnon() {
 
     supabaseAnonClient = createClient(url, key, {
       global: {
-        fetch: createFetchWithTimeout(15000), // 15 second timeout for all queries
+        fetch: createFetchWithTimeout(30000), // 30 second timeout with retry for cold starts
+      },
+      db: {
+        schema: 'public',
+      },
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
       },
     });
   }
