@@ -118,8 +118,24 @@ export async function POST(request) {
     if (smsCode) {
       const smsResult = await sendVerificationSMS(supporter.phone, smsCode);
       if (!smsResult.success) {
-        // silently ignored
+        await logError({
+          errorType: ErrorTypes.EXTERNAL_SERVICE,
+          errorMessage: `SMS verification send failed: ${smsResult.error}`,
+          endpoint: '/api/auth/verify',
+          method: 'POST',
+          userEmail: supporter.email,
+          request,
+        });
       }
+    } else {
+      await logError({
+        errorType: ErrorTypes.DATABASE_ERROR,
+        errorMessage: 'Failed to create SMS verification code',
+        endpoint: '/api/auth/verify',
+        method: 'POST',
+        userEmail: supporter.email,
+        request,
+      });
     }
 
     // Log event
