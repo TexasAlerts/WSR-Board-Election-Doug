@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { AlertCircle, CheckCircle } from 'lucide-react';
+import { useCSRF } from '../hooks/useCSRF';
 
 const DONATION_AMOUNTS = [25, 50, 100, 250, 500, 1000];
 
@@ -9,10 +10,60 @@ export default function DonateDynamic() {
   const [selectedAmount, setSelectedAmount] = useState(null);
   const [customAmount, setCustomAmount] = useState('');
   const [message, setMessage] = useState({ type: '', text: '' });
+  const { csrfToken } = useCSRF();
+  const pageViewTracked = useRef(false);
 
   const ANEDOT_URL =
     'https://secure.anedot.com/doug-charles-for-town-of-prosper-town-council-place-5/af99e860-1f84-443a-9a3d-a90ee0c797d9';
   const DONATIONS_ENABLED = true;
+
+  /**
+   * Track donation funnel events with CSRF token
+   */
+  const trackDonation = useCallback(async (eventType, data = {}) => {
+    if (!csrfToken) return; // Wait for CSRF token
+    try {
+      await fetch('/api/donation/track', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-csrf-token': csrfToken,
+        },
+        body: JSON.stringify({ eventType, ...data }),
+      });
+    } catch {
+      // Silently fail - tracking shouldn't block user experience
+    }
+  }, [csrfToken]);
+
+  // Track page view on mount (once CSRF token is available)
+  useEffect(() => {
+    if (csrfToken && !pageViewTracked.current) {
+      pageViewTracked.current = true;
+      trackDonation('page_view');
+    }
+  }, [csrfToken, trackDonation]);
+
+  // Handle preset amount selection with tracking
+  const handleAmountSelect = useCallback((amount) => {
+    setSelectedAmount(amount);
+    setCustomAmount('');
+    trackDonation('amount_selected', {
+      selectedAmount: amount * 100, // Convert to cents
+      isCustomAmount: false,
+    });
+  }, [trackDonation]);
+
+  // Handle custom amount change with tracking (debounced on blur)
+  const handleCustomAmountBlur = useCallback(() => {
+    const amount = parseInt(customAmount, 10);
+    if (amount && amount >= 1) {
+      trackDonation('custom_amount', {
+        selectedAmount: amount * 100, // Convert to cents
+        isCustomAmount: true,
+      });
+    }
+  }, [customAmount, trackDonation]);
 
   const handleDonate = () => {
     if (!DONATIONS_ENABLED) {
@@ -27,8 +78,17 @@ export default function DonateDynamic() {
       setMessage({ type: 'error', text: 'Please select or enter a donation amount.' });
       return;
     }
+
+    // Track donate click before redirecting
+    const redirectUrl = `${ANEDOT_URL}?amount=${amount}`;
+    trackDonation('donate_clicked', {
+      selectedAmount: amount * 100, // Convert to cents
+      isCustomAmount: !selectedAmount,
+      anedotRedirectUrl: redirectUrl,
+    });
+
     // Redirect to Anedot with pre-selected amount
-    window.open(`${ANEDOT_URL}?amount=${amount}`, '_blank');
+    window.open(redirectUrl, '_blank');
   };
 
   return (
@@ -46,10 +106,7 @@ export default function DonateDynamic() {
                 <button
                   key={amount}
                   type="button"
-                  onClick={() => {
-                    setSelectedAmount(amount);
-                    setCustomAmount('');
-                  }}
+                  onClick={() => handleAmountSelect(amount)}
                   aria-pressed={selectedAmount === amount}
                   className={`px-4 py-4 min-h-[44px] rounded-lg font-semibold text-lg transition-all duration-300 ${
                     selectedAmount === amount
@@ -85,6 +142,7 @@ export default function DonateDynamic() {
                   setCustomAmount(e.target.value);
                   setSelectedAmount(null);
                 }}
+                onBlur={handleCustomAmountBlur}
                 className="form-input text-center text-lg pl-10 min-h-[44px]"
                 aria-describedby="custom-amount-hint"
               />

@@ -10,6 +10,10 @@
  * - Request metadata extraction
  * - Automatic superuser notifications for errors
  * - Sanitization of sensitive data
+ * - Error severity levels (critical, high, medium, low)
+ * - Correlation IDs for request tracing
+ * - Latency tracking for performance analysis
+ * - Visitor session linking for session reconstruction
  *
  * All logs are stored in Supabase with full context including:
  * - IP address and user agent
@@ -17,11 +21,31 @@
  * - Request method and path
  * - Sanitized request body
  * - Response status
+ * - Correlation ID and visitor session ID
  */
 
 import { getSupabase } from './supabase';
 import { sendEmail } from './sendEmail';
 import { sendErrorAlertSMS } from './smsService';
+import crypto from 'crypto';
+
+/**
+ * Error severity levels for prioritization
+ */
+export const Severity = {
+  CRITICAL: 'critical', // System down, data loss, security breach
+  HIGH: 'high',         // Major feature broken, affecting many users
+  MEDIUM: 'medium',     // Feature degraded, workaround available
+  LOW: 'low',           // Minor issue, cosmetic, edge case
+};
+
+/**
+ * Generate a correlation ID for request tracing
+ * Use at the start of a request and pass through all logging calls
+ */
+export function generateCorrelationId() {
+  return crypto.randomUUID();
+}
 
 /**
  * Parse user agent to determine device type
@@ -233,7 +257,9 @@ function sanitizeBody(body) {
  * @param {Request} [params.request=null] - HTTP request object (for metadata)
  * @param {number} [params.responseStatus=null] - HTTP response status code
  * @param {Object} [params.requestBody=null] - Request body (will be sanitized)
- * @param {string} [params.sessionId=null] - Session ID if available
+ * @param {string} [params.sessionId=null] - Auth session ID if available
+ * @param {string} [params.visitorSessionId=null] - Visitor session ID for session reconstruction
+ * @param {string} [params.correlationId=null] - Correlation ID for request tracing
  * @returns {Promise<void>}
  *
  * @example
@@ -243,6 +269,7 @@ function sanitizeBody(body) {
  *   details: { email: supporter.email, role: supporter.role },
  *   request,
  *   responseStatus: 200,
+ *   correlationId: generateCorrelationId(),
  * });
  *
  * @example
@@ -255,6 +282,8 @@ function sanitizeBody(body) {
  *   newValues: { role: 'admin' },
  *   request,
  *   responseStatus: 200,
+ *   visitorSessionId,
+ *   correlationId,
  * });
  */
 export async function logAudit({
@@ -269,6 +298,8 @@ export async function logAudit({
   responseStatus = null,
   requestBody = null,
   sessionId = null,
+  visitorSessionId = null,
+  correlationId = null,
 }) {
   try {
     const supabase = getSupabase();
@@ -299,6 +330,8 @@ export async function logAudit({
       request_body: requestBody ? sanitizeBody(requestBody) : null,
       response_status: responseStatus,
       session_id: sessionId,
+      visitor_session_id: visitorSessionId,
+      correlation_id: correlationId,
     });
 
     if (error && process.env.NODE_ENV === 'development') {
@@ -338,6 +371,10 @@ export async function logAudit({
  * @param {string} [params.userEmail=null] - User email if available
  * @param {Request} [params.request=null] - HTTP request object
  * @param {boolean} [params.notifySuperusers=true] - Send email to superusers
+ * @param {string} [params.severity='medium'] - Error severity (use Severity constants)
+ * @param {string} [params.correlationId=null] - Correlation ID for request tracing
+ * @param {number} [params.latencyMs=null] - Request latency in milliseconds
+ * @param {string} [params.visitorSessionId=null] - Visitor session ID for session reconstruction
  * @returns {Promise<string|null>} Error log ID or null if logging failed
  *
  * @example
@@ -348,6 +385,8 @@ export async function logAudit({
  *   endpoint: '/api/users',
  *   method: 'GET',
  *   request,
+ *   severity: Severity.HIGH,
+ *   correlationId: generateCorrelationId(),
  * });
  *
  * @example
@@ -359,6 +398,9 @@ export async function logAudit({
  *   userEmail: supporter.email,
  *   request,
  *   notifySuperusers: true,
+ *   severity: Severity.CRITICAL,
+ *   latencyMs: 30000,
+ *   visitorSessionId,
  * });
  */
 export async function logError({
@@ -372,6 +414,10 @@ export async function logError({
   userEmail = null,
   request = null,
   notifySuperusers = true,
+  severity = 'medium',
+  correlationId = null,
+  latencyMs = null,
+  visitorSessionId = null,
 }) {
   try {
     const supabase = getSupabase();
@@ -425,6 +471,10 @@ export async function logError({
         user_email: userEmail,
         ip_address: meta.ip,
         user_agent: meta.userAgent,
+        severity,
+        correlation_id: correlationId,
+        latency_ms: latencyMs,
+        visitor_session_id: visitorSessionId,
       })
       .select('id')
       .single();
