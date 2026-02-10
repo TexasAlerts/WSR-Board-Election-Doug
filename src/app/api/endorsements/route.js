@@ -8,15 +8,31 @@ import { verifyCaptcha } from '../../../lib/recaptcha';
 
 export async function GET() {
   const supabase = getSupabaseAnon();
-  const { data, error } = await supabase
-    .from('endorsements')
-    .select('id,name,message,created_at')
-    .eq('status', 'approved')
-    .order('created_at', { ascending: false });
-  if (error) {
-    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database unavailable' }, { status: 503 });
   }
-  return NextResponse.json({ ok: true, data });
+
+  try {
+    const { data, error } = await supabase
+      .from('endorsements')
+      .select('id,name,message,created_at')
+      .eq('status', 'approved')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Endorsements query error:', error.message);
+      return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
+    }
+    return NextResponse.json({ ok: true, data });
+  } catch (err) {
+    // Handle timeout and network errors gracefully
+    const isTimeout = err.message?.includes('timed out') || err.name === 'AbortError';
+    console.error('Endorsements fetch error:', err.message);
+    return NextResponse.json(
+      { ok: false, error: isTimeout ? 'Request timed out. Please try again.' : 'Server error' },
+      { status: isTimeout ? 504 : 500 }
+    );
+  }
 }
 
 export async function POST(req) {
