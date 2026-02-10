@@ -205,6 +205,17 @@ describe('Production Fixes - Runtime Verification', () => {
       expect(layoutCode).toContain('strategy="afterInteractive"');
       expect(layoutCode).not.toContain('strategy="beforeInteractive"');
     });
+
+    it('HomeServer uses correct question status (approved, NOT answered)', () => {
+      // Critical bug caught by Codex: questions table uses 'approved' status, NOT 'answered'
+      // Database schema: status IN ('pending', 'approved', 'rejected')
+      expect(homeServerCode).toContain(".eq('status', 'approved')");
+      expect(homeServerCode).not.toContain(".eq('status', 'answered')");
+    });
+
+    it('HomeServer filters questions by non-null answer', () => {
+      expect(homeServerCode).toContain(".not('answer', 'is', null)");
+    });
   });
 
   describe('FIX #7: Database Migration', () => {

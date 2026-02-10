@@ -25,11 +25,11 @@ async function getHomeData() {
       .order('created_at', { ascending: false })
       .limit(4);
 
-    // Fetch answered questions (limit 3 for homepage)
+    // Fetch approved questions with answers (limit 3 for homepage)
     const { data: questions } = await supabase
       .from('questions')
       .select('id, question, answer, name, created_at')
-      .eq('status', 'answered')
+      .eq('status', 'approved')
       .not('answer', 'is', null)
       .order('created_at', { ascending: false })
       .limit(3);
