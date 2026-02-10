@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { trackDonationEvent, DonationEventTypes } from '../../../../lib/donationTracking';
-import { getVisitorSessionId } from '../../../../lib/sessionTracking';
+import { getOrCreateVisitorSession } from '../../../../lib/sessionTracking';
 import { getCurrentSupporter } from '../../../../lib/auth';
 import { logError, ErrorTypes } from '../../../../lib/logging';
 import { withCSRF } from '../../../../lib/withCSRF';
@@ -32,8 +32,9 @@ async function postHandler(request) {
 
     const { eventType, selectedAmount, isCustomAmount, anedotRedirectUrl } = parsed.data;
 
-    // Get visitor session and supporter info
-    const visitorSessionId = await getVisitorSessionId();
+    // Get or create visitor session and get supporter info
+    const visitorSession = await getOrCreateVisitorSession(request);
+    const visitorSessionId = visitorSession?.id || null;
     const supporter = await getCurrentSupporter();
 
     await trackDonationEvent({

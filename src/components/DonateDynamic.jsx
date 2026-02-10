@@ -10,7 +10,7 @@ export default function DonateDynamic() {
   const [selectedAmount, setSelectedAmount] = useState(null);
   const [customAmount, setCustomAmount] = useState('');
   const [message, setMessage] = useState({ type: '', text: '' });
-  const { csrfToken } = useCSRF();
+  const { token: csrfToken } = useCSRF();
   const pageViewTracked = useRef(false);
 
   const ANEDOT_URL =
