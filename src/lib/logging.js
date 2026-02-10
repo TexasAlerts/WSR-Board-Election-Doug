@@ -663,4 +663,202 @@ export const ErrorTypes = {
   AUTH_ERROR: 'auth_error',
   DATABASE_ERROR: 'database_error',
   EXTERNAL_SERVICE: 'external_service',
+  PERFORMANCE: 'performance',
+  TIMEOUT: 'timeout',
 };
+
+/**
+ * Performance timing wrapper for API routes
+ *
+ * Wraps an API handler to automatically track:
+ * - Request latency
+ * - Slow request logging
+ * - Error logging with timing context
+ * - Correlation ID generation
+ *
+ * @param {Function} handler - The API route handler
+ * @param {Object} options - Configuration options
+ * @param {string} options.endpoint - Endpoint name for logging
+ * @param {number} options.slowThreshold - Milliseconds to consider a request slow (default: 3000)
+ * @param {boolean} options.logSlowRequests - Whether to log slow requests (default: true)
+ * @returns {Function} Wrapped handler
+ *
+ * @example
+ * export const GET = withPerformanceLogging(
+ *   async (request) => { ... },
+ *   { endpoint: '/api/polls', slowThreshold: 2000 }
+ * );
+ */
+export function withPerformanceLogging(handler, options = {}) {
+  const {
+    endpoint = 'unknown',
+    slowThreshold = 3000,
+    logSlowRequests = true,
+  } = options;
+
+  return async (request, context) => {
+    const startTime = performance.now();
+    const correlationId = generateCorrelationId();
+
+    // Add correlation ID to request for downstream use
+    request.correlationId = correlationId;
+
+    let response;
+    let errorOccurred = null;
+
+    try {
+      response = await handler(request, context);
+    } catch (error) {
+      errorOccurred = error;
+      throw error;
+    } finally {
+      const latencyMs = Math.round(performance.now() - startTime);
+
+      // Log slow requests
+      if (logSlowRequests && latencyMs > slowThreshold) {
+        await logError({
+          errorType: ErrorTypes.PERFORMANCE,
+          errorMessage: `Slow request: ${endpoint} took ${latencyMs}ms (threshold: ${slowThreshold}ms)`,
+          endpoint,
+          method: request.method,
+          request,
+          severity: latencyMs > slowThreshold * 3 ? Severity.HIGH : Severity.MEDIUM,
+          correlationId,
+          latencyMs,
+          notifySuperusers: latencyMs > slowThreshold * 2, // Only notify for very slow requests
+        });
+      }
+
+      // Log errors with timing context
+      if (errorOccurred) {
+        await logError({
+          errorType: ErrorTypes.SERVER_ERROR,
+          errorMessage: errorOccurred.message,
+          errorStack: errorOccurred.stack,
+          endpoint,
+          method: request.method,
+          request,
+          correlationId,
+          latencyMs,
+        });
+      }
+    }
+
+    return response;
+  };
+}
+
+/**
+ * Create a timer for measuring operation duration
+ *
+ * @returns {Object} Timer with stop() method
+ *
+ * @example
+ * const timer = createTimer();
+ * await someOperation();
+ * const duration = timer.stop();
+ * console.log(`Operation took ${duration}ms`);
+ */
+export function createTimer() {
+  const startTime = performance.now();
+
+  return {
+    stop: () => Math.round(performance.now() - startTime),
+    elapsed: () => Math.round(performance.now() - startTime),
+  };
+}
+
+/**
+ * Log a database query performance issue
+ *
+ * @param {string} table - Table name
+ * @param {string} operation - Operation type (select, insert, update, delete)
+ * @param {number} durationMs - Query duration in milliseconds
+ * @param {number} threshold - Slow query threshold (default: 1000ms)
+ */
+export async function logSlowQuery(table, operation, durationMs, threshold = 1000) {
+  if (durationMs < threshold) return;
+
+  await logError({
+    errorType: ErrorTypes.PERFORMANCE,
+    errorMessage: `Slow query: ${operation} on ${table} took ${durationMs}ms`,
+    endpoint: `db/${table}`,
+    method: operation.toUpperCase(),
+    severity: durationMs > threshold * 3 ? Severity.HIGH : Severity.MEDIUM,
+    latencyMs: durationMs,
+    notifySuperusers: durationMs > threshold * 2,
+    requestBody: {
+      table,
+      operation,
+      durationMs,
+      threshold,
+    },
+  });
+}
+
+/**
+ * Log an external service call performance
+ *
+ * @param {string} service - Service name (e.g., 'resend', 'telnyx', 'supabase')
+ * @param {string} operation - Operation type
+ * @param {number} durationMs - Call duration in milliseconds
+ * @param {boolean} success - Whether the call succeeded
+ * @param {Object} context - Additional context
+ */
+export async function logExternalServiceCall(service, operation, durationMs, success, context = {}) {
+  const threshold = 5000; // 5 seconds for external services
+
+  if (durationMs > threshold || !success) {
+    await logError({
+      errorType: success ? ErrorTypes.PERFORMANCE : ErrorTypes.EXTERNAL_SERVICE,
+      errorMessage: success
+        ? `Slow ${service} call: ${operation} took ${durationMs}ms`
+        : `${service} call failed: ${operation}`,
+      endpoint: `external/${service}`,
+      method: operation,
+      severity: !success ? Severity.HIGH : (durationMs > threshold * 2 ? Severity.HIGH : Severity.MEDIUM),
+      latencyMs: durationMs,
+      notifySuperusers: !success || durationMs > threshold * 2,
+      requestBody: {
+        service,
+        operation,
+        durationMs,
+        success,
+        ...context,
+      },
+    });
+  }
+}
+
+/**
+ * Performance monitoring context for tracking multiple operations
+ *
+ * @example
+ * const perfContext = createPerformanceContext('user-registration');
+ * perfContext.mark('validation');
+ * await validateInput();
+ * perfContext.mark('database');
+ * await saveToDatabase();
+ * perfContext.mark('email');
+ * await sendEmail();
+ * const report = perfContext.finish();
+ * // report = { total: 1500, marks: { validation: 50, database: 1200, email: 250 } }
+ */
+export function createPerformanceContext(name) {
+  const startTime = performance.now();
+  const marks = {};
+  let lastMarkTime = startTime;
+
+  return {
+    mark: (label) => {
+      const now = performance.now();
+      marks[label] = Math.round(now - lastMarkTime);
+      lastMarkTime = now;
+    },
+    finish: () => {
+      const total = Math.round(performance.now() - startTime);
+      return { name, total, marks };
+    },
+    getElapsed: () => Math.round(performance.now() - startTime),
+  };
+}
