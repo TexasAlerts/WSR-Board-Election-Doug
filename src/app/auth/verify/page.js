@@ -128,7 +128,10 @@ function VerifyContent() {
     try {
       const response = await fetch('/api/auth/skip-phone', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-csrf-token': csrfToken,
+        },
         body: JSON.stringify({ supporterId: supporter.id }),
       });
 

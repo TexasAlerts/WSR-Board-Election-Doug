@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { MessageSquare } from 'lucide-react';
 import { useRecaptcha } from '../hooks/useRecaptcha';
+import { useCSRF } from '../hooks/useCSRF';
 import { logApiError } from '@/lib/clientErrorLogger';
 
 const CATEGORIES = [
@@ -26,6 +27,7 @@ const STATUS_COLORS = {
 
 export default function IdeasClient({ initialIdeas = [] }) {
   const { getToken, isReady } = useRecaptcha();
+  const { token: csrfToken, refreshToken } = useCSRF();
   const [ideas, setIdeas] = useState(initialIdeas);
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState('all');
@@ -176,12 +178,16 @@ export default function IdeasClient({ initialIdeas = [] }) {
 
       const res = await fetch('/api/ideas', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-csrf-token': csrfToken,
+        },
         body: JSON.stringify({
           ...submitForm,
           recaptchaToken,
         }),
       });
+      await refreshToken();
       const result = await res.json();
 
       if (result.ok) {
@@ -215,9 +221,13 @@ export default function IdeasClient({ initialIdeas = [] }) {
       try {
         const res = await fetch(`/api/ideas/${ideaId}/support`, {
           method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'x-csrf-token': csrfToken,
+          },
           body: JSON.stringify({ email }),
         });
+        await refreshToken();
         const result = await res.json();
         if (result.ok) {
           const newSupported = { ...supportedIdeas };
@@ -245,9 +255,13 @@ export default function IdeasClient({ initialIdeas = [] }) {
     try {
       const res = await fetch(`/api/ideas/${supportIdeaId}/support`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-csrf-token': csrfToken,
+        },
         body: JSON.stringify({ email: supportEmail }),
       });
+      await refreshToken();
       const result = await res.json();
       if (result.ok) {
         const newSupported = { ...supportedIdeas, [supportIdeaId]: supportEmail };

@@ -88,7 +88,7 @@ export function usePollVoting() {
   }, []);
 
   const submitVote = useCallback(
-    async (pollId, pollType) => {
+    async (pollId, pollType, csrfToken) => {
       setSubmitMsg('');
 
       const voteData = {
@@ -120,7 +120,10 @@ export function usePollVoting() {
       try {
         const res = await fetch(`/api/polls/${pollId}/vote`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'x-csrf-token': csrfToken,
+          },
           body: JSON.stringify(voteData),
         });
         const result = await res.json();
