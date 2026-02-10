@@ -14,9 +14,9 @@ export default function GetInvolvedForm({
   const getFormTitle = () => {
     const actionTitles = {
       updates: 'Stay Informed',
-      yardsign: 'Request a Yard Sign',
+      yard_sign: 'Request a Yard Sign',
       volunteer: 'Volunteer Your Time',
-      meeting: 'Meet with Doug',
+      host_event: 'Meet with Doug',
       endorsement: 'Endorse Doug',
     };
     return actionTitles[selectedAction] || '';
@@ -25,9 +25,9 @@ export default function GetInvolvedForm({
   const getFormIcon = () => {
     const actionIcons = {
       updates: '📬',
-      yardsign: '🏠',
+      yard_sign: '🏠',
       volunteer: '🤝',
-      meeting: '☕',
+      host_event: '☕',
       endorsement: '✓',
     };
     return actionIcons[selectedAction] || '';
@@ -36,9 +36,9 @@ export default function GetInvolvedForm({
   const getSubmitLabel = () => {
     const labels = {
       updates: 'Subscribe',
-      yardsign: 'Request Sign',
+      yard_sign: 'Request Sign',
       volunteer: 'Sign Up',
-      meeting: 'Request Meeting',
+      host_event: 'Request Meeting',
       endorsement: 'Submit Endorsement',
     };
     return labels[selectedAction] || 'Submit';
@@ -108,13 +108,13 @@ export default function GetInvolvedForm({
 
           <div>
             <label htmlFor="phone" className="form-label">
-              Phone {selectedAction === 'meeting' ? '*' : '(optional)'}
+              Phone {selectedAction === 'host_event' ? '*' : '(optional)'}
             </label>
             <input
               id="phone"
               type="tel"
-              required={selectedAction === 'meeting'}
-              aria-required={selectedAction === 'meeting' ? 'true' : undefined}
+              required={selectedAction === 'host_event'}
+              aria-required={selectedAction === 'host_event' ? 'true' : undefined}
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
               className="form-input"
@@ -127,7 +127,7 @@ export default function GetInvolvedForm({
             </p>
           </div>
 
-          {selectedAction === 'yardsign' && (
+          {selectedAction === 'yard_sign' && (
             <div>
               <label htmlFor="address" className="form-label">
                 Delivery Address *
@@ -162,10 +162,10 @@ export default function GetInvolvedForm({
             </div>
           )}
 
-          {(selectedAction === 'volunteer' || selectedAction === 'meeting') && (
+          {(selectedAction === 'volunteer' || selectedAction === 'host_event') && (
             <div>
               <label htmlFor="volunteer-message" className="form-label">
-                {selectedAction === 'meeting' ? 'Preferred time or message' : 'Message (optional)'}
+                {selectedAction === 'host_event' ? 'Preferred time or message' : 'Message (optional)'}
               </label>
               <textarea
                 id="volunteer-message"
@@ -173,7 +173,7 @@ export default function GetInvolvedForm({
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
                 className="form-input"
-                placeholder={selectedAction === 'meeting' ? 'Let us know your availability...' : ''}
+                placeholder={selectedAction === 'host_event' ? 'Let us know your availability...' : ''}
               />
             </div>
           )}
