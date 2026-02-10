@@ -292,6 +292,8 @@ export default function PrivacyPolicy() {
       <section className="mt-8 pt-8 border-t border-gray-200">
         <p className="text-sm text-charcoal/70">
           Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.
+          <br />
+          Robert Bye, Campaign Treasurer
         </p>
       </section>
     </div>

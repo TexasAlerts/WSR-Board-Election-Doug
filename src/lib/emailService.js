@@ -83,7 +83,8 @@ function getCampaignFooter(unsubscribeEmail = null, unsubscribeUrl = null) {
           : ''
       }
       <p style="margin: 5px 0; color: #ccc; font-size: 11px;">
-        Paid for by Doug Charles Campaign
+        Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
+        Robert Bye, Campaign Treasurer
       </p>
     </div>
   `;
@@ -121,6 +122,10 @@ export async function sendVerificationEmail(email, name, token) {
           <p style="color: #999; font-size: 12px;">
             Doug Charles for Prosper Town Council<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
+          </p>
+          <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
+            Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
+            Robert Bye, Campaign Treasurer
           </p>
         </div>
       `,
@@ -312,6 +317,10 @@ export async function sendPhoneUpdateReminderEmail(email, name) {
             Doug Charles for Prosper Town Council<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
           </p>
+          <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
+            Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
+            Robert Bye, Campaign Treasurer
+          </p>
         </div>
       `,
     });
@@ -425,6 +434,10 @@ export async function sendVoterVerificationEmail(email, name, token) {
           <p style="color: #999; font-size: 12px;">
             Doug Charles for Prosper Town Council<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
+          </p>
+          <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
+            Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
+            Robert Bye, Campaign Treasurer
           </p>
         </div>
       `,

@@ -147,6 +147,8 @@ export default function DonatePage() {
             <p className="text-sm text-gray-600 leading-relaxed">
               Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.
               <br />
+              Robert Bye, Campaign Treasurer
+              <br />
               <br />
               Under Texas law, contributions from corporations and labor organizations are
               prohibited. Individual contributions are not tax-deductible. By contributing, you

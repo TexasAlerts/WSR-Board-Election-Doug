@@ -159,7 +159,7 @@ export default function RootLayout({ children }) {
                   "name": "Doug Charles for Town of Prosper Town Council Place 5",
                   "url": "https://www.dougcharles.com",
                   "logo": "https://www.dougcharles.com/campaign-logo.webp",
-                  "description": "Official campaign committee for Doug Charles, candidate for Prosper Town Council Place 5.",
+                  "description": "Official campaign committee for Doug Charles, candidate for Prosper Town Council Place 5. Campaign Treasurer: Robert Bye.",
                   "sameAs": ["https://www.facebook.com/profile.php?id=61587237416382"],
                   "address": {
                     "@type": "PostalAddress",
@@ -182,6 +182,11 @@ export default function RootLayout({ children }) {
                       "@type": "State",
                       "name": "Texas"
                     }
+                  },
+                  "employee": {
+                    "@type": "Person",
+                    "name": "Robert Bye",
+                    "jobTitle": "Campaign Treasurer"
                   }
                 },
                 {
@@ -244,6 +249,8 @@ export default function RootLayout({ children }) {
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-center space-y-2">
                 <p>
                   Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.
+                  <br />
+                  Robert Bye, Campaign Treasurer
                 </p>
                 <p>
                   Questions? Email{' '}
