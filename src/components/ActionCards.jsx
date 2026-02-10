@@ -10,7 +10,7 @@ const actionCards = [
     description: 'Get campaign news and updates delivered to your inbox',
   },
   {
-    id: 'yardsign',
+    id: 'yard_sign',
     icon: '🏠',
     title: 'Request a Yard Sign',
     description: 'Show your support in your neighborhood',
@@ -22,7 +22,7 @@ const actionCards = [
     description: 'Help with door-knocking, calls, and events',
   },
   {
-    id: 'meeting',
+    id: 'host_event',
     icon: '☕',
     title: 'Meet with Doug',
     description: "Schedule a conversation about Prosper's future",
