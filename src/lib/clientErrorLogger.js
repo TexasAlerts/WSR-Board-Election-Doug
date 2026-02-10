@@ -687,10 +687,20 @@ export function setupGlobalErrorHandlers() {
       reasonType = event.reason.name || 'Error';
     } else if (typeof event.reason === 'object') {
       // Try to extract useful info from object
-      errorMessage =
-        event.reason.message ||
-        event.reason.error ||
-        JSON.stringify(event.reason).substring(0, 500);
+      // Use safe serialization to avoid circular reference errors
+      let serialized = '[Object]';
+      try {
+        serialized = JSON.stringify(event.reason).substring(0, 500);
+      } catch {
+        // JSON.stringify can throw on circular objects
+        try {
+          // Try to extract object keys at least
+          serialized = `[Object with keys: ${Object.keys(event.reason).join(', ')}]`;
+        } catch {
+          serialized = '[Object - unable to serialize]';
+        }
+      }
+      errorMessage = event.reason.message || event.reason.error || serialized;
       errorStack = event.reason.stack;
       reasonType = 'object';
     } else {

@@ -38,9 +38,12 @@ describe('/api/donation/track route code inspection', () => {
       expect(routeCode).toMatch(/getOrCreateVisitorSession\s*\(\s*request\s*\)/);
     });
 
-    it('extracts session ID from result object (not direct return)', () => {
-      // The function returns { sessionId, isNew }, not just sessionId
-      expect(routeCode).toMatch(/visitorSession\?\.id|visitorSession\.id/);
+    it('extracts sessionId from result object (not .id)', () => {
+      // The function returns { sessionId, isNew }, not { id, isNew }
+      // Must use .sessionId, not .id
+      expect(routeCode).toMatch(/visitorSession\?\.sessionId|visitorSession\.sessionId/);
+      // Should NOT use .id (that's the bug)
+      expect(routeCode).not.toMatch(/visitorSession\?\.id[^a-zA-Z]|visitorSession\.id[^a-zA-Z]/);
     });
   });
 

@@ -34,7 +34,7 @@ async function postHandler(request) {
 
     // Get or create visitor session and get supporter info
     const visitorSession = await getOrCreateVisitorSession(request);
-    const visitorSessionId = visitorSession?.id || null;
+    const visitorSessionId = visitorSession?.sessionId || null;
     const supporter = await getCurrentSupporter();
 
     await trackDonationEvent({
