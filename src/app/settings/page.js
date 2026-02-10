@@ -103,14 +103,18 @@ export default function SettingsPage() {
   // Load notification preferences
   useEffect(() => {
     if (!isAuthenticated) return;
-    fetch('/api/notifications/preferences')
-      .then((r) => r.json())
-      .then((d) => {
+
+    const loadPreferences = async () => {
+      try {
+        const r = await fetch('/api/notifications/preferences');
+        const d = await r.json();
         if (d.ok) setPrefs(d.data);
-      })
-      .catch((err) => {
-        logApiError('/api/notifications/preferences', 'GET', err.status || 500, err.message, { context: 'loadPrefs' });
-      });
+      } catch (err) {
+        await logApiError('/api/notifications/preferences', 'GET', err.status || 500, err.message, { context: 'loadPrefs' });
+      }
+    };
+
+    loadPreferences();
   }, [isAuthenticated]);
 
   // Load activity

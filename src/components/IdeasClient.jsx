@@ -341,26 +341,30 @@ export default function IdeasClient({ initialIdeas = [] }) {
                   <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
                     <div className="flex flex-wrap gap-2">
                       <span className="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full font-medium capitalize">
-                        {CATEGORIES.find((c) => c.value === idea.category)?.icon} {idea.category}
+                        {CATEGORIES.find((c) => c.value === idea.category)?.icon} {idea.category ?? 'uncategorized'}
                       </span>
                       <span
-                        className={`px-3 py-1 text-sm rounded-full font-medium capitalize ${STATUS_COLORS[idea.status] || 'bg-gray-100 text-gray-600'}`}
+                        className={`px-3 py-1 text-sm rounded-full font-medium capitalize ${STATUS_COLORS[idea.status ?? 'pending'] || 'bg-gray-100 text-gray-600'}`}
                       >
-                        {idea.status.replace('_', ' ')}
+                        {(idea.status ?? 'pending').replace('_', ' ')}
                       </span>
                     </div>
                     <span className="text-sm text-gray-700">
-                      {new Date(idea.created_at).toLocaleDateString()}
+                      {idea.created_at ? new Date(idea.created_at).toLocaleDateString() : 'Date unknown'}
                     </span>
                   </div>
 
                   <Link href={`/ideas/${idea.id}`}>
                     <h2 className="text-xl font-bold text-navy mb-2 hover:underline cursor-pointer">
-                      {idea.title}
+                      {idea.title ?? 'Untitled Idea'}
                     </h2>
                   </Link>
                   <p className="text-gray-600 mb-4">
-                    {idea.content.length > 200 ? idea.content.slice(0, 200) + '...' : idea.content}
+                    {idea.content
+                      ? idea.content.length > 200
+                        ? idea.content.slice(0, 200) + '...'
+                        : idea.content
+                      : 'No description provided'}
                   </p>
 
                   {idea.admin_response && (
@@ -406,7 +410,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
                           <span className="sr-only">comments</span>
                         </div>
                       )}
-                      <span className="text-sm text-gray-700">by {idea.name}</span>
+                      <span className="text-sm text-gray-700">by {idea.name ?? 'Anonymous'}</span>
                     </div>
                     <Link
                       href={`/ideas/${idea.id}`}

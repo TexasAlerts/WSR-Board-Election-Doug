@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { User, Mail, Phone, MapPin, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { validatePhoneNumber } from '../../../lib/phoneValidation';
 
 export default function RegisterPage() {
   useEffect(() => {
@@ -24,14 +25,81 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({
+    email: '',
+    phone: '',
+  });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    const newValue = type === 'checkbox' ? checked : value;
+
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: newValue,
     }));
+
+    // Real-time validation for email and phone
+    if (name === 'email') {
+      validateEmail(newValue);
+    } else if (name === 'phone') {
+      validatePhone(newValue);
+    }
   };
+
+  const validateEmail = (email) => {
+    if (!email) {
+      setValidationErrors((prev) => ({ ...prev, email: '' }));
+      return true;
+    }
+
+    // Basic email regex validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setValidationErrors((prev) => ({ ...prev, email: 'Invalid email format' }));
+      return false;
+    }
+
+    setValidationErrors((prev) => ({ ...prev, email: '' }));
+    return true;
+  };
+
+  const validatePhone = (phone) => {
+    if (!phone) {
+      setValidationErrors((prev) => ({ ...prev, phone: '' }));
+      return true; // Phone is optional
+    }
+
+    const validation = validatePhoneNumber(phone);
+    if (!validation.valid) {
+      setValidationErrors((prev) => ({ ...prev, phone: validation.error || 'Invalid phone number' }));
+      return false;
+    }
+
+    setValidationErrors((prev) => ({ ...prev, phone: '' }));
+    return true;
+  };
+
+  // Memoize form validity to prevent infinite re-renders
+  const isFormValid = useMemo(() => {
+    const requiredFieldsFilled =
+      formData.firstName.trim() &&
+      formData.lastName.trim() &&
+      formData.email.trim() &&
+      formData.streetAddress.trim() &&
+      formData.city.trim() &&
+      formData.zipCode.trim();
+
+    const noValidationErrors = !validationErrors.email && !validationErrors.phone;
+
+    // Check email format without triggering validation state updates
+    const emailValid = formData.email ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) : false;
+
+    // Check phone format without triggering validation state updates
+    const phoneValid = formData.phone ? validatePhoneNumber(formData.phone).valid : true;
+
+    return requiredFieldsFilled && noValidationErrors && emailValid && phoneValid;
+  }, [formData, validationErrors]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -166,11 +234,22 @@ export default function RegisterPage() {
               onChange={handleChange}
               required
               aria-required="true"
-              className="w-full pl-10 pr-4 py-2.5 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
+              aria-invalid={!!validationErrors.email}
+              aria-describedby={validationErrors.email ? 'email-error' : undefined}
+              className={`w-full pl-10 pr-4 py-2.5 min-h-[44px] border rounded-lg focus:ring-2 focus:ring-navy ${
+                validationErrors.email
+                  ? 'border-red-500 focus:border-red-500'
+                  : 'border-gray-300 focus:border-navy'
+              }`}
               placeholder="john@example.com"
               autoComplete="email"
             />
           </div>
+          {validationErrors.email && (
+            <p id="email-error" className="mt-1 text-sm text-red-600" role="alert">
+              {validationErrors.email}
+            </p>
+          )}
         </div>
 
         {/* Phone */}
@@ -189,11 +268,22 @@ export default function RegisterPage() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full pl-10 pr-4 py-2.5 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-navy"
+              aria-invalid={!!validationErrors.phone}
+              aria-describedby={validationErrors.phone ? 'phone-error' : undefined}
+              className={`w-full pl-10 pr-4 py-2.5 min-h-[44px] border rounded-lg focus:ring-2 focus:ring-navy ${
+                validationErrors.phone
+                  ? 'border-red-500 focus:border-red-500'
+                  : 'border-gray-300 focus:border-navy'
+              }`}
               placeholder="(972) 555-1234"
               autoComplete="tel"
             />
           </div>
+          {validationErrors.phone && (
+            <p id="phone-error" className="mt-1 text-sm text-red-600" role="alert">
+              {validationErrors.phone}
+            </p>
+          )}
         </div>
 
         {/* Address */}
@@ -322,7 +412,7 @@ export default function RegisterPage() {
         {/* Submit */}
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || !isFormValid}
           className="w-full bg-prosper-red text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {loading ? (

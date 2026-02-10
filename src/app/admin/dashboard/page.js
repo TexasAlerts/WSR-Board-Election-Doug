@@ -279,25 +279,34 @@ export default function AdminDashboard() {
     router,
   ]);
 
-  // Fetch current user role on mount
+  // Fetch current user role on mount, then load data
   useEffect(() => {
-    const fetchUserRole = async () => {
+    const initializeDashboard = async () => {
       try {
         const res = await fetch('/api/auth/me');
         const data = await res.json();
         if (res.ok && data.authenticated && data.supporter) {
           setCurrentUserRole(data.supporter.role);
+          // Only load data after auth is confirmed
+          await loadData();
+        } else {
+          // Not authenticated, redirect
+          router.push('/auth/login?return=/admin/dashboard');
         }
       } catch (err) {
-        // Silent fail - role defaults to null (most restrictive)
+        // Auth check failed, redirect to login
+        router.push('/auth/login?return=/admin/dashboard');
       }
     };
-    fetchUserRole();
-  }, []);
+    initializeDashboard();
+  }, [router]); // Intentionally not including loadData to prevent re-initialization
 
+  // Reload data when filters change
   useEffect(() => {
-    loadData();
-  }, [loadData]);
+    if (currentUserRole) {
+      loadData();
+    }
+  }, [loadData, currentUserRole]);
 
   const updateSupporter = async (id, updates) => {
     try {

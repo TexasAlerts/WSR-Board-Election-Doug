@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Ear, ClipboardList, ShieldCheck } from 'lucide-react';
-import HomeDynamic from '../components/HomeDynamic';
+import HomeServer from '../components/HomeServer';
 
 export default function Home() {
   return (
@@ -257,8 +257,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Dynamic sections (client-side: endorsements + Q&A) */}
-      <HomeDynamic />
+      {/* Server-rendered sections (endorsements + Q&A for better LCP) */}
+      <HomeServer />
 
       {/* CTA Section - Enhanced */}
       <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20">

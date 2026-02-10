@@ -139,7 +139,7 @@ export default function RootLayout({ children }) {
             {/* Navigation */}
             <StickyNav />
             {/* SEO: JSON-LD structured data */}
-            <Script id="structured-data" type="application/ld+json" strategy="beforeInteractive">
+            <Script id="structured-data" type="application/ld+json" strategy="afterInteractive">
               {`
             {
               "@context": "https://schema.org",
