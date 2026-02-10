@@ -5,6 +5,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import PollCard from './PollCard';
 import { usePollVoting } from '../hooks/usePollVoting';
+import { useCSRF } from '../hooks/useCSRF';
 import { logApiError } from '@/lib/clientErrorLogger';
 import { Loader2 } from 'lucide-react';
 
@@ -33,6 +34,7 @@ export default function PollsDynamic({ initialPolls = [] }) {
   const [verifiedVoter, setVerifiedVoter] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authenticatedSupporter, setAuthenticatedSupporter] = useState(null);
+  const { token: csrfToken, refreshToken } = useCSRF();
 
   const {
     voteForm,
@@ -187,12 +189,13 @@ export default function PollsDynamic({ initialPolls = [] }) {
     e.preventDefault();
     if (!selectedPoll) return;
 
-    const result = await submitVote(selectedPoll.id, selectedPoll.poll_type);
+    const result = await submitVote(selectedPoll.id, selectedPoll.poll_type, csrfToken);
 
     if (result.ok) {
       setHasVoted({ ...hasVoted, [selectedPoll.id]: result.email });
       setSelectedPoll(null);
       resetForm();
+      await refreshToken();
 
       const pollsRes = await fetch('/api/polls');
       const pollsData = await pollsRes.json();
