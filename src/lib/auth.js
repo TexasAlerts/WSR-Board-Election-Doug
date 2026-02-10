@@ -270,7 +270,7 @@ export async function validateEmailVerification(token, purpose = 'verify') {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('email_verifications')
-    .select('*, supporter:supporters(id, first_name, last_name, email, status, role)')
+    .select('*, supporter:supporters(id, first_name, last_name, email, phone, status, role)')
     .eq('token', token)
     .eq('purpose', purpose)
     .is('used_at', null)
