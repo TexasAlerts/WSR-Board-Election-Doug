@@ -233,7 +233,33 @@ export function setupGlobalErrorHandlers() {
   // Catch unhandled promise rejections
   if (typeof window !== 'undefined') {
     window.addEventListener('unhandledrejection', (event) => {
-      const errorMessage = event.reason?.message || String(event.reason);
+      // Build detailed error info for better debugging
+      let errorMessage = 'Unknown rejection reason';
+      let errorStack = null;
+      let reasonType = 'unknown';
+
+      if (event.reason === undefined) {
+        errorMessage = 'Promise rejected with undefined (no error provided)';
+        reasonType = 'undefined';
+      } else if (event.reason === null) {
+        errorMessage = 'Promise rejected with null';
+        reasonType = 'null';
+      } else if (typeof event.reason === 'string') {
+        errorMessage = event.reason;
+        reasonType = 'string';
+      } else if (event.reason instanceof Error) {
+        errorMessage = event.reason.message || 'Error with no message';
+        errorStack = event.reason.stack;
+        reasonType = event.reason.name || 'Error';
+      } else if (typeof event.reason === 'object') {
+        // Try to extract useful info from object
+        errorMessage = event.reason.message || event.reason.error || JSON.stringify(event.reason).substring(0, 500);
+        errorStack = event.reason.stack;
+        reasonType = 'object';
+      } else {
+        errorMessage = String(event.reason);
+        reasonType = typeof event.reason;
+      }
 
       // Filter out known third-party/browser errors we can't control
       const ignoredPatterns = [
@@ -262,12 +288,29 @@ export function setupGlobalErrorHandlers() {
       // Extract network context if available
       const networkContext = event.reason?.context || null;
 
+      // Try to get call stack from Error.stack if we don't have one
+      if (!errorStack && reasonType === 'undefined') {
+        try {
+          // Create an error to capture the current stack trace
+          const stackError = new Error('Stack trace capture');
+          errorStack = stackError.stack?.split('\n').slice(2).join('\n'); // Remove first 2 lines
+        } catch {
+          // Ignore
+        }
+      }
+
       logClientError({
         errorType: 'client_error',
-        errorMessage: `Unhandled Promise Rejection: ${event.reason?.message || event.reason}`,
-        errorStack: event.reason?.stack,
+        errorMessage: `Unhandled Promise Rejection: ${errorMessage}`,
+        errorStack,
         context: {
           promiseRejection: true,
+          reasonType,
+          reasonUndefined: event.reason === undefined,
+          // Include any custom properties from the rejection
+          ...(event.reason && typeof event.reason === 'object' ? {
+            reasonKeys: Object.keys(event.reason).slice(0, 10),
+          } : {}),
         },
         networkContext,
       });
