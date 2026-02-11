@@ -212,7 +212,7 @@ export default function TrackRecordPage() {
                   </h3>
                   <p className="text-gray-600">
                     Reviewed{' '}
-                    <strong className="text-navy">hundreds of development applications</strong>.
+                    <strong className="text-navy">over 100 development applications</strong>.
                     Learned firsthand how land use decisions impact neighborhoods—and how to{' '}
                     <strong className="text-navy">ask the right questions</strong>.
                   </p>

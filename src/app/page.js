@@ -79,7 +79,7 @@ export default function Home() {
                 <div className="stat-label">Planning & Zoning</div>
                 <div className="text-xs text-gray-700 mt-1 leading-snug">
                   <strong className="text-navy">Commissioner</strong> for 3 years ·{' '}
-                  <strong className="text-navy">Reviewed 100+ developments</strong>—I know what works
+                  <strong className="text-navy">Reviewed over 100 development applications</strong>—I know what works
                 </div>
               </div>
             </div>
@@ -94,11 +94,11 @@ export default function Home() {
             </div>
             <div className="h-full">
               <div className="stat-card h-full flex flex-col justify-center">
-                <div className="stat-number">$6.5M</div>
-                <div className="stat-label">New Annual Tax Revenue</div>
+                <div className="stat-number">$6.5M+</div>
+                <div className="stat-label">PISD Property Taxes</div>
                 <div className="text-xs text-gray-700 mt-1 leading-snug">
-                  Lead <strong className="text-navy">Windsong Annexation</strong> Petitioner ·
-                  <strong className="text-navy">Commercial growth that PAYS for infrastructure</strong>
+                  Led <strong className="text-navy">Windsong Ranch PISD annexation</strong> petition ·
+                  <strong className="text-navy">Awaiting state approval</strong>
                 </div>
               </div>
             </div>
@@ -283,9 +283,10 @@ export default function Home() {
                 I&apos;ve lived in <strong className="text-navy">Prosper for 20 years</strong> and served
                 on the <strong className="text-navy">Planning & Zoning Commission</strong> and the{' '}
                 <strong className="text-navy">2020 Bond Committee</strong>. I led the{' '}
-                <strong className="text-prosper-red">Windsong Ranch PISD annexation effort</strong> that
-                brings <strong className="text-navy">$6.5M in annual commercial tax revenue</strong>. I
-                know what works—and what doesn&apos;t—when it comes to thoughtful growth.
+                <strong className="text-prosper-red">Windsong Ranch PISD annexation</strong> petition that
+                will redirect <strong className="text-navy">$6.5M+ in annual property taxes</strong> from
+                Denton ISD to Prosper ISD—pending state approval. I know what works—and what doesn&apos;t—when
+                it comes to thoughtful growth.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
                 <strong className="text-prosper-red">

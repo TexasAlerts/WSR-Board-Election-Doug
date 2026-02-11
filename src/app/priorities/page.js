@@ -238,7 +238,7 @@ export default function PrioritiesPage() {
               </Link>
             </div>
 
-            <div className="card">
+            <div className="card" id="commercial">
               <h3 className="text-xl font-bold text-navy mb-4">
                 Strategic Commercial Development: Prosper as a Destination, Not Just a Drive-Through
               </h3>
@@ -265,31 +265,31 @@ export default function PrioritiesPage() {
                   </strong>{' '}
                   to create a bold vision:
                 </p>
-                <ul className="space-y-3 sm:space-y-2 pl-2 sm:pl-4 list-none" role="list">
-                  <li className="flex items-start gap-2">
-                    <span className="text-prosper-red font-bold">•</span>
+                <ul className="custom-list space-y-3 sm:space-y-2 pl-2 sm:pl-4">
+                  <li>
+                    <span className="custom-bullet text-prosper-red font-bold" aria-hidden="true">•</span>
                     <span>
                       A <strong className="text-prosper-red">truly destinational downtown</strong> that draws both residents and
                       visitors
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-prosper-red font-bold">•</span>
+                  <li>
+                    <span className="custom-bullet text-prosper-red font-bold" aria-hidden="true">•</span>
                     <span>
                       Bold <strong className="text-navy">mixed-use commercial projects</strong> that capture tax dollars from
                       regional attractions
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-prosper-red font-bold">•</span>
+                  <li>
+                    <span className="custom-bullet text-prosper-red font-bold" aria-hidden="true">•</span>
                     <span>
                       An environment where businesses choose to{' '}
                       <strong className="text-navy">plant headquarters here</strong>—creating{' '}
                       <strong className="text-prosper-red">jobs of tomorrow, not just big box retail</strong>
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-prosper-red font-bold">•</span>
+                  <li>
+                    <span className="custom-bullet text-prosper-red font-bold" aria-hidden="true">•</span>
                     <span>
                       A place where Prosper residents can{' '}
                       <strong className="text-prosper-red">live, work, play, AND shop</strong>—without leaving town
@@ -301,29 +301,29 @@ export default function PrioritiesPage() {
                   <strong className="text-prosper-red">&apos;Small Town, Big Heart&apos; attitude</strong> to become the
                   premier community of choice. But that requires:
                 </p>
-                <ul className="space-y-3 sm:space-y-2 pl-2 sm:pl-4 list-none" role="list">
-                  <li className="flex items-start gap-2">
-                    <span className="text-navy font-bold">✓</span>
+                <ul className="custom-list space-y-3 sm:space-y-2 pl-2 sm:pl-4">
+                  <li>
+                    <span className="custom-bullet text-navy font-bold" aria-hidden="true">✓</span>
                     <span>
                       <strong>Proactive partnership</strong> between Town Council, EDC, and Chamber—not
                       working in silos
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-navy font-bold">✓</span>
+                  <li>
+                    <span className="custom-bullet text-navy font-bold" aria-hidden="true">✓</span>
                     <span>
                       <strong>Development vision that attracts investment</strong>, not reactive
                       approvals
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-navy font-bold">✓</span>
+                  <li>
+                    <span className="custom-bullet text-navy font-bold" aria-hidden="true">✓</span>
                     <span>
                       <strong>Streamlined processes</strong> so businesses WANT to invest here
                     </span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-navy font-bold">✓</span>
+                  <li>
+                    <span className="custom-bullet text-navy font-bold" aria-hidden="true">✓</span>
                     <span>
                       <strong>Commercial growth that protects residential taxpayers</strong> from
                       carrying the full burden
