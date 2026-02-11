@@ -62,49 +62,7 @@ export default function WhyPage() {
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
-          <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
-            <p>
-              Prosper&apos;s explosive growth has brought{' '}
-              <strong className="text-navy">thousands of new families</strong> who chose this
-              community for the same reasons <strong className="text-navy">longtime residents</strong>{' '}
-              love it. But as these families—and many longtime residents—settle in and look around,
-              they're realizing that critical decisions about their neighborhoods, their roads, and
-              their quality of life are being made{' '}
-              <strong className="text-prosper-red">without their input</strong>.
-            </p>
-            <p>
-              That&apos;s why I&apos;m committed to being a{' '}
-              <strong className="text-navy">Common Sense Leader who listens BEFORE deciding</strong>.
-              Through regular <strong className="text-prosper-red">Coffee with Doug meetups</strong>,{' '}
-              <strong className="text-prosper-red">community polls</strong>, and open communication,
-              I&apos;ll ensure every resident—new families and longtime neighbors alike—has a real
-              voice in shaping Prosper&apos;s future.
-            </p>
-            <p>
-              I've been{' '}
-              <strong className="text-navy">in the room where these decisions get made</strong>. As
-              a <strong className="text-navy">Planning & Zoning Commissioner</strong>, I've reviewed{' '}
-              <strong className="text-navy">over 100 development applications</strong> and asked the
-              hard questions about long-term impacts. Professionally, I've led strategic planning for
-              initiatives involving <strong className="text-prosper-red">hundreds of millions of dollars</strong>—and
-              I know what happens when you plan well, and when you don't. That experience matters for
-              a growing community making <strong className="text-navy">billion-dollar infrastructure decisions</strong>.
-            </p>
-            <p>
-              I&apos;m running to bring that{' '}
-              <strong className="text-prosper-red">experience to the Town Council</strong>, and to
-              make sure <strong className="text-navy">every resident&apos;s voice is heard</strong>—whether
-              you&apos;ve been here for <strong className="text-navy">decades</strong> or just moved in
-              last year.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Key Message */}
+      {/* Key Message - Moved Up */}
       <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 md:py-20 relative">
         <div className="absolute top-0 left-0 right-0 mx-auto w-16 h-1 accent-line-full"></div>
         <div className="max-w-3xl mx-auto">
@@ -112,11 +70,49 @@ export default function WhyPage() {
             <h2 className="text-2xl sm:text-3xl font-bold text-navy mb-4">
               Town Council isn't about party labels.
             </h2>
-            <p className="text-lg text-gray-700 leading-relaxed">
+            <p className="text-lg text-gray-700 leading-relaxed mb-4">
               It's about <strong className="text-navy">potholes, parks, and planning</strong>. It's
               about whether the roads work, growth happens thoughtfully, and{' '}
               <strong className="text-prosper-red">Prosper keeps its character</strong>.
             </p>
+            <p className="text-lg text-gray-700 leading-relaxed">
+              Whether you&apos;ve been here <strong className="text-navy">20 years or 2 months</strong>,
+              you deserve a voice in decisions about <strong className="text-prosper-red">your neighborhoods,
+              your roads, and your quality of life</strong>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* The Vision Prosper Needs - Moved Up */}
+      <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="section-title text-center mb-8">The Vision Prosper Needs</h2>
+
+          <div className="card">
+            <div className="space-y-6 text-base sm:text-lg text-gray-700 leading-relaxed">
+              <p>
+                The Fields, PGA, and Universal Theme Park are bringing{' '}
+                <strong className="text-navy">millions of visitors to our doorstep</strong>. With
+                strategic planning and proactive partnerships between Town Council, the{' '}
+                <strong className="text-navy">Prosper Chamber of Commerce</strong>, and the{' '}
+                <strong className="text-navy">Prosper Economic Development Committee</strong>, we can
+                make Prosper their <strong className="text-prosper-red">destination of choice</strong>—not
+                just another drive-through suburb.
+              </p>
+              <p>
+                That means creating a <strong className="text-navy">bold vision for destinational downtown</strong>,
+                attracting <strong className="text-navy">mixed-use commercial developments</strong> (retail,
+                dining, office—<strong className="text-prosper-red">NOT apartments</strong>) that capture
+                regional spending, and building an environment where companies{' '}
+                <strong className="text-navy">plant headquarters and create careers</strong>—not just retail jobs.
+              </p>
+              <p className="text-center pt-4">
+                <Link href="/priorities" className="btn-outline">
+                  See My Full Priorities →
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -165,40 +161,6 @@ export default function WhyPage() {
                 Your council members should be <strong className="text-navy">easy to reach</strong>.
                 I'll be available to residents—not just during campaign season, but{' '}
                 <strong className="text-prosper-red">throughout my term</strong>.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* The Vision Prosper Needs */}
-      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 md:py-20 relative">
-        <div className="absolute top-0 left-0 right-0 mx-auto w-16 h-1 accent-line-full"></div>
-        <div className="max-w-3xl mx-auto">
-          <h2 className="section-title text-center mb-8">The Vision Prosper Needs</h2>
-
-          <div className="card">
-            <div className="space-y-6 text-base sm:text-lg text-gray-700 leading-relaxed">
-              <p>
-                The Fields, PGA, and Universal Theme Park are bringing{' '}
-                <strong className="text-navy">millions of visitors to our doorstep</strong>. With
-                strategic planning and proactive partnerships between Town Council, the{' '}
-                <strong className="text-navy">Prosper Chamber of Commerce</strong>, and the{' '}
-                <strong className="text-navy">Prosper Economic Development Committee</strong>, we can
-                make Prosper their <strong className="text-prosper-red">destination of choice</strong>—not
-                just another drive-through suburb.
-              </p>
-              <p>
-                That means creating a <strong className="text-navy">bold vision for destinational downtown</strong>,
-                attracting <strong className="text-navy">mixed-use commercial developments</strong> (retail,
-                dining, office—<strong className="text-prosper-red">NOT apartments</strong>) that capture
-                regional spending, and building an environment where companies{' '}
-                <strong className="text-navy">plant headquarters and create careers</strong>—not just retail jobs.
-              </p>
-              <p className="text-center pt-4">
-                <Link href="/priorities" className="btn-outline">
-                  See Full Economic Development Plan →
-                </Link>
               </p>
             </div>
           </div>

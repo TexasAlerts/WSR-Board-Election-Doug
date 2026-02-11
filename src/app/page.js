@@ -134,10 +134,6 @@ export default function Home() {
 
             <div className="space-y-4 text-gray-700 leading-relaxed">
               <p className="text-base sm:text-lg">
-                We can plan proactively for where Prosper is headed—sizing projects right from the
-                start so we&apos;re not asking voters for fixes later.
-              </p>
-              <p className="text-base sm:text-lg">
                 Prosper has the <strong className="text-navy">tools, the talent, and the{' '}
                 &apos;<strong className="text-prosper-red">Small Town, Big Heart</strong>&apos; attitude</strong>{' '}
                 to be the premier community where residents{' '}
