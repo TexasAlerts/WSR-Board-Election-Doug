@@ -56,7 +56,7 @@ export default function TrackRecordPage() {
             Track Record
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            <strong className="text-navy">Results</strong>, not just promises
+            <strong className="text-navy">Results</strong>, not just <strong className="text-prosper-red">promises</strong>
           </p>
         </div>
       </section>

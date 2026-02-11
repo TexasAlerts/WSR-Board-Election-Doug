@@ -96,7 +96,7 @@ export default async function QnAPage() {
             Questions & Answers
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Have a question about my positions or priorities? Ask here and I'll respond publicly.
+            Have a question about my <strong className="text-navy">positions</strong> or <strong className="text-navy">priorities</strong>? Ask here and I'll respond publicly.
           </p>
         </div>
       </section>
