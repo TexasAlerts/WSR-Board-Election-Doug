@@ -177,28 +177,30 @@ export default function WhyPage() {
         <div className="max-w-3xl mx-auto">
           <h2 className="section-title text-center mb-8">The Vision Prosper Needs</h2>
 
-          <div className="space-y-6 text-base sm:text-lg text-gray-700 leading-relaxed">
-            <p>
-              The Fields, PGA, and Universal Theme Park are bringing{' '}
-              <strong className="text-navy">millions of visitors to our doorstep</strong>. With
-              strategic planning and proactive partnerships between Town Council, the{' '}
-              <strong className="text-navy">Prosper Chamber of Commerce</strong>, and the{' '}
-              <strong className="text-navy">Prosper Economic Development Committee</strong>, we can
-              make Prosper their <strong className="text-prosper-red">destination of choice</strong>—not
-              just another drive-through suburb.
-            </p>
-            <p>
-              That means creating a <strong className="text-navy">bold vision for destinational downtown</strong>,
-              attracting <strong className="text-navy">mixed-use commercial developments</strong> (retail,
-              dining, office—<strong className="text-prosper-red">NOT apartments</strong>) that capture
-              regional spending, and building an environment where companies{' '}
-              <strong className="text-navy">plant headquarters and create careers</strong>—not just retail jobs.
-            </p>
-            <p className="text-center pt-4">
-              <Link href="/priorities" className="btn-outline">
-                See Full Economic Development Plan →
-              </Link>
-            </p>
+          <div className="card">
+            <div className="space-y-6 text-base sm:text-lg text-gray-700 leading-relaxed">
+              <p>
+                The Fields, PGA, and Universal Theme Park are bringing{' '}
+                <strong className="text-navy">millions of visitors to our doorstep</strong>. With
+                strategic planning and proactive partnerships between Town Council, the{' '}
+                <strong className="text-navy">Prosper Chamber of Commerce</strong>, and the{' '}
+                <strong className="text-navy">Prosper Economic Development Committee</strong>, we can
+                make Prosper their <strong className="text-prosper-red">destination of choice</strong>—not
+                just another drive-through suburb.
+              </p>
+              <p>
+                That means creating a <strong className="text-navy">bold vision for destinational downtown</strong>,
+                attracting <strong className="text-navy">mixed-use commercial developments</strong> (retail,
+                dining, office—<strong className="text-prosper-red">NOT apartments</strong>) that capture
+                regional spending, and building an environment where companies{' '}
+                <strong className="text-navy">plant headquarters and create careers</strong>—not just retail jobs.
+              </p>
+              <p className="text-center pt-4">
+                <Link href="/priorities" className="btn-outline">
+                  See Full Economic Development Plan →
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </section>

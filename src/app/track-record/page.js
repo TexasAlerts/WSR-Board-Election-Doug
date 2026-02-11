@@ -67,17 +67,19 @@ export default function TrackRecordPage() {
           <h2 className="text-2xl sm:text-3xl font-bold text-navy mb-6">
             When Prosper Needs Results, Not Just Promises
           </h2>
-          <div className="space-y-4 text-base sm:text-lg text-gray-700 leading-relaxed">
-            <p>
-              Over six years, I&apos;ve shown up—at council meetings, planning commission hearings,
-              bond committees, and neighborhood petition drives. I&apos;ve{' '}
-              <strong className="text-navy">asked the hard questions</strong>,{' '}
-              <strong className="text-navy">followed the money</strong>, and delivered results when it
-              mattered.
-            </p>
-            <p className="text-xl font-semibold text-navy">
-              This isn&apos;t about talking. It&apos;s about doing—and doing it right.
-            </p>
+          <div className="card">
+            <div className="space-y-4 text-base sm:text-lg text-gray-700 leading-relaxed">
+              <p>
+                Over six years, I&apos;ve shown up—at council meetings, planning commission hearings,
+                bond committees, and neighborhood petition drives. I&apos;ve{' '}
+                <strong className="text-navy">asked the hard questions</strong>,{' '}
+                <strong className="text-navy">followed the money</strong>, and delivered results when it
+                mattered.
+              </p>
+              <p className="text-xl font-semibold text-navy">
+                This isn&apos;t about talking. It&apos;s about doing—and doing it right.
+              </p>
+            </div>
           </div>
         </div>
       </section>

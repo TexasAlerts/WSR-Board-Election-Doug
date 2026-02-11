@@ -353,24 +353,26 @@ export default function PrioritiesPage() {
             <h2 className="text-3xl sm:text-4xl font-bold text-navy">
               The Next Four Years Will Define Prosper for Decades
             </h2>
-            <div className="space-y-4 text-base sm:text-lg text-gray-700 leading-relaxed">
-              <p>
-                The decisions made about the Tollway corridor, downtown revitalization, and remaining
-                commercial land will either{' '}
-                <strong className="text-navy">strengthen what makes Prosper special</strong>—or turn us
-                into just another suburb.
-              </p>
-              <p>
-                Voters sent a clear signal in November 2025:{' '}
-                <strong className="text-navy">YES to infrastructure and downtown investment</strong>.{' '}
-                <strong className="text-prosper-red">
-                  NO to poor planning and poor communication that left us scrambling for fixes
-                </strong>.
-              </p>
-              <p className="font-semibold text-navy text-lg sm:text-xl">
-                These decisions deserve experienced, thoughtful leadership from someone who listens to
-                residents, plans for the long term, and protects what makes Prosper home.
-              </p>
+            <div className="card">
+              <div className="space-y-4 text-base sm:text-lg text-gray-700 leading-relaxed">
+                <p>
+                  The decisions made about the Tollway corridor, downtown revitalization, and remaining
+                  commercial land will either{' '}
+                  <strong className="text-navy">strengthen what makes Prosper special</strong>—or turn us
+                  into just another suburb.
+                </p>
+                <p>
+                  Voters sent a clear signal in November 2025:{' '}
+                  <strong className="text-navy">YES to infrastructure and downtown investment</strong>.{' '}
+                  <strong className="text-prosper-red">
+                    NO to poor planning and poor communication that left us scrambling for fixes
+                  </strong>.
+                </p>
+                <p className="font-semibold text-navy text-lg sm:text-xl">
+                  These decisions deserve experienced, thoughtful leadership from someone who listens to
+                  residents, plans for the long term, and protects what makes Prosper home.
+                </p>
+              </div>
             </div>
           </div>
         </div>
