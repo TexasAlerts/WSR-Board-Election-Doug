@@ -335,7 +335,9 @@ export default function TrackRecordPage() {
                       clear plan that voters understand and can support.
                     </strong>{' '}
                     <strong className="text-prosper-red">
-                      NO to poor planning and poor communication that left us scrambling for fixes.
+                      NO to poor planning and poor communication that creates pressure now and for years
+                      to come—because we failed to build the right engagement, explain why we needed what
+                      was proposed, and show the plan moving forward.
                     </strong>{' '}
                     I strongly advocated for{' '}
                     <strong className="text-navy">Props A (Streets) and F (Downtown)</strong>—and

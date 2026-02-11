@@ -365,7 +365,9 @@ export default function PrioritiesPage() {
                   Voters sent a clear signal in November 2025:{' '}
                   <strong className="text-navy">YES to infrastructure and downtown investment</strong>.{' '}
                   <strong className="text-prosper-red">
-                    NO to poor planning and poor communication that left us scrambling for fixes
+                    NO to poor planning and poor communication that creates pressure now and for years
+                    to come—because we failed to build the right engagement, explain why we needed what
+                    was proposed, and show the plan moving forward
                   </strong>.
                 </p>
                 <p className="font-semibold text-navy text-lg sm:text-xl">

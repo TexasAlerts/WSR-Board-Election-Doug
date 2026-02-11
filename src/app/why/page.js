@@ -168,20 +168,23 @@ export default function WhyPage() {
       </section>
 
       {/* The Stakes */}
-      <section className="py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 md:py-20 relative">
+        <div className="absolute top-0 left-0 right-0 mx-auto w-16 h-1 accent-line-full"></div>
         <div className="max-w-3xl mx-auto">
-          <div className="quote-enhanced">
-            <h2 className="text-xl font-bold text-navy mb-4 not-italic">The Stakes Are High</h2>
-            <p className="text-gray-700 leading-relaxed mb-4 not-italic">
-              The decisions we make in the next few years will{' '}
-              <strong className="text-navy">shape Prosper for decades</strong>. We're deciding where
-              roads go, what gets built, and how we balance growth with quality of life.
-            </p>
-            <p className="text-gray-700 leading-relaxed not-italic">
-              These decisions are too important to leave to chance. They deserve{' '}
-              <strong className="text-prosper-red">experienced, thoughtful leadership</strong> from
-              someone who knows Prosper and cares about its future.
-            </p>
+          <h2 className="section-title text-center mb-8">The Stakes Are High</h2>
+          <div className="card">
+            <div className="space-y-4 text-base sm:text-lg text-gray-700 leading-relaxed">
+              <p>
+                The decisions we make in the next few years will{' '}
+                <strong className="text-navy">shape Prosper for decades</strong>. We're deciding where
+                roads go, what gets built, and how we balance growth with quality of life.
+              </p>
+              <p>
+                These decisions are too important to leave to chance. They deserve{' '}
+                <strong className="text-prosper-red">experienced, thoughtful leadership</strong> from
+                someone who knows Prosper and cares about its future.
+              </p>
+            </div>
           </div>
         </div>
       </section>
