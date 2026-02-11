@@ -124,8 +124,14 @@ async function postHandler(request) {
         await sendEmail(
           data.email,
           'Your endorsement has been published',
-          `Hi ${data.name || ''},\n\nYour endorsement is now live: ${site}/endorsements\n\nThank you for your support!\n\n--\nDoug Charles`
-        ).catch(() => {});
+          `Hi ${data.name || ''},\n\nYour endorsement is now live: ${site}/endorsements\n\nThank you for your support!\n\n--\nDoug Charles\n\n---\nPaid for by Charles for Prosper. Doug Charles, Treasurer.`
+        ).catch((err) => {
+          logError({
+            errorType: ErrorTypes.EMAIL_DELIVERY,
+            errorMessage: `Failed to send endorsement approval email: ${err.message}`,
+            userEmail: data.email,
+          });
+        });
       }
     } else if (action === 'reject') {
       const { data, error } = await supabase
@@ -174,8 +180,14 @@ async function postHandler(request) {
         await sendEmail(
           data.email,
           'Update on your endorsement submission',
-          `Hi ${data.name || ''},\n\nThank you for submitting an endorsement. Unfortunately, we are unable to publish it at this time.${reasonText}\n\nIf you have questions, please feel free to reach out.\n\n--\nDoug Charles`
-        ).catch(() => {});
+          `Hi ${data.name || ''},\n\nThank you for submitting an endorsement. Unfortunately, we are unable to publish it at this time.${reasonText}\n\nFeel free to revise and resubmit, or reach out if you have questions.\n\nQuestions? Email hello@dougcharles.com or visit ${site}/contact\n\n--\nDoug Charles\n\n---\nPaid for by Charles for Prosper. Doug Charles, Treasurer.`
+        ).catch((err) => {
+          logError({
+            errorType: ErrorTypes.EMAIL_DELIVERY,
+            errorMessage: `Failed to send endorsement rejection email: ${err.message}`,
+            userEmail: data.email,
+          });
+        });
       }
     } else {
       return NextResponse.json({ ok: false, error: 'Invalid action' }, { status: 400 });
