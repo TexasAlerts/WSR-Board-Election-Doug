@@ -70,11 +70,16 @@ export default function TrackRecordPage() {
           <div className="card">
             <div className="space-y-4 text-base sm:text-lg text-gray-700 leading-relaxed">
               <p>
-                Over six years, I&apos;ve shown up—at council meetings, planning commission hearings,
-                bond committees, and neighborhood petition drives. I&apos;ve{' '}
-                <strong className="text-navy">asked the hard questions</strong>,{' '}
-                <strong className="text-navy">followed the money</strong>, and delivered results when it
-                mattered.
+                Over six years, I&apos;ve driven change from the ground up—organizing{' '}
+                <strong className="text-navy">community-wide petition drives</strong> for 40-foot lot
+                protections and leading the{' '}
+                <strong className="text-navy">Windsong Ranch PISD annexation effort</strong> that will
+                redirect <strong className="text-prosper-red">$6.5M+ in annual property taxes</strong> to
+                Prosper ISD. I&apos;ve stood for <strong className="text-prosper-red">fiscal responsibility</strong>{' '}
+                (including tax rate relief) and{' '}
+                <strong className="text-prosper-red">competitive public safety compensation</strong>. At
+                planning commission hearings, bond committees, and council meetings, I&apos;ve{' '}
+                <strong className="text-navy">asked the hard questions</strong> and delivered results.
               </p>
               <p className="text-xl font-semibold text-navy">
                 This isn&apos;t about talking. It&apos;s about doing—and doing it right.
