@@ -98,36 +98,19 @@ export default async function HomeServer() {
         </section>
       )}
 
-      {/* Endorsements Preview - Enhanced */}
+      {/* Community Support - Simple CTA */}
       {endorsements.length > 0 && (
         <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 relative">
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 accent-line-full"></div>
 
-          <div className="max-w-4xl mx-auto">
-            <h2 className="section-title text-center mb-4">Community Support</h2>
-            <p className="section-subtitle text-center">Hear from your neighbors</p>
-
-            <div className="grid gap-6 md:grid-cols-2 mt-8">
-              {endorsements.map((e) => (
-                <div key={e.id} className="card h-full">
-                  <div className="quote-enhanced mb-4">
-                    <p className="text-gray-700 not-italic">&ldquo;{e.message}&rdquo;</p>
-                  </div>
-                  <p className="font-semibold text-navy flex items-center gap-3">
-                    <span className="w-10 h-10 bg-gradient-to-br from-navy to-navy-light rounded-full flex items-center justify-center text-sm text-white font-bold shadow-sm">
-                      {e.name.charAt(0)}
-                    </span>
-                    {e.name}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <div className="text-center mt-12">
-              <Link href="/endorsements" className="btn-outline">
-                View All Endorsements
-              </Link>
-            </div>
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="section-title mb-4">Community Support</h2>
+            <p className="section-subtitle mb-8">
+              Read what your neighbors are saying about Doug's leadership and vision for Prosper
+            </p>
+            <Link href="/endorsements" className="btn-primary inline-block">
+              Read Endorsements
+            </Link>
           </div>
         </section>
       )}
