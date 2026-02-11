@@ -8,8 +8,27 @@ export const metadata = {
   description:
     'Share your voice on issues that matter to Prosper. Vote on community polls and see real-time results from your neighbors.',
   alternates: { canonical: '/polls' },
+  openGraph: {
+    title: 'Community Polls - Doug Charles for Prosper Town Council',
+    description: 'Share your voice on issues that matter to Prosper. Vote on community polls and see real-time results from your neighbors.',
+    url: 'https://www.dougcharles.com/polls',
+    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    locale: 'en_US',
+    type: 'website',
+    images: [{
+      url: 'https://www.dougcharles.com/campaign-preview.png',
+      width: 1200,
+      height: 630,
+      alt: 'Community Polls - Doug Charles Campaign'
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Community Polls - Doug Charles for Prosper Town Council',
+    description: 'Share your voice on issues that matter to Prosper.',
+    images: ['https://www.dougcharles.com/campaign-preview.png'],
+  },
 };
-
 // Enable ISR with 60 second revalidation for fresh poll data
 export const revalidate = 60;
 

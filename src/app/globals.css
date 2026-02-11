@@ -257,6 +257,30 @@
     min-height: 44px; /* WCAG 2.1 touch target minimum */
   }
 
+  /* Disabled button states - explicit colors for WCAG 2.1 AA contrast (3:1 minimum) */
+  .btn-primary:disabled,
+  .btn-secondary:disabled {
+    @apply bg-gray-400 text-gray-800 cursor-not-allowed shadow-none;
+    opacity: 1; /* Remove opacity, use explicit colors instead */
+    background: #9ca3af; /* gray-400 */
+    color: #1f2937; /* gray-800 - ensures 4.5:1 contrast ratio */
+  }
+
+  .btn-outline:disabled,
+  .btn-white:disabled {
+    @apply border-gray-300 bg-gray-50 text-gray-400 cursor-not-allowed shadow-none;
+    opacity: 1;
+  }
+
+  /* Prevent hover effects on disabled buttons */
+  .btn-primary:disabled:hover,
+  .btn-secondary:disabled:hover,
+  .btn-outline:disabled:hover,
+  .btn-white:disabled:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
   /* ============================================
      FORM INPUTS
      ============================================ */

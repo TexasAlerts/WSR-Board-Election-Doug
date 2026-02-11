@@ -6,8 +6,27 @@ export const metadata = {
   description:
     'See who supports Doug Charles for Prosper Town Council Place 5. Add your endorsement and show your support for Common Sense leadership.',
   alternates: { canonical: '/endorsements' },
+  openGraph: {
+    title: 'Endorsements - Doug Charles for Prosper Town Council',
+    description: 'See who supports Doug Charles for Prosper Town Council Place 5. Add your endorsement and show your support for Common Sense leadership.',
+    url: 'https://www.dougcharles.com/endorsements',
+    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    locale: 'en_US',
+    type: 'website',
+    images: [{
+      url: 'https://www.dougcharles.com/campaign-preview.png',
+      width: 1200,
+      height: 630,
+      alt: 'Endorsements - Doug Charles Campaign'
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Endorsements - Doug Charles for Prosper Town Council',
+    description: 'See who supports Doug Charles. Add your endorsement for Common Sense leadership.',
+    images: ['https://www.dougcharles.com/campaign-preview.png'],
+  },
 };
-
 export default function EndorsementsPage() {
   return (
     <div className="space-y-0">
@@ -19,6 +38,7 @@ export default function EndorsementsPage() {
           alt=""
           aria-hidden="true"
           width={96}
+          sizes="(max-width: 640px) 80px, (max-width: 768px) 112px, (max-width: 1024px) 128px, 144px"
           height={64}
           className="absolute top-4 right-4 w-20 sm:w-28 md:w-32 lg:w-36 h-auto opacity-80 pointer-events-none"
         />

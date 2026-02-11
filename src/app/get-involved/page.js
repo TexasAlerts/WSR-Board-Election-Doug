@@ -6,6 +6,26 @@ export const metadata = {
   description:
     'Volunteer, host an event, request a yard sign, or endorse Doug Charles for Town of Prosper Town Council Place 5. Every action makes a difference.',
   alternates: { canonical: '/get-involved' },
+  openGraph: {
+    title: 'Get Involved - Doug Charles for Prosper Town Council',
+    description: 'Volunteer, host an event, request a yard sign, or endorse Doug Charles. Every action makes a difference in bringing Common Sense leadership to Prosper.',
+    url: 'https://www.dougcharles.com/get-involved',
+    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    locale: 'en_US',
+    type: 'website',
+    images: [{
+      url: 'https://www.dougcharles.com/campaign-preview.png',
+      width: 1200,
+      height: 630,
+      alt: 'Get Involved with Doug Charles Campaign'
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Get Involved - Doug Charles for Prosper',
+    description: 'Volunteer, host an event, request a yard sign, or endorse Doug Charles for Town Council.',
+    images: ['https://www.dougcharles.com/campaign-preview.png'],
+  },
 };
 
 export default function GetInvolvedPage() {
@@ -23,6 +43,7 @@ export default function GetInvolvedPage() {
           aria-hidden="true"
           width={96}
           height={64}
+          sizes="(max-width: 640px) 80px, (max-width: 768px) 112px, (max-width: 1024px) 128px, 144px"
           className="absolute top-4 right-4 w-20 sm:w-28 md:w-32 lg:w-36 h-auto opacity-80 pointer-events-none"
         />
         <div className="relative z-10">

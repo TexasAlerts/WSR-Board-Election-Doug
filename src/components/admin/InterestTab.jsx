@@ -87,14 +87,14 @@ export default function InterestTab({
                       <div className="text-sm">{i.email}</div>
                       {i.phone && <div className="text-sm text-gray-700">{i.phone}</div>}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-600 max-w-xs truncate">
-                      {i.message || '-'}
+                    <td className="px-4 py-3 text-sm text-gray-600 max-w-xs">
+                      <div className="line-clamp-2">{i.message || '-'}</div>
                     </td>
                     <td className="px-4 py-3 text-xs text-gray-700">{formatDate(i.created_at)}</td>
                     <td className="px-4 py-3">
                       <button
                         onClick={() => handleDeleteInterest(i.id)}
-                        className="text-red-600 hover:text-red-800 p-2"
+                        className="text-red-600 hover:text-red-800 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
                         title="Delete"
                         aria-label={`Delete ${i.name}'s interest record`}
                       >

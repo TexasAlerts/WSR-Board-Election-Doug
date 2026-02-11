@@ -48,6 +48,7 @@ export default function WhyPage() {
           alt=""
           aria-hidden="true"
           width={96}
+          sizes="(max-width: 640px) 80px, (max-width: 768px) 112px, (max-width: 1024px) 128px, 144px"
           height={64}
           className="absolute top-4 right-4 w-20 sm:w-28 md:w-32 lg:w-36 h-auto opacity-80 pointer-events-none"
         />

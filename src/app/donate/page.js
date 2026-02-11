@@ -6,6 +6,26 @@ export const metadata = {
   description:
     'Support Doug Charles for Town of Prosper Town Council Place 5. Your contribution helps bring Common Sense leadership to ALL of Prosper.',
   alternates: { canonical: '/donate' },
+  openGraph: {
+    title: 'Support the Campaign - Doug Charles for Prosper',
+    description: 'Your contribution helps us reach every voter in Prosper with a message of Common Sense leadership for ALL of Prosper.',
+    url: 'https://www.dougcharles.com/donate',
+    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    locale: 'en_US',
+    type: 'website',
+    images: [{
+      url: 'https://www.dougcharles.com/campaign-preview.png',
+      width: 1200,
+      height: 630,
+      alt: 'Support Doug Charles for Prosper Town Council'
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Support the Campaign - Doug Charles for Prosper',
+    description: 'Your contribution helps bring Common Sense leadership to ALL of Prosper.',
+    images: ['https://www.dougcharles.com/campaign-preview.png'],
+  },
 };
 import DonateDynamic from '../../components/DonateDynamic';
 
@@ -28,6 +48,7 @@ export default function DonatePage() {
           aria-hidden="true"
           width={96}
           height={64}
+          sizes="(max-width: 640px) 80px, (max-width: 768px) 112px, (max-width: 1024px) 128px, 144px"
           className="absolute top-4 right-4 w-20 sm:w-28 md:w-32 lg:w-36 h-auto opacity-80 pointer-events-none"
         />
         <div className="relative z-10">

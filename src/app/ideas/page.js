@@ -6,10 +6,29 @@ import { getSupabase } from '../../lib/supabase';
 export const metadata = {
   title: 'Community Ideas - Doug Charles for Prosper Town Council',
   description:
-    'Share your ideas for making Prosper better. Submit suggestions, vote on community proposals, and help shape our town\u2019s future.',
+    'Share your ideas for making Prosper better. Submit suggestions, vote on community proposals, and help shape our town\'s future.',
   alternates: { canonical: '/ideas' },
+  openGraph: {
+    title: 'Community Ideas - Doug Charles for Prosper Town Council',
+    description: 'Share your ideas for making Prosper better. Submit suggestions, vote on community proposals, and help shape our town\'s future.',
+    url: 'https://www.dougcharles.com/ideas',
+    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    locale: 'en_US',
+    type: 'website',
+    images: [{
+      url: 'https://www.dougcharles.com/campaign-preview.png',
+      width: 1200,
+      height: 630,
+      alt: 'Community Ideas - Doug Charles Campaign'
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Community Ideas - Doug Charles for Prosper Town Council',
+    description: 'Share your ideas for making Prosper better. Vote on community proposals.',
+    images: ['https://www.dougcharles.com/campaign-preview.png'],
+  },
 };
-
 // Enable ISR with 60 second revalidation for fresh ideas data
 export const revalidate = 60;
 

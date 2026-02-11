@@ -1,11 +1,76 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import Script from 'next/script';
 import { Ear, ClipboardList, ShieldCheck } from 'lucide-react';
 import HomeServer from '../components/HomeServer';
 
 export default function Home() {
+  // Organization Schema
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Doug Charles for Town of Prosper Town Council Place 5',
+    url: 'https://www.dougcharles.com',
+    logo: 'https://www.dougcharles.com/campaign-logo.webp',
+    description: 'Campaign for Doug Charles running for Prosper Town Council Place 5',
+    foundingDate: '2025',
+    sameAs: [],
+  };
+
+  // Person Schema
+  const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Doug Charles',
+    url: 'https://www.dougcharles.com/about',
+    jobTitle: 'Candidate for Prosper Town Council Place 5',
+    description: '20-year Prosper resident, former Planning & Zoning Commissioner',
+    affiliation: {
+      '@type': 'Organization',
+      name: 'Doug Charles for Town of Prosper Town Council Place 5',
+    },
+  };
+
+  // Election Event Schema
+  const electionEventSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: 'Prosper Town Council Place 5 Election',
+    startDate: '2026-05-02',
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: {
+      '@type': 'Place',
+      name: 'Town of Prosper',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Prosper',
+        addressRegion: 'TX',
+        addressCountry: 'US',
+      },
+    },
+    description: 'Town Council Place 5 election for the Town of Prosper, Texas',
+  };
+
   return (
     <div className="space-y-0">
+      {/* JSON-LD Structured Data */}
+      <Script
+        id="organization-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <Script
+        id="person-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
+      <Script
+        id="election-event-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(electionEventSchema) }}
+      />
+
       {/* Hero Section */}
       <section className="hero-gradient text-center py-10 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
