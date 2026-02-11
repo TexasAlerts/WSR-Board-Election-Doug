@@ -245,102 +245,58 @@ export default function PrioritiesPage() {
               <div className="space-y-4 text-gray-700 leading-relaxed">
                 <p>
                   Prosper ranks{' '}
-                  <strong className="text-prosper-red">
-                    #8 among the wealthiest zip codes in Texas
-                  </strong>{' '}
-                  (Source: US Census). Our Tollway corridor and downtown should reflect that—not strip
-                  malls and fast food chains.
-                </p>
-                <p>
-                  We have a <strong className="text-prosper-red">once-in-a-generation opportunity</strong>.
+                  <strong className="text-prosper-red">#8 among the wealthiest zip codes in Texas</strong>.
                   With The Fields, PGA, and Universal Theme Park bringing{' '}
-                  <strong className="text-navy">millions of visitors right next door</strong>, Prosper
-                  can be their <strong className="text-prosper-red">destination of choice</strong>—or
-                  we can watch them drive past us to spend their money elsewhere.
+                  <strong className="text-navy">millions of visitors to our doorstep</strong>, we have a{' '}
+                  <strong className="text-prosper-red">once-in-a-generation opportunity</strong> to become
+                  their <strong className="text-prosper-red">destination of choice</strong>—not just
+                  another drive-through.
                 </p>
                 <p>
                   <strong className="text-navy">
-                    Town Council must partner with the Prosper Chamber of Commerce, Prosper Economic
-                    Development Committee, and community leaders
+                    Town Council must partner with the Chamber of Commerce, Economic Development Committee,
+                    and business leaders
                   </strong>{' '}
-                  to create a bold vision:
+                  to create a bold vision for:
                 </p>
                 <ul className="custom-list space-y-3 sm:space-y-2 pl-2 sm:pl-4">
                   <li>
                     <span className="custom-bullet text-prosper-red font-bold" aria-hidden="true">•</span>
                     <span>
-                      A <strong className="text-prosper-red">truly destinational downtown</strong> that draws both residents and
-                      visitors
+                      A <strong className="text-prosper-red">destinational downtown</strong> that draws
+                      residents and visitors
                     </span>
                   </li>
                   <li>
                     <span className="custom-bullet text-prosper-red font-bold" aria-hidden="true">•</span>
                     <span>
-                      Bold <strong className="text-navy">mixed-use commercial projects</strong> that capture tax dollars from
-                      regional attractions
+                      <strong className="text-navy">Mixed-use commercial developments</strong> (retail,
+                      dining, office—<strong className="text-prosper-red">NOT apartments</strong>) that
+                      capture regional spending
                     </span>
                   </li>
                   <li>
                     <span className="custom-bullet text-prosper-red font-bold" aria-hidden="true">•</span>
                     <span>
-                      An environment where businesses choose to{' '}
-                      <strong className="text-navy">plant headquarters here</strong>—creating{' '}
-                      <strong className="text-prosper-red">jobs of tomorrow, not just big box retail</strong>
+                      An environment where companies{' '}
+                      <strong className="text-navy">plant headquarters and create careers</strong>—not just
+                      retail jobs
                     </span>
                   </li>
                   <li>
                     <span className="custom-bullet text-prosper-red font-bold" aria-hidden="true">•</span>
                     <span>
-                      A place where Prosper residents can{' '}
-                      <strong className="text-prosper-red">live, work, play, AND shop</strong>—without leaving town
+                      A community where residents can{' '}
+                      <strong className="text-prosper-red">live, work, play, and shop</strong>—without
+                      leaving town
                     </span>
                   </li>
                 </ul>
-                <p>
-                  We have the tools, the talent, and the{' '}
-                  <strong className="text-prosper-red">&apos;Small Town, Big Heart&apos; attitude</strong> to become the
-                  premier community of choice. But that requires:
-                </p>
-                <ul className="custom-list space-y-3 sm:space-y-2 pl-2 sm:pl-4">
-                  <li>
-                    <span className="custom-bullet text-navy font-bold" aria-hidden="true">✓</span>
-                    <span>
-                      <strong>Proactive partnership</strong> between Town Council, EDC, and Chamber—not
-                      working in silos
-                    </span>
-                  </li>
-                  <li>
-                    <span className="custom-bullet text-navy font-bold" aria-hidden="true">✓</span>
-                    <span>
-                      <strong>Development vision that attracts investment</strong>, not reactive
-                      approvals
-                    </span>
-                  </li>
-                  <li>
-                    <span className="custom-bullet text-navy font-bold" aria-hidden="true">✓</span>
-                    <span>
-                      <strong>Streamlined processes</strong> so businesses WANT to invest here
-                    </span>
-                  </li>
-                  <li>
-                    <span className="custom-bullet text-navy font-bold" aria-hidden="true">✓</span>
-                    <span>
-                      <strong>Commercial growth that protects residential taxpayers</strong> from
-                      carrying the full burden
-                    </span>
-                  </li>
-                </ul>
-                <p className="font-semibold text-navy">
+                <p className="font-semibold text-navy pt-2">
                   Every dollar of commercial property tax is a dollar homeowners don&apos;t pay. And
                   every destination we create is a reason visitors become residents.
                 </p>
               </div>
-              <Link
-                href="/why"
-                className="text-navy text-sm font-medium hover:underline mt-4 inline-block"
-              >
-                Learn why Doug is running →
-              </Link>
             </div>
           </div>
         </div>
