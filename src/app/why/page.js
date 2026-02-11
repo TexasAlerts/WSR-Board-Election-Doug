@@ -68,10 +68,10 @@ export default function WhyPage() {
         <div className="max-w-3xl mx-auto">
           <div className="card text-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-navy mb-4">
-              Town Council isn't about party labels.
+              This isn't about insiders, power players, or which neighborhood you're from.
             </h2>
             <p className="text-lg text-gray-700 leading-relaxed mb-4">
-              It's about <strong className="text-navy">potholes, parks, and planning</strong>. It's
+              It's about <strong className="text-navy">potholes, roadways, parks, fiscal policies, and public safety</strong>. It's
               about whether the roads work, growth happens thoughtfully, and{' '}
               <strong className="text-prosper-red">Prosper keeps its character</strong>.
             </p>
