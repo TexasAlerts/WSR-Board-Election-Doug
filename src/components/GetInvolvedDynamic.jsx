@@ -177,8 +177,9 @@ function GetInvolvedDynamicContent() {
                 <a
                   href={`mailto:?subject=${encodeURIComponent(SHARE_SUBJECT)}&body=${encodeURIComponent(SHARE_MESSAGE)}`}
                   className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-navy text-white font-semibold rounded-xl hover:bg-navy/90 active:scale-[0.98] transition-all min-h-[56px] shadow-md"
+                  aria-label="Share campaign via email - opens your email app"
                 >
-                  <Mail className="w-5 h-5" />
+                  <Mail className="w-5 h-5" aria-hidden="true" />
                   Share via Email
                 </a>
                 <p className="text-xs sm:text-sm text-gray-700 mt-2 sm:mt-3">
@@ -191,8 +192,9 @@ function GetInvolvedDynamicContent() {
                 <a
                   href={`sms:?&body=${encodeURIComponent(SHARE_MESSAGE)}`}
                   className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-prosper-red text-white font-semibold rounded-xl hover:bg-prosper-red/90 active:scale-[0.98] transition-all min-h-[56px] shadow-md"
+                  aria-label="Share campaign via text message - opens your messaging app"
                 >
-                  <MessageCircle className="w-5 h-5" />
+                  <MessageCircle className="w-5 h-5" aria-hidden="true" />
                   Share via Text
                 </a>
                 <p className="text-xs sm:text-sm text-gray-700 mt-2 sm:mt-3">

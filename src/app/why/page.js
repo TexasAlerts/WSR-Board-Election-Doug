@@ -173,7 +173,7 @@ export default function WhyPage() {
               The Fields, PGA, and Universal Theme Park are bringing{' '}
               <strong className="text-navy">millions of visitors to our doorstep</strong>. That&apos;s
               not a threat to "Small Town, Big Heart"—it&apos;s an{' '}
-              <strong className="text-prosper-red">opportunity to build something special</strong> IF we
+              <strong className="text-prosper-red">opportunity to build something special</strong> if we
               act with vision and urgency.
             </p>
             <p>
@@ -183,7 +183,7 @@ export default function WhyPage() {
               business leaders to:
             </p>
 
-            <ul className="space-y-3 pl-6 list-none">
+            <ul className="space-y-3 pl-2 sm:pl-4 list-none" role="list">
               <li className="flex items-start gap-3">
                 <span className="text-prosper-red font-bold text-xl leading-none mt-1">•</span>
                 <span>

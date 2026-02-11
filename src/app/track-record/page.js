@@ -358,7 +358,7 @@ export default function TrackRecordPage() {
                     </a>
                   </p>
                   <p className="text-navy font-semibold text-sm">
-                    Voters told us: plan smarter, communicate better, build it right the first time.
+                    Voters told us: plan smarter, communicate better, and build it right the first time.
                     I&apos;m listening.
                   </p>
                 </div>

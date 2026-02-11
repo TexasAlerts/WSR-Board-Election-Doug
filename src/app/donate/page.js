@@ -72,8 +72,8 @@ export default function DonatePage() {
               <h3 className="text-xl font-bold text-navy mb-3">Voter Outreach</h3>
               <p className="text-gray-600">
                 Reach every voter with the message that Prosper deserves{' '}
-                <strong className="text-navy">visionary, fiscally responsible leadership</strong> through
-                mailers, door-to-door, and digital campaigns.
+                <strong className="text-navy">visionary, fiscally responsible leadership</strong>—through
+                mailers, door-to-door canvassing, and digital campaigns.
               </p>
             </div>
 

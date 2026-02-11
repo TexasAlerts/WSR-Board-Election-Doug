@@ -288,7 +288,7 @@ export default function GetInvolvedForm({
           <button
             type="submit"
             disabled={isSubmitting || !isFormValid}
-            className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn-primary w-full disabled:bg-gray-400 disabled:text-gray-700 disabled:cursor-not-allowed disabled:border-gray-400"
           >
             {isSubmitting ? 'Submitting...' : getSubmitLabel()}
           </button>

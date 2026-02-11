@@ -236,7 +236,7 @@ export default function AboutPage() {
               define our community for decades:
             </p>
 
-            <ul className="space-y-3 pl-6 list-none">
+            <ul className="space-y-3 pl-4 sm:pl-6 list-none" role="list">
               <li className="flex items-start gap-3">
                 <span className="text-prosper-red font-bold text-xl leading-none mt-1">•</span>
                 <span>The Tollway corridor development strategy</span>
@@ -259,7 +259,7 @@ export default function AboutPage() {
 
             <p className="font-semibold text-navy">These decisions need someone who:</p>
 
-            <ul className="space-y-3 pl-6 list-none">
+            <ul className="space-y-3 pl-4 sm:pl-6 list-none" role="list">
               <li className="flex items-start gap-3">
                 <span className="text-navy font-bold text-lg leading-none mt-0.5">✓</span>
                 <span>

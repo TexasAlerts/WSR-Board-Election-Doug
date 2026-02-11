@@ -138,8 +138,8 @@ export default function Home() {
                 for where Prosper is headed, not where it&apos;s been.
               </p>
               <p className="text-base sm:text-lg">
-                Prosper has the <strong className="text-navy">tools, the talent, and the Small Town,
-                Big Heart attitude</strong> to be the premier community where residents{' '}
+                Prosper has the <strong className="text-navy">tools, the talent, and the &apos;Small Town,
+                Big Heart&apos; attitude</strong> to be the premier community where residents{' '}
                 <strong className="text-prosper-red">live, work, play, and shop</strong>—and where
                 our neighbors choose to visit.
               </p>

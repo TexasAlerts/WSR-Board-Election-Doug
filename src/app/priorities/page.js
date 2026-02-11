@@ -265,7 +265,7 @@ export default function PrioritiesPage() {
                   </strong>{' '}
                   to create a bold vision:
                 </p>
-                <ul className="space-y-2 pl-4 list-none">
+                <ul className="space-y-3 sm:space-y-2 pl-2 sm:pl-4 list-none" role="list">
                   <li className="flex items-start gap-2">
                     <span className="text-prosper-red font-bold">•</span>
                     <span>
@@ -301,7 +301,7 @@ export default function PrioritiesPage() {
                   <strong className="text-navy">"Small Town, Big Heart" attitude</strong> to become the
                   premier community of choice. But that requires:
                 </p>
-                <ul className="space-y-2 pl-4 list-none">
+                <ul className="space-y-3 sm:space-y-2 pl-2 sm:pl-4 list-none" role="list">
                   <li className="flex items-start gap-2">
                     <span className="text-navy font-bold">✓</span>
                     <span>
