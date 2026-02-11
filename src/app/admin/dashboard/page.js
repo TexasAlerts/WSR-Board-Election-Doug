@@ -299,6 +299,7 @@ export default function AdminDashboard() {
       }
     };
     initializeDashboard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]); // Intentionally not including loadData to prevent re-initialization
 
   // Reload data when filters change
