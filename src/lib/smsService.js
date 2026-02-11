@@ -76,7 +76,7 @@ export async function sendSMS(to, message) {
  * @param {string} code - 6-digit verification code
  */
 export async function sendVerificationSMS(phone, code) {
-  const message = `Your Doug Charles for Prosper verification code is: ${code}\n\nThis code expires in 10 minutes.`;
+  const message = `Your Doug Charles campaign verification code is: ${code}. Valid for 10 minutes. Msg&data rates may apply. Reply STOP to end, HELP for help.`;
   return sendSMS(phone, message);
 }
 

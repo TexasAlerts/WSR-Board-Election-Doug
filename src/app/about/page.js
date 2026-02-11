@@ -88,9 +88,13 @@ export default function AboutPage() {
                   family. Back then, everybody knew your name,{' '}
                   <strong className="text-navy">Friday night football</strong> was the center of
                   town, and <strong className="text-prosper-red">Small Town, Big Heart</strong>{' '}
-                  wasn&apos;t just a slogan—it was how we lived. We&apos;ve grown fast, and
-                  somewhere along the way, we started losing that feel. I&apos;m running to make
-                  sure we <strong className="text-navy">get it back</strong>.
+                  wasn&apos;t just a slogan—it was how we lived. We&apos;ve grown fast, and with
+                  that growth comes important choices about our future. I&apos;m running to ensure
+                  Prosper remains a place where families thrive, local businesses flourish, and the
+                  values that brought us all here—<strong className="text-navy">great schools</strong>
+                  , <strong className="text-navy">safe neighborhoods</strong>, and{' '}
+                  <strong className="text-navy">genuine community</strong>—continue to define who we
+                  are.
                 </p>
                 <p>
                   I&apos;ve served on the{' '}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useMemo } from 'react';
 import { validatePhoneNumber } from '../lib/phoneValidation';
 
 export default function GetInvolvedForm({
@@ -11,6 +12,66 @@ export default function GetInvolvedForm({
   onClose,
   isSubmitting,
 }) {
+  const [validationErrors, setValidationErrors] = useState({
+    email: '',
+    phone: '',
+  });
+
+  const validateEmail = (email) => {
+    if (!email) {
+      setValidationErrors((prev) => ({ ...prev, email: '' }));
+      return true;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setValidationErrors((prev) => ({ ...prev, email: 'Invalid email format' }));
+      return false;
+    }
+
+    setValidationErrors((prev) => ({ ...prev, email: '' }));
+    return true;
+  };
+
+  const validatePhone = (phone) => {
+    if (!phone) {
+      setValidationErrors((prev) => ({ ...prev, phone: '' }));
+      return true;
+    }
+
+    const validation = validatePhoneNumber(phone);
+    if (!validation.valid) {
+      setValidationErrors((prev) => ({ ...prev, phone: validation.error || 'Invalid phone number' }));
+      return false;
+    }
+
+    setValidationErrors((prev) => ({ ...prev, phone: '' }));
+    return true;
+  };
+
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setForm({ ...form, email: newEmail });
+    validateEmail(newEmail);
+  };
+
+  const handlePhoneChange = (e) => {
+    const newPhone = e.target.value;
+    setForm({ ...form, phone: newPhone });
+    validatePhone(newPhone);
+  };
+
+  // Memoize form validity to prevent infinite re-renders
+  const isFormValid = useMemo(() => {
+    const nameValid = form.name.trim().length > 0;
+    const emailValid = form.email.trim().length > 0 && !validationErrors.email;
+    const phoneValid = selectedAction === 'host_event'
+      ? form.phone.trim().length > 0 && !validationErrors.phone
+      : !validationErrors.phone;
+
+    return nameValid && emailValid && phoneValid;
+  }, [form.name, form.email, form.phone, validationErrors, selectedAction]);
+
   const getFormTitle = () => {
     const actionTitles = {
       updates: 'Stay Informed',
@@ -99,11 +160,20 @@ export default function GetInvolvedForm({
               type="email"
               required
               aria-required="true"
+              aria-invalid={!!validationErrors.email}
+              aria-describedby={validationErrors.email ? 'email-error' : undefined}
               value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="form-input"
+              onChange={handleEmailChange}
+              className={`form-input ${
+                validationErrors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
+              }`}
               autoComplete="email"
             />
+            {validationErrors.email && (
+              <p id="email-error" className="mt-1 text-sm text-red-600" role="alert">
+                {validationErrors.email}
+              </p>
+            )}
           </div>
 
           <div>
@@ -115,16 +185,25 @@ export default function GetInvolvedForm({
               type="tel"
               required={selectedAction === 'host_event'}
               aria-required={selectedAction === 'host_event' ? 'true' : undefined}
+              aria-invalid={!!validationErrors.phone}
+              aria-describedby={validationErrors.phone ? 'phone-error' : 'phone-hint'}
               value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
-              className="form-input"
+              onChange={handlePhoneChange}
+              className={`form-input ${
+                validationErrors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
+              }`}
               placeholder="(555) 555-5555"
-              aria-describedby="phone-hint"
               autoComplete="tel"
             />
-            <p id="phone-hint" className="text-sm text-gray-700 mt-1">
-              US phone numbers only
-            </p>
+            {validationErrors.phone ? (
+              <p id="phone-error" className="mt-1 text-sm text-red-600" role="alert">
+                {validationErrors.phone}
+              </p>
+            ) : (
+              <p id="phone-hint" className="text-sm text-gray-700 mt-1">
+                US phone numbers only
+              </p>
+            )}
           </div>
 
           {selectedAction === 'yard_sign' && (
@@ -208,7 +287,7 @@ export default function GetInvolvedForm({
 
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !isFormValid}
             className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? 'Submitting...' : getSubmitLabel()}

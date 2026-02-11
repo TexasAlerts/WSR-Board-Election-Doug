@@ -133,8 +133,14 @@ async function postHandler(request) {
         await sendEmail(
           data.email,
           'Your idea has been published',
-          `Hi ${data.name || ''},\n\nYour idea "${data.title}" has been published: ${site}/ideas${responseText}\n\nThank you for sharing!\n\n--\nDoug Charles`
-        ).catch(() => {});
+          `Hi ${data.name || ''},\n\nYour idea "${data.title}" has been published: ${site}/ideas${responseText}\n\nThank you for sharing!\n\n--\nDoug Charles\n\n---\nPaid for by Charles for Prosper. Doug Charles, Treasurer.`
+        ).catch((err) => {
+          logError({
+            errorType: ErrorTypes.EMAIL_DELIVERY,
+            errorMessage: `Failed to send idea published email: ${err.message}`,
+            userEmail: data.email,
+          });
+        });
       }
     } else if (action === 'reject') {
       const { data, error } = await supabase
@@ -182,8 +188,14 @@ async function postHandler(request) {
         await sendEmail(
           data.email,
           'Update on your idea submission',
-          `Hi ${data.name || ''},\n\nThank you for submitting your idea "${data.title}". Unfortunately, we are unable to publish it at this time.${reasonText}\n\nIf you have questions, please feel free to reach out.\n\n--\nDoug Charles`
-        ).catch(() => {});
+          `Hi ${data.name || ''},\n\nThank you for submitting your idea "${data.title}". Unfortunately, we are unable to publish it at this time.${reasonText}\n\nFeel free to revise and resubmit, or reach out if you have questions.\n\nQuestions? Email hello@dougcharles.com or visit ${site}/contact\n\n--\nDoug Charles\n\n---\nPaid for by Charles for Prosper. Doug Charles, Treasurer.`
+        ).catch((err) => {
+          logError({
+            errorType: ErrorTypes.EMAIL_DELIVERY,
+            errorMessage: `Failed to send idea rejection email: ${err.message}`,
+            userEmail: data.email,
+          });
+        });
       }
     } else if (action === 'respond') {
       // Add admin response without changing status
@@ -202,8 +214,14 @@ async function postHandler(request) {
         await sendEmail(
           data.email,
           'Response to your idea',
-          `Hi ${data.name || ''},\n\nDoug has responded to your idea "${data.title}":\n\n${admin_response}\n\nView your idea: ${site}/ideas\n\n--\nDoug Charles`
-        ).catch(() => {});
+          `Hi ${data.name || ''},\n\nDoug has responded to your idea "${data.title}":\n\n${admin_response}\n\nView your idea: ${site}/ideas\n\n--\nDoug Charles\n\n---\nPaid for by Charles for Prosper. Doug Charles, Treasurer.`
+        ).catch((err) => {
+          logError({
+            errorType: ErrorTypes.EMAIL_DELIVERY,
+            errorMessage: `Failed to send idea response email: ${err.message}`,
+            userEmail: data.email,
+          });
+        });
       }
     } else {
       return NextResponse.json({ ok: false, error: 'Invalid action' }, { status: 400 });

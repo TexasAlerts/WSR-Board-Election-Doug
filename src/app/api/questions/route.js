@@ -102,12 +102,19 @@ export async function POST(req) {
       responseStatus: 201,
     });
 
+    const site = process.env.SITE_URL || '';
     await Promise.all([
       sendEmail(
         email,
         'Thanks for your question',
-        `Hi ${name},\n\nThanks for your question:\n${question}\n\nWe will follow up once it has been answered.\n\n--\nDoug Charles`
-      ).catch(() => {}),
+        `Hi ${name},\n\nThanks for your question:\n${question}\n\nWe will follow up once it has been answered.\n\nView your submission: ${site}/qna\n\n--\nDoug Charles\n\n---\nPaid for by Charles for Prosper. Doug Charles, Treasurer.`
+      ).catch((err) => {
+        logError({
+          errorType: ErrorTypes.EMAIL_DELIVERY,
+          errorMessage: `Failed to send question confirmation email: ${err.message}`,
+          userEmail: email,
+        });
+      }),
       sendNotificationEmail(
         'New question submitted',
         `Name: ${name}\nEmail: ${email}\nQuestion: ${question}`

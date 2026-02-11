@@ -237,12 +237,19 @@ async function postHandler(request) {
     });
 
     // Send emails
+    const site = process.env.SITE_URL || '';
     await Promise.all([
       sendEmail(
         email,
         'Thanks for your idea',
-        `Hi ${name},\n\nThank you for sharing your idea: "${title}"\n\nWe'll review it and get back to you soon.\n\n--\nDoug Charles`
-      ).catch(() => {}),
+        `Hi ${name},\n\nThank you for sharing your idea: "${title}"\n\nWe'll review it and get back to you soon.\n\nView your submission: ${site}/ideas\n\n--\nDoug Charles\n\n---\nPaid for by Charles for Prosper. Doug Charles, Treasurer.`
+      ).catch((err) => {
+        logError({
+          errorType: ErrorTypes.EMAIL_DELIVERY,
+          errorMessage: `Failed to send idea confirmation email: ${err.message}`,
+          userEmail: email,
+        });
+      }),
       sendNotificationEmail(
         'New idea submitted',
         `Name: ${name}\nEmail: ${email}\nCategory: ${category}\nTitle: ${title}\nContent: ${content}`

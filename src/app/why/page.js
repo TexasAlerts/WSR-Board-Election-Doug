@@ -69,7 +69,9 @@ export default function WhyPage() {
             <p>
               Prosper is <strong className="text-navy">growing fast</strong>. That's not necessarily
               bad—but it means we need to be{' '}
-              <strong className="text-navy">thoughtful about the decisions ahead</strong>.
+              <strong className="text-navy">thoughtful about the decisions ahead</strong>.{' '}
+              <strong className="text-prosper-red">Growth brings opportunity, but also choices</strong>
+              —choices about what kind of community we want to be.
             </p>
             <p>
               I've been{' '}

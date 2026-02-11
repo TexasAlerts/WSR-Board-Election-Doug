@@ -134,8 +134,14 @@ export async function POST(req) {
       sendEmail(
         email,
         'Thanks for your endorsement',
-        `Hi ${name},\n\nThank you for endorsing Doug.\n${message ? `Your message: ${message}\n\n` : ''}We will notify you once it is published.\n\n--\nDoug Charles`
-      ).catch(() => {}),
+        `Hi ${name},\n\nThank you for endorsing Doug.\n${message ? `Your message: ${message}\n\n` : ''}We will notify you once it is published.\n\nView your submission: ${process.env.SITE_URL || 'https://www.dougcharles.com'}/endorsements\n\n--\nDoug Charles\n\n---\nPaid for by Charles for Prosper. Doug Charles, Treasurer.`
+      ).catch((err) => {
+        logError({
+          errorType: ErrorTypes.EMAIL_DELIVERY,
+          errorMessage: `Failed to send endorsement confirmation: ${err.message}`,
+          userEmail: email,
+        });
+      }),
       sendNotificationEmail(
         'New endorsement submitted',
         `Name: ${name}\nEmail: ${email}\nMessage: ${message || ''}`
