@@ -225,6 +225,85 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Why This Moment Matters */}
+      <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="section-title text-center mb-8">Why This Moment Matters</h2>
+
+          <div className="space-y-6 text-base sm:text-lg text-gray-700 leading-relaxed">
+            <p>
+              Prosper is making decisions <strong className="text-navy">RIGHT NOW</strong> that will
+              define our community for decades:
+            </p>
+
+            <ul className="space-y-3 pl-6 list-none">
+              <li className="flex items-start gap-3">
+                <span className="text-prosper-red font-bold text-xl leading-none mt-1">•</span>
+                <span>The Tollway corridor development strategy</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-prosper-red font-bold text-xl leading-none mt-1">•</span>
+                <span>Downtown revitalization implementation</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-prosper-red font-bold text-xl leading-none mt-1">•</span>
+                <span>
+                  Commercial development that either enhances quality of life or degrades it
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-prosper-red font-bold text-xl leading-none mt-1">•</span>
+                <span>Infrastructure investments that either solve problems or create new ones</span>
+              </li>
+            </ul>
+
+            <p className="font-semibold text-navy">These decisions need someone who:</p>
+
+            <ul className="space-y-3 pl-6 list-none">
+              <li className="flex items-start gap-3">
+                <span className="text-navy font-bold text-lg leading-none mt-0.5">✓</span>
+                <span>
+                  Knows how to <strong className="text-navy">read development applications</strong> and
+                  ask the right questions
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-navy font-bold text-lg leading-none mt-0.5">✓</span>
+                <span>
+                  Understands <strong className="text-navy">fiscal responsibility</strong> from bond
+                  committees and budget fights
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-navy font-bold text-lg leading-none mt-0.5">✓</span>
+                <span>
+                  Has <strong className="text-navy">organized residents and delivered results</strong>
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-navy font-bold text-lg leading-none mt-0.5">✓</span>
+                <span>
+                  Brings professional experience{' '}
+                  <strong className="text-navy">solving complex problems</strong> and managing large
+                  budgets
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-navy font-bold text-lg leading-none mt-0.5">✓</span>
+                <span>
+                  Will <strong className="text-navy">make Prosper easier to do business in</strong>{' '}
+                  while protecting what makes us special
+                </span>
+              </li>
+            </ul>
+
+            <p className="text-xl font-semibold text-navy text-center mt-8">
+              That&apos;s the leadership I&apos;m ready to bring to Town Council.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Links to Other Pages */}
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">

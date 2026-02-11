@@ -239,26 +239,136 @@ export default function PrioritiesPage() {
             </div>
 
             <div className="card">
-              <h3 className="text-xl font-bold text-navy mb-4">Strategic Commercial Development</h3>
-              <p className="text-gray-700 leading-relaxed">
-                Prosper ranks{' '}
-                <strong className="text-prosper-red">
-                  #8 among the wealthiest zip codes in Texas
-                </strong>{' '}
-                (Source: US Census). Our tollway corridor and remaining commercial development
-                should reflect that—not strip malls and fast food chains. With{' '}
-                <strong className="text-navy">The Fields, PGA, and Universal Theme Park</strong>{' '}
-                right next door, let's build a commercial base that draws people to{' '}
-                <strong className="text-navy">our downtown, our retail, our restaurants</strong>. By
-                creating the right environment for high-end commercial development, we can attract
-                jobs and destinations Prosper residents will enjoy.
-              </p>
+              <h3 className="text-xl font-bold text-navy mb-4">
+                Strategic Commercial Development: Prosper as a Destination, Not Just a Drive-Through
+              </h3>
+              <div className="space-y-4 text-gray-700 leading-relaxed">
+                <p>
+                  Prosper ranks{' '}
+                  <strong className="text-prosper-red">
+                    #8 among the wealthiest zip codes in Texas
+                  </strong>{' '}
+                  (Source: US Census). Our Tollway corridor and downtown should reflect that—not strip
+                  malls and fast food chains.
+                </p>
+                <p>
+                  We have a <strong className="text-navy">once-in-a-generation opportunity</strong>.
+                  With The Fields, PGA, and Universal Theme Park bringing{' '}
+                  <strong className="text-navy">millions of visitors right next door</strong>, Prosper
+                  can be their <strong className="text-prosper-red">destination of choice</strong>—or
+                  we can watch them drive past us to spend their money elsewhere.
+                </p>
+                <p>
+                  <strong className="text-navy">
+                    Town Council must partner with the Prosper Chamber of Commerce, Prosper Economic
+                    Development Committee, and community leaders
+                  </strong>{' '}
+                  to create a bold vision:
+                </p>
+                <ul className="space-y-2 pl-4 list-none">
+                  <li className="flex items-start gap-2">
+                    <span className="text-prosper-red font-bold">•</span>
+                    <span>
+                      A <strong>truly destinational downtown</strong> that draws both residents and
+                      visitors
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-prosper-red font-bold">•</span>
+                    <span>
+                      Bold <strong>mixed-use commercial projects</strong> that capture tax dollars from
+                      regional attractions
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-prosper-red font-bold">•</span>
+                    <span>
+                      An environment where businesses choose to{' '}
+                      <strong>plant headquarters here</strong>—creating{' '}
+                      <strong>jobs of tomorrow, not just big box retail</strong>
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-prosper-red font-bold">•</span>
+                    <span>
+                      A place where Prosper residents can{' '}
+                      <strong>live, work, play, AND shop</strong>—without leaving town
+                    </span>
+                  </li>
+                </ul>
+                <p>
+                  We have the tools, the talent, and the{' '}
+                  <strong className="text-navy">"Small Town, Big Heart" attitude</strong> to become the
+                  premier community of choice. But that requires:
+                </p>
+                <ul className="space-y-2 pl-4 list-none">
+                  <li className="flex items-start gap-2">
+                    <span className="text-navy font-bold">✓</span>
+                    <span>
+                      <strong>Proactive partnership</strong> between Town Council, EDC, and Chamber—not
+                      working in silos
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-navy font-bold">✓</span>
+                    <span>
+                      <strong>Development vision that attracts investment</strong>, not reactive
+                      approvals
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-navy font-bold">✓</span>
+                    <span>
+                      <strong>Streamlined processes</strong> so businesses WANT to invest here
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-navy font-bold">✓</span>
+                    <span>
+                      <strong>Commercial growth that protects residential taxpayers</strong> from
+                      carrying the full burden
+                    </span>
+                  </li>
+                </ul>
+                <p className="font-semibold text-navy">
+                  Every dollar of commercial property tax is a dollar homeowners don&apos;t pay. And
+                  every destination we create is a reason visitors become residents.
+                </p>
+              </div>
               <Link
                 href="/why"
-                className="text-navy text-sm font-medium hover:underline mt-3 inline-block"
+                className="text-navy text-sm font-medium hover:underline mt-4 inline-block"
               >
                 Learn why Doug is running →
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What's at Stake */}
+      <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center space-y-6">
+            <h2 className="text-3xl sm:text-4xl font-bold text-navy">
+              The Next Four Years Will Define Prosper for Decades
+            </h2>
+            <div className="space-y-4 text-base sm:text-lg text-gray-700 leading-relaxed">
+              <p>
+                The decisions made about the Tollway corridor, downtown revitalization, and remaining
+                commercial land will either{' '}
+                <strong className="text-navy">strengthen what makes Prosper special</strong>—or turn us
+                into just another suburb.
+              </p>
+              <p>
+                Voters sent a clear signal in November 2025:{' '}
+                <strong className="text-navy">YES to infrastructure and downtown investment</strong>.
+                NO to poor planning and undersized projects.
+              </p>
+              <p className="font-semibold text-navy text-lg sm:text-xl">
+                These decisions deserve experienced, thoughtful leadership from someone who listens to
+                residents, plans for the long term, and protects what makes Prosper home.
+              </p>
             </div>
           </div>
         </div>

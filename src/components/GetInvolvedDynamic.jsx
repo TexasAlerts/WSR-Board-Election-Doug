@@ -145,6 +145,21 @@ function GetInvolvedDynamicContent() {
         </div>
       </section>
 
+      {/* Why Your Support Matters */}
+      <section className="py-12 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-navy mb-4">
+            Why Your Support Matters
+          </h2>
+          <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
+            Local races are decided by a few hundred votes. Your volunteer hours, yard sign, or
+            donation can make the difference between{' '}
+            <strong className="text-navy">reactive leadership</strong> and{' '}
+            <strong className="text-prosper-red">visionary leadership</strong> for Prosper.
+          </p>
+        </div>
+      </section>
+
       {/* Spread the Word Section */}
       <section className="pb-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">

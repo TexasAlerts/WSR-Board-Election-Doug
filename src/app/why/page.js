@@ -67,19 +67,6 @@ export default function WhyPage() {
         <div className="max-w-3xl mx-auto">
           <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
             <p>
-              Prosper is <strong className="text-navy">growing fast</strong>. That's not necessarily
-              bad—but it means we need to be{' '}
-              <strong className="text-navy">thoughtful about the decisions ahead</strong>.{' '}
-              <strong className="text-prosper-red">Growth brings opportunity, but also choices</strong>
-              —choices about what kind of community we want to be.
-            </p>
-            <p>
-              I've been{' '}
-              <strong className="text-navy">in the room where these decisions get made</strong>.
-              I've read the development applications, asked the hard questions, and seen what
-              happens when we plan well—and when we don't.
-            </p>
-            <p>
               Prosper&apos;s explosive growth has brought{' '}
               <strong className="text-navy">thousands of new families</strong> who chose this
               community for the same reasons longtime residents love it. But as these families
@@ -87,6 +74,12 @@ export default function WhyPage() {
               neighborhoods, their roads, and their quality of life are being made{' '}
               <strong className="text-prosper-red">without their input</strong>. They don&apos;t
               have a representative voice at the table—and that needs to change.
+            </p>
+            <p>
+              I've been{' '}
+              <strong className="text-navy">in the room where these decisions get made</strong>.
+              I've read the development applications, asked the hard questions, and seen what
+              happens when we plan well—and when we don't.
             </p>
             <p>
               I&apos;m running to bring that{' '}
@@ -161,6 +154,92 @@ export default function WhyPage() {
                 <strong className="text-prosper-red">throughout my term</strong>.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The Vision Prosper Needs */}
+      <section className="priorities-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 md:py-20 relative">
+        <div className="absolute top-0 left-0 right-0 mx-auto w-16 h-1 accent-line-full"></div>
+        <div className="max-w-4xl mx-auto">
+          <h2 className="section-title text-center mb-8">The Vision Prosper Needs</h2>
+
+          <div className="space-y-6 text-base sm:text-lg text-gray-700 leading-relaxed">
+            <p>
+              Prosper needs more than good management—we need{' '}
+              <strong className="text-navy">visionary, collaborative leadership</strong>.
+            </p>
+            <p>
+              The Fields, PGA, and Universal Theme Park are bringing{' '}
+              <strong className="text-navy">millions of visitors to our doorstep</strong>. That&apos;s
+              not a threat to "Small Town, Big Heart"—it&apos;s an{' '}
+              <strong className="text-prosper-red">opportunity to build something special</strong> IF we
+              act with vision and urgency.
+            </p>
+            <p>
+              That means Town Council working{' '}
+              <strong className="text-navy">WITH the Prosper Chamber of Commerce</strong>,{' '}
+              <strong className="text-navy">Prosper Economic Development Committee</strong>, and
+              business leaders to:
+            </p>
+
+            <ul className="space-y-3 pl-6 list-none">
+              <li className="flex items-start gap-3">
+                <span className="text-prosper-red font-bold text-xl leading-none mt-1">•</span>
+                <span>
+                  Create a <strong className="text-navy">bold vision for destinational downtown</strong>{' '}
+                  that draws residents and visitors alike
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-prosper-red font-bold text-xl leading-none mt-1">•</span>
+                <span>
+                  Attract <strong className="text-navy">mixed-use commercial developments</strong> that
+                  capture regional spending
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-prosper-red font-bold text-xl leading-none mt-1">•</span>
+                <span>
+                  Build an environment where companies{' '}
+                  <strong className="text-navy">plant headquarters and create careers</strong>—not just
+                  retail jobs, but the <strong className="text-prosper-red">jobs of tomorrow</strong>
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-prosper-red font-bold text-xl leading-none mt-1">•</span>
+                <span>
+                  Make Prosper the place where residents{' '}
+                  <strong className="text-navy">live, work, play, and shop</strong>—without leaving town
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-prosper-red font-bold text-xl leading-none mt-1">•</span>
+                <span>
+                  Execute the <strong className="text-navy">Downtown Master Plan with urgency</strong>
+                  —voters approved $2.3M, now deliver results
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-prosper-red font-bold text-xl leading-none mt-1">•</span>
+                <span>
+                  Streamline approvals so businesses{' '}
+                  <strong className="text-navy">choose Prosper over our neighbors</strong>
+                </span>
+              </li>
+            </ul>
+
+            <p>
+              We have everything needed to become the{' '}
+              <strong className="text-prosper-red">premier community of choice</strong>—great schools,
+              strong property values, prime location, and Small Town, Big Heart character. We just need
+              leadership willing to partner, plan proactively, and{' '}
+              <strong className="text-navy">think bigger than the next subdivision approval</strong>.
+            </p>
+
+            <p className="text-xl font-semibold text-navy">
+              Our neighbors are landing billion-dollar destinations. Prosper can compete—and win.
+            </p>
           </div>
         </div>
       </section>

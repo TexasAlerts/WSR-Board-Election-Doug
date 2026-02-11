@@ -61,6 +61,27 @@ export default function TrackRecordPage() {
         </div>
       </section>
 
+      {/* Framing Section */}
+      <section className="py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-navy mb-6">
+            When Prosper Needs Results, Not Just Promises
+          </h2>
+          <div className="space-y-4 text-base sm:text-lg text-gray-700 leading-relaxed">
+            <p>
+              Over six years, I&apos;ve shown up—at council meetings, planning commission hearings,
+              bond committees, and neighborhood petition drives. I&apos;ve{' '}
+              <strong className="text-navy">asked the hard questions</strong>,{' '}
+              <strong className="text-navy">followed the money</strong>, and delivered results when it
+              mattered.
+            </p>
+            <p className="text-xl font-semibold text-navy">
+              This isn&apos;t about talking. It&apos;s about doing—and doing it right.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Proven Track Record */}
       <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
@@ -92,9 +113,12 @@ export default function TrackRecordPage() {
                     Planning & Zoning Commission voted{' '}
                     <strong className="text-navy">7-0 against</strong> the proposal.
                   </p>
-                  <p className="text-gray-600 italic text-sm">
+                  <p className="text-gray-600 italic text-sm mb-3">
                     "Thank you for being engaged and active in keeping Prosper the envy of the
                     area." — Prosper Town Council Member
+                  </p>
+                  <p className="text-navy font-semibold text-sm">
+                    Growth can happen thoughtfully when residents have a voice from the beginning.
                   </p>
                 </div>
               </div>
@@ -322,7 +346,7 @@ export default function TrackRecordPage() {
                     "You don't build small when you already know it's too small. That's not
                     progress, that's poor planning and lacks common sense!"
                   </p>
-                  <p className="text-gray-600 italic text-sm">
+                  <p className="text-gray-600 italic text-sm mb-3">
                     "They failed to communicate. They failed to engage." —{' '}
                     <a
                       href="https://www.dallasnews.com/opinion/commentary/2025/11/12/damm-far-north-suburbs-try-to-balance-growth-taxes/"
@@ -332,6 +356,10 @@ export default function TrackRecordPage() {
                     >
                       Dallas Morning News
                     </a>
+                  </p>
+                  <p className="text-navy font-semibold text-sm">
+                    Voters told us: plan smarter, communicate better, build it right the first time.
+                    I&apos;m listening.
                   </p>
                 </div>
               </div>
@@ -364,14 +392,20 @@ export default function TrackRecordPage() {
                     "Students already attend and have full access to Prosper ISD, yet property tax
                     revenue flows to Denton ISD, which educates none of these children."
                   </p>
-                  <a
-                    href="https://prosperisdpetition.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-navy font-medium hover:underline text-sm"
-                  >
-                    Track progress at prosperisdpetition.com →
-                  </a>
+                  <div className="space-y-2">
+                    <a
+                      href="https://prosperisdpetition.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-navy font-medium hover:underline text-sm inline-block"
+                    >
+                      Track progress at prosperisdpetition.com →
+                    </a>
+                    <p className="text-navy font-semibold text-sm">
+                      Commercial growth that pays for infrastructure instead of burdening
+                      homeowners—that&apos;s how we protect taxpayers while growing responsibly.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

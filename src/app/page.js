@@ -78,7 +78,8 @@ export default function Home() {
                 <div className="stat-number">P&Z</div>
                 <div className="stat-label">Planning & Zoning</div>
                 <div className="text-xs text-gray-700 mt-1 leading-snug">
-                  <strong className="text-navy">Commissioner</strong> for 3 years
+                  <strong className="text-navy">Commissioner</strong> for 3 years ·{' '}
+                  <strong className="text-navy">Reviewed 100+ developments</strong>—I know what works
                 </div>
               </div>
             </div>
@@ -97,9 +98,55 @@ export default function Home() {
                 <div className="stat-label">New Annual Tax Revenue</div>
                 <div className="text-xs text-gray-700 mt-1 leading-snug">
                   Lead <strong className="text-navy">Windsong Annexation</strong> Petitioner ·
-                  Passed PISD, now with <strong className="text-navy">TEA</strong>
+                  <strong className="text-navy">Commercial growth that PAYS for infrastructure</strong>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Prosper at a Crossroads Section */}
+      <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 text-navy">
+            Prosper at a Crossroads
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+            <div className="space-y-4 text-gray-700 leading-relaxed">
+              <p className="text-base sm:text-lg">
+                Prosper is one of the fastest-growing communities in Texas. The Fields, PGA, and
+                Universal Theme Park are bringing <strong className="text-navy">millions of visitors
+                to our doorstep</strong>. In the next few years, decisions about the Tollway corridor,
+                downtown, and commercial development will determine whether we become their{' '}
+                <strong className="text-prosper-red">destination of choice</strong>—or watch them
+                drive past.
+              </p>
+              <p className="text-base sm:text-lg">
+                We can keep approving whatever developers bring us—or Town Council can partner with
+                the <strong className="text-navy">Chamber of Commerce</strong>,{' '}
+                <strong className="text-navy">Economic Development Committee</strong>, and business
+                leaders to set a bold vision that attracts the investment, jobs, and destinations
+                Prosper deserves.
+              </p>
+            </div>
+
+            <div className="space-y-4 text-gray-700 leading-relaxed">
+              <p className="text-base sm:text-lg">
+                We can keep building things too small and coming back for more money—or we can plan
+                for where Prosper is headed, not where it&apos;s been.
+              </p>
+              <p className="text-base sm:text-lg">
+                Prosper has the <strong className="text-navy">tools, the talent, and the Small Town,
+                Big Heart attitude</strong> to be the premier community where residents{' '}
+                <strong className="text-prosper-red">live, work, play, and shop</strong>—and where
+                our neighbors choose to visit.
+              </p>
+              <p className="text-base sm:text-lg font-semibold text-navy">
+                Every resident—whether you&apos;ve been here 20 years or 2 months—deserves a voice
+                in making these decisions.
+              </p>
             </div>
           </div>
         </div>
