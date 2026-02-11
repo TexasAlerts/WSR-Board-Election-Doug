@@ -83,6 +83,7 @@ export default function Home() {
               width={800}
               height={533}
               priority
+              fetchPriority="high"
               className="mx-auto w-full max-w-[420px] sm:max-w-[640px] md:max-w-[800px] lg:max-w-[900px] h-auto mb-8 drop-shadow-xl"
               sizes="(max-width: 640px) 420px, (max-width: 768px) 640px, (max-width: 1024px) 800px, 900px"
             />

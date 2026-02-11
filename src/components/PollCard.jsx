@@ -1,9 +1,10 @@
 'use client';
 
+import { memo } from 'react';
 import Link from 'next/link';
 import { MessageSquare, PenLine } from 'lucide-react';
 
-export default function PollCard({ poll, hasVoted, onVoteClick }) {
+function PollCard({ poll, hasVoted, onVoteClick }) {
   return (
     <div className="card">
       <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
@@ -91,3 +92,5 @@ export default function PollCard({ poll, hasVoted, onVoteClick }) {
     </div>
   );
 }
+
+export default memo(PollCard);

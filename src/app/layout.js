@@ -17,6 +17,8 @@ const openSans = Open_Sans({
   weight: ['400', '600'],
   variable: '--font-open-sans',
   display: 'swap',
+  adjustFontFallback: true,
+  preload: true,
 });
 
 const oswald = Oswald({
@@ -24,6 +26,8 @@ const oswald = Oswald({
   weight: ['500', '700'],
   variable: '--font-oswald',
   display: 'swap',
+  adjustFontFallback: true,
+  preload: true,
 });
 
 export const metadata = {
