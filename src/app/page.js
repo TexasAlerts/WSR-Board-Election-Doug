@@ -114,36 +114,40 @@ export default function Home() {
           </h2>
 
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
-            <div className="space-y-4 text-gray-700 leading-relaxed">
-              <p className="text-base sm:text-lg">
-                Prosper is one of the fastest-growing communities in Texas. The Fields, PGA, and
-                Universal Theme Park are bringing <strong className="text-navy">millions of visitors
-                to our doorstep</strong>. In the next few years, decisions about the Tollway corridor,
-                downtown, and commercial development will determine whether we become their{' '}
-                <strong className="text-prosper-red">destination of choice</strong>—or watch them
-                drive past.
-              </p>
-              <p className="text-base sm:text-lg">
-                We can keep approving whatever developers bring us—or Town Council can partner with
-                the <strong className="text-navy">Chamber of Commerce</strong>,{' '}
-                <strong className="text-navy">Economic Development Committee</strong>, and business
-                leaders to set a bold vision that attracts the investment, jobs, and destinations
-                Prosper deserves.
-              </p>
+            <div className="card">
+              <div className="space-y-4 text-gray-700 leading-relaxed">
+                <p className="text-base sm:text-lg">
+                  Prosper is one of the fastest-growing communities in Texas. The Fields, PGA, and
+                  Universal Theme Park are bringing <strong className="text-navy">millions of visitors
+                  to our doorstep</strong>. In the next few years, decisions about the Tollway corridor,
+                  downtown, and commercial development will determine whether we become their{' '}
+                  <strong className="text-prosper-red">destination of choice</strong>—or watch them
+                  drive past.
+                </p>
+                <p className="text-base sm:text-lg">
+                  We can keep approving whatever developers bring us—or Town Council can partner with
+                  the <strong className="text-navy">Chamber of Commerce</strong>,{' '}
+                  <strong className="text-navy">Economic Development Committee</strong>, and business
+                  leaders to set a bold vision that attracts the investment, jobs, and destinations
+                  Prosper deserves.
+                </p>
+              </div>
             </div>
 
-            <div className="space-y-4 text-gray-700 leading-relaxed">
-              <p className="text-base sm:text-lg">
-                Prosper has the <strong className="text-navy">tools, the talent, and the{' '}
-                &apos;<strong className="text-prosper-red">Small Town, Big Heart</strong>&apos; attitude</strong>{' '}
-                to be the premier community where residents{' '}
-                <strong className="text-prosper-red">live, work, play, and shop</strong>—and where
-                our neighbors choose to visit.
-              </p>
-              <p className="text-base sm:text-lg font-semibold text-navy">
-                Every resident—whether you&apos;ve been here 20 years or 2 months—deserves a voice
-                in making these decisions.
-              </p>
+            <div className="card">
+              <div className="space-y-4 text-gray-700 leading-relaxed">
+                <p className="text-base sm:text-lg">
+                  Prosper has the <strong className="text-navy">tools, the talent, and the{' '}
+                  &apos;<strong className="text-prosper-red">Small Town, Big Heart</strong>&apos; attitude</strong>{' '}
+                  to be the premier community where residents{' '}
+                  <strong className="text-prosper-red">live, work, play, and shop</strong>—and where
+                  our neighbors choose to visit.
+                </p>
+                <p className="text-base sm:text-lg font-semibold text-navy">
+                  Every resident—whether you&apos;ve been here 20 years or 2 months—deserves a voice
+                  in making these decisions.
+                </p>
+              </div>
             </div>
           </div>
         </div>
