@@ -62,7 +62,7 @@ export default function TrackRecordPage() {
       </section>
 
       {/* Framing Section */}
-      <section className="py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
+      <section className="py-12 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 priorities-gradient">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-navy mb-6">
             When Prosper Needs Results, Not Just Promises
@@ -332,10 +332,12 @@ export default function TrackRecordPage() {
                       plan smarter, communicate better, and build it right the first time—or with a
                       clear plan that voters understand and can support.
                     </strong>{' '}
+                    <strong className="text-prosper-red">
+                      NO to poor planning and poor communication that left us scrambling for fixes.
+                    </strong>{' '}
                     I strongly advocated for{' '}
                     <strong className="text-navy">Props A (Streets) and F (Downtown)</strong>—and
-                    voters agreed, passing both. The other bonds failed mostly due to a lack of
-                    planning and the absence of a strong communication and engagement plan.
+                    voters agreed, passing both.
                   </p>
                   <p className="text-gray-600 mb-2">
                     I strongly opposed the undersized library. The Town's Master Plan called for

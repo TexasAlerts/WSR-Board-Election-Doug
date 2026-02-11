@@ -87,7 +87,7 @@ export default function AboutPage() {
                   , <strong className="text-navy">safe neighborhoods</strong>, and room to raise a
                   family. Back then, everybody knew your name,{' '}
                   <strong className="text-navy">Friday night football</strong> was the center of
-                  town, and <strong className="text-prosper-red">Small Town, Big Heart</strong>{' '}
+                  town, and <strong className="text-prosper-red">&apos;Small Town, Big Heart&apos;</strong>{' '}
                   wasn&apos;t just a slogan—it was how we lived. We&apos;ve grown fast, and with
                   that growth comes important choices about our future. I&apos;m running to ensure
                   Prosper remains a place where families thrive, local businesses flourish, and the
@@ -226,7 +226,7 @@ export default function AboutPage() {
       </section>
 
       {/* Why This Moment Matters */}
-      <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
+      <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 priorities-gradient">
         <div className="max-w-4xl mx-auto">
           <h2 className="section-title text-center mb-8">Why This Moment Matters</h2>
 

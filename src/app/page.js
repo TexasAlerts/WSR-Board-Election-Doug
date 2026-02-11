@@ -107,7 +107,7 @@ export default function Home() {
       </section>
 
       {/* Prosper at a Crossroads Section */}
-      <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
+      <section className="py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 priorities-gradient">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 text-navy">
             Prosper at a Crossroads
@@ -134,12 +134,13 @@ export default function Home() {
 
             <div className="space-y-4 text-gray-700 leading-relaxed">
               <p className="text-base sm:text-lg">
-                We can keep building things too small and coming back for more money—or we can plan
-                for where Prosper is headed, not where it&apos;s been.
+                We can plan proactively for where Prosper is headed—sizing projects right from the
+                start so we&apos;re not asking voters for fixes later.
               </p>
               <p className="text-base sm:text-lg">
-                Prosper has the <strong className="text-navy">tools, the talent, and the &apos;Small Town,
-                Big Heart&apos; attitude</strong> to be the premier community where residents{' '}
+                Prosper has the <strong className="text-navy">tools, the talent, and the{' '}
+                &apos;<strong className="text-prosper-red">Small Town, Big Heart</strong>&apos; attitude</strong>{' '}
+                to be the premier community where residents{' '}
                 <strong className="text-prosper-red">live, work, play, and shop</strong>—and where
                 our neighbors choose to visit.
               </p>
@@ -251,7 +252,7 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-12">
-            <Link href="/about#priorities" className="btn-outline">
+            <Link href="/priorities" className="btn-outline">
               See Full Priority Details →
             </Link>
           </div>
@@ -279,16 +280,14 @@ export default function Home() {
             <div className="md:col-span-3 space-y-6">
               <h2 className="section-title">About Doug</h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                I moved to <strong className="text-navy">Prosper</strong>{' '}
-                <strong>20 years ago</strong> for the same reasons you probably did—great schools,
-                safe neighborhoods, and room to raise a family. I&apos;ve served on the Planning &
-                Zoning Commission, worked on the 2020 Bond Committee, and led the Windsong Ranch
-                PISD annexation effort.
+                I&apos;ve lived in <strong className="text-navy">Prosper for 20 years</strong> and served
+                on the <strong className="text-navy">Planning & Zoning Commission</strong> and the{' '}
+                <strong className="text-navy">2020 Bond Committee</strong>. I led the{' '}
+                <strong className="text-prosper-red">Windsong Ranch PISD annexation effort</strong> that
+                brings <strong className="text-navy">$6.5M in annual commercial tax revenue</strong>. I
+                know what works—and what doesn&apos;t—when it comes to thoughtful growth.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Prosper has grown from a small town to one of the fastest-growing communities in
-                Texas. Thousands of new families have settled here—but too many decisions are still
-                being made by a small group without meaningful input from the residents they affect.{' '}
                 <strong className="text-prosper-red">
                   Whether you&apos;ve been here 20 years or 2 months, you deserve a voice.
                 </strong>{' '}
@@ -296,7 +295,7 @@ export default function Home() {
               </p>
               <div className="pt-2">
                 <Link href="/about" className="btn-outline">
-                  See Full Bio, Experience & Track Record →
+                  Learn More About Doug →
                 </Link>
               </div>
             </div>

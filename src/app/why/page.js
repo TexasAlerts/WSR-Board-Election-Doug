@@ -69,23 +69,36 @@ export default function WhyPage() {
             <p>
               Prosper&apos;s explosive growth has brought{' '}
               <strong className="text-navy">thousands of new families</strong> who chose this
-              community for the same reasons longtime residents love it. But as these families
-              settle in and look around, many are realizing that critical decisions about their
-              neighborhoods, their roads, and their quality of life are being made{' '}
-              <strong className="text-prosper-red">without their input</strong>. They don&apos;t
-              have a representative voice at the table—and that needs to change.
+              community for the same reasons <strong className="text-navy">longtime residents</strong>{' '}
+              love it. But as these families—and many longtime residents—settle in and look around,
+              they're realizing that critical decisions about their neighborhoods, their roads, and
+              their quality of life are being made{' '}
+              <strong className="text-prosper-red">without their input</strong>.
+            </p>
+            <p>
+              That&apos;s why I&apos;m committed to being a{' '}
+              <strong className="text-navy">Common Sense Leader who listens BEFORE deciding</strong>.
+              Through regular <strong className="text-prosper-red">Coffee with Doug meetups</strong>,{' '}
+              <strong className="text-prosper-red">community polls</strong>, and open communication,
+              I&apos;ll ensure every resident—new families and longtime neighbors alike—has a real
+              voice in shaping Prosper&apos;s future.
             </p>
             <p>
               I've been{' '}
-              <strong className="text-navy">in the room where these decisions get made</strong>.
-              I've read the development applications, asked the hard questions, and seen what
-              happens when we plan well—and when we don't.
+              <strong className="text-navy">in the room where these decisions get made</strong>. As
+              a <strong className="text-navy">Planning & Zoning Commissioner</strong>, I've reviewed{' '}
+              <strong className="text-navy">over 100 development applications</strong> and asked the
+              hard questions about long-term impacts. Professionally, I've led strategic planning for
+              initiatives involving <strong className="text-prosper-red">hundreds of millions of dollars</strong>—and
+              I know what happens when you plan well, and when you don't. That experience matters for
+              a growing community making <strong className="text-navy">billion-dollar infrastructure decisions</strong>.
             </p>
             <p>
               I&apos;m running to bring that{' '}
               <strong className="text-prosper-red">experience to the Town Council</strong>, and to
-              make sure <strong className="text-navy">every resident&apos;s voice is heard</strong>
-              —whether you&apos;ve been here for decades or just moved in last year.
+              make sure <strong className="text-navy">every resident&apos;s voice is heard</strong>—whether
+              you&apos;ve been here for <strong className="text-navy">decades</strong> or just moved in
+              last year.
             </p>
           </div>
         </div>
@@ -167,14 +180,14 @@ export default function WhyPage() {
           <div className="space-y-6 text-base sm:text-lg text-gray-700 leading-relaxed">
             <p>
               Prosper needs more than good management—we need{' '}
-              <strong className="text-navy">visionary, collaborative leadership</strong>.
+              <strong className="text-prosper-red">visionary, collaborative leadership</strong>.
             </p>
             <p>
               The Fields, PGA, and Universal Theme Park are bringing{' '}
               <strong className="text-navy">millions of visitors to our doorstep</strong>. That&apos;s
-              not a threat to "Small Town, Big Heart"—it&apos;s an{' '}
+              not a threat to <strong className="text-prosper-red">&apos;Small Town, Big Heart&apos;</strong>—it&apos;s an{' '}
               <strong className="text-prosper-red">opportunity to build something special</strong> if we
-              act with vision and urgency.
+              act with <strong className="text-navy">vision and urgency</strong>.
             </p>
             <p>
               That means Town Council working{' '}
@@ -194,8 +207,10 @@ export default function WhyPage() {
               <li className="flex items-start gap-3">
                 <span className="text-prosper-red font-bold text-xl leading-none mt-1">•</span>
                 <span>
-                  Attract <strong className="text-navy">mixed-use commercial developments</strong> that
-                  capture regional spending
+                  Attract <strong className="text-navy">mixed-use commercial developments</strong>—retail,
+                  dining, office, and gathering places{' '}
+                  <strong className="text-prosper-red">(NOT apartments)</strong>—that capture regional
+                  spending and create the destinations Prosper deserves
                 </span>
               </li>
               <li className="flex items-start gap-3">
@@ -203,14 +218,15 @@ export default function WhyPage() {
                 <span>
                   Build an environment where companies{' '}
                   <strong className="text-navy">plant headquarters and create careers</strong>—not just
-                  retail jobs, but the <strong className="text-prosper-red">jobs of tomorrow</strong>
+                  retail jobs, but the <strong className="text-prosper-red">jobs of tomorrow</strong> that
+                  keep our talent here
                 </span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-prosper-red font-bold text-xl leading-none mt-1">•</span>
                 <span>
                   Make Prosper the place where residents{' '}
-                  <strong className="text-navy">live, work, play, and shop</strong>—without leaving town
+                  <strong className="text-prosper-red">live, work, play, and shop</strong>—without leaving town
                 </span>
               </li>
               <li className="flex items-start gap-3">
@@ -231,13 +247,14 @@ export default function WhyPage() {
 
             <p>
               We have everything needed to become the{' '}
-              <strong className="text-prosper-red">premier community of choice</strong>—great schools,
-              strong property values, prime location, and Small Town, Big Heart character. We just need
-              leadership willing to partner, plan proactively, and{' '}
+              <strong className="text-prosper-red">premier community of choice</strong>—<strong className="text-navy">great schools</strong>,
+              <strong className="text-navy">strong property values</strong>, <strong className="text-navy">prime location</strong>, and{' '}
+              <strong className="text-prosper-red">&apos;Small Town, Big Heart&apos;</strong> character.
+              We just need leadership willing to <strong className="text-navy">partner, plan proactively</strong>, and{' '}
               <strong className="text-navy">think bigger than the next subdivision approval</strong>.
             </p>
 
-            <p className="text-xl font-semibold text-navy">
+            <p className="text-xl font-semibold text-prosper-red">
               Our neighbors are landing billion-dollar destinations. Prosper can compete—and win.
             </p>
           </div>

@@ -132,7 +132,7 @@ export default function PrioritiesPage() {
             <p className="text-gray-600 leading-relaxed">
               Prosper isn't just another suburb—it's{' '}
               <strong className="text-navy">Friday night football under the lights</strong>,{' '}
-              <strong className="text-prosper-red">Small Town, Big Heart</strong>, and downtown
+              <strong className="text-prosper-red">&apos;Small Town, Big Heart&apos;</strong>, and downtown
               festivals that bring neighbors together. Growth should{' '}
               <strong className="text-navy">add to that story</strong>, not erase it.
             </p>
@@ -224,7 +224,7 @@ export default function PrioritiesPage() {
               <p className="text-gray-700 leading-relaxed">
                 Prosper isn't just another suburb. We have a character worth preserving—
                 <strong className="text-navy">Friday night football</strong> at Children's Health
-                Stadium, the <strong className="text-prosper-red">"Small Town, Big Heart"</strong>{' '}
+                Stadium, the <strong className="text-prosper-red">&apos;Small Town, Big Heart&apos;</strong>{' '}
                 spirit, downtown festivals, and neighbors who still wave from their driveways. Every
                 zoning decision, every development approval, should{' '}
                 <strong className="text-navy">strengthen what makes Prosper special</strong>—not
@@ -252,7 +252,7 @@ export default function PrioritiesPage() {
                   malls and fast food chains.
                 </p>
                 <p>
-                  We have a <strong className="text-navy">once-in-a-generation opportunity</strong>.
+                  We have a <strong className="text-prosper-red">once-in-a-generation opportunity</strong>.
                   With The Fields, PGA, and Universal Theme Park bringing{' '}
                   <strong className="text-navy">millions of visitors right next door</strong>, Prosper
                   can be their <strong className="text-prosper-red">destination of choice</strong>—or
@@ -269,14 +269,14 @@ export default function PrioritiesPage() {
                   <li className="flex items-start gap-2">
                     <span className="text-prosper-red font-bold">•</span>
                     <span>
-                      A <strong>truly destinational downtown</strong> that draws both residents and
+                      A <strong className="text-prosper-red">truly destinational downtown</strong> that draws both residents and
                       visitors
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-prosper-red font-bold">•</span>
                     <span>
-                      Bold <strong>mixed-use commercial projects</strong> that capture tax dollars from
+                      Bold <strong className="text-navy">mixed-use commercial projects</strong> that capture tax dollars from
                       regional attractions
                     </span>
                   </li>
@@ -284,21 +284,21 @@ export default function PrioritiesPage() {
                     <span className="text-prosper-red font-bold">•</span>
                     <span>
                       An environment where businesses choose to{' '}
-                      <strong>plant headquarters here</strong>—creating{' '}
-                      <strong>jobs of tomorrow, not just big box retail</strong>
+                      <strong className="text-navy">plant headquarters here</strong>—creating{' '}
+                      <strong className="text-prosper-red">jobs of tomorrow, not just big box retail</strong>
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-prosper-red font-bold">•</span>
                     <span>
                       A place where Prosper residents can{' '}
-                      <strong>live, work, play, AND shop</strong>—without leaving town
+                      <strong className="text-prosper-red">live, work, play, AND shop</strong>—without leaving town
                     </span>
                   </li>
                 </ul>
                 <p>
                   We have the tools, the talent, and the{' '}
-                  <strong className="text-navy">"Small Town, Big Heart" attitude</strong> to become the
+                  <strong className="text-prosper-red">&apos;Small Town, Big Heart&apos; attitude</strong> to become the
                   premier community of choice. But that requires:
                 </p>
                 <ul className="space-y-3 sm:space-y-2 pl-2 sm:pl-4 list-none" role="list">
@@ -347,7 +347,7 @@ export default function PrioritiesPage() {
       </section>
 
       {/* What's at Stake */}
-      <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
+      <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 priorities-gradient">
         <div className="max-w-3xl mx-auto">
           <div className="text-center space-y-6">
             <h2 className="text-3xl sm:text-4xl font-bold text-navy">
@@ -362,8 +362,10 @@ export default function PrioritiesPage() {
               </p>
               <p>
                 Voters sent a clear signal in November 2025:{' '}
-                <strong className="text-navy">YES to infrastructure and downtown investment</strong>.
-                NO to poor planning and undersized projects.
+                <strong className="text-navy">YES to infrastructure and downtown investment</strong>.{' '}
+                <strong className="text-prosper-red">
+                  NO to poor planning and poor communication that left us scrambling for fixes
+                </strong>.
               </p>
               <p className="font-semibold text-navy text-lg sm:text-xl">
                 These decisions deserve experienced, thoughtful leadership from someone who listens to
