@@ -167,6 +167,15 @@ export async function sendPasswordResetEmail(email, name, token) {
           <p style="color: #666; font-size: 14px;">
             This link expires in 1 hour. If you didn't request this, you can ignore this email.
           </p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+          <p style="color: #999; font-size: 12px;">
+            Doug Charles for Prosper Town Council<br>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
+          </p>
+          <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
+            Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
+            Robert Bye, Campaign Treasurer
+          </p>
         </div>
       `,
     });
@@ -208,6 +217,15 @@ export async function sendWelcomeEmail(email, name) {
           </p>
           <p>Thank you for your support!</p>
           <p><strong>Doug Charles</strong><br>Candidate for Prosper Town Council, Place 5</p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+          <p style="color: #999; font-size: 12px;">
+            Doug Charles for Prosper Town Council<br>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
+          </p>
+          <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
+            Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
+            Robert Bye, Campaign Treasurer
+          </p>
         </div>
       `,
     });
@@ -247,6 +265,15 @@ export async function sendCommentApprovedEmail(
           <p>
             <a href="${contextUrl}" style="color: #1e3a5f;">View the discussion</a>
           </p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+          <p style="color: #999; font-size: 12px;">
+            Doug Charles for Prosper Town Council<br>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
+          </p>
+          <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
+            Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
+            Robert Bye, Campaign Treasurer
+          </p>
         </div>
       `,
     });
@@ -276,6 +303,15 @@ export async function sendCommentRejectedEmail(email, name, reason) {
           <p>Hi ${escapeHtml(name)}, your recent comment was not approved for posting.</p>
           ${reason ? `<p><strong>Reason:</strong> ${escapeHtml(reason)}</p>` : ''}
           <p>If you have questions, please contact us.</p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+          <p style="color: #999; font-size: 12px;">
+            Doug Charles for Prosper Town Council<br>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
+          </p>
+          <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
+            Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
+            Robert Bye, Campaign Treasurer
+          </p>
         </div>
       `,
     });
