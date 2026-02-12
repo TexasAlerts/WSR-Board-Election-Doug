@@ -80,12 +80,12 @@ export default function Home() {
               src="/campaign-logo.webp"
               alt=""
               aria-hidden="true"
-              width={800}
-              height={533}
+              width={1200}
+              height={800}
               priority
               fetchPriority="high"
-              className="mx-auto w-full max-w-[420px] sm:max-w-[640px] md:max-w-[800px] lg:max-w-[900px] h-auto mb-8 drop-shadow-xl"
-              sizes="(max-width: 640px) 420px, (max-width: 768px) 640px, (max-width: 1024px) 800px, 900px"
+              className="mx-auto w-full max-w-[480px] sm:max-w-[720px] md:max-w-[960px] lg:max-w-[1100px] xl:max-w-[1200px] h-auto mb-8 drop-shadow-xl"
+              sizes="(max-width: 640px) 480px, (max-width: 768px) 720px, (max-width: 1024px) 960px, (max-width: 1280px) 1100px, 1200px"
             />
           </div>
 
