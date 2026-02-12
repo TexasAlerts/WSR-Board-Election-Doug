@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Script from 'next/script';
 import { Mail, MessageCircle } from 'lucide-react';
+import DonateDynamic from '../../components/DonateDynamic';
 
 export const metadata = {
   title: 'Support the Campaign - Doug Charles for Prosper',
@@ -37,8 +38,6 @@ const breadcrumbJsonLd = {
     { '@type': 'ListItem', position: 2, name: 'Donate', item: 'https://www.dougcharles.com/donate' },
   ],
 };
-
-import DonateDynamic from '../../components/DonateDynamic';
 
 const SHARE_MESSAGE =
   "I'm supporting Doug Charles for Town of Prosper Town Council Place 5! Learn more about his Common Sense leadership for ALL of Prosper at www.dougcharles.com";
