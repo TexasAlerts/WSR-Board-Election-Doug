@@ -78,8 +78,8 @@ export default function WhyPage() {
             </p>
             <p className="text-lg text-gray-700 leading-relaxed">
               Whether you&apos;ve been here <strong className="text-navy">20 years or 2 months</strong>,
-              you deserve a voice in decisions about <strong className="text-prosper-red">your neighborhoods,
-              your roads, and your quality of life</strong>.
+              live on the <strong className="text-navy">East side or the West side</strong>,
+              you deserve a voice.
             </p>
           </div>
         </div>
