@@ -1,10 +1,11 @@
 import Image from 'next/image';
+import Script from 'next/script';
 import GetInvolvedDynamic from '../../components/GetInvolvedDynamic';
 
 export const metadata = {
   title: 'Get Involved - Doug Charles for Prosper',
   description:
-    'Volunteer, host an event, request a yard sign, or endorse Doug Charles for Town of Prosper Town Council Place 5. Every action makes a difference.',
+    'Get involved: Volunteer, host an event, request a yard sign, or endorse Doug Charles for Prosper Town Council Place 5. Every action makes a real difference.',
   alternates: { canonical: '/get-involved' },
   openGraph: {
     title: 'Get Involved - Doug Charles for Prosper Town Council',
@@ -14,7 +15,7 @@ export const metadata = {
     locale: 'en_US',
     type: 'website',
     images: [{
-      url: 'https://www.dougcharles.com/campaign-preview.png',
+      url: 'https://www.dougcharles.com/campaign-preview.webp',
       width: 1200,
       height: 630,
       alt: 'Get Involved with Doug Charles Campaign'
@@ -24,13 +25,23 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Get Involved - Doug Charles for Prosper',
     description: 'Volunteer, host an event, request a yard sign, or endorse Doug Charles for Town Council.',
-    images: ['https://www.dougcharles.com/campaign-preview.png'],
+    images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.dougcharles.com' },
+    { '@type': 'ListItem', position: 2, name: 'Get Involved', item: 'https://www.dougcharles.com/get-involved' },
+  ],
 };
 
 export default function GetInvolvedPage() {
   return (
     <div className="space-y-0">
+      <Script id="get-involved-breadcrumb" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {/* Hero */}
       <section className="hero-pattern hero-gradient text-center py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">

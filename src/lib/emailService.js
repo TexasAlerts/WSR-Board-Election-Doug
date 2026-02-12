@@ -121,7 +121,8 @@ export async function sendVerificationEmail(email, name, token) {
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
             Doug Charles for Prosper Town Council<br>
-            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
+            <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
           <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
             Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
@@ -170,7 +171,8 @@ export async function sendPasswordResetEmail(email, name, token) {
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
             Doug Charles for Prosper Town Council<br>
-            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
+            <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
           <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
             Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
@@ -220,7 +222,8 @@ export async function sendWelcomeEmail(email, name) {
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
             Doug Charles for Prosper Town Council<br>
-            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
+            <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
           <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
             Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
@@ -351,7 +354,8 @@ export async function sendPhoneUpdateReminderEmail(email, name) {
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
             Doug Charles for Prosper Town Council<br>
-            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
+            <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
           <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
             Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
@@ -469,7 +473,8 @@ export async function sendVoterVerificationEmail(email, name, token) {
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
             Doug Charles for Prosper Town Council<br>
-            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
+            <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
           <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
             Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>

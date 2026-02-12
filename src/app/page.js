@@ -164,7 +164,7 @@ export default function Home() {
                 <div className="stat-label">PISD Property Taxes</div>
                 <div className="text-xs text-gray-700 mt-1 leading-snug">
                   Led <strong className="text-navy">Windsong Ranch PISD annexation</strong> petition ·
-                  <strong className="text-navy">Awaiting state approval</strong>
+                  <strong className="text-navy">Pending TEA approval</strong>
                 </div>
               </div>
             </div>

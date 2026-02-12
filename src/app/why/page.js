@@ -5,7 +5,7 @@ import Script from 'next/script';
 export const metadata = {
   title: 'Why I\'m Running - Doug Charles for Town of Prosper Town Council Place 5',
   description:
-    'Why Doug Charles is running for Prosper Town Council Place 5. A 20-year resident committed to listening, planning, and protecting our community.',
+    'Why Doug Charles is running for Prosper Town Council Place 5: A 20-year resident and former P&Z Commissioner committed to listening, planning, and protecting.',
   alternates: { canonical: '/why' },
   openGraph: {
     title: 'Why I\'m Running - Doug Charles for Prosper Town Council',
@@ -14,13 +14,13 @@ export const metadata = {
     siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
     locale: 'en_US',
     type: 'website',
-    images: [{ url: 'https://www.dougcharles.com/campaign-preview.png', width: 1200, height: 630, alt: 'Doug Charles - Why I\'m Running for Prosper Town Council' }],
+    images: [{ url: 'https://www.dougcharles.com/campaign-preview.webp', width: 1200, height: 630, alt: 'Doug Charles - Why I\'m Running for Prosper Town Council' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Why I\'m Running - Doug Charles for Prosper Town Council',
     description: 'A 20-year resident committed to listening, planning, and protecting our community.',
-    images: ['https://www.dougcharles.com/campaign-preview.png'],
+    images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
 };
 
