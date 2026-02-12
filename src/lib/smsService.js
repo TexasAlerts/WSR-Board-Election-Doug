@@ -4,12 +4,47 @@
  */
 
 /**
+ * Check if current time is within TCPA-compliant sending hours (8am-9pm Central Time)
+ * @returns {{ allowed: boolean, message: string }}
+ */
+function checkSendingTime() {
+  const now = new Date();
+  // Convert to Central Time (UTC-6 standard, UTC-5 daylight)
+  const centralTime = new Date(
+    now.toLocaleString('en-US', { timeZone: 'America/Chicago' })
+  );
+  const hour = centralTime.getHours();
+
+  // TCPA requires SMS between 8am-9pm local time
+  if (hour < 8 || hour >= 21) {
+    return {
+      allowed: false,
+      message: `SMS can only be sent between 8am-9pm Central Time (TCPA compliance). Current time: ${hour}:${centralTime.getMinutes()}`,
+    };
+  }
+
+  return { allowed: true, message: '' };
+}
+
+/**
  * Send an SMS message via Telnyx REST API
  * @param {string} to - Recipient phone number in E.164 format
  * @param {string} message - Message content (160 char limit for single SMS)
+ * @param {boolean} skipTimeCheck - Skip time-of-day check (for verification codes only)
  * @returns {Promise<{ success: boolean, messageId: string | null, error: string | null }>}
  */
-export async function sendSMS(to, message) {
+export async function sendSMS(to, message, skipTimeCheck = false) {
+  // Check TCPA time restrictions (skip for verification codes)
+  if (!skipTimeCheck) {
+    const timeCheck = checkSendingTime();
+    if (!timeCheck.allowed) {
+      return {
+        success: false,
+        messageId: null,
+        error: timeCheck.message,
+      };
+    }
+  }
   const apiKey = process.env.TELNYX_API_KEY;
   const fromNumber = process.env.TELNYX_PHONE_NUMBER;
   const campaignId = process.env.TELNYX_CAMPAIGN_ID;
@@ -77,7 +112,8 @@ export async function sendSMS(to, message) {
  */
 export async function sendVerificationSMS(phone, code) {
   const message = `Your Doug Charles campaign verification code is: ${code}. Valid for 10 minutes. Msg&data rates may apply. Reply STOP to end, HELP for help.`;
-  return sendSMS(phone, message);
+  // Skip time check for verification codes (transactional, not promotional)
+  return sendSMS(phone, message, true);
 }
 
 /**

@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo, useCallback } from 'react';
 
-export default function VoteModal({
+const VoteModal = memo(function VoteModal({
   poll,
   voteForm,
   setVoteForm,
@@ -27,10 +27,12 @@ export default function VoteModal({
     };
   }, []);
 
-  useEffect(() => {
-    function handleKeyDown(e) {
+  // Memoize keyboard handler to prevent recreation on every render
+  const handleKeyDown = useCallback(
+    (e) => {
       if (e.key === 'Escape') {
         onClose();
+        return;
       }
       if (e.key === 'Tab' && voteModalRef.current) {
         const focusable = voteModalRef.current.querySelectorAll(
@@ -47,11 +49,48 @@ export default function VoteModal({
           first.focus();
         }
       }
-    }
+    },
+    [onClose]
+  );
+
+  useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
     closeButtonRef.current?.focus();
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  }, [handleKeyDown]);
+
+  // Memoize choice click handlers to prevent recreation
+  const handleChoiceClick = useCallback(
+    (choiceId, isOther) => {
+      if (poll.poll_type === 'single_choice') {
+        setVoteForm({
+          ...voteForm,
+          selectedChoice: choiceId,
+          otherText: isOther ? voteForm.otherText : '',
+        });
+      } else {
+        toggleChoice(choiceId);
+        if (!isOther) setVoteForm((prev) => ({ ...prev, otherText: '' }));
+      }
+    },
+    [poll.poll_type, voteForm, setVoteForm, toggleChoice]
+  );
+
+  // Memoize other text change handler
+  const handleOtherTextChange = useCallback(
+    (e) => {
+      setVoteForm({ ...voteForm, otherText: e.target.value });
+    },
+    [voteForm, setVoteForm]
+  );
+
+  // Memoize comment change handler
+  const handleCommentChange = useCallback(
+    (e) => {
+      setVoteForm({ ...voteForm, comment: e.target.value });
+    },
+    [voteForm, setVoteForm]
+  );
 
   return (
     <div
@@ -150,18 +189,7 @@ export default function VoteModal({
                           type="button"
                           role={poll.poll_type === 'single_choice' ? 'radio' : 'checkbox'}
                           aria-checked={isSelected}
-                          onClick={() => {
-                            if (poll.poll_type === 'single_choice') {
-                              setVoteForm({
-                                ...voteForm,
-                                selectedChoice: choice.id,
-                                otherText: isOther ? voteForm.otherText : '',
-                              });
-                            } else {
-                              toggleChoice(choice.id);
-                              if (!isOther) setVoteForm((prev) => ({ ...prev, otherText: '' }));
-                            }
-                          }}
+                          onClick={() => handleChoiceClick(choice.id, isOther)}
                           className={`w-full text-left px-4 py-3 rounded-lg border-2 transition-all ${
                             isSelected
                               ? 'border-navy bg-navy/5 text-navy'
@@ -196,9 +224,7 @@ export default function VoteModal({
                               id="poll-other-text"
                               type="text"
                               value={voteForm.otherText}
-                              onChange={(e) =>
-                                setVoteForm({ ...voteForm, otherText: e.target.value })
-                              }
+                              onChange={handleOtherTextChange}
                               placeholder="Please specify..."
                               className="form-input mt-2 ml-8"
                               maxLength={500}
@@ -326,7 +352,7 @@ export default function VoteModal({
                   id="poll-vote-comment"
                   rows={3}
                   value={voteForm.comment}
-                  onChange={(e) => setVoteForm({ ...voteForm, comment: e.target.value })}
+                  onChange={handleCommentChange}
                   className="form-input"
                   placeholder="Share your thoughts..."
                 />
@@ -354,4 +380,8 @@ export default function VoteModal({
       </div>
     </div>
   );
-}
+});
+
+VoteModal.displayName = 'VoteModal';
+
+export default VoteModal;

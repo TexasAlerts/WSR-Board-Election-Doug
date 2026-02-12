@@ -84,6 +84,7 @@ export default function Home() {
               height={800}
               priority
               fetchPriority="high"
+              quality={90}
               className="mx-auto w-full max-w-[95vw] sm:max-w-[85vw] md:max-w-[960px] lg:max-w-[1100px] xl:max-w-[1200px] h-auto mb-8 drop-shadow-xl"
               sizes="(max-width: 640px) 95vw, (max-width: 768px) 85vw, (max-width: 1024px) 960px, (max-width: 1280px) 1100px, 1200px"
             />
