@@ -1,6 +1,7 @@
 'use client';
 
-import { CheckCircle, XCircle, Trash2, Loader2, Mail, Phone, Shield, ShieldCheck } from 'lucide-react';
+import { CheckCircle, XCircle, Trash2, Loader2, Mail, Phone, Shield, ShieldCheck, UserPlus } from 'lucide-react';
+import { useState } from 'react';
 
 const roleColors = {
   super_admin: 'bg-purple-100 text-purple-800',
@@ -27,23 +28,118 @@ export default function SupportersTab({
   onRoleChange,
 }) {
   const isSuperAdmin = currentUserRole === 'super_admin';
+  const [migrating, setMigrating] = useState(false);
+  const [migrationResult, setMigrationResult] = useState(null);
+
+  const handleMigration = async () => {
+    if (!confirm('Migrate all existing endorsements to supporters?\n\nThis will:\n• Create supporter accounts for all endorsers\n• Send verification emails to activate accounts\n\nThis action is safe to run multiple times (skips existing supporters).')) {
+      return;
+    }
+
+    setMigrating(true);
+    setMigrationResult(null);
+
+    try {
+      const res = await fetch('/api/admin/migrate-endorsers', {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        setMigrationResult({
+          success: true,
+          message: `Migration completed successfully!\n\nProcessed: ${data.processed}\nCreated: ${data.created}\nSkipped: ${data.skipped}\nEmails sent: ${data.emailsSent}\nErrors: ${data.errors?.length || 0}`,
+          data: data,
+        });
+        // Reload supporters after migration
+        window.location.reload();
+      } else {
+        setMigrationResult({
+          success: false,
+          message: `Migration failed: ${data.error || 'Unknown error'}`,
+        });
+      }
+    } catch (err) {
+      setMigrationResult({
+        success: false,
+        message: `Migration error: ${err.message}`,
+      });
+    } finally {
+      setMigrating(false);
+    }
+  };
 
   return (
     <div>
-      <div className="flex gap-2 mb-4 flex-wrap" role="group" aria-label="Filter supporters by status">
-        {['all', 'pending_email', 'pending_phone', 'approved', 'suspended'].map((s) => (
+      <div className="flex gap-4 mb-4 flex-wrap items-center justify-between">
+        <div className="flex gap-2 flex-wrap" role="group" aria-label="Filter supporters by status">
+          {['all', 'pending_email', 'pending_phone', 'approved', 'suspended'].map((s) => (
+            <button
+              key={s}
+              onClick={() => setFilter(s)}
+              aria-pressed={filter === s}
+              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              {s.replace('_', ' ')}
+            </button>
+          ))}
+        </div>
+
+        {isSuperAdmin && (
           <button
-            key={s}
-            onClick={() => setFilter(s)}
-            aria-pressed={filter === s}
-            className={`px-3 py-1 rounded-full text-sm font-medium ${
-              filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
+            onClick={handleMigration}
+            disabled={migrating}
+            className="flex items-center gap-2 px-4 py-2 bg-prosper-red text-white rounded-lg hover:bg-red-dark disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Migrate existing endorsements to supporters"
           >
-            {s.replace('_', ' ')}
+            {migrating ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Migrating...
+              </>
+            ) : (
+              <>
+                <UserPlus className="w-4 h-4" />
+                Migrate Endorsers
+              </>
+            )}
           </button>
-        ))}
+        )}
       </div>
+
+      {migrationResult && (
+        <div
+          className={`mb-4 p-4 rounded-lg ${
+            migrationResult.success ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
+          }`}
+          role="alert"
+        >
+          <p className={`font-semibold ${migrationResult.success ? 'text-green-800' : 'text-red-800'}`}>
+            {migrationResult.success ? '✓ Migration Successful' : '✗ Migration Failed'}
+          </p>
+          <p className={`mt-2 text-sm whitespace-pre-line ${migrationResult.success ? 'text-green-700' : 'text-red-700'}`}>
+            {migrationResult.message}
+          </p>
+          {migrationResult.data?.errors?.length > 0 && (
+            <details className="mt-2">
+              <summary className="cursor-pointer text-sm font-medium text-red-800">
+                View {migrationResult.data.errors.length} error(s)
+              </summary>
+              <ul className="mt-2 text-xs text-red-700 space-y-1">
+                {migrationResult.data.errors.map((err, i) => (
+                  <li key={i}>
+                    {err.email}: {err.error}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+        </div>
+      )}
 
       {loading ? (
         <div role="status" aria-live="polite" className="flex justify-center py-12">
