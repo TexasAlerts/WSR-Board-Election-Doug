@@ -9,6 +9,7 @@ export default function QnaDynamic({ initialQuestions = [] }) {
   const [questions, setQuestions] = useState(initialQuestions);
   const [form, setForm] = useState({ name: '', email: '', question: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -53,6 +54,14 @@ export default function QnaDynamic({ initialQuestions = [] }) {
       const data = await res.json();
       if (res.ok && data.ok) {
         setSubmitted(true);
+        // Set success message based on verification status
+        if (data.alreadyVerified) {
+          setSuccessMessage('Thank you for your question! We\'ll notify you when it\'s answered.');
+        } else if (data.needsVerification) {
+          setSuccessMessage('Thank you for your question! Please check your email (including junk/spam folder) to verify and get notified of the answer.');
+        } else {
+          setSuccessMessage('Thank you for your question! I\'ll review it and post an answer soon.');
+        }
         setForm({ name: '', email: '', question: '' });
       } else {
         setError(data.error || 'Something went wrong. Please try again.');
@@ -82,7 +91,7 @@ export default function QnaDynamic({ initialQuestions = [] }) {
                 aria-live="polite"
               >
                 <p className="text-green-800 font-semibold">
-                  Thank you for your question! I'll review it and post an answer soon.
+                  {successMessage}
                 </p>
               </div>
             ) : (

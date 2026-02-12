@@ -800,3 +800,262 @@ export async function sendErrorAlertEmail(email, error) {
     return { success: false, error: err.message };
   }
 }
+
+/**
+ * Send verification email for interest submission
+ * @param {string} email - Recipient email
+ * @param {string} name - Recipient name
+ * @param {string} token - Verification token
+ * @param {string} interestType - Type of interest (volunteer|lawn_sign|donate|other)
+ * @returns {Promise<{ success: boolean, id?: string, error?: string }>}
+ */
+export async function sendInterestVerificationEmail(email, name, token, interestType) {
+  const client = getResendClient();
+  if (!client) return { success: false, error: 'Email service not configured' };
+
+  const verifyUrl = `${SITE_URL}/auth/verify-submission?token=${token}`;
+
+  // Map interest type to friendly name
+  const typeMap = {
+    volunteer: 'volunteer interest',
+    lawn_sign: 'lawn sign request',
+    donate: 'donation interest',
+    other: 'interest',
+  };
+  const friendlyType = typeMap[interestType] || 'interest';
+
+  try {
+    const { data, error } = await client.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: 'Verify your email - Doug Charles Campaign',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #1e3a5f;">Hi ${escapeHtml(name)}!</h2>
+          <p>Thank you for your ${friendlyType} submission for the Doug Charles campaign.</p>
+          <p><strong>Please verify your email to stay updated.</strong></p>
+          <p style="margin: 30px 0;">
+            <a href="${verifyUrl}" style="background-color: #c41e3a; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+              Verify Email
+            </a>
+          </p>
+          <p style="color: #666; font-size: 14px;">
+            This link expires in 24 hours. If you didn't submit this, you can ignore this email.
+          </p>
+          <p style="color: #666; font-size: 13px; margin-top: 20px;">
+            <strong>Can't find this email?</strong> Check your spam or junk folder and mark it as "Not Spam" so future emails reach your inbox.
+          </p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+          <p style="color: #999; font-size: 12px;">
+            Doug Charles for Prosper Town Council<br>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
+            <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
+          </p>
+          <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
+            Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
+            Robert Bye, Campaign Treasurer
+          </p>
+        </div>
+      `,
+    });
+
+    if (error) return { success: false, error: error.message };
+    return { success: true, id: data?.id };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * Send verification email for question submission
+ * @param {string} email - Recipient email
+ * @param {string} name - Recipient name
+ * @param {string} token - Verification token
+ * @param {string} questionPreview - First 100 chars of question
+ * @returns {Promise<{ success: boolean, id?: string, error?: string }>}
+ */
+export async function sendQuestionVerificationEmail(email, name, token, questionPreview) {
+  const client = getResendClient();
+  if (!client) return { success: false, error: 'Email service not configured' };
+
+  const verifyUrl = `${SITE_URL}/auth/verify-submission?token=${token}`;
+
+  try {
+    const { data, error } = await client.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: 'Verify your email - Doug Charles Campaign',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #1e3a5f;">Hi ${escapeHtml(name)}!</h2>
+          <p>Thank you for submitting a question to the Doug Charles campaign.</p>
+          <p><strong>Please verify your email to get notified when your question is answered.</strong></p>
+          <div style="background: #f5f5f5; padding: 15px; border-radius: 6px; margin: 20px 0;">
+            <p style="color: #999; font-size: 13px; margin: 0 0 8px 0;">Your question:</p>
+            <p style="color: #333; margin: 0;">"${escapeHtml(questionPreview)}${questionPreview.length >= 100 ? '...' : ''}"</p>
+          </div>
+          <p style="margin: 30px 0;">
+            <a href="${verifyUrl}" style="background-color: #c41e3a; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+              Verify Email
+            </a>
+          </p>
+          <p style="color: #666; font-size: 14px;">
+            This link expires in 24 hours. If you didn't submit this, you can ignore this email.
+          </p>
+          <p style="color: #666; font-size: 13px; margin-top: 20px;">
+            <strong>Can't find this email?</strong> Check your spam or junk folder and mark it as "Not Spam" so future emails reach your inbox.
+          </p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+          <p style="color: #999; font-size: 12px;">
+            Doug Charles for Prosper Town Council<br>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
+            <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
+          </p>
+          <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
+            Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
+            Robert Bye, Campaign Treasurer
+          </p>
+        </div>
+      `,
+    });
+
+    if (error) return { success: false, error: error.message };
+    return { success: true, id: data?.id };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * Send notification when question is answered (to verified users only)
+ * @param {string} email - Recipient email
+ * @param {string} name - Recipient name
+ * @param {string} question - Full question text
+ * @param {string} answer - Full answer text
+ * @param {string} questionUrl - URL to view full Q&A
+ * @returns {Promise<{ success: boolean, id?: string, error?: string }>}
+ */
+export async function sendQuestionAnsweredEmail(email, name, question, answer, questionUrl) {
+  const client = getResendClient();
+  if (!client) return { success: false, error: 'Email service not configured' };
+
+  const unsubscribeUrl = `${SITE_URL}/settings`;
+
+  try {
+    const { data, error } = await client.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: 'Your question was answered - Doug Charles Campaign',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #1e3a5f;">Hi ${escapeHtml(name)}!</h2>
+          <p>Doug Charles has answered your question:</p>
+
+          <div style="background: #f5f5f5; padding: 15px; border-radius: 6px; margin: 15px 0;">
+            <p style="color: #999; font-size: 13px; margin: 0 0 8px 0;">Your question:</p>
+            <p style="color: #333; margin: 0;">"${escapeHtml(question)}"</p>
+          </div>
+
+          <div style="background: #f0f7ff; padding: 15px; border-radius: 6px; margin: 15px 0;">
+            <p style="color: #999; font-size: 13px; margin: 0 0 8px 0;">Doug's answer:</p>
+            <p style="color: #333; margin: 0;">${escapeHtml(answer)}</p>
+          </div>
+
+          <p style="margin: 30px 0;">
+            <a href="${questionUrl}" style="background-color: #c41e3a; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+              View Full Q&A
+            </a>
+          </p>
+
+          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+          <p style="color: #999; font-size: 12px;">
+            Doug Charles for Prosper Town Council<br>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
+            <a href="${unsubscribeUrl}" style="color: #666; font-size: 11px;">Manage email preferences</a>
+          </p>
+          <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
+            Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
+            Robert Bye, Campaign Treasurer
+          </p>
+        </div>
+      `,
+      headers: {
+        'List-Unsubscribe': `<${unsubscribeUrl}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+    });
+
+    if (error) return { success: false, error: error.message };
+    return { success: true, id: data?.id };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * Send follow-up email to verified interest submitters
+ * @param {string} email - Recipient email
+ * @param {string} name - Recipient name
+ * @param {string} interestType - Type of interest
+ * @param {string} message - Custom message from admin
+ * @returns {Promise<{ success: boolean, id?: string, error?: string }>}
+ */
+export async function sendInterestFollowUpEmail(email, name, interestType, message) {
+  const client = getResendClient();
+  if (!client) return { success: false, error: 'Email service not configured' };
+
+  const unsubscribeUrl = `${SITE_URL}/settings`;
+
+  // Map interest type to friendly name
+  const typeMap = {
+    volunteer: 'volunteering',
+    lawn_sign: 'your lawn sign request',
+    donate: 'donating',
+    other: 'your interest',
+  };
+  const friendlyType = typeMap[interestType] || 'your interest';
+
+  try {
+    const { data, error } = await client.emails.send({
+      from: FROM_EMAIL,
+      to: email,
+      subject: `Update on ${friendlyType} - Doug Charles Campaign`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #1e3a5f;">Hi ${escapeHtml(name)}!</h2>
+          <p>Thank you for your interest in ${friendlyType} for the Doug Charles campaign.</p>
+
+          <div style="background: #f0f7ff; padding: 15px; border-radius: 6px; margin: 20px 0;">
+            ${escapeHtml(message)}
+          </div>
+
+          <p style="margin: 30px 0;">
+            <a href="${SITE_URL}/get-involved" style="background-color: #c41e3a; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+              Get Involved
+            </a>
+          </p>
+
+          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+          <p style="color: #999; font-size: 12px;">
+            Doug Charles for Prosper Town Council<br>
+            <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
+            <a href="${unsubscribeUrl}" style="color: #666; font-size: 11px;">Manage email preferences</a>
+          </p>
+          <p style="color: #ccc; font-size: 11px; margin-top: 10px;">
+            Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.<br>
+            Robert Bye, Campaign Treasurer
+          </p>
+        </div>
+      `,
+      headers: {
+        'List-Unsubscribe': `<${unsubscribeUrl}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+    });
+
+    if (error) return { success: false, error: error.message };
+    return { success: true, id: data?.id };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}

@@ -3,6 +3,7 @@ import { getSupabase } from '../../../../lib/supabase';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 import { rateLimit } from '../../../../lib/rateLimit';
 import { z } from 'zod';
+import { linkPendingSubmissions } from '../../../../lib/verificationHelpers';
 
 const schema = z.object({
   token: z.string().min(1, 'Token required'),
@@ -64,6 +65,25 @@ export async function POST(request) {
       { onConflict: 'email' }
     );
 
+    // Link all pending submissions to this verified voter
+    const linkedCounts = await linkPendingSubmissions(voter.id, voter.email);
+
+    // Log successful linking
+    if (linkedCounts.interestCount > 0 || linkedCounts.questionCount > 0) {
+      await logAudit({
+        eventType: 'SUBMISSIONS_LINKED',
+        targetId: voter.id,
+        targetType: 'verified_voter',
+        details: {
+          email: voter.email,
+          linkedInterest: linkedCounts.interestCount,
+          linkedQuestions: linkedCounts.questionCount,
+        },
+        request,
+        responseStatus: 200,
+      });
+    }
+
     // Audit log
     await logAudit({
       eventType: AuditEvents.VOTER_VERIFIED || 'VOTER_VERIFIED',
@@ -78,6 +98,10 @@ export async function POST(request) {
     const response = NextResponse.json({
       ok: true,
       voter: { id: voter.id, email: voter.email, name: voter.name, first_name: voter.first_name },
+      linked: {
+        interests: linkedCounts.interestCount,
+        questions: linkedCounts.questionCount,
+      },
     });
 
     response.cookies.set('verified_voter_id', voter.id, {

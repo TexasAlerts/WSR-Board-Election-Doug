@@ -56,10 +56,12 @@ import { getSupabase } from '../../../lib/supabase';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
+import { sendInterestVerificationEmail } from '../../../lib/emailService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
 import { sanitizeText } from '../../../lib/sanitize';
 import { verifyCaptcha } from '../../../lib/recaptcha';
 import { validatePhoneNumber } from '../../../lib/phoneValidation';
+import { ensureVerifiedVoter, getVerifiedVoterByEmail } from '../../../lib/verificationHelpers';
 
 export async function POST(req) {
   const supabase = getSupabase();
@@ -173,18 +175,67 @@ export async function POST(req) {
       request: req,
       responseStatus: 201,
     });
-    await Promise.all([
-      sendEmail(
-        email,
-        'Thanks for getting involved',
-        `Hi ${name},\n\nThanks for your interest in ${type}.\n${message ? `Message: ${message}\n\n` : ''}We will be in touch and you can check back for updates.\n\n--\nDoug Charles`
-      ).catch(() => {}),
-      sendNotificationEmail(
-        'New interest submission',
-        `Type: ${type}\nName: ${name}\nEmail: ${email}\nPhone: ${phone || ''}\nMessage: ${message || ''}`
-      ).catch(() => {}),
-    ]);
-    return NextResponse.json({ ok: true }, { status: 201 });
+
+    // Check if email is already verified
+    const verifiedVoter = await getVerifiedVoterByEmail(email);
+
+    if (verifiedVoter) {
+      // Already verified - link immediately
+      await supabase
+        .from('interest')
+        .update({
+          verified_voter_id: verifiedVoter.id,
+          verification_status: 'verified',
+        })
+        .eq('id', interestRecord.id);
+
+      // Send confirmation (not verification) email
+      await Promise.all([
+        sendEmail(
+          email,
+          'Thanks for getting involved',
+          `Hi ${name},\n\nThanks for your interest in ${type}.\n${message ? `Message: ${message}\n\n` : ''}We will be in touch and you can check back for updates.\n\n--\nDoug Charles`
+        ).catch(() => {}),
+        sendNotificationEmail(
+          'New interest submission',
+          `Type: ${type}\nName: ${name}\nEmail: ${email}\nPhone: ${phone || ''}\nMessage: ${message || ''}`
+        ).catch(() => {}),
+      ]);
+
+      return NextResponse.json({
+        ok: true,
+        message: 'Thank you! Your interest has been recorded.',
+        alreadyVerified: true,
+      }, { status: 201 });
+    } else {
+      // Not verified - create/update verified_voters record
+      const { voterId, token } = await ensureVerifiedVoter(email, name);
+
+      // Send verification email
+      const emailResult = await sendInterestVerificationEmail(email, name, token, type);
+
+      if (!emailResult.success) {
+        await logError({
+          errorType: ErrorTypes.EMAIL_ERROR,
+          errorMessage: `Failed to send interest verification email: ${emailResult.error}`,
+          endpoint: '/api/interest',
+          method: 'POST',
+          request: req,
+        });
+      }
+
+      // Send admin notification
+      await sendNotificationEmail(
+        'New interest submission (pending verification)',
+        `Type: ${type}\nName: ${name}\nEmail: ${email}\nPhone: ${phone || ''}\nMessage: ${message || ''}\nStatus: Awaiting email verification`
+      ).catch(() => {});
+
+      return NextResponse.json({
+        ok: true,
+        message: 'Thank you! Please check your email (including junk/spam folder) to verify and stay updated.',
+        needsVerification: true,
+      }, { status: 201 });
+    }
   } catch (err) {
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,
