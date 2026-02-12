@@ -82,9 +82,13 @@ export async function POST(req) {
         { status: 400 }
       );
     }
+
+    // Normalize email for consistent storage and lookups
+    const normalizedEmail = email.trim().toLowerCase();
+
     const { data: questionRecord, error } = await supabase
       .from('questions')
-      .insert({ name, email, question, status: 'pending' })
+      .insert({ name, email: normalizedEmail, question, status: 'pending' })
       .select('id')
       .single();
     if (error) {
@@ -106,9 +110,6 @@ export async function POST(req) {
       request: req,
       responseStatus: 201,
     });
-
-    // Normalize email for verification lookup (prevent duplicate records)
-    const normalizedEmail = email.trim().toLowerCase();
 
     // Check if email is already verified
     const verifiedVoter = await getVerifiedVoterByEmail(normalizedEmail);

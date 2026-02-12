@@ -128,6 +128,9 @@ export async function POST(req) {
     const name = sanitizeText(rawName);
     const message = rawMessage ? sanitizeText(rawMessage) : null;
 
+    // Normalize email for consistent storage and lookups
+    const normalizedEmail = email.trim().toLowerCase();
+
     // Validate phone number if provided
     let formattedPhone = null;
     if (phone && phone.trim()) {
@@ -141,12 +144,12 @@ export async function POST(req) {
       formattedPhone = phoneValidation.formatted;
     }
 
-    const { data: interestRecord, error } = await supabase
+    const { data: interestRecord, error} = await supabase
       .from('interest')
       .insert({
         type,
         name,
-        email,
+        email: normalizedEmail,
         phone: formattedPhone,
         message,
         consent_email: consentEmail,
@@ -175,9 +178,6 @@ export async function POST(req) {
       request: req,
       responseStatus: 201,
     });
-
-    // Normalize email for verification lookup (prevent duplicate records)
-    const normalizedEmail = email.trim().toLowerCase();
 
     // Check if email is already verified
     const verifiedVoter = await getVerifiedVoterByEmail(normalizedEmail);

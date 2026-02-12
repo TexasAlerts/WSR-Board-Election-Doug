@@ -8,6 +8,7 @@ import {
   createSMSVerification,
 } from '../../../../lib/auth';
 import { sendVerificationSMS } from '../../../../lib/smsService';
+import { validatePhoneNumber } from '../../../../lib/phoneValidation';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 import { rateLimit } from '../../../../lib/rateLimit';
 
@@ -114,7 +115,7 @@ export async function POST(request) {
     await markEmailVerificationUsed(verification.id);
 
     // Create and send SMS verification code
-    // Validate phone exists and is in valid format before sending SMS
+    // Validate phone exists and is in valid E.164 format before sending SMS
     if (!supporter.phone || !supporter.phone.trim()) {
       await logError({
         errorType: ErrorTypes.VALIDATION_ERROR,
@@ -125,28 +126,42 @@ export async function POST(request) {
         request,
       });
     } else {
-      const smsCode = await createSMSVerification(supporter.id, supporter.phone);
-      if (smsCode) {
-        const smsResult = await sendVerificationSMS(supporter.phone, smsCode);
-        if (!smsResult.success) {
+      // Validate phone number format before sending SMS
+      const phoneValidation = validatePhoneNumber(supporter.phone);
+      if (!phoneValidation.valid) {
+        await logError({
+          errorType: ErrorTypes.VALIDATION_ERROR,
+          errorMessage: `Cannot send SMS: invalid phone format - ${phoneValidation.error}`,
+          endpoint: '/api/auth/verify',
+          method: 'POST',
+          userEmail: supporter.email,
+          request,
+        });
+      } else {
+        // Use validated E.164 formatted phone
+        const smsCode = await createSMSVerification(supporter.id, phoneValidation.formatted);
+        if (smsCode) {
+          const smsResult = await sendVerificationSMS(phoneValidation.formatted, smsCode);
+          if (!smsResult.success) {
+            await logError({
+              errorType: ErrorTypes.EXTERNAL_SERVICE,
+              errorMessage: `SMS verification send failed: ${smsResult.error}`,
+              endpoint: '/api/auth/verify',
+              method: 'POST',
+              userEmail: supporter.email,
+              request,
+            });
+          }
+        } else {
           await logError({
-            errorType: ErrorTypes.EXTERNAL_SERVICE,
-            errorMessage: `SMS verification send failed: ${smsResult.error}`,
+            errorType: ErrorTypes.DATABASE_ERROR,
+            errorMessage: 'Failed to create SMS verification code',
             endpoint: '/api/auth/verify',
             method: 'POST',
             userEmail: supporter.email,
             request,
           });
         }
-      } else {
-        await logError({
-          errorType: ErrorTypes.DATABASE_ERROR,
-          errorMessage: 'Failed to create SMS verification code',
-          endpoint: '/api/auth/verify',
-          method: 'POST',
-          userEmail: supporter.email,
-          request,
-        });
       }
     }
 
