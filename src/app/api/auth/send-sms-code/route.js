@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { rateLimit } from '../../../../lib/rateLimit';
 import { createSMSVerification } from '../../../../lib/auth';
 import { sendVerificationSMS } from '../../../../lib/smsService';
+import { validatePhoneNumber } from '../../../../lib/phoneValidation';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 import { withCSRF } from '../../../../lib/withCSRF';
 
@@ -95,7 +96,7 @@ async function postHandler(request) {
       );
     }
 
-    // Validate phone number exists and is in valid format
+    // Validate phone number exists and is in valid E.164 format
     if (!supporter.phone || !supporter.phone.trim()) {
       await logError({
         errorType: ErrorTypes.VALIDATION_ERROR,
@@ -110,8 +111,24 @@ async function postHandler(request) {
       );
     }
 
-    // Create new SMS code
-    const code = await createSMSVerification(supporterId, supporter.phone);
+    // Validate phone format before sending SMS
+    const phoneValidation = validatePhoneNumber(supporter.phone);
+    if (!phoneValidation.valid) {
+      await logError({
+        errorType: ErrorTypes.VALIDATION_ERROR,
+        errorMessage: `Cannot send SMS: invalid phone format - ${phoneValidation.error}`,
+        endpoint: '/api/auth/send-sms-code',
+        method: 'POST',
+        request,
+      });
+      return NextResponse.json(
+        { ok: false, error: 'Phone number is invalid. Please update your profile with a valid US phone number.' },
+        { status: 400 }
+      );
+    }
+
+    // Create new SMS code with validated E.164 phone
+    const code = await createSMSVerification(supporterId, phoneValidation.formatted);
     if (!code) {
       return NextResponse.json(
         { ok: false, error: 'Failed to create verification code' },
@@ -119,8 +136,8 @@ async function postHandler(request) {
       );
     }
 
-    // Send SMS
-    const smsResult = await sendVerificationSMS(supporter.phone, code);
+    // Send SMS using validated E.164 formatted phone
+    const smsResult = await sendVerificationSMS(phoneValidation.formatted, code);
 
     if (!smsResult.success) {
       await logError({
