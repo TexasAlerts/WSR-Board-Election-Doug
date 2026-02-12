@@ -106,7 +106,14 @@ export default function AboutPage() {
                   I moved to <strong className="text-navy">Prosper 20 years ago</strong> for the
                   same reasons you probably did—<strong className="text-navy">great schools</strong>
                   , <strong className="text-navy">safe neighborhoods</strong>, and room to raise a
-                  family. Back then, everybody knew your name,{' '}
+                  family. <strong className="text-navy">My wife Wanda and I have been married
+                  for 30 years</strong>, and we've raised our three children here—all{' '}
+                  <strong className="text-prosper-red">Prosper ISD graduates</strong>. This isn't
+                  theoretical for me; I've lived the decisions we're making about{' '}
+                  <strong className="text-navy">our roads, our tax dollars, and preserving what makes Prosper home</strong>.
+                </p>
+                <p>
+                  Back then, everybody knew your name,{' '}
                   <strong className="text-navy">Friday night football</strong> was the center of
                   town, and <strong className="text-prosper-red">&apos;Small Town, Big Heart&apos;</strong>{' '}
                   wasn&apos;t just a slogan—it was how we lived. We&apos;ve grown fast, and with
@@ -217,6 +224,22 @@ export default function AboutPage() {
                     Organized <strong className="text-navy">585 residents</strong>, retained legal
                     counsel, and led the petition to annex Windsong Ranch into Prosper ISD—seeking to redirect{' '}
                     <strong className="text-navy">$6.5M+ in annual property taxes</strong> to PISD—pending state approval.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="card h-full">
+              <div className="flex items-start gap-4">
+                <div className="w-4 h-4 bg-gradient-to-br from-prosper-red to-red-dark rounded-full mt-1 flex-shrink-0 shadow-sm"></div>
+                <div>
+                  <h3 className="text-xl font-bold text-navy mb-2">Education</h3>
+                  <p className="text-gray-600 mb-3">
+                    <strong className="text-navy">MBA</strong> (Master of Business Administration)
+                  </p>
+                  <p className="text-gray-600">
+                    Strategic planning and financial management expertise applied to{' '}
+                    <strong className="text-navy">community development and responsible governance</strong>.
                   </p>
                 </div>
               </div>

@@ -203,7 +203,7 @@ export default function Home() {
             <div className="card">
               <div className="space-y-4 text-gray-700 leading-relaxed">
                 <p className="text-base sm:text-lg">
-                  Prosper has the <strong className="text-navy">tools, the talent, and the{' '}
+                  I wholeheartedly believe Prosper has the <strong className="text-navy">tools, the talent, and the{' '}
                   &apos;<strong className="text-prosper-red">Small Town, Big Heart</strong>&apos; attitude</strong>{' '}
                   to be the premier community where residents{' '}
                   <strong className="text-prosper-red">live, work, play, and shop</strong>—and where
