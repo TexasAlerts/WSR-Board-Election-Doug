@@ -176,18 +176,37 @@ export async function POST(req) {
       responseStatus: 201,
     });
 
+    // Normalize email for verification lookup (prevent duplicate records)
+    const normalizedEmail = email.trim().toLowerCase();
+
     // Check if email is already verified
-    const verifiedVoter = await getVerifiedVoterByEmail(email);
+    const verifiedVoter = await getVerifiedVoterByEmail(normalizedEmail);
 
     if (verifiedVoter) {
       // Already verified - link immediately
-      await supabase
+      const { error: updateError } = await supabase
         .from('interest')
         .update({
           verified_voter_id: verifiedVoter.id,
           verification_status: 'verified',
         })
         .eq('id', interestRecord.id);
+
+      // Check if update succeeded before returning success
+      if (updateError) {
+        await logError({
+          errorType: ErrorTypes.DATABASE_ERROR,
+          errorMessage: `Failed to link interest to verified voter: ${updateError.message}`,
+          endpoint: '/api/interest',
+          method: 'POST',
+          userEmail: email,
+          request: req,
+        });
+        return NextResponse.json(
+          { ok: false, error: 'Failed to link submission. Please try again.' },
+          { status: 500 }
+        );
+      }
 
       // Send confirmation (not verification) email
       await Promise.all([
@@ -209,10 +228,10 @@ export async function POST(req) {
       }, { status: 201 });
     } else {
       // Not verified - create/update verified_voters record
-      const { voterId, token } = await ensureVerifiedVoter(email, name);
+      const { voterId, token } = await ensureVerifiedVoter(normalizedEmail, name);
 
       // Send verification email
-      const emailResult = await sendInterestVerificationEmail(email, name, token, type);
+      const emailResult = await sendInterestVerificationEmail(normalizedEmail, name, token, type);
 
       if (!emailResult.success) {
         await logError({
