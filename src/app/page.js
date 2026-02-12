@@ -72,8 +72,8 @@ export default function Home() {
       />
 
       {/* Hero Section */}
-      <section className="hero-gradient text-center py-10 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
+      <section className="hero-gradient text-center py-10 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-2 sm:px-4 lg:px-8">
+        <div className="max-w-6xl mx-auto">
           <div>
             <h1 className="sr-only">Doug Charles for Town of Prosper Town Council Place 5</h1>
             <Image
@@ -84,8 +84,8 @@ export default function Home() {
               height={800}
               priority
               fetchPriority="high"
-              className="mx-auto w-full max-w-[480px] sm:max-w-[720px] md:max-w-[960px] lg:max-w-[1100px] xl:max-w-[1200px] h-auto mb-8 drop-shadow-xl"
-              sizes="(max-width: 640px) 480px, (max-width: 768px) 720px, (max-width: 1024px) 960px, (max-width: 1280px) 1100px, 1200px"
+              className="mx-auto w-full max-w-[95vw] sm:max-w-[85vw] md:max-w-[960px] lg:max-w-[1100px] xl:max-w-[1200px] h-auto mb-8 drop-shadow-xl"
+              sizes="(max-width: 640px) 95vw, (max-width: 768px) 85vw, (max-width: 1024px) 960px, (max-width: 1280px) 1100px, 1200px"
             />
           </div>
 
