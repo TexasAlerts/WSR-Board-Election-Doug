@@ -147,134 +147,248 @@ export default function SupportersTab({
           <span className="sr-only">Loading supporters...</span>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow overflow-hidden overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <caption className="sr-only">Supporters list</caption>
-            <thead className="bg-gray-50">
-              <tr>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                  Name
-                </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                  Contact
-                </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                  Address
-                </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                  Status
-                </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                  Role
-                </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                  Consent
-                </th>
-                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {supporters.map((s) => (
-                <tr key={s.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3">
-                    <div className="font-medium">
+        <>
+          {/* Desktop table view */}
+          <div className="hidden md:block bg-white rounded-xl shadow overflow-hidden overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <caption className="sr-only">Supporters list</caption>
+              <thead className="bg-gray-50">
+                <tr>
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
+                    Name
+                  </th>
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
+                    Contact
+                  </th>
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
+                    Address
+                  </th>
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
+                    Status
+                  </th>
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
+                    Role
+                  </th>
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
+                    Consent
+                  </th>
+                  <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {supporters.map((s) => (
+                  <tr key={s.id} className="hover:bg-gray-50">
+                    <td className="px-4 py-3">
+                      <div className="font-medium">
+                        {s.first_name} {s.last_name}
+                      </div>
+                      <div className="text-xs text-gray-700">{formatDate(s.created_at)}</div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="text-sm">{s.email}</div>
+                      <div className="text-sm text-gray-700">{s.phone}</div>
+                    </td>
+                    <td className="px-4 py-3 text-sm">
+                      {s.street_address}, {s.city}, {s.state} {s.zip_code}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[s.status]}`}
+                      >
+                        {s.status.replace('_', ' ')}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`px-2 py-1 rounded text-xs font-medium ${roleColors[s.role] || roleColors.supporter}`}
+                        >
+                          {s.role === 'super_admin' && <ShieldCheck className="w-3 h-3 inline mr-1" />}
+                          {s.role === 'admin' && <Shield className="w-3 h-3 inline mr-1" />}
+                          {roleLabels[s.role] || 'Supporter'}
+                        </span>
+                        {isSuperAdmin && s.role !== 'super_admin' && (
+                          <select
+                            value={s.role || 'supporter'}
+                            onChange={(e) => onRoleChange(s.id, e.target.value)}
+                            className="text-xs border rounded px-1 py-0.5"
+                            aria-label={`Change role for ${s.first_name} ${s.last_name}`}
+                          >
+                            <option value="supporter">Supporter</option>
+                            <option value="admin">Admin</option>
+                            <option value="super_admin">Super Admin</option>
+                          </select>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex gap-2">
+                        {s.email_consent && <Mail className="w-4 h-4 text-green-600" aria-label="Email consent" />}
+                        {s.sms_consent && <Phone className="w-4 h-4 text-green-600" aria-label="SMS consent" />}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex gap-2">
+                        {s.status !== 'approved' && (
+                          <button
+                            onClick={() => updateSupporter(s.id, { status: 'approved' })}
+                            className="text-green-600 hover:text-green-800"
+                            title="Approve"
+                            aria-label={`Approve ${s.first_name} ${s.last_name}`}
+                          >
+                            <CheckCircle className="w-5 h-5" />
+                          </button>
+                        )}
+                        {isSuperAdmin && s.status !== 'suspended' && (
+                          <button
+                            onClick={() => updateSupporter(s.id, { status: 'suspended' })}
+                            className="text-red-600 hover:text-red-800"
+                            title="Suspend"
+                            aria-label={`Suspend ${s.first_name} ${s.last_name}`}
+                          >
+                            <XCircle className="w-5 h-5" />
+                          </button>
+                        )}
+                        {isSuperAdmin && s.role !== 'admin' && s.role !== 'super_admin' && (
+                          <button
+                            onClick={() => deleteSupporter(s.id)}
+                            className="text-red-700 hover:text-red-900"
+                            title="Delete permanently"
+                            aria-label={`Delete ${s.first_name} ${s.last_name}`}
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                {supporters.length === 0 && (
+                  <tr>
+                    <td colSpan={7} className="px-4 py-8 text-center text-gray-700">
+                      No supporters found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile card view */}
+          <div className="md:hidden space-y-4">
+            {supporters.map((s) => (
+              <div key={s.id} className="bg-white rounded-xl shadow p-4 space-y-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <div className="font-medium text-navy">
                       {s.first_name} {s.last_name}
                     </div>
                     <div className="text-xs text-gray-700">{formatDate(s.created_at)}</div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="text-sm">{s.email}</div>
-                    <div className="text-sm text-gray-700">{s.phone}</div>
-                  </td>
-                  <td className="px-4 py-3 text-sm">
+                  </div>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[s.status]}`}
+                  >
+                    {s.status.replace('_', ' ')}
+                  </span>
+                </div>
+
+                <div className="space-y-1 text-sm">
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-gray-400" />
+                    <span className="text-gray-600">{s.email}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Phone className="w-4 h-4 text-gray-400" />
+                    <span className="text-gray-600">{s.phone}</span>
+                  </div>
+                  <div className="text-gray-600 text-xs">
                     {s.street_address}, {s.city}, {s.state} {s.zip_code}
-                  </td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[s.status]}`}
-                    >
-                      {s.status.replace('_', ' ')}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`px-2 py-1 rounded text-xs font-medium ${roleColors[s.role] || roleColors.supporter}`}
+                  >
+                    {s.role === 'super_admin' && <ShieldCheck className="w-3 h-3 inline mr-1" />}
+                    {s.role === 'admin' && <Shield className="w-3 h-3 inline mr-1" />}
+                    {roleLabels[s.role] || 'Supporter'}
+                  </span>
+                  {s.email_consent && (
+                    <span className="text-xs text-gray-600 flex items-center gap-1">
+                      <Mail className="w-3 h-3 text-green-600" />
+                      Email
                     </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium ${roleColors[s.role] || roleColors.supporter}`}
-                      >
-                        {s.role === 'super_admin' && <ShieldCheck className="w-3 h-3 inline mr-1" />}
-                        {s.role === 'admin' && <Shield className="w-3 h-3 inline mr-1" />}
-                        {roleLabels[s.role] || 'Supporter'}
-                      </span>
-                      {isSuperAdmin && s.role !== 'super_admin' && (
-                        <select
-                          value={s.role || 'supporter'}
-                          onChange={(e) => onRoleChange(s.id, e.target.value)}
-                          className="text-xs border rounded px-1 py-0.5"
-                          aria-label={`Change role for ${s.first_name} ${s.last_name}`}
-                        >
-                          <option value="supporter">Supporter</option>
-                          <option value="admin">Admin</option>
-                          <option value="super_admin">Super Admin</option>
-                        </select>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex gap-2">
-                      {s.email_consent && <Mail className="w-4 h-4 text-green-600" aria-label="Email consent" />}
-                      {s.sms_consent && <Phone className="w-4 h-4 text-green-600" aria-label="SMS consent" />}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex gap-2">
-                      {s.status !== 'approved' && (
-                        <button
-                          onClick={() => updateSupporter(s.id, { status: 'approved' })}
-                          className="text-green-600 hover:text-green-800"
-                          title="Approve"
-                          aria-label={`Approve ${s.first_name} ${s.last_name}`}
-                        >
-                          <CheckCircle className="w-5 h-5" />
-                        </button>
-                      )}
-                      {/* Only SuperAdmin can suspend users */}
-                      {isSuperAdmin && s.status !== 'suspended' && (
-                        <button
-                          onClick={() => updateSupporter(s.id, { status: 'suspended' })}
-                          className="text-red-600 hover:text-red-800"
-                          title="Suspend"
-                          aria-label={`Suspend ${s.first_name} ${s.last_name}`}
-                        >
-                          <XCircle className="w-5 h-5" />
-                        </button>
-                      )}
-                      {/* Only SuperAdmin can delete non-admin users */}
-                      {isSuperAdmin && s.role !== 'admin' && s.role !== 'super_admin' && (
-                        <button
-                          onClick={() => deleteSupporter(s.id)}
-                          className="text-red-700 hover:text-red-900"
-                          title="Delete permanently"
-                          aria-label={`Delete ${s.first_name} ${s.last_name}`}
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {supporters.length === 0 && (
-                <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-gray-700">
-                    No supporters found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                  )}
+                  {s.sms_consent && (
+                    <span className="text-xs text-gray-600 flex items-center gap-1">
+                      <Phone className="w-3 h-3 text-green-600" />
+                      SMS
+                    </span>
+                  )}
+                </div>
+
+                {isSuperAdmin && s.role !== 'super_admin' && (
+                  <div className="pt-2">
+                    <label htmlFor={`role-select-${s.id}`} className="block text-xs font-medium text-gray-700 mb-1">Change Role</label>
+                    <select
+                      id={`role-select-${s.id}`}
+                      value={s.role || 'supporter'}
+                      onChange={(e) => onRoleChange(s.id, e.target.value)}
+                      className="w-full text-sm border rounded px-2 py-1"
+                      aria-label={`Change role for ${s.first_name} ${s.last_name}`}
+                    >
+                      <option value="supporter">Supporter</option>
+                      <option value="admin">Admin</option>
+                      <option value="super_admin">Super Admin</option>
+                    </select>
+                  </div>
+                )}
+
+                <div className="flex gap-2 pt-2 border-t">
+                  {s.status !== 'approved' && (
+                    <button
+                      onClick={() => updateSupporter(s.id, { status: 'approved' })}
+                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 text-sm font-medium"
+                      aria-label={`Approve ${s.first_name} ${s.last_name}`}
+                    >
+                      <CheckCircle className="w-4 h-4" />
+                      Approve
+                    </button>
+                  )}
+                  {isSuperAdmin && s.status !== 'suspended' && (
+                    <button
+                      onClick={() => updateSupporter(s.id, { status: 'suspended' })}
+                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 text-sm font-medium"
+                      aria-label={`Suspend ${s.first_name} ${s.last_name}`}
+                    >
+                      <XCircle className="w-4 h-4" />
+                      Suspend
+                    </button>
+                  )}
+                  {isSuperAdmin && s.role !== 'admin' && s.role !== 'super_admin' && (
+                    <button
+                      onClick={() => deleteSupporter(s.id)}
+                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-red-50 text-red-900 rounded-lg hover:bg-red-100 text-sm font-medium"
+                      aria-label={`Delete ${s.first_name} ${s.last_name}`}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      Delete
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+
+            {supporters.length === 0 && (
+              <div className="bg-white rounded-xl shadow p-8 text-center text-gray-700">
+                No supporters found
+              </div>
+            )}
+          </div>
+        </>
       )}
     </div>
   );
