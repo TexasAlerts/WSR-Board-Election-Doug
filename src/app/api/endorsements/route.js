@@ -72,6 +72,9 @@ export async function POST(req) {
     }
     const { firstName, lastName, email, phone, streetAddress, zipCode, message, consentEmail, consentSms, recaptchaToken } = parsed.data;
 
+    // Normalize email (trim + lowercase) to prevent duplicate accounts
+    const normalizedEmail = email.trim().toLowerCase();
+
     // Require reCAPTCHA verification
     if (!recaptchaToken) {
       return NextResponse.json(
@@ -107,11 +110,11 @@ export async function POST(req) {
     // Full name for endorsement display
     const fullName = `${firstName} ${lastName}`;
 
-    // Check if supporter already exists
+    // Check if supporter already exists (using normalized email)
     const { data: existingSupporter } = await supabase
       .from('supporters')
       .select('id')
-      .eq('email', email)
+      .eq('email', normalizedEmail)
       .single();
 
     let supporterId = existingSupporter?.id;
@@ -123,7 +126,7 @@ export async function POST(req) {
         .insert({
           first_name: firstName,
           last_name: lastName,
-          email,
+          email: normalizedEmail,
           phone: formattedPhone,
           street_address: streetAddress,
           city: 'Prosper',
@@ -155,14 +158,15 @@ export async function POST(req) {
         if (supporterId) {
           const verificationToken = await createEmailVerification(supporterId, 'verify');
           if (verificationToken) {
-            // Send verification email
-            await sendVerificationEmail(email, firstName, verificationToken).catch((err) => {
-              logError({
+            // Send verification email (returns {success, error} object)
+            const emailResult = await sendVerificationEmail(normalizedEmail, firstName, verificationToken);
+            if (!emailResult.success) {
+              await logError({
                 errorType: ErrorTypes.EMAIL_DELIVERY,
-                errorMessage: `Failed to send verification email to endorser: ${err.message}`,
-                userEmail: email,
+                errorMessage: `Failed to send verification email to endorser: ${emailResult.error}`,
+                userEmail: normalizedEmail,
               });
-            });
+            }
           }
         }
       }
@@ -172,7 +176,7 @@ export async function POST(req) {
       .from('endorsements')
       .insert({
         name: fullName,
-        email,
+        email: normalizedEmail,
         phone: formattedPhone,
         message: message ?? null,
         status: 'pending',
@@ -188,7 +192,7 @@ export async function POST(req) {
         errorMessage: error.message,
         endpoint: '/api/endorsements',
         method: 'POST',
-        userEmail: email,
+        userEmail: normalizedEmail,
         request: req,
       });
       return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
@@ -201,7 +205,7 @@ export async function POST(req) {
       targetType: 'endorsement',
       details: {
         name: fullName,
-        email,
+        email: normalizedEmail,
         hasPhone: !!phone,
         hasMessage: !!message,
         consentEmail,
@@ -232,19 +236,19 @@ export async function POST(req) {
 
     await Promise.all([
       sendEmail(
-        email,
+        normalizedEmail,
         'Thanks for your endorsement - Activate your supporter account',
         `Hi ${firstName},\n\nThank you for endorsing Doug Charles for Prosper Town Council Place 5!\n${message ? `\nYour message: "${message}"\n` : ''}\nWe will review your endorsement and notify you once it is published on the website.\n\n${'═'.repeat(60)}\n\n✅ YOU'RE NOW A CAMPAIGN SUPPORTER!\n\nAs an endorser, you've automatically been added as a campaign supporter with full access to our community engagement platform.\n\nWHY ACTIVATE YOUR ACCOUNT?\n\nOnce you verify your email and create your password, you'll be able to:\n\n✓ Vote on community polls - Your voice matters on local issues${pollsText}\n✓ Submit your own ideas for improving Prosper\n✓ Support ideas from other community members\n✓ Ask Doug questions directly and view his answers${questionsText}\n✓ Comment and engage in community discussions\n✓ Manage your notification preferences (email/SMS)\n✓ Stay informed about campaign events and updates\n\n${'═'.repeat(60)}\n\nHOW TO ACTIVATE:\n\n1. Check your inbox for a separate email with the subject "Verify your email - Doug Charles for Prosper"\n2. Click the "Verify Email & Create Password" button\n3. Create a secure password for your account\n4. Start engaging with the Prosper community!\n\n${activePollsCount > 0 || openQuestionsCount > 0 ? `\nGET STARTED NOW:\n${activePollsCount > 0 ? `• Vote on polls: ${process.env.SITE_URL || 'https://www.dougcharles.com'}/polls\n` : ''}${openQuestionsCount > 0 ? `• Ask questions: ${process.env.SITE_URL || 'https://www.dougcharles.com'}/qna\n` : ''}• Submit ideas: ${process.env.SITE_URL || 'https://www.dougcharles.com'}/ideas\n• View endorsements: ${process.env.SITE_URL || 'https://www.dougcharles.com'}/endorsements\n` : `\nExplore the community:\n• View endorsements: ${process.env.SITE_URL || 'https://www.dougcharles.com'}/endorsements\n• Browse polls: ${process.env.SITE_URL || 'https://www.dougcharles.com'}/polls\n• See ideas: ${process.env.SITE_URL || 'https://www.dougcharles.com'}/ideas\n`}\n\nThank you for your support and for being part of the movement for Common Sense leadership for ALL of Prosper!\n\n--\nDoug Charles\nCandidate for Prosper Town Council Place 5\n\n---\nPaid for by Charles for Prosper. Doug Charles, Treasurer.`
       ).catch((err) => {
         logError({
           errorType: ErrorTypes.EMAIL_DELIVERY,
           errorMessage: `Failed to send endorsement confirmation: ${err.message}`,
-          userEmail: email,
+          userEmail: normalizedEmail,
         });
       }),
       sendNotificationEmail(
         'New endorsement submitted',
-        `Name: ${fullName}\nEmail: ${email}\nPhone: ${formattedPhone}\nAddress: ${streetAddress}, ${zipCode}\nMessage: ${message || ''}\nSupporter ID: ${supporterId || 'Not created'}\n${supporterId ? 'Verification email sent: YES' : 'Verification email sent: NO'}`
+        `Name: ${fullName}\nEmail: ${normalizedEmail}\nPhone: ${formattedPhone}\nAddress: ${streetAddress}, ${zipCode}\nMessage: ${message || ''}\nSupporter ID: ${supporterId || 'Not created'}\n${supporterId ? 'Verification email sent: YES' : 'Verification email sent: NO'}`
       ).catch(() => {}),
     ]);
     return NextResponse.json({ ok: true }, { status: 201 });
