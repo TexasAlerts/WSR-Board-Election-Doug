@@ -211,13 +211,13 @@ export async function POST(req) {
       // Send confirmation (not verification) email
       await Promise.all([
         sendEmail(
-          email,
+          normalizedEmail,
           'Thanks for getting involved',
           `Hi ${name},\n\nThanks for your interest in ${type}.\n${message ? `Message: ${message}\n\n` : ''}We will be in touch and you can check back for updates.\n\n--\nDoug Charles`
         ).catch(() => {}),
         sendNotificationEmail(
           'New interest submission',
-          `Type: ${type}\nName: ${name}\nEmail: ${email}\nPhone: ${phone || ''}\nMessage: ${message || ''}`
+          `Type: ${type}\nName: ${name}\nEmail: ${normalizedEmail}\nPhone: ${phone || ''}\nMessage: ${message || ''}`
         ).catch(() => {}),
       ]);
 
@@ -246,7 +246,7 @@ export async function POST(req) {
       // Send admin notification
       await sendNotificationEmail(
         'New interest submission (pending verification)',
-        `Type: ${type}\nName: ${name}\nEmail: ${email}\nPhone: ${phone || ''}\nMessage: ${message || ''}\nStatus: Awaiting email verification`
+        `Type: ${type}\nName: ${name}\nEmail: ${normalizedEmail}\nPhone: ${phone || ''}\nMessage: ${message || ''}\nStatus: Awaiting email verification`
       ).catch(() => {});
 
       return NextResponse.json({

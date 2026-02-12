@@ -21,12 +21,14 @@ export async function sendEmail(to, subject, text) {
   if (!resend) {
     return;
   }
+  // Normalize email to lowercase and trim whitespace for consistency
+  const normalizedTo = to?.trim().toLowerCase();
   // Use hello@dougcharles.com by default, or env override
   const from = process.env.SMTP_FROM || 'Doug Charles <hello@dougcharles.com>';
-  if (!from || !to) {
+  if (!from || !normalizedTo) {
     throw new Error('SMTP_FROM and recipient email must be configured');
   }
-  await resend.emails.send({ from, to, subject, text });
+  await resend.emails.send({ from, to: normalizedTo, subject, text });
 }
 
 /**

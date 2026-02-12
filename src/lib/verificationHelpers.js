@@ -18,11 +18,14 @@ import { generateToken } from './auth';
 export async function ensureVerifiedVoter(email, name) {
   const supabase = getSupabase();
 
+  // Defensive: Ensure email is normalized (should already be done by caller)
+  const normalizedEmail = email.trim().toLowerCase();
+
   // Check if verified voter already exists
   const { data: existing, error: fetchError } = await supabase
     .from('verified_voters')
     .select('id, verified_at')
-    .eq('email', email)
+    .eq('email', normalizedEmail)
     .single();
 
   if (fetchError && fetchError.code !== 'PGRST116') {
@@ -77,7 +80,7 @@ export async function ensureVerifiedVoter(email, name) {
     const { data: newVoter, error: insertError } = await supabase
       .from('verified_voters')
       .insert({
-        email,
+        email: normalizedEmail,
         name,
         first_name,
         last_initial,
@@ -110,6 +113,9 @@ export async function ensureVerifiedVoter(email, name) {
 export async function linkPendingSubmissions(verifiedVoterId, email) {
   const supabase = getSupabase();
 
+  // Defensive: Ensure email is normalized (should already be done by caller)
+  const normalizedEmail = email.trim().toLowerCase();
+
   // Update all pending interest submissions
   const { data: updatedInterests, error: interestError } = await supabase
     .from('interest')
@@ -117,7 +123,7 @@ export async function linkPendingSubmissions(verifiedVoterId, email) {
       verified_voter_id: verifiedVoterId,
       verification_status: 'verified',
     })
-    .eq('email', email)
+    .eq('email', normalizedEmail)
     .is('verified_voter_id', null)
     .select('id');
 
@@ -132,7 +138,7 @@ export async function linkPendingSubmissions(verifiedVoterId, email) {
       verified_voter_id: verifiedVoterId,
       verification_status: 'verified',
     })
-    .eq('email', email)
+    .eq('email', normalizedEmail)
     .is('verified_voter_id', null)
     .select('id');
 
@@ -155,10 +161,13 @@ export async function linkPendingSubmissions(verifiedVoterId, email) {
 export async function getVerifiedVoterByEmail(email) {
   const supabase = getSupabase();
 
+  // Defensive: Ensure email is normalized (should already be done by caller)
+  const normalizedEmail = email.trim().toLowerCase();
+
   const { data, error } = await supabase
     .from('verified_voters')
     .select('id, email, name')
-    .eq('email', email)
+    .eq('email', normalizedEmail)
     .not('verified_at', 'is', null) // Must be verified
     .single();
 
