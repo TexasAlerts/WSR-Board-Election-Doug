@@ -3,8 +3,10 @@ import { getSupabase } from '../../../lib/supabase';
 import { z } from 'zod';
 import { rateLimit } from '../../../lib/rateLimit';
 import { sendNotificationEmail, sendEmail } from '../../../lib/sendEmail';
+import { sendQuestionVerificationEmail } from '../../../lib/emailService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../lib/logging';
 import { verifyCaptcha } from '../../../lib/recaptcha';
+import { ensureVerifiedVoter, getVerifiedVoterByEmail } from '../../../lib/verificationHelpers';
 
 // API routes should be dynamic
 export const dynamic = 'force-dynamic';
@@ -80,9 +82,11 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-    const { error } = await supabase
+    const { data: questionRecord, error } = await supabase
       .from('questions')
-      .insert({ name, email, question, status: 'pending' });
+      .insert({ name, email, question, status: 'pending' })
+      .select('id')
+      .single();
     if (error) {
       await logError({
         errorType: ErrorTypes.DATABASE_ERROR,
@@ -97,30 +101,99 @@ export async function POST(req) {
     await logAudit({
       eventType: AuditEvents.QUESTION_SUBMITTED || 'QUESTION_SUBMITTED',
       targetType: 'question',
+      targetId: questionRecord?.id,
       details: { name, email },
       request: req,
       responseStatus: 201,
     });
 
-    const site = process.env.SITE_URL || '';
-    await Promise.all([
-      sendEmail(
-        email,
-        'Thanks for your question',
-        `Hi ${name},\n\nThanks for your question:\n${question}\n\nWe will follow up once it has been answered.\n\nView your submission: ${site}/qna\n\n--\nDoug Charles\n\n---\nPaid for by Charles for Prosper. Doug Charles, Treasurer.`
-      ).catch((err) => {
-        logError({
-          errorType: ErrorTypes.EMAIL_DELIVERY,
-          errorMessage: `Failed to send question confirmation email: ${err.message}`,
+    // Normalize email for verification lookup (prevent duplicate records)
+    const normalizedEmail = email.trim().toLowerCase();
+
+    // Check if email is already verified
+    const verifiedVoter = await getVerifiedVoterByEmail(normalizedEmail);
+
+    if (verifiedVoter) {
+      // Already verified - link immediately
+      const { error: updateError } = await supabase
+        .from('questions')
+        .update({
+          verified_voter_id: verifiedVoter.id,
+          verification_status: 'verified',
+        })
+        .eq('id', questionRecord.id);
+
+      // Check if update succeeded before returning success
+      if (updateError) {
+        await logError({
+          errorType: ErrorTypes.DATABASE_ERROR,
+          errorMessage: `Failed to link question to verified voter: ${updateError.message}`,
+          endpoint: '/api/questions',
+          method: 'POST',
           userEmail: email,
+          request: req,
         });
-      }),
-      sendNotificationEmail(
-        'New question submitted',
-        `Name: ${name}\nEmail: ${email}\nQuestion: ${question}`
-      ).catch(() => {}),
-    ]);
-    return NextResponse.json({ ok: true }, { status: 201 });
+        return NextResponse.json(
+          { ok: false, error: 'Failed to link submission. Please try again.' },
+          { status: 500 }
+        );
+      }
+
+      // Send confirmation (not verification) email
+      const site = process.env.SITE_URL || '';
+      await Promise.all([
+        sendEmail(
+          email,
+          'Thanks for your question',
+          `Hi ${name},\n\nThanks for your question:\n${question}\n\nWe will follow up once it has been answered.\n\nView your submission: ${site}/qna\n\n--\nDoug Charles\n\n---\nPaid for by Charles for Prosper. Doug Charles, Treasurer.`
+        ).catch((err) => {
+          logError({
+            errorType: ErrorTypes.EMAIL_DELIVERY,
+            errorMessage: `Failed to send question confirmation email: ${err.message}`,
+            userEmail: email,
+          });
+        }),
+        sendNotificationEmail(
+          'New question submitted',
+          `Name: ${name}\nEmail: ${email}\nQuestion: ${question}`
+        ).catch(() => {}),
+      ]);
+
+      return NextResponse.json({
+        ok: true,
+        message: "Thank you! We'll notify you when your question is answered.",
+        alreadyVerified: true,
+      }, { status: 201 });
+    } else {
+      // Not verified - create/update verified_voters record
+      const { voterId, token } = await ensureVerifiedVoter(normalizedEmail, name);
+
+      // Send verification email with question preview
+      const questionPreview = question.slice(0, 100);
+      const emailResult = await sendQuestionVerificationEmail(normalizedEmail, name, token, questionPreview);
+
+      if (!emailResult.success) {
+        await logError({
+          errorType: ErrorTypes.EMAIL_ERROR,
+          errorMessage: `Failed to send question verification email: ${emailResult.error}`,
+          endpoint: '/api/questions',
+          method: 'POST',
+          request: req,
+        });
+      }
+
+      // Send admin notification
+      await sendNotificationEmail(
+        'New question submitted (pending verification)',
+        `Name: ${name}\nEmail: ${email}\nQuestion: ${question}\nStatus: Awaiting email verification`
+      ).catch(() => {});
+
+      return NextResponse.json({
+        ok: true,
+        message: 'Thank you! Please check your email (including junk/spam folder) to verify and get notified when your question is answered.',
+        needsVerification: true,
+      }, { status: 201 });
+    }
   } catch (err) {
     await logError({
       errorType: ErrorTypes.SERVER_ERROR,

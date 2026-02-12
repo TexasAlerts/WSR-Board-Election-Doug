@@ -107,11 +107,22 @@ function GetInvolvedDynamicContent() {
       const data = await res.json();
 
       if (res.ok && data.ok) {
-        setSubmitMsg(
-          selectedAction === 'endorsement'
-            ? 'Thank you! Your endorsement has been received.'
-            : 'Thank you! We will be in touch.'
-        );
+        // Set success message based on verification status
+        let message;
+        if (selectedAction === 'endorsement') {
+          message = 'Thank you! Your endorsement has been received.';
+        } else {
+          // Interest submissions
+          if (data.alreadyVerified) {
+            message = 'Thank you! Your interest has been recorded.';
+          } else if (data.needsVerification) {
+            message = 'Thank you! Please check your email (including junk/spam folder) to verify and stay updated.';
+          } else {
+            message = 'Thank you! We will be in touch.';
+          }
+        }
+
+        setSubmitMsg(message);
         setForm({
           name: '',
           email: '',
