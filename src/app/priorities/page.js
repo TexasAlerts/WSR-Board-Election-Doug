@@ -6,7 +6,7 @@ import { Ear, ClipboardList, ShieldCheck } from 'lucide-react';
 export const metadata = {
   title: 'Priorities - Doug Charles for Prosper Town Council',
   description:
-    'Doug Charles priorities for Prosper: responsible growth, infrastructure, public safety, fiscal accountability, and transparent governance.',
+    'Doug Charles priorities for Prosper: Listen. Plan. Protect. Responsible growth, infrastructure, public safety, fiscal accountability, and transparent governance.',
   alternates: { canonical: '/priorities' },
   openGraph: {
     title: 'My Priorities - Doug Charles for Prosper Town Council',
@@ -15,13 +15,13 @@ export const metadata = {
     siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
     locale: 'en_US',
     type: 'website',
-    images: [{ url: 'https://www.dougcharles.com/campaign-preview.png', width: 1200, height: 630, alt: 'Doug Charles for Prosper Town Council - My Priorities' }],
+    images: [{ url: 'https://www.dougcharles.com/campaign-preview.webp', width: 1200, height: 630, alt: 'Doug Charles for Prosper Town Council - My Priorities' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'My Priorities - Doug Charles for Prosper Town Council',
     description: 'Listen. Plan. Protect. Responsible growth, fiscal accountability, and transparent governance.',
-    images: ['https://www.dougcharles.com/campaign-preview.png'],
+    images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
 };
 

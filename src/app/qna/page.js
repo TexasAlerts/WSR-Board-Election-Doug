@@ -3,20 +3,29 @@ import Script from 'next/script';
 import QnaDynamic from '../../components/QnaDynamic';
 import { getSupabase } from '../../lib/supabase';
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.dougcharles.com' },
+    { '@type': 'ListItem', position: 2, name: 'Q&A', item: 'https://www.dougcharles.com/qna' },
+  ],
+};
+
 export const metadata = {
   title: 'Q&A with Doug - Doug Charles for Prosper Town Council',
   description:
-    'Ask Doug Charles questions about his positions, priorities, and plans for Prosper. Get direct answers from your Town Council Place 5 candidate.',
+    'Ask Doug Charles questions about his positions, priorities, and vision for Prosper\'s future. Get direct, honest answers from your Place 5 Town Council candidate.',
   alternates: { canonical: '/qna' },
   openGraph: {
     title: 'Q&A with Doug - Doug Charles for Prosper Town Council',
-    description: 'Ask Doug Charles questions about his positions, priorities, and plans for Prosper. Get direct answers from your Town Council Place 5 candidate.',
+    description: 'Ask Doug Charles questions about his positions, priorities, and vision for Prosper\'s future. Get direct, honest answers from your Place 5 Town Council candidate.',
     url: 'https://www.dougcharles.com/qna',
     siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
     locale: 'en_US',
     type: 'website',
     images: [{
-      url: 'https://www.dougcharles.com/campaign-preview.png',
+      url: 'https://www.dougcharles.com/campaign-preview.webp',
       width: 1200,
       height: 630,
       alt: 'Q&A with Doug Charles - Prosper Town Council'
@@ -25,8 +34,8 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Q&A with Doug - Doug Charles for Prosper Town Council',
-    description: 'Ask Doug Charles questions about his positions, priorities, and plans for Prosper.',
-    images: ['https://www.dougcharles.com/campaign-preview.png'],
+    description: 'Ask Doug Charles questions about his positions, priorities, and vision for Prosper\'s future.',
+    images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
 };
 
@@ -87,6 +96,8 @@ export default async function QnAPage() {
 
   return (
     <div className="space-y-0">
+      {/* Breadcrumb JSON-LD */}
+      <Script id="qna-breadcrumb" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {/* JSON-LD structured data for Q&A */}
       {initialQuestions.length > 0 && (
         <Script

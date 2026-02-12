@@ -3,6 +3,16 @@ import Script from 'next/script';
 import IdeasClient from '../../components/IdeasClient';
 import { getSupabase } from '../../lib/supabase';
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.dougcharles.com' },
+    { '@type': 'ListItem', position: 2, name: 'Ideas', item: 'https://www.dougcharles.com/ideas' },
+  ],
+};
+
+
 export const metadata = {
   title: 'Community Ideas - Doug Charles for Prosper Town Council',
   description:
@@ -16,7 +26,7 @@ export const metadata = {
     locale: 'en_US',
     type: 'website',
     images: [{
-      url: 'https://www.dougcharles.com/campaign-preview.png',
+      url: 'https://www.dougcharles.com/campaign-preview.webp',
       width: 1200,
       height: 630,
       alt: 'Community Ideas - Doug Charles Campaign'
@@ -26,7 +36,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Community Ideas - Doug Charles for Prosper Town Council',
     description: 'Share your ideas for making Prosper better. Vote on community proposals.',
-    images: ['https://www.dougcharles.com/campaign-preview.png'],
+    images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
 };
 // Enable ISR with 60 second revalidation for fresh ideas data
@@ -124,6 +134,8 @@ export default async function IdeasPage() {
 
   return (
     <div className="space-y-0">
+      {/* Breadcrumb JSON-LD */}
+      <Script id="ideas-breadcrumb" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {/* JSON-LD structured data for ideas */}
       <Script
         id="ideas-structured-data"

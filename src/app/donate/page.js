@@ -1,10 +1,11 @@
 import Image from 'next/image';
+import Script from 'next/script';
 import { Mail, MessageCircle } from 'lucide-react';
 
 export const metadata = {
   title: 'Support the Campaign - Doug Charles for Prosper',
   description:
-    'Support Doug Charles for Town of Prosper Town Council Place 5. Your contribution helps bring Common Sense leadership to ALL of Prosper.',
+    'Support Doug Charles for Town of Prosper Town Council Place 5. Your contribution helps bring Common Sense leadership and real change to ALL of Prosper.',
   alternates: { canonical: '/donate' },
   openGraph: {
     title: 'Support the Campaign - Doug Charles for Prosper',
@@ -14,7 +15,7 @@ export const metadata = {
     locale: 'en_US',
     type: 'website',
     images: [{
-      url: 'https://www.dougcharles.com/campaign-preview.png',
+      url: 'https://www.dougcharles.com/campaign-preview.webp',
       width: 1200,
       height: 630,
       alt: 'Support Doug Charles for Prosper Town Council'
@@ -24,9 +25,19 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Support the Campaign - Doug Charles for Prosper',
     description: 'Your contribution helps bring Common Sense leadership to ALL of Prosper.',
-    images: ['https://www.dougcharles.com/campaign-preview.png'],
+    images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
 };
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.dougcharles.com' },
+    { '@type': 'ListItem', position: 2, name: 'Donate', item: 'https://www.dougcharles.com/donate' },
+  ],
+};
+
 import DonateDynamic from '../../components/DonateDynamic';
 
 const SHARE_MESSAGE =
@@ -36,6 +47,7 @@ const SHARE_SUBJECT = 'Check out Doug Charles for Town of Prosper Town Council P
 export default function DonatePage() {
   return (
     <div className="space-y-0">
+      <Script id="donate-breadcrumb" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {/* Hero */}
       <section className="hero-pattern hero-gradient text-center py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
