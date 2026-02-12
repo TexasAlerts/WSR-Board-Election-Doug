@@ -95,6 +95,21 @@ async function postHandler(request) {
       );
     }
 
+    // Validate phone number exists and is in valid format
+    if (!supporter.phone || !supporter.phone.trim()) {
+      await logError({
+        errorType: ErrorTypes.VALIDATION_ERROR,
+        errorMessage: 'Cannot send SMS: phone number is missing',
+        endpoint: '/api/auth/send-sms-code',
+        method: 'POST',
+        request,
+      });
+      return NextResponse.json(
+        { ok: false, error: 'Phone number is missing. Please update your profile.' },
+        { status: 400 }
+      );
+    }
+
     // Create new SMS code
     const code = await createSMSVerification(supporterId, supporter.phone);
     if (!code) {
@@ -110,7 +125,7 @@ async function postHandler(request) {
     if (!smsResult.success) {
       await logError({
         errorType: ErrorTypes.EXTERNAL_SERVICE,
-        errorMessage: 'Failed to send SMS verification code',
+        errorMessage: `Failed to send SMS verification code: ${smsResult.error}`,
         endpoint: '/api/auth/send-sms-code',
         method: 'POST',
         request,

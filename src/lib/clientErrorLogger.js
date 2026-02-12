@@ -382,7 +382,15 @@ export async function logClientError({
 
     // Gather comprehensive context
     const browserContext = getBrowserContext();
-    const performanceMetrics = getPerformanceMetrics();
+    let performanceMetrics = null;
+    try {
+      performanceMetrics = getPerformanceMetrics();
+    } catch (perfError) {
+      // Silently ignore Vercel Speed Insights errors on privacy browsers
+      if (perfError?.message?.includes('performanceMetrics') || perfError?.message?.includes('feature named')) {
+        // Known issue with Vercel Speed Insights
+      }
+    }
     const journeyContext = getVisitorJourneyContext();
 
     // Determine severity based on error type if not provided

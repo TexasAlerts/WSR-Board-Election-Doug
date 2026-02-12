@@ -114,28 +114,40 @@ export async function POST(request) {
     await markEmailVerificationUsed(verification.id);
 
     // Create and send SMS verification code
-    const smsCode = await createSMSVerification(supporter.id, supporter.phone);
-    if (smsCode) {
-      const smsResult = await sendVerificationSMS(supporter.phone, smsCode);
-      if (!smsResult.success) {
+    // Validate phone exists and is in valid format before sending SMS
+    if (!supporter.phone || !supporter.phone.trim()) {
+      await logError({
+        errorType: ErrorTypes.VALIDATION_ERROR,
+        errorMessage: 'Cannot send SMS: phone number is missing',
+        endpoint: '/api/auth/verify',
+        method: 'POST',
+        userEmail: supporter.email,
+        request,
+      });
+    } else {
+      const smsCode = await createSMSVerification(supporter.id, supporter.phone);
+      if (smsCode) {
+        const smsResult = await sendVerificationSMS(supporter.phone, smsCode);
+        if (!smsResult.success) {
+          await logError({
+            errorType: ErrorTypes.EXTERNAL_SERVICE,
+            errorMessage: `SMS verification send failed: ${smsResult.error}`,
+            endpoint: '/api/auth/verify',
+            method: 'POST',
+            userEmail: supporter.email,
+            request,
+          });
+        }
+      } else {
         await logError({
-          errorType: ErrorTypes.EXTERNAL_SERVICE,
-          errorMessage: `SMS verification send failed: ${smsResult.error}`,
+          errorType: ErrorTypes.DATABASE_ERROR,
+          errorMessage: 'Failed to create SMS verification code',
           endpoint: '/api/auth/verify',
           method: 'POST',
           userEmail: supporter.email,
           request,
         });
       }
-    } else {
-      await logError({
-        errorType: ErrorTypes.DATABASE_ERROR,
-        errorMessage: 'Failed to create SMS verification code',
-        endpoint: '/api/auth/verify',
-        method: 'POST',
-        userEmail: supporter.email,
-        request,
-      });
     }
 
     // Log event
