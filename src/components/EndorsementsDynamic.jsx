@@ -14,9 +14,12 @@ export default function EndorsementsDynamic() {
   const [retryCount, setRetryCount] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
+    streetAddress: '',
+    zipCode: '',
     message: '',
     consentEmail: false,
     consentSms: false,
@@ -134,9 +137,12 @@ export default function EndorsementsDynamic() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: form.name,
+          firstName: form.firstName,
+          lastName: form.lastName,
           email: form.email,
           phone: form.phone,
+          streetAddress: form.streetAddress,
+          zipCode: form.zipCode,
           message: form.message,
           consentEmail: form.consentEmail,
           consentSms: form.consentSms,
@@ -150,9 +156,12 @@ export default function EndorsementsDynamic() {
       if (res.ok && data.ok) {
         setSubmitMsg('Thank you! Your endorsement has been received.');
         setForm({
-          name: '',
+          firstName: '',
+          lastName: '',
           email: '',
           phone: '',
+          streetAddress: '',
+          zipCode: '',
           message: '',
           consentEmail: false,
           consentSms: false,
@@ -226,20 +235,38 @@ export default function EndorsementsDynamic() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
-                  <div>
-                    <label htmlFor="endorsement-name" className="form-label">
-                      Name *
-                    </label>
-                    <input
-                      id="endorsement-name"
-                      type="text"
-                      required
-                      aria-required="true"
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className="form-input"
-                      autoComplete="name"
-                    />
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="endorsement-first-name" className="form-label">
+                        First Name *
+                      </label>
+                      <input
+                        id="endorsement-first-name"
+                        type="text"
+                        required
+                        aria-required="true"
+                        value={form.firstName}
+                        onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+                        className="form-input"
+                        autoComplete="given-name"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="endorsement-last-name" className="form-label">
+                        Last Name *
+                      </label>
+                      <input
+                        id="endorsement-last-name"
+                        type="text"
+                        required
+                        aria-required="true"
+                        value={form.lastName}
+                        onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+                        className="form-input"
+                        autoComplete="family-name"
+                      />
+                    </div>
                   </div>
 
                   <div>
@@ -260,11 +287,13 @@ export default function EndorsementsDynamic() {
 
                   <div>
                     <label htmlFor="endorsement-phone" className="form-label">
-                      Phone (optional)
+                      Phone *
                     </label>
                     <input
                       id="endorsement-phone"
                       type="tel"
+                      required
+                      aria-required="true"
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
                       className="form-input"
@@ -274,6 +303,46 @@ export default function EndorsementsDynamic() {
                     />
                     <p id="endorsement-phone-hint" className="text-sm text-gray-700 mt-1">
                       US phone numbers only
+                    </p>
+                  </div>
+
+                  <div>
+                    <label htmlFor="endorsement-street-address" className="form-label">
+                      Street Address *
+                    </label>
+                    <input
+                      id="endorsement-street-address"
+                      type="text"
+                      required
+                      aria-required="true"
+                      value={form.streetAddress}
+                      onChange={(e) => setForm({ ...form, streetAddress: e.target.value })}
+                      className="form-input"
+                      placeholder="123 Main St"
+                      autoComplete="street-address"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="endorsement-zip-code" className="form-label">
+                      Zip Code *
+                    </label>
+                    <input
+                      id="endorsement-zip-code"
+                      type="text"
+                      required
+                      aria-required="true"
+                      value={form.zipCode}
+                      onChange={(e) => setForm({ ...form, zipCode: e.target.value })}
+                      className="form-input"
+                      placeholder="75078"
+                      autoComplete="postal-code"
+                      pattern="[0-9]{5}"
+                      maxLength={5}
+                      aria-describedby="endorsement-zip-hint"
+                    />
+                    <p id="endorsement-zip-hint" className="text-sm text-gray-700 mt-1">
+                      5-digit zip code
                     </p>
                   </div>
 
