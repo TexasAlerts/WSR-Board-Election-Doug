@@ -339,12 +339,16 @@ export default function TrackRecordPage() {
                     <strong className="text-navy">
                       plan smarter, communicate better, and build it right the first time—or with a
                       clear plan that voters understand and can support.
-                    </strong>{' '}
+                    </strong>
+                  </p>
+                  <p className="text-gray-600 mb-2">
                     <strong className="text-prosper-red">
                       NO to poor planning and poor communication that creates pressure now and for years
-                      to come—because we failed to build the right engagement, explain why we needed what
-                      was proposed, and show the plan moving forward.
+                      to come.
                     </strong>{' '}
+                    We failed to build the right engagement, explain why we needed what was proposed, and show the plan moving forward.
+                  </p>
+                  <p className="text-gray-600 mb-2">
                     I strongly advocated for{' '}
                     <strong className="text-navy">Props A (Streets) and F (Downtown)</strong>—and
                     voters agreed, passing both.
