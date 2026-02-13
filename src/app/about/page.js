@@ -107,14 +107,14 @@ export default function AboutPage() {
                   I moved to <strong className="text-navy">Prosper 20 years ago</strong> for the
                   same reasons you probably did—<strong className="text-navy">great schools</strong>
                   , <strong className="text-navy">safe neighborhoods</strong>, and room to raise a
-                  family. <strong className="text-navy">My wife Wanda and I have been married
+                  family. <strong className="text-navy">My wife, Wanda, and I have been married
                   for 30 years</strong>, and we've raised our three children here—all{' '}
                   <strong className="text-prosper-red">Prosper ISD graduates</strong>. This isn't
                   theoretical for me; I've lived the decisions we're making about{' '}
                   <strong className="text-navy">our roads, our tax dollars, and preserving what makes Prosper home</strong>.
                 </p>
                 <p>
-                  Back then, everybody knew your name,{' '}
+                  Back then, everyone knew your name,{' '}
                   <strong className="text-navy">Friday night football</strong> was the center of
                   town, and <strong className="text-prosper-red">&apos;Small Town, Big Heart&apos;</strong>{' '}
                   wasn&apos;t just a slogan—it was how we lived. We&apos;ve grown fast, and with
@@ -157,7 +157,7 @@ export default function AboutPage() {
                 <div>
                   <h3 className="text-xl font-bold text-navy mb-2">US Army Reserves</h3>
                   <p className="text-gray-600">
-                    1992-1996 · Served with <strong className="text-navy">dedication to duty and country</strong>, developing leadership skills and a{' '}
+                    1992–1996 · Served with <strong className="text-navy">dedication to duty and country</strong>, developing leadership skills and a{' '}
                     <strong className="text-navy">commitment to service</strong> that continues today.
                   </p>
                 </div>
