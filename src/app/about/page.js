@@ -155,6 +155,19 @@ export default function AboutPage() {
               <div className="flex items-start gap-4">
                 <div className="w-4 h-4 bg-gradient-to-br from-prosper-red to-red-dark rounded-full mt-1 flex-shrink-0 shadow-sm"></div>
                 <div>
+                  <h3 className="text-xl font-bold text-navy mb-2">US Army Reserves</h3>
+                  <p className="text-gray-600">
+                    1992-1996 · Served with <strong className="text-navy">dedication to duty and country</strong>, developing leadership skills and a{' '}
+                    <strong className="text-navy">commitment to service</strong> that continues today.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="card h-full">
+              <div className="flex items-start gap-4">
+                <div className="w-4 h-4 bg-gradient-to-br from-prosper-red to-red-dark rounded-full mt-1 flex-shrink-0 shadow-sm"></div>
+                <div>
                   <h3 className="text-xl font-bold text-navy mb-2">20-Year Prosper Resident</h3>
                   <p className="text-gray-600">
                     <strong className="text-navy">Deep roots</strong> in this community. I've
