@@ -76,7 +76,8 @@ describe('Production Fixes - Runtime Verification', () => {
 
     it('uses useMemo for isFormValid', () => {
       expect(formCode).toContain('const isFormValid = useMemo(');
-      expect(formCode).toContain('}, [form.name, form.email, form.phone, validationErrors, selectedAction])');
+      // Updated dependency array includes endorsement fields
+      expect(formCode).toContain('}, [form.name, form.firstName, form.lastName, form.email, form.phone, form.streetAddress, form.zipCode, validationErrors, selectedAction])');
     });
 
     it('disables submit when form is invalid', () => {
