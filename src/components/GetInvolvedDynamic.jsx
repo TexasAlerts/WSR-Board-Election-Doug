@@ -19,8 +19,12 @@ function GetInvolvedDynamicContent() {
   const formRef = useRef(null);
   const [form, setForm] = useState({
     name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
+    streetAddress: '',
+    zipCode: '',
     message: '',
     consentEmail: false,
     consentSms: false,
@@ -80,9 +84,12 @@ function GetInvolvedDynamicContent() {
       const body =
         selectedAction === 'endorsement'
           ? {
-              name: form.name,
+              firstName: form.firstName,
+              lastName: form.lastName,
               email: form.email,
-              phone: validatedPhone || null,
+              phone: validatedPhone || '',
+              streetAddress: form.streetAddress,
+              zipCode: form.zipCode,
               message: form.message,
               consentEmail: form.consentEmail,
               consentSms: form.consentSms,
@@ -125,8 +132,12 @@ function GetInvolvedDynamicContent() {
         setSubmitMsg(message);
         setForm({
           name: '',
+          firstName: '',
+          lastName: '',
           email: '',
           phone: '',
+          streetAddress: '',
+          zipCode: '',
           message: '',
           consentEmail: false,
           consentSms: false,

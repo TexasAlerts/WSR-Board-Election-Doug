@@ -63,6 +63,17 @@ export default function GetInvolvedForm({
 
   // Memoize form validity to prevent infinite re-renders
   const isFormValid = useMemo(() => {
+    if (selectedAction === 'endorsement') {
+      const firstNameValid = form.firstName.trim().length > 0;
+      const lastNameValid = form.lastName.trim().length > 0;
+      const emailValid = form.email.trim().length > 0 && !validationErrors.email;
+      const phoneValid = form.phone.trim().length > 0 && !validationErrors.phone;
+      const streetAddressValid = form.streetAddress.trim().length > 0;
+      const zipCodeValid = /^\d{5}$/.test(form.zipCode.trim());
+
+      return firstNameValid && lastNameValid && emailValid && phoneValid && streetAddressValid && zipCodeValid;
+    }
+
     const nameValid = form.name.trim().length > 0;
     const emailValid = form.email.trim().length > 0 && !validationErrors.email;
     const phoneValid = selectedAction === 'host_event'
@@ -70,7 +81,7 @@ export default function GetInvolvedForm({
       : !validationErrors.phone;
 
     return nameValid && emailValid && phoneValid;
-  }, [form.name, form.email, form.phone, validationErrors, selectedAction]);
+  }, [form.name, form.firstName, form.lastName, form.email, form.phone, form.streetAddress, form.zipCode, validationErrors, selectedAction]);
 
   const getFormTitle = () => {
     const actionTitles = {
@@ -135,76 +146,215 @@ export default function GetInvolvedForm({
         </div>
       ) : (
         <form onSubmit={onSubmit} className="space-y-5">
-          <div>
-            <label htmlFor="name" className="form-label">
-              Name *
-            </label>
-            <input
-              id="name"
-              type="text"
-              required
-              aria-required="true"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="form-input"
-              autoComplete="name"
-            />
-          </div>
+          {selectedAction === 'endorsement' ? (
+            <>
+              {/* Endorsement-specific fields */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label htmlFor="firstName" className="form-label">
+                    First Name *
+                  </label>
+                  <input
+                    id="firstName"
+                    type="text"
+                    required
+                    aria-required="true"
+                    value={form.firstName}
+                    onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+                    className="form-input"
+                    autoComplete="given-name"
+                  />
+                </div>
 
-          <div>
-            <label htmlFor="email" className="form-label">
-              Email *
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              aria-required="true"
-              aria-invalid={!!validationErrors.email}
-              aria-describedby={validationErrors.email ? 'email-error' : undefined}
-              value={form.email}
-              onChange={handleEmailChange}
-              className={`form-input ${
-                validationErrors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
-              }`}
-              autoComplete="email"
-            />
-            {validationErrors.email && (
-              <p id="email-error" className="mt-1 text-sm text-red-600" role="alert">
-                {validationErrors.email}
-              </p>
-            )}
-          </div>
+                <div>
+                  <label htmlFor="lastName" className="form-label">
+                    Last Name *
+                  </label>
+                  <input
+                    id="lastName"
+                    type="text"
+                    required
+                    aria-required="true"
+                    value={form.lastName}
+                    onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+                    className="form-input"
+                    autoComplete="family-name"
+                  />
+                </div>
+              </div>
 
-          <div>
-            <label htmlFor="phone" className="form-label">
-              Phone {selectedAction === 'host_event' ? '*' : '(optional)'}
-            </label>
-            <input
-              id="phone"
-              type="tel"
-              required={selectedAction === 'host_event'}
-              aria-required={selectedAction === 'host_event' ? 'true' : undefined}
-              aria-invalid={!!validationErrors.phone}
-              aria-describedby={validationErrors.phone ? 'phone-error' : 'phone-hint'}
-              value={form.phone}
-              onChange={handlePhoneChange}
-              className={`form-input ${
-                validationErrors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
-              }`}
-              placeholder="(555) 555-5555"
-              autoComplete="tel"
-            />
-            {validationErrors.phone ? (
-              <p id="phone-error" className="mt-1 text-sm text-red-600" role="alert">
-                {validationErrors.phone}
-              </p>
-            ) : (
-              <p id="phone-hint" className="text-sm text-gray-700 mt-1">
-                US phone numbers only
-              </p>
-            )}
-          </div>
+              <div>
+                <label htmlFor="email" className="form-label">
+                  Email *
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  aria-required="true"
+                  aria-invalid={!!validationErrors.email}
+                  aria-describedby={validationErrors.email ? 'email-error' : undefined}
+                  value={form.email}
+                  onChange={handleEmailChange}
+                  className={`form-input ${
+                    validationErrors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
+                  }`}
+                  autoComplete="email"
+                />
+                {validationErrors.email && (
+                  <p id="email-error" className="mt-1 text-sm text-red-600" role="alert">
+                    {validationErrors.email}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="phone" className="form-label">
+                  Phone *
+                </label>
+                <input
+                  id="phone"
+                  type="tel"
+                  required
+                  aria-required="true"
+                  aria-invalid={!!validationErrors.phone}
+                  aria-describedby={validationErrors.phone ? 'phone-error' : 'phone-hint'}
+                  value={form.phone}
+                  onChange={handlePhoneChange}
+                  className={`form-input ${
+                    validationErrors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
+                  }`}
+                  placeholder="(555) 555-5555"
+                  autoComplete="tel"
+                />
+                {validationErrors.phone ? (
+                  <p id="phone-error" className="mt-1 text-sm text-red-600" role="alert">
+                    {validationErrors.phone}
+                  </p>
+                ) : (
+                  <p id="phone-hint" className="text-sm text-gray-700 mt-1">
+                    US phone numbers only
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="streetAddress" className="form-label">
+                  Street Address *
+                </label>
+                <input
+                  id="streetAddress"
+                  type="text"
+                  required
+                  aria-required="true"
+                  value={form.streetAddress}
+                  onChange={(e) => setForm({ ...form, streetAddress: e.target.value })}
+                  className="form-input"
+                  placeholder="123 Main St"
+                  autoComplete="street-address"
+                />
+                <p className="text-sm text-gray-700 mt-1">
+                  Must be in Prosper, TX to endorse
+                </p>
+              </div>
+
+              <div>
+                <label htmlFor="zipCode" className="form-label">
+                  Zip Code *
+                </label>
+                <input
+                  id="zipCode"
+                  type="text"
+                  required
+                  aria-required="true"
+                  value={form.zipCode}
+                  onChange={(e) => setForm({ ...form, zipCode: e.target.value })}
+                  className="form-input"
+                  placeholder="75078"
+                  maxLength={5}
+                  pattern="\d{5}"
+                  autoComplete="postal-code"
+                />
+                <p className="text-sm text-gray-700 mt-1">
+                  5-digit Prosper zip code
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Standard fields for other actions */}
+              <div>
+                <label htmlFor="name" className="form-label">
+                  Name *
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  required
+                  aria-required="true"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="form-input"
+                  autoComplete="name"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="email" className="form-label">
+                  Email *
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  aria-required="true"
+                  aria-invalid={!!validationErrors.email}
+                  aria-describedby={validationErrors.email ? 'email-error' : undefined}
+                  value={form.email}
+                  onChange={handleEmailChange}
+                  className={`form-input ${
+                    validationErrors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
+                  }`}
+                  autoComplete="email"
+                />
+                {validationErrors.email && (
+                  <p id="email-error" className="mt-1 text-sm text-red-600" role="alert">
+                    {validationErrors.email}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="phone" className="form-label">
+                  Phone {selectedAction === 'host_event' ? '*' : '(optional)'}
+                </label>
+                <input
+                  id="phone"
+                  type="tel"
+                  required={selectedAction === 'host_event'}
+                  aria-required={selectedAction === 'host_event' ? 'true' : undefined}
+                  aria-invalid={!!validationErrors.phone}
+                  aria-describedby={validationErrors.phone ? 'phone-error' : 'phone-hint'}
+                  value={form.phone}
+                  onChange={handlePhoneChange}
+                  className={`form-input ${
+                    validationErrors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
+                  }`}
+                  placeholder="(555) 555-5555"
+                  autoComplete="tel"
+                />
+                {validationErrors.phone ? (
+                  <p id="phone-error" className="mt-1 text-sm text-red-600" role="alert">
+                    {validationErrors.phone}
+                  </p>
+                ) : (
+                  <p id="phone-hint" className="text-sm text-gray-700 mt-1">
+                    US phone numbers only
+                  </p>
+                )}
+              </div>
+            </>
+          )}
 
           {selectedAction === 'yard_sign' && (
             <div>
