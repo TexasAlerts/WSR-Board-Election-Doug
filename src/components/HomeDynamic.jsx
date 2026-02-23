@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { HelpCircle } from 'lucide-react';
-import { logApiError } from '@/lib/clientErrorLogger';
 import { HomeSkeleton } from './shared/Skeleton';
 
 export default function HomeDynamic() {
@@ -14,18 +13,18 @@ export default function HomeDynamic() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [endorseRes, qnaRes] = await Promise.all([
-          fetch('/api/endorsements', { cache: 'no-store' }),
-          fetch('/api/questions', { cache: 'no-store' }),
+        const [endorseRes, qnaRes] = await Promise.allSettled([
+          fetch('/api/endorsements', { cache: 'no-store' }).then((r) => r.json()),
+          fetch('/api/questions', { cache: 'no-store' }).then((r) => r.json()),
         ]);
-        const endorseData = await endorseRes.json();
-        const qnaData = await qnaRes.json();
-        setEndorsements(Array.isArray(endorseData.data) ? endorseData.data : []);
-        setQuestions(Array.isArray(qnaData.data) ? qnaData.data : []);
-      } catch (err) {
-        await logApiError('/api/endorsements', 'GET', err.status || 500, err.message, {
-          userAgent: navigator.userAgent,
-        });
+        if (endorseRes.status === 'fulfilled') {
+          setEndorsements(Array.isArray(endorseRes.value?.data) ? endorseRes.value.data : []);
+        }
+        if (qnaRes.status === 'fulfilled') {
+          setQuestions(Array.isArray(qnaRes.value?.data) ? qnaRes.value.data : []);
+        }
+      } catch {
+        // Silent fail - page still renders without dynamic content
       } finally {
         setLoading(false);
       }

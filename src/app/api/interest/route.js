@@ -71,7 +71,10 @@ export async function POST(req) {
   }
   try {
     const schema = z.object({
-      type: z.string().max(200).optional().default('updates'),
+      type: z
+        .enum(['updates', 'volunteer', 'donate', 'other', 'yard_sign', 'host_event'])
+        .optional()
+        .default('updates'),
       name: z.string().min(1, 'Name is required').max(200),
       email: z.string().email('Invalid email').max(200),
       phone: z.string().max(200).optional().nullable(),

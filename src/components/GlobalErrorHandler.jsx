@@ -50,6 +50,13 @@ export default function GlobalErrorHandler() {
      */
     const handleUnhandledRejection = (event) => {
       const error = event.reason;
+
+      // Safari commonly rejects with undefined on network failures - not actionable
+      if (error === undefined || error === null) {
+        event.preventDefault();
+        return;
+      }
+
       const errorMessage = error?.message || String(error);
 
       // Filter out known third-party/browser errors we can't control

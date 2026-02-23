@@ -130,6 +130,13 @@ async function postHandler(request) {
     // Create new SMS code with validated E.164 phone
     const code = await createSMSVerification(supporterId, phoneValidation.formatted);
     if (!code) {
+      await logError({
+        errorType: ErrorTypes.DATABASE_ERROR,
+        errorMessage: `Failed to create SMS verification code for supporter ${supporterId}`,
+        endpoint: '/api/auth/send-sms-code',
+        method: 'POST',
+        request,
+      });
       return NextResponse.json(
         { ok: false, error: 'Failed to create verification code' },
         { status: 500 }

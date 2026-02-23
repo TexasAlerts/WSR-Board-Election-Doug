@@ -337,6 +337,11 @@ export async function createSMSVerification(supporterId, phone) {
   });
 
   if (error) {
+    console.error('SMS verification insert error:', error.message, {
+      supporterId,
+      code: error.code,
+      details: error.details,
+    });
     return null;
   }
 

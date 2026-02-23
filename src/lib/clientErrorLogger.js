@@ -681,8 +681,8 @@ export function setupGlobalErrorHandlers() {
     let reasonType = 'unknown';
 
     if (event.reason === undefined) {
-      errorMessage = 'Promise rejected with undefined (no error provided)';
-      reasonType = 'undefined';
+      // Safari commonly rejects with undefined on network failures - not actionable
+      return;
     } else if (event.reason === null) {
       errorMessage = 'Promise rejected with null';
       reasonType = 'null';
