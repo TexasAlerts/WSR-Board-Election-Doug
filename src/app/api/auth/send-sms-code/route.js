@@ -96,19 +96,26 @@ async function postHandler(request) {
       );
     }
 
-    // Validate phone number exists and is in valid E.164 format
+    // If no phone on file, skip SMS and auto-approve the account
     if (!supporter.phone || !supporter.phone.trim()) {
-      await logError({
-        errorType: ErrorTypes.VALIDATION_ERROR,
-        errorMessage: 'Cannot send SMS: phone number is missing',
-        endpoint: '/api/auth/send-sms-code',
-        method: 'POST',
+      await supabase
+        .from('supporters')
+        .update({ status: 'approved' })
+        .eq('id', supporterId);
+
+      await logAudit({
+        eventType: AuditEvents.ACCOUNT_APPROVED || 'ACCOUNT_APPROVED',
+        supporterId,
+        details: { reason: 'No phone on file, auto-approved' },
         request,
+        responseStatus: 200,
       });
-      return NextResponse.json(
-        { ok: false, error: 'Phone number is missing. Please update your profile.' },
-        { status: 400 }
-      );
+
+      return NextResponse.json({
+        ok: true,
+        message: 'Your account has been approved. No phone verification needed.',
+        autoApproved: true,
+      });
     }
 
     // Validate phone format before sending SMS

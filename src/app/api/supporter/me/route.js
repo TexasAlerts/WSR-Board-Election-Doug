@@ -15,12 +15,15 @@ export async function GET() {
     }
 
     // Return safe supporter data (exclude sensitive fields)
+    const fullName = [supporter.first_name, supporter.last_name].filter(Boolean).join(' ');
     return NextResponse.json({
       ok: true,
       data: {
         id: supporter.id,
         email: supporter.email,
-        name: supporter.name,
+        name: fullName || null,
+        first_name: supporter.first_name,
+        last_name: supporter.last_name,
         is_admin: supporter.is_admin || false,
       },
     });
