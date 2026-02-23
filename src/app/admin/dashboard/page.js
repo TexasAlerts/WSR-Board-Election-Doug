@@ -525,6 +525,31 @@ export default function AdminDashboard() {
     }
   };
 
+  const [resendingVerification, setResendingVerification] = useState(false);
+
+  const handleResendVerification = async () => {
+    const confirmed = await showConfirm(
+      'Resend Verification Emails',
+      'This will send verification emails to ALL pending (unverified) voters and supporters. Continue?'
+    );
+    if (!confirmed) return;
+    setResendingVerification(true);
+    try {
+      const res = await fetch('/api/admin/resend-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-csrf-token': csrfToken },
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      await refreshToken();
+      showConfirm('Verification Emails Sent', data.message);
+    } catch (err) {
+      showConfirm('Error', err.message);
+    } finally {
+      setResendingVerification(false);
+    }
+  };
+
   const handleDeleteVoter = async (id) => {
     const confirmed = await showConfirm(
       'Delete Verified Voter',
@@ -647,6 +672,8 @@ export default function AdminDashboard() {
             setFilter={setVerifiedVoterFilter}
             handleSuspendVoter={handleSuspendVoter}
             handleDeleteVoter={handleDeleteVoter}
+            handleResendVerification={handleResendVerification}
+            resendingVerification={resendingVerification}
             formatDate={formatDate}
             currentUserRole={currentUserRole}
           />

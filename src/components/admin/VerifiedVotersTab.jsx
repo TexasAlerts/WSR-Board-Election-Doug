@@ -1,4 +1,4 @@
-import { UserCheck, Ban, Trash2, Mail, Calendar, CheckCircle } from 'lucide-react';
+import { UserCheck, Ban, Trash2, Mail, Calendar, CheckCircle, Send, Loader2 } from 'lucide-react';
 
 export default function VerifiedVotersTab({
   voters,
@@ -7,6 +7,8 @@ export default function VerifiedVotersTab({
   setFilter,
   handleSuspendVoter,
   handleDeleteVoter,
+  handleResendVerification,
+  resendingVerification,
   formatDate,
   currentUserRole,
 }) {
@@ -23,8 +25,8 @@ export default function VerifiedVotersTab({
 
   return (
     <div>
-      {/* Filters */}
-      <div className="mb-6 flex flex-wrap gap-2">
+      {/* Filters and Actions */}
+      <div className="mb-6 flex flex-wrap items-center gap-2">
         <button
           onClick={() => setFilter('all')}
           className={`px-4 py-2 rounded-lg font-medium ${
@@ -43,6 +45,20 @@ export default function VerifiedVotersTab({
         >
           Suspended ({voters.filter((v) => v.suspended_at).length})
         </button>
+        {isSuperAdmin && handleResendVerification && (
+          <button
+            onClick={handleResendVerification}
+            disabled={resendingVerification}
+            className="ml-auto px-4 py-2 bg-prosper-red text-white rounded-lg font-medium hover:bg-red-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+          >
+            {resendingVerification ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Send className="w-4 h-4" />
+            )}
+            {resendingVerification ? 'Sending...' : 'Resend Verification Emails'}
+          </button>
+        )}
       </div>
 
       {/* Voters List */}
