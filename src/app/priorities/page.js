@@ -95,7 +95,7 @@ export default function PrioritiesPage() {
               <span className="text-gray-500" aria-hidden="true">
                 ·
               </span>
-              <Link href="/qna" className="text-navy font-medium hover:underline">
+              <Link href="/ideas" className="text-navy font-medium hover:underline">
                 Submit an idea
               </Link>
             </div>

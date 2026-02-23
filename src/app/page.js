@@ -205,7 +205,7 @@ export default function Home() {
               <div className="space-y-4 text-gray-700 leading-relaxed">
                 <p className="text-base sm:text-lg">
                   I wholeheartedly believe Prosper has the <strong className="text-navy">tools, the talent, and the{' '}
-                  &apos;<strong className="text-prosper-red">Small Town, Big Heart</strong>&apos; attitude</strong>{' '}
+                  &apos;<span className="text-prosper-red">Small Town, Big Heart</span>&apos; attitude</strong>{' '}
                   to be the premier community where residents{' '}
                   <strong className="text-prosper-red">live, work, play, and shop</strong>—and where
                   our neighbors choose to visit.
@@ -263,7 +263,7 @@ export default function Home() {
                 <span className="text-gray-500" aria-hidden="true">
                   ·
                 </span>
-                <Link href="/qna" className="text-navy font-medium hover:underline">
+                <Link href="/ideas" className="text-navy font-medium hover:underline">
                   Submit an idea
                 </Link>
               </div>
@@ -311,7 +311,7 @@ export default function Home() {
                 <span className="text-gray-500" aria-hidden="true">
                   ·
                 </span>
-                <Link href="/qna" className="text-navy font-medium hover:underline">
+                <Link href="/ideas" className="text-navy font-medium hover:underline">
                   Submit an idea
                 </Link>
               </div>
