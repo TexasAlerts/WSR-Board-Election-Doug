@@ -114,35 +114,17 @@ export async function POST(request) {
     // Mark verification token as used
     await markEmailVerificationUsed(verification.id);
 
-    // Create and send SMS verification code
-    // Validate phone exists and is in valid E.164 format before sending SMS
-    if (!supporter.phone || !supporter.phone.trim()) {
-      await logError({
-        errorType: ErrorTypes.VALIDATION_ERROR,
-        errorMessage: 'Cannot send SMS: phone number is missing',
-        endpoint: '/api/auth/verify',
-        method: 'POST',
-        userEmail: supporter.email,
-        request,
-      });
-    } else {
-      // Validate phone number format before sending SMS
+    // Create and send SMS verification code if phone is available
+    let smsSent = false;
+    if (supporter.phone && supporter.phone.trim()) {
       const phoneValidation = validatePhoneNumber(supporter.phone);
-      if (!phoneValidation.valid) {
-        await logError({
-          errorType: ErrorTypes.VALIDATION_ERROR,
-          errorMessage: `Cannot send SMS: invalid phone format - ${phoneValidation.error}`,
-          endpoint: '/api/auth/verify',
-          method: 'POST',
-          userEmail: supporter.email,
-          request,
-        });
-      } else {
-        // Use validated E.164 formatted phone
+      if (phoneValidation.valid) {
         const smsCode = await createSMSVerification(supporter.id, phoneValidation.formatted);
         if (smsCode) {
           const smsResult = await sendVerificationSMS(phoneValidation.formatted, smsCode);
-          if (!smsResult.success) {
+          if (smsResult.success) {
+            smsSent = true;
+          } else {
             await logError({
               errorType: ErrorTypes.EXTERNAL_SERVICE,
               errorMessage: `SMS verification send failed: ${smsResult.error}`,
@@ -165,11 +147,19 @@ export async function POST(request) {
       }
     }
 
+    // If no phone on file, skip SMS and approve directly
+    if (!supporter.phone || !supporter.phone.trim()) {
+      await supabase
+        .from('supporters')
+        .update({ status: 'approved' })
+        .eq('id', supporter.id);
+    }
+
     // Log event
     await logAudit({
       eventType: AuditEvents.EMAIL_VERIFIED,
       supporterId: supporter.id,
-      details: { email: supporter.email },
+      details: { email: supporter.email, smsSent },
       request,
       responseStatus: 200,
     });
@@ -182,11 +172,20 @@ export async function POST(request) {
       responseStatus: 200,
     });
 
+    if (smsSent) {
+      return NextResponse.json({
+        ok: true,
+        message: 'Email verified! Please check your phone for the verification code.',
+        supporterId: supporter.id,
+        requiresPhoneVerification: true,
+      });
+    }
+
     return NextResponse.json({
       ok: true,
-      message: 'Email verified! Please check your phone for the verification code.',
+      message: 'Email verified! Your account is now active.',
       supporterId: supporter.id,
-      requiresPhoneVerification: true,
+      requiresPhoneVerification: false,
     });
   } catch (err) {
     await logError({
