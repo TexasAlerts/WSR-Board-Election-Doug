@@ -244,23 +244,34 @@ export default function AdminDashboard() {
         setVerifiedVoters(data.data || []);
       }
     } catch (err) {
-      setError(err.message);
+      const isNetworkError =
+        err.message === 'Load failed' ||
+        err.message === 'Failed to fetch' ||
+        err.message === 'NetworkError when attempting to fetch resource.';
 
-      // Log error to database
-      try {
-        await fetch('/api/errors', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: `Admin Dashboard Error: ${err.message}`,
-            stack: err.stack || '',
-            component: 'AdminDashboard',
-            action: `Loading ${activeTab} tab`,
-            url: window.location.href,
-          }),
-        });
-      } catch (logErr) {
-        // Silent fail on logging error
+      if (isNetworkError) {
+        setError('Network connection lost. Please check your connection and try again.');
+      } else {
+        setError(err.message);
+      }
+
+      // Only log non-network errors to database (network errors are noise)
+      if (!isNetworkError) {
+        try {
+          await fetch('/api/errors', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              message: `Admin Dashboard Error: ${err.message}`,
+              stack: err.stack || '',
+              component: 'AdminDashboard',
+              action: `Loading ${activeTab} tab`,
+              url: window.location.href,
+            }),
+          });
+        } catch {
+          // Silent fail on logging error
+        }
       }
     } finally {
       setLoading(false);

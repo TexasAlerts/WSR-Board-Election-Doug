@@ -58,6 +58,15 @@ export async function sendSMS(to, message, skipTimeCheck = false) {
     };
   }
 
+  // Validate E.164 format before sending to Telnyx
+  if (!to || !/^\+1\d{10}$/.test(to)) {
+    return {
+      success: false,
+      messageId: null,
+      error: `Invalid phone number format: expected E.164 US number (+1XXXXXXXXXX), got: ${to}`,
+    };
+  }
+
   try {
     const messagePayload = {
       from: fromNumber,
