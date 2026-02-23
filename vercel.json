@@ -7,10 +7,6 @@
     {
       "path": "/api/cron/cleanup-sessions",
       "schedule": "0 3 * * *"
-    },
-    {
-      "path": "/api/cron/resend-verification",
-      "schedule": "0 15 21 2 *"
     }
   ]
 }

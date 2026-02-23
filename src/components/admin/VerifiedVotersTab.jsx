@@ -45,7 +45,7 @@ export default function VerifiedVotersTab({
         >
           Suspended ({voters.filter((v) => v.suspended_at).length})
         </button>
-        {isSuperAdmin && handleResendVerification && (
+        {(isSuperAdmin || currentUserRole === 'admin') && handleResendVerification && (
           <button
             onClick={handleResendVerification}
             disabled={resendingVerification}
