@@ -33,6 +33,7 @@
 
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { getSupabase } from '../../../../lib/supabase';
 import { rateLimit } from '../../../../lib/rateLimit';
 import { getSupporterByEmail, verifyPassword, createSession } from '../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
@@ -101,15 +102,25 @@ export async function POST(request) {
     }
 
     if (supporter.status === 'pending_phone') {
-      return NextResponse.json(
-        {
-          ok: false,
-          error: 'Please complete phone verification first.',
-          requiresPhoneVerification: true,
-          supporterId: supporter.id,
-        },
-        { status: 403 }
-      );
+      // Auto-approve if no phone on file (phone is optional)
+      if (!supporter.phone || !supporter.phone.trim()) {
+        const supabase = getSupabase();
+        await supabase
+          .from('supporters')
+          .update({ status: 'approved' })
+          .eq('id', supporter.id);
+        supporter.status = 'approved';
+      } else {
+        return NextResponse.json(
+          {
+            ok: false,
+            error: 'Please complete phone verification first.',
+            requiresPhoneVerification: true,
+            supporterId: supporter.id,
+          },
+          { status: 403 }
+        );
+      }
     }
 
     // Check password
