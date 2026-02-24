@@ -140,7 +140,7 @@ export default function RootLayout({ children }) {
                   "@type": "WebSite",
                   "name": "Doug Charles — Prosper Town Council, Place 5",
                   "url": "https://www.dougcharles.com",
-                  "description": "Personal website for Doug Charles, Prosper Town Council Member, Place 5. A Common Sense Leader for ALL of Prosper.",
+                  "description": "Personal website for Doug Charles, incoming Prosper Town Council Member, Place 5. Preparing to serve with Common Sense leadership for ALL of Prosper.",
                   "publisher": {
                     "@id": "https://www.dougcharles.com/#organization"
                   }
@@ -185,8 +185,8 @@ export default function RootLayout({ children }) {
                   "@type": "Person",
                   "@id": "https://www.dougcharles.com/#person",
                   "name": "Doug Charles",
-                  "jobTitle": "Prosper Town Council Member, Place 5",
-                  "description": "20-year Prosper resident, former Planning & Zoning Commissioner (2021-2023), 2020 Bond Election Committee member, PISD annexation lead petitioner. Prosper Town Council Member, Place 5.",
+                  "jobTitle": "Incoming Prosper Town Council Member, Place 5",
+                  "description": "20-year Prosper resident, former Planning & Zoning Commissioner (2021-2023), 2020 Bond Election Committee member, PISD annexation lead petitioner. Incoming Prosper Town Council Member, Place 5.",
                   "address": {
                     "@type": "PostalAddress",
                     "streetAddress": "4360 Mill Branch Drive",

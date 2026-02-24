@@ -1,7 +1,7 @@
 export const metadata = {
-  title: 'Sign In | Doug Charles for Town of Prosper Town Council Place 5',
+  title: 'Sign In — Doug Charles — Prosper Town Council, Place 5',
   description:
-    'Sign in to your Doug Charles for Town of Prosper Town Council Place 5 supporter account to participate in polls, submit ideas, and stay engaged with the campaign.',
+    'Sign in to your supporter account to participate in polls, submit ideas, and stay connected.',
   robots: 'noindex, nofollow',
 };
 

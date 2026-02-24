@@ -29,7 +29,7 @@ export async function generateMetadata({ params }) {
 
     if (!res.ok) {
       return {
-        title: 'Idea Not Found | Doug Charles for Town of Prosper Town Council Place 5',
+        title: 'Idea Not Found | Doug Charles — Prosper Town Council, Place 5',
         description: 'This idea could not be found.',
         robots: 'noindex',
       };
@@ -39,14 +39,14 @@ export async function generateMetadata({ params }) {
 
     if (!data.ok || !data.data) {
       return {
-        title: 'Idea Not Found | Doug Charles for Town of Prosper Town Council Place 5',
+        title: 'Idea Not Found | Doug Charles — Prosper Town Council, Place 5',
         description: 'This idea could not be found.',
         robots: 'noindex',
       };
     }
 
     const idea = data.data;
-    const title = `${idea.title} | Community Ideas | Doug Charles for Town of Prosper Town Council Place 5`;
+    const title = `${idea.title} | Community Ideas | Doug Charles — Prosper Town Council, Place 5`;
     const description =
       idea.content.length > 160 ? idea.content.slice(0, 160) + '...' : idea.content;
     const canonical = `${SITE_URL}/ideas/${id}`;
@@ -61,12 +61,12 @@ export async function generateMetadata({ params }) {
         title,
         description,
         url: canonical,
-        siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+        siteName: 'Doug Charles — Prosper Town Council, Place 5',
         type: 'article',
         publishedTime: idea.created_at,
         images: [
           {
-            url: `${SITE_URL}/campaign-preview.png`,
+            url: `${SITE_URL}/campaign-preview.webp`,
             width: 1200,
             height: 630,
             alt: title,
@@ -77,12 +77,12 @@ export async function generateMetadata({ params }) {
         card: 'summary_large_image',
         title,
         description,
-        images: [`${SITE_URL}/campaign-preview.png`],
+        images: [`${SITE_URL}/campaign-preview.webp`],
       },
     };
   } catch (error) {
     return {
-      title: 'Community Idea | Doug Charles for Town of Prosper Town Council Place 5',
+      title: 'Community Idea | Doug Charles — Prosper Town Council, Place 5',
       description: 'View community ideas for making Prosper better.',
     };
   }

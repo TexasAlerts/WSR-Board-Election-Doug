@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Notifications | Doug Charles for Prosper Town Council',
-  description: 'Manage your notification preferences for the Doug Charles campaign.',
+  title: 'Notifications — Doug Charles — Prosper Town Council, Place 5',
+  description: 'Manage your notification preferences for dougcharles.com.',
   robots: {
     index: false,
     follow: false,

@@ -538,7 +538,7 @@ async function notifySuperusersOfError({
 
     const subject = `[Error Alert] ${errorType}: ${(errorMessage || '').substring(0, 50)}...`;
     const body = `
-A new error has occurred on the campaign website:
+A new error has occurred on the website:
 
 Error ID: ${errorId}
 Type: ${errorType}
