@@ -24,6 +24,15 @@ jest.mock('../hooks/useCSRF', () => ({
   }),
 }));
 
+// Mock useSiteConfig hook
+jest.mock('../context/SiteConfigContext', () => ({
+  useSiteConfig: () => ({
+    donationsEnabled: true,
+    loading: false,
+    refreshConfig: jest.fn(),
+  }),
+}));
+
 // Mock fetch
 global.fetch = jest.fn((url, options) => {
   fetchCalls.push({ url, options });

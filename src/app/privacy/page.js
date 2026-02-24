@@ -1,7 +1,7 @@
 import Script from 'next/script';
 
 export const metadata = {
-  title: 'Privacy Policy - Doug Charles for Town of Prosper Town Council Place 5',
+  title: 'Privacy Policy - Doug Charles — Prosper Town Council, Place 5',
   description:
     'Comprehensive privacy policy for the Doug Charles campaign website, covering data collection, cookies, SMS messaging, and your rights under the Texas Data Privacy and Security Act.',
   alternates: { canonical: '/privacy' },
@@ -25,7 +25,13 @@ export default function PrivacyPolicy() {
         <strong>Effective Date:</strong> January 2026
       </p>
       <p className="text-charcoal">
-        <strong>Last Updated:</strong> February 2, 2026
+        <strong>Last Updated:</strong> February 23, 2026
+      </p>
+
+      <p className="text-charcoal text-sm bg-gray-50 border border-gray-200 rounded-lg p-4">
+        This privacy policy applies to dougcharles.com, a personal website operated
+        by Doug Charles and his campaign committee. This website is not affiliated
+        with the Town of Prosper government.
       </p>
 
       <section className="space-y-4">

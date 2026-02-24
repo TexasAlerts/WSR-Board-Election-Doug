@@ -10,7 +10,7 @@ import ActionCards from './ActionCards';
 import GetInvolvedForm from './GetInvolvedForm';
 
 const SHARE_MESSAGE =
-  "I'm supporting Doug Charles for Prosper Town Council Place 5! Learn more about his Common Sense leadership for ALL of Prosper at www.dougcharles.com";
+  "Check out Doug Charles' vision for Prosper Town Council Place 5! Common Sense leadership for ALL of Prosper at www.dougcharles.com";
 const SHARE_SUBJECT = 'Check out Doug Charles for Prosper Town Council';
 
 function GetInvolvedDynamicContent() {
@@ -174,10 +174,10 @@ function GetInvolvedDynamicContent() {
             Why Your Support Matters
           </h2>
           <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
-            Local races are decided by a few hundred votes. Your volunteer hours, yard sign, or
-            donation can make the difference between{' '}
-            <strong className="text-navy">reactive leadership</strong> and{' '}
-            <strong className="text-prosper-red">visionary leadership</strong> for Prosper.
+            Your voice shapes Prosper&apos;s future. Stay connected, share your ideas, and help build
+            the community we all want—with{' '}
+            <strong className="text-navy">thoughtful planning</strong> and{' '}
+            <strong className="text-prosper-red">Common Sense leadership</strong> for Prosper.
           </p>
         </div>
       </section>

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { AlertCircle, CheckCircle } from 'lucide-react';
 import { useCSRF } from '../hooks/useCSRF';
+import { useSiteConfig } from '../context/SiteConfigContext';
 
 const DONATION_AMOUNTS = [25, 50, 100, 250, 500, 1000];
 
@@ -11,11 +12,11 @@ export default function DonateDynamic() {
   const [customAmount, setCustomAmount] = useState('');
   const [message, setMessage] = useState({ type: '', text: '' });
   const { token: csrfToken } = useCSRF();
+  const { donationsEnabled } = useSiteConfig();
   const pageViewTracked = useRef(false);
 
   const ANEDOT_URL =
     'https://secure.anedot.com/doug-charles-for-town-of-prosper-town-council-place-5/af99e860-1f84-443a-9a3d-a90ee0c797d9';
-  const DONATIONS_ENABLED = true;
 
   /**
    * Track donation funnel events with CSRF token
@@ -66,7 +67,7 @@ export default function DonateDynamic() {
   }, [customAmount, trackDonation]);
 
   const handleDonate = () => {
-    if (!DONATIONS_ENABLED) {
+    if (!donationsEnabled) {
       setMessage({
         type: 'info',
         text: 'Online donations will be available soon. Please check back shortly!',
@@ -90,6 +91,26 @@ export default function DonateDynamic() {
     // Redirect to Anedot with pre-selected amount
     window.open(redirectUrl, '_blank');
   };
+
+  if (!donationsEnabled) {
+    return (
+      <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto">
+          <div className="card text-center">
+            <h2 className="text-2xl font-bold text-navy mb-4">Donations Are Currently Paused</h2>
+            <p className="text-gray-600">
+              Thank you for your interest in supporting Doug Charles. Online donations are not being
+              accepted at this time. Please check back later or contact{' '}
+              <a href="mailto:doug@dougcharles.com" className="text-navy underline">
+                doug@dougcharles.com
+              </a>{' '}
+              for more information.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">

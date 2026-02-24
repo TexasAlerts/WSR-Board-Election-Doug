@@ -16,6 +16,7 @@ import {
   UserPlus,
   BarChart3,
   UserCheck,
+  Settings,
 } from 'lucide-react';
 import { ConfirmModal, PromptModal } from '../../../components/AdminModal';
 import { useCSRF } from '../../../hooks/useCSRF';
@@ -31,6 +32,7 @@ const IdeasTab = lazy(() => import('../../../components/admin/IdeasTab'));
 const InterestTab = lazy(() => import('../../../components/admin/InterestTab'));
 const ReportsTab = lazy(() => import('../../../components/admin/ReportsTab'));
 const VerifiedVotersTab = lazy(() => import('../../../components/admin/VerifiedVotersTab'));
+const SettingsTab = lazy(() => import('../../../components/admin/SettingsTab'));
 
 function TabSpinner() {
   return (
@@ -602,6 +604,7 @@ export default function AdminDashboard() {
     { id: 'ideas', label: 'Ideas', Icon: Lightbulb },
     { id: 'interest', label: 'Volunteers', mobileLabel: 'Vol', Icon: UserPlus },
     { id: 'reports', label: 'Reports', Icon: BarChart3 },
+    { id: 'settings', label: 'Settings', Icon: Settings },
   ];
 
   return (
@@ -783,6 +786,8 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === 'reports' && <ReportsTab />}
+
+        {activeTab === 'settings' && <SettingsTab csrfToken={csrfToken} />}
       </Suspense>
 
       {/* Accessible modal dialogs */}
