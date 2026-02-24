@@ -661,6 +661,8 @@ export default function AdminDashboard() {
             statusColors={statusColors}
             currentUserRole={currentUserRole}
             onRoleChange={changeUserRole}
+            handleResendVerification={handleResendVerification}
+            resendingVerification={resendingVerification}
           />
         )}
 

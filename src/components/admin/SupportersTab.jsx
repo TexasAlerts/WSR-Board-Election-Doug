@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle, XCircle, Trash2, Loader2, Mail, Phone, Shield, ShieldCheck, UserPlus } from 'lucide-react';
+import { CheckCircle, XCircle, Trash2, Loader2, Mail, Phone, Shield, ShieldCheck, UserPlus, Send } from 'lucide-react';
 import { useState } from 'react';
 
 const roleColors = {
@@ -26,6 +26,8 @@ export default function SupportersTab({
   statusColors,
   currentUserRole,
   onRoleChange,
+  handleResendVerification,
+  resendingVerification,
 }) {
   const isSuperAdmin = currentUserRole === 'super_admin';
   const [migrating, setMigrating] = useState(false);
@@ -89,26 +91,49 @@ export default function SupportersTab({
           ))}
         </div>
 
-        {isSuperAdmin && (
-          <button
-            onClick={handleMigration}
-            disabled={migrating}
-            className="flex items-center gap-2 px-4 py-2 bg-prosper-red text-white rounded-lg hover:bg-red-dark disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Migrate existing endorsements to supporters"
-          >
-            {migrating ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Migrating...
-              </>
-            ) : (
-              <>
-                <UserPlus className="w-4 h-4" />
-                Migrate Endorsers
-              </>
-            )}
-          </button>
-        )}
+        <div className="flex gap-2 flex-wrap">
+          {(isSuperAdmin || currentUserRole === 'admin') && handleResendVerification && (
+            <button
+              onClick={handleResendVerification}
+              disabled={resendingVerification}
+              className="flex items-center gap-2 px-4 py-2 bg-navy text-white rounded-lg hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Resend verification emails to pending supporters"
+            >
+              {resendingVerification ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4" />
+                  Resend Verification Emails
+                </>
+              )}
+            </button>
+          )}
+
+          {isSuperAdmin && (
+            <button
+              onClick={handleMigration}
+              disabled={migrating}
+              className="flex items-center gap-2 px-4 py-2 bg-prosper-red text-white rounded-lg hover:bg-red-dark disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Migrate existing endorsements to supporters"
+            >
+              {migrating ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Migrating...
+                </>
+              ) : (
+                <>
+                  <UserPlus className="w-4 h-4" />
+                  Migrate Endorsers
+                </>
+              )}
+            </button>
+          )}
+        </div>
       </div>
 
       {migrationResult && (
