@@ -78,8 +78,8 @@ export async function GET(request) {
             results.errors.push(`voter ${voter.email}: ${emailResult.error}`);
           }
         }
-        // Rate limit: 100ms between sends
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        // Rate limit: 600ms between sends (Resend allows 2 req/sec)
+        await new Promise((resolve) => setTimeout(resolve, 600));
       } catch (err) {
         results.votersFailed++;
         results.errors.push(`voter ${voter.email}: ${err.message}`);
