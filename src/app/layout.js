@@ -151,7 +151,7 @@ export default function RootLayout({ children }) {
                   "name": "Doug Charles for Prosper Town Council Place 5",
                   "url": "https://www.dougcharles.com",
                   "logo": "https://www.dougcharles.com/campaign-logo.webp",
-                  "description": "Campaign committee for Doug Charles, Prosper Town Council Place 5. Campaign Treasurer: Robert Bye.",
+                  "description": "Committee for Doug Charles, incoming Prosper Town Council Member, Place 5. Treasurer: Robert Bye.",
                   "sameAs": ["https://www.facebook.com/profile.php?id=61587237416382"],
                   "address": {
                     "@type": "PostalAddress",
