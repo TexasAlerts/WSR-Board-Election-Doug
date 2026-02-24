@@ -1,26 +1,27 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
+import ConditionalDonateLink from '../../components/ConditionalDonateLink';
 
 export const metadata = {
-  title: 'Track Record - Doug Charles for Prosper Town Council',
+  title: 'Track Record - Doug Charles — Prosper Town Council, Place 5',
   description:
     'Doug Charles proven track record of community service: Planning & Zoning Commission, Windsong Ranch Board Member, and years of civic leadership in Prosper.',
   alternates: { canonical: '/track-record' },
   openGraph: {
-    title: 'Track Record - Doug Charles for Prosper Town Council',
+    title: 'Track Record - Doug Charles — Prosper Town Council, Place 5',
     description: 'Proven results: Planning & Zoning Commission, Windsong Ranch Board Member, and years of civic leadership in Prosper.',
     url: 'https://www.dougcharles.com/track-record',
-    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    siteName: 'Doug Charles — Prosper Town Council, Place 5',
     locale: 'en_US',
     type: 'website',
-    images: [{ url: 'https://www.dougcharles.com/campaign-preview.png', width: 1200, height: 630, alt: 'Doug Charles Track Record - Prosper Town Council' }],
+    images: [{ url: 'https://www.dougcharles.com/campaign-preview.webp', width: 1200, height: 630, alt: 'Track Record - Doug Charles — Prosper Town Council, Place 5' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Track Record - Doug Charles for Prosper Town Council',
+    title: 'Track Record - Doug Charles — Prosper Town Council, Place 5',
     description: 'Proven results: Planning & Zoning Commission, Bond Committee, and civic leadership.',
-    images: ['https://www.dougcharles.com/campaign-preview.png'],
+    images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
 };
 
@@ -437,11 +438,11 @@ export default function TrackRecordPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Link href="/about" className="card text-center hover:shadow-navy-lg transition-shadow">
               <h3 className="text-xl font-bold text-navy mb-2">About Doug</h3>
-              <p className="text-gray-600 text-sm">20 years in Prosper, ready to serve</p>
+              <p className="text-gray-600 text-sm">20 years in Prosper, preparing to serve</p>
             </Link>
             <Link href="/why" className="card text-center hover:shadow-navy-lg transition-shadow">
-              <h3 className="text-xl font-bold text-navy mb-2">Why I'm Running</h3>
-              <p className="text-gray-600 text-sm">My motivation and what I'll do differently</p>
+              <h3 className="text-xl font-bold text-navy mb-2">My Vision</h3>
+              <p className="text-gray-600 text-sm">My vision and what I'll do differently</p>
             </Link>
             <Link
               href="/priorities"
@@ -460,11 +461,11 @@ export default function TrackRecordPage() {
           <h2 className="text-2xl sm:text-3xl font-bold mb-6">Ready to Get Involved?</h2>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/get-involved" className="btn-white">
-              Join the Campaign
+              Get Involved
             </Link>
-            <Link href="/donate" className="btn-secondary">
+            <ConditionalDonateLink className="btn-secondary">
               Donate
-            </Link>
+            </ConditionalDonateLink>
           </div>
         </div>
       </section>

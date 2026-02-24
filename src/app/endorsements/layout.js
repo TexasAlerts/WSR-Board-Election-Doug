@@ -1,30 +1,30 @@
 export const metadata = {
   alternates: { canonical: '/endorsements' },
-  title: 'Endorsements | Doug Charles for Town of Prosper Town Council Place 5',
+  title: 'Endorsements - Doug Charles, Prosper Town Council Place 5',
   description:
-    "See who's endorsing Doug Charles for Town of Prosper Town Council Place 5. Read testimonials from neighbors and add your voice.",
+    'See who supports Doug Charles, Prosper Town Council Place 5. Read testimonials from neighbors and show your support.',
   openGraph: {
-    title: 'Endorsements | Doug Charles for Town of Prosper Town Council Place 5',
+    title: 'Endorsements - Doug Charles, Prosper Town Council Place 5',
     description:
-      "See who's endorsing Doug Charles for Town of Prosper Town Council Place 5. Read testimonials from neighbors and add your voice.",
+      'See who supports Doug Charles, Prosper Town Council Place 5. Read testimonials from neighbors and show your support.',
     url: 'https://www.dougcharles.com/endorsements',
     type: 'website',
-    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    siteName: 'Doug Charles — Prosper Town Council, Place 5',
     locale: 'en_US',
     images: [
       {
-        url: 'https://www.dougcharles.com/campaign-preview.png',
+        url: 'https://www.dougcharles.com/campaign-preview.webp',
         width: 1200,
         height: 630,
-        alt: 'Doug Charles for Town of Prosper Town Council Place 5',
+        alt: 'Endorsements - Doug Charles, Prosper Town Council Place 5',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Endorsements | Doug Charles for Town of Prosper Town Council Place 5',
-    description: "See who's endorsing Doug Charles. Read testimonials from Prosper neighbors.",
-    images: ['https://www.dougcharles.com/campaign-preview.png'],
+    title: 'Endorsements - Doug Charles, Prosper Town Council Place 5',
+    description: 'See who supports Doug Charles. Read testimonials from Prosper neighbors.',
+    images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
 };
 

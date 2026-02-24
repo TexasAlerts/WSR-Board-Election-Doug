@@ -117,7 +117,7 @@ async function postHandler(request) {
         sendEmail(
           recipient.email,
           subject,
-          `Hi ${recipient.first_name},\n\n${message}\n\n--\nDoug Charles\nCandidate for Prosper Town Council, Place 5\n\nTo unsubscribe, reply with STOP.`
+          `Hi ${recipient.first_name},\n\n${message}\n\n--\nDoug Charles\nProsper Town Council, Place 5\n\nTo unsubscribe, reply with STOP.`
         )
           .then(() => ({ success: true, email: recipient.email }))
           .catch((err) => ({ success: false, email: recipient.email, error: err.message }))
@@ -151,7 +151,7 @@ async function postHandler(request) {
       .single();
 
     if (dbError) {
-      // silently ignored
+      console.error('[broadcasts] Failed to save broadcast record:', dbError.message);
     }
 
     // Log to audit trail
@@ -195,7 +195,7 @@ async function postHandler(request) {
       userEmail: supporter.email,
       request,
     });
-    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 400 });
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
 

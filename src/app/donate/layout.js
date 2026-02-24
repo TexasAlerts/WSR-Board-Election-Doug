@@ -1,31 +1,31 @@
 export const metadata = {
   alternates: { canonical: '/donate' },
-  title: 'Donate | Doug Charles for Town of Prosper Town Council Place 5',
+  title: 'Support Doug Charles — Prosper Town Council, Place 5',
   description:
-    'Support Doug Charles for Town of Prosper Town Council Place 5. Local elections are decided by a few hundred votes. Your contribution helps reach every voter.',
+    'Support Doug Charles, Prosper Town Council Place 5. Your contribution helps connect with more Prosper residents and strengthen community engagement.',
   openGraph: {
-    title: 'Donate | Doug Charles for Town of Prosper Town Council Place 5',
+    title: 'Support Doug Charles — Prosper Town Council, Place 5',
     description:
-      'Support Doug Charles for Town of Prosper Town Council Place 5. Local elections are decided by a few hundred votes. Your contribution helps reach every voter.',
+      'Support Doug Charles, Prosper Town Council Place 5. Your contribution helps connect with more Prosper residents and strengthen community engagement.',
     url: 'https://www.dougcharles.com/donate',
     type: 'website',
-    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    siteName: 'Doug Charles — Prosper Town Council, Place 5',
     locale: 'en_US',
     images: [
       {
-        url: 'https://www.dougcharles.com/campaign-preview.png',
+        url: 'https://www.dougcharles.com/campaign-preview.webp',
         width: 1200,
         height: 630,
-        alt: 'Doug Charles for Town of Prosper Town Council Place 5',
+        alt: 'Support Doug Charles — Prosper Town Council, Place 5',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Donate | Doug Charles for Town of Prosper Town Council Place 5',
+    title: 'Support Doug Charles — Prosper Town Council, Place 5',
     description:
-      'Support Doug Charles for Town of Prosper Town Council Place 5. Your contribution helps reach every voter.',
-    images: ['https://www.dougcharles.com/campaign-preview.png'],
+      'Support Doug Charles, Prosper Town Council Place 5. Your contribution helps strengthen community engagement.',
+    images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
 };
 

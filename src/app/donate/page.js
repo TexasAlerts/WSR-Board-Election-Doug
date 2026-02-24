@@ -6,7 +6,7 @@ import DonateDynamic from '../../components/DonateDynamic';
 export const metadata = {
   title: 'Support Doug Charles — Prosper Town Council, Place 5',
   description:
-    'Support Doug Charles for Prosper Town Council Place 5. Your contribution helps bring Common Sense leadership and community engagement to ALL of Prosper.',
+    'Support Doug Charles, Prosper Town Council Place 5. Your contribution helps bring Common Sense leadership and community engagement to ALL of Prosper.',
   alternates: { canonical: '/donate' },
   openGraph: {
     title: 'Support Doug Charles — Prosper Town Council, Place 5',
@@ -19,7 +19,7 @@ export const metadata = {
       url: 'https://www.dougcharles.com/campaign-preview.webp',
       width: 1200,
       height: 630,
-      alt: 'Support Doug Charles for Prosper Town Council'
+      alt: 'Support Doug Charles — Prosper Town Council, Place 5'
     }],
   },
   twitter: {
@@ -182,9 +182,9 @@ export default function DonatePage() {
               Robert Bye, Campaign Treasurer
               <br />
               <br />
-              Contributions to Doug Charles for Prosper Town Council Place 5 are separate from
-              Doug&apos;s official duties as a Town Council member. Contributions support campaign
-              operations and constituent outreach in Doug&apos;s personal capacity.
+              Contributions to Doug Charles for Prosper Town Council Place 5 support community
+              outreach and constituent engagement in Doug&apos;s personal capacity as he prepares
+              to serve on the Town Council.
               <br />
               <br />
               Under Texas law, contributions from corporations and labor organizations are

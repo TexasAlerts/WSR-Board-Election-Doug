@@ -4,22 +4,22 @@ import Script from 'next/script';
 import { Ear, ClipboardList, ShieldCheck } from 'lucide-react';
 
 export const metadata = {
-  title: 'Priorities - Doug Charles for Prosper Town Council',
+  title: 'Priorities - Doug Charles — Prosper Town Council, Place 5',
   description:
     'Doug Charles priorities for Prosper: Listen. Plan. Protect. Responsible growth, infrastructure, public safety, fiscal accountability, and transparent governance.',
   alternates: { canonical: '/priorities' },
   openGraph: {
-    title: 'My Priorities - Doug Charles for Prosper Town Council',
+    title: 'Priorities - Doug Charles — Prosper Town Council, Place 5',
     description: 'Listen. Plan. Protect. Doug Charles priorities for responsible growth, fiscal accountability, and transparent governance.',
     url: 'https://www.dougcharles.com/priorities',
-    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    siteName: 'Doug Charles — Prosper Town Council, Place 5',
     locale: 'en_US',
     type: 'website',
-    images: [{ url: 'https://www.dougcharles.com/campaign-preview.webp', width: 1200, height: 630, alt: 'Doug Charles for Prosper Town Council - My Priorities' }],
+    images: [{ url: 'https://www.dougcharles.com/campaign-preview.webp', width: 1200, height: 630, alt: 'Priorities - Doug Charles — Prosper Town Council, Place 5' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'My Priorities - Doug Charles for Prosper Town Council',
+    title: 'Priorities - Doug Charles — Prosper Town Council, Place 5',
     description: 'Listen. Plan. Protect. Responsible growth, fiscal accountability, and transparent governance.',
     images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
@@ -344,11 +344,11 @@ export default function PrioritiesPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Link href="/about" className="card text-center hover:shadow-navy-lg transition-shadow">
               <h3 className="text-xl font-bold text-navy mb-2">About Doug</h3>
-              <p className="text-gray-600 text-sm">20 years in Prosper, ready to serve</p>
+              <p className="text-gray-600 text-sm">20 years in Prosper, preparing to serve</p>
             </Link>
             <Link href="/why" className="card text-center hover:shadow-navy-lg transition-shadow">
-              <h3 className="text-xl font-bold text-navy mb-2">Why I'm Running</h3>
-              <p className="text-gray-600 text-sm">My motivation and what I'll do differently</p>
+              <h3 className="text-xl font-bold text-navy mb-2">My Vision</h3>
+              <p className="text-gray-600 text-sm">My vision and what I'll do differently</p>
             </Link>
             <Link
               href="/track-record"
@@ -367,7 +367,7 @@ export default function PrioritiesPage() {
           <h2 className="text-2xl sm:text-3xl font-bold mb-6">Ready to Get Involved?</h2>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/get-involved" className="btn-white">
-              Join the Campaign
+              Get Involved
             </Link>
             <Link href="/donate" className="btn-secondary">
               Donate

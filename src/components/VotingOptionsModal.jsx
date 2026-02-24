@@ -95,7 +95,7 @@ export default function VotingOptionsModal({ onClose, onOptionSelected }) {
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-navy mb-2">Register for Full Access</h3>
                   <p className="text-gray-600 mb-3">
-                    Create an account to unlock all features and stay engaged with the campaign.
+                    Create an account to unlock all features and stay engaged with the community.
                   </p>
                   <ul className="space-y-1 text-sm text-gray-600">
                     <li className="flex items-center gap-2">

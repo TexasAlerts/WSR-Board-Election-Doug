@@ -7,7 +7,7 @@ import { validatePhoneNumber } from '../../../lib/phoneValidation';
 
 export default function RegisterPage() {
   useEffect(() => {
-    document.title = 'Register | Doug Charles for Town of Prosper Town Council Place 5';
+    document.title = 'Register — Doug Charles — Prosper Town Council, Place 5';
   }, []);
 
   const [formData, setFormData] = useState({
@@ -379,7 +379,7 @@ export default function RegisterPage() {
               className="mt-0.5 w-5 h-5 min-w-[20px] text-navy rounded focus:ring-navy focus:ring-2"
             />
             <span className="text-sm text-gray-600">
-              I agree to receive campaign updates and news via email
+              I agree to receive community updates and news via email
             </span>
           </label>
           <label className="flex items-start gap-3 cursor-pointer min-h-[44px]">
@@ -391,8 +391,8 @@ export default function RegisterPage() {
               className="mt-0.5 w-5 h-5 min-w-[20px] text-navy rounded focus:ring-navy focus:ring-2"
             />
             <span className="text-sm text-gray-600">
-              By checking this box, you consent to receive SMS campaign updates, alerts, and
-              donation solicitations from Doug Charles for Town of Prosper Town Council Place 5 at the number
+              By checking this box, you consent to receive SMS community updates, alerts, and
+              donation solicitations from Doug Charles, Prosper Town Council Place 5 at the number
               provided, including messages sent by autodialer. Message frequency may vary. Standard
               message and data rates may apply. Carriers are not liable for delayed or undelivered
               messages. Reply STOP to opt out. Reply HELP for help. Consent is not a condition of

@@ -16,8 +16,8 @@ function getResendClient() {
 
 const FROM_EMAIL = 'Doug Charles <hello@dougcharles.com>';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dougcharles.com';
-const CAMPAIGN_ADDRESS =
-  'Doug Charles for Prosper Town Council, 4360 Mill Branch Drive, Prosper, TX 75078';
+const MAILING_ADDRESS =
+  'Doug Charles for Prosper Town Council Place 5, 4360 Mill Branch Drive, Prosper, TX 75078';
 
 /**
  * Escape HTML special characters to prevent XSS in email templates
@@ -57,15 +57,15 @@ function stripHtml(html) {
 }
 
 /**
- * Generate standard campaign email footer
+ * Generate standard email footer
  */
-function getCampaignFooter(unsubscribeEmail = null, unsubscribeUrl = null) {
+function getEmailFooter(unsubscribeEmail = null, unsubscribeUrl = null) {
   return `
     <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
     <div style="color: #999; font-size: 12px; line-height: 1.5;">
       <p style="margin: 5px 0;">
-        <strong>Doug Charles for Prosper Town Council</strong><br>
-        ${CAMPAIGN_ADDRESS}<br>
+        <strong>Doug Charles for Prosper Town Council Place 5</strong><br>
+        ${MAILING_ADDRESS}<br>
         <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
       </p>
       ${
@@ -87,7 +87,7 @@ function getCampaignFooter(unsubscribeEmail = null, unsubscribeUrl = null) {
         Robert Bye, Campaign Treasurer
       </p>
       <p style="margin: 5px 0; color: #999; font-size: 11px;">
-        This is a personal campaign communication from dougcharles.com. It is not an official
+        This is a personal communication from dougcharles.com. It is not an official
         communication from the Town of Prosper or the Prosper Town Council.
       </p>
     </div>
@@ -124,8 +124,8 @@ export async function sendVerificationEmail(email, name, token) {
           </p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
-            Doug Charles for Prosper Town Council<br>
-            ${CAMPAIGN_ADDRESS}<br>
+            Doug Charles for Prosper Town Council Place 5<br>
+            ${MAILING_ADDRESS}<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
             <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
@@ -134,7 +134,7 @@ export async function sendVerificationEmail(email, name, token) {
             Robert Bye, Campaign Treasurer
           </p>
           <p style="color: #999; font-size: 11px; margin-top: 5px;">
-            This is a personal campaign communication from dougcharles.com. It is not an official
+            This is a personal communication from dougcharles.com. It is not an official
             communication from the Town of Prosper or the Prosper Town Council.
           </p>
         </div>
@@ -179,8 +179,8 @@ export async function sendPasswordResetEmail(email, name, token) {
           </p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
-            Doug Charles for Prosper Town Council<br>
-            ${CAMPAIGN_ADDRESS}<br>
+            Doug Charles for Prosper Town Council Place 5<br>
+            ${MAILING_ADDRESS}<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
             <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
@@ -189,7 +189,7 @@ export async function sendPasswordResetEmail(email, name, token) {
             Robert Bye, Campaign Treasurer
           </p>
           <p style="color: #999; font-size: 11px; margin-top: 5px;">
-            This is a personal campaign communication from dougcharles.com. It is not an official
+            This is a personal communication from dougcharles.com. It is not an official
             communication from the Town of Prosper or the Prosper Town Council.
           </p>
         </div>
@@ -235,8 +235,8 @@ export async function sendWelcomeEmail(email, name) {
           <p><strong>Doug Charles</strong><br>Prosper Town Council, Place 5 (Elect)</p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
-            Doug Charles for Prosper Town Council<br>
-            ${CAMPAIGN_ADDRESS}<br>
+            Doug Charles for Prosper Town Council Place 5<br>
+            ${MAILING_ADDRESS}<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
             <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
@@ -245,7 +245,7 @@ export async function sendWelcomeEmail(email, name) {
             Robert Bye, Campaign Treasurer
           </p>
           <p style="color: #999; font-size: 11px; margin-top: 5px;">
-            This is a personal campaign communication from dougcharles.com. It is not an official
+            This is a personal communication from dougcharles.com. It is not an official
             communication from the Town of Prosper or the Prosper Town Council.
           </p>
         </div>
@@ -289,8 +289,8 @@ export async function sendCommentApprovedEmail(
           </p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
-            Doug Charles for Prosper Town Council<br>
-            ${CAMPAIGN_ADDRESS}<br>
+            Doug Charles for Prosper Town Council Place 5<br>
+            ${MAILING_ADDRESS}<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
             <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
@@ -299,7 +299,7 @@ export async function sendCommentApprovedEmail(
             Robert Bye, Campaign Treasurer
           </p>
           <p style="color: #999; font-size: 11px; margin-top: 5px;">
-            This is a personal campaign communication from dougcharles.com. It is not an official
+            This is a personal communication from dougcharles.com. It is not an official
             communication from the Town of Prosper or the Prosper Town Council.
           </p>
         </div>
@@ -333,8 +333,8 @@ export async function sendCommentRejectedEmail(email, name, reason) {
           <p>If you have questions, please email us at <a href="mailto:doug@dougcharles.com" style="color: #1e3a5f;">doug@dougcharles.com</a>.</p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
-            Doug Charles for Prosper Town Council<br>
-            ${CAMPAIGN_ADDRESS}<br>
+            Doug Charles for Prosper Town Council Place 5<br>
+            ${MAILING_ADDRESS}<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
             <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
@@ -343,7 +343,7 @@ export async function sendCommentRejectedEmail(email, name, reason) {
             Robert Bye, Campaign Treasurer
           </p>
           <p style="color: #999; font-size: 11px; margin-top: 5px;">
-            This is a personal campaign communication from dougcharles.com. It is not an official
+            This is a personal communication from dougcharles.com. It is not an official
             communication from the Town of Prosper or the Prosper Town Council.
           </p>
         </div>
@@ -384,8 +384,8 @@ export async function sendPhoneUpdateReminderEmail(email, name) {
           </p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
-            Doug Charles for Prosper Town Council<br>
-            ${CAMPAIGN_ADDRESS}<br>
+            Doug Charles for Prosper Town Council Place 5<br>
+            ${MAILING_ADDRESS}<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
             <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
@@ -394,7 +394,7 @@ export async function sendPhoneUpdateReminderEmail(email, name) {
             Robert Bye, Campaign Treasurer
           </p>
           <p style="color: #999; font-size: 11px; margin-top: 5px;">
-            This is a personal campaign communication from dougcharles.com. It is not an official
+            This is a personal communication from dougcharles.com. It is not an official
             communication from the Town of Prosper or the Prosper Town Council.
           </p>
         </div>
@@ -508,8 +508,8 @@ export async function sendVoterVerificationEmail(email, name, token) {
           </p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
-            Doug Charles for Prosper Town Council<br>
-            ${CAMPAIGN_ADDRESS}<br>
+            Doug Charles for Prosper Town Council Place 5<br>
+            ${MAILING_ADDRESS}<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
             <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
@@ -518,7 +518,7 @@ export async function sendVoterVerificationEmail(email, name, token) {
             Robert Bye, Campaign Treasurer
           </p>
           <p style="color: #999; font-size: 11px; margin-top: 5px;">
-            This is a personal campaign communication from dougcharles.com. It is not an official
+            This is a personal communication from dougcharles.com. It is not an official
             communication from the Town of Prosper or the Prosper Town Council.
           </p>
         </div>
@@ -560,7 +560,7 @@ export async function sendNewCommentNotificationEmail(
           View Discussion
         </a>
       </p>
-      ${getCampaignFooter(null, unsubscribeUrl)}
+      ${getEmailFooter(null, unsubscribeUrl)}
     </div>
   `;
 
@@ -621,7 +621,7 @@ export async function sendNewReplyNotificationEmail(
           View Reply
         </a>
       </p>
-      ${getCampaignFooter(null, unsubscribeUrl)}
+      ${getEmailFooter(null, unsubscribeUrl)}
     </div>
   `;
 
@@ -686,7 +686,7 @@ export async function sendWeeklyDigestEmail(email, name, digestData, unsubscribe
           View Polls
         </a>
       </p>
-      ${getCampaignFooter(null, unsubscribeUrl)}
+      ${getEmailFooter(null, unsubscribeUrl)}
     </div>
   `;
 
@@ -739,7 +739,7 @@ export async function sendBroadcastEmail(subject, htmlBody, recipients) {
         const fullHtml = `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             ${htmlBody}
-            ${getCampaignFooter(r.email)}
+            ${getEmailFooter(r.email)}
           </div>
         `;
 
@@ -828,7 +828,7 @@ export async function sendErrorAlertEmail(email, error) {
 
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
-            Doug Charles for Prosper Town Council - Admin Alert<br>
+            Doug Charles for Prosper Town Council Place 5 - Admin Alert<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a>
           </p>
         </div>
@@ -888,8 +888,8 @@ export async function sendInterestVerificationEmail(email, name, token, interest
           </p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
-            Doug Charles for Prosper Town Council<br>
-            ${CAMPAIGN_ADDRESS}<br>
+            Doug Charles for Prosper Town Council Place 5<br>
+            ${MAILING_ADDRESS}<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
             <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
@@ -898,7 +898,7 @@ export async function sendInterestVerificationEmail(email, name, token, interest
             Robert Bye, Campaign Treasurer
           </p>
           <p style="color: #999; font-size: 11px; margin-top: 5px;">
-            This is a personal campaign communication from dougcharles.com. It is not an official
+            This is a personal communication from dougcharles.com. It is not an official
             communication from the Town of Prosper or the Prosper Town Council.
           </p>
         </div>
@@ -953,8 +953,8 @@ export async function sendQuestionVerificationEmail(email, name, token, question
           </p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
-            Doug Charles for Prosper Town Council<br>
-            ${CAMPAIGN_ADDRESS}<br>
+            Doug Charles for Prosper Town Council Place 5<br>
+            ${MAILING_ADDRESS}<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
             <a href="${SITE_URL}/settings" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
@@ -963,7 +963,7 @@ export async function sendQuestionVerificationEmail(email, name, token, question
             Robert Bye, Campaign Treasurer
           </p>
           <p style="color: #999; font-size: 11px; margin-top: 5px;">
-            This is a personal campaign communication from dougcharles.com. It is not an official
+            This is a personal communication from dougcharles.com. It is not an official
             communication from the Town of Prosper or the Prosper Town Council.
           </p>
         </div>
@@ -1020,8 +1020,8 @@ export async function sendQuestionAnsweredEmail(email, name, question, answer, q
 
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
-            Doug Charles for Prosper Town Council<br>
-            ${CAMPAIGN_ADDRESS}<br>
+            Doug Charles for Prosper Town Council Place 5<br>
+            ${MAILING_ADDRESS}<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
             <a href="${unsubscribeUrl}" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
@@ -1030,7 +1030,7 @@ export async function sendQuestionAnsweredEmail(email, name, question, answer, q
             Robert Bye, Campaign Treasurer
           </p>
           <p style="color: #999; font-size: 11px; margin-top: 5px;">
-            This is a personal campaign communication from dougcharles.com. It is not an official
+            This is a personal communication from dougcharles.com. It is not an official
             communication from the Town of Prosper or the Prosper Town Council.
           </p>
         </div>
@@ -1074,7 +1074,7 @@ export async function sendInterestFollowUpEmail(email, name, interestType, messa
     const { data, error } = await client.emails.send({
       from: FROM_EMAIL,
       to: email,
-      subject: `Update on ${friendlyType} - Doug Charles for Prosper Town Council`,
+      subject: `Update on ${friendlyType} - Doug Charles for Prosper Town Council Place 5`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #1e3a5f;">Hi ${escapeHtml(name)}!</h2>
@@ -1092,8 +1092,8 @@ export async function sendInterestFollowUpEmail(email, name, interestType, messa
 
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
-            Doug Charles for Prosper Town Council<br>
-            ${CAMPAIGN_ADDRESS}<br>
+            Doug Charles for Prosper Town Council Place 5<br>
+            ${MAILING_ADDRESS}<br>
             <a href="${SITE_URL}" style="color: #1e3a5f;">www.dougcharles.com</a><br>
             <a href="${unsubscribeUrl}" style="color: #666; font-size: 11px;">Manage email preferences</a>
           </p>
@@ -1102,7 +1102,7 @@ export async function sendInterestFollowUpEmail(email, name, interestType, messa
             Robert Bye, Campaign Treasurer
           </p>
           <p style="color: #999; font-size: 11px; margin-top: 5px;">
-            This is a personal campaign communication from dougcharles.com. It is not an official
+            This is a personal communication from dougcharles.com. It is not an official
             communication from the Town of Prosper or the Prosper Town Council.
           </p>
         </div>

@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Admin | Doug Charles for Prosper Town Council',
+  title: 'Admin — Doug Charles — Prosper Town Council, Place 5',
   robots: {
     index: false,
     follow: false,

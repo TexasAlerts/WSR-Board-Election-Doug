@@ -24,7 +24,7 @@ export default function Home() {
     '@type': 'Person',
     name: 'Doug Charles',
     url: 'https://www.dougcharles.com/about',
-    jobTitle: 'Prosper Town Council Member, Place 5',
+    jobTitle: 'Incoming Prosper Town Council Member, Place 5',
     description: '20-year Prosper resident, former Planning & Zoning Commissioner',
     affiliation: {
       '@type': 'Organization',
@@ -335,7 +335,7 @@ export default function Home() {
                 <strong className="text-prosper-red">
                   Whether you&apos;ve been here 20 years or 2 months, you deserve a voice.
                 </strong>{' '}
-                That&apos;s why I ran—and why I&apos;m committed to serving.
+                That&apos;s why I ran—and why I&apos;m preparing to serve.
               </p>
               <div className="pt-2">
                 <Link href="/about" className="btn-outline">
@@ -356,7 +356,7 @@ export default function Home() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">Stay Connected</h2>
 
           <p className="text-xl text-white/90 mb-10 leading-relaxed">
-            I&apos;m honored to serve Prosper on the Town Council. Your voice matters—stay involved,
+            I&apos;m honored to have been elected to serve Prosper on the Town Council. Your voice matters—stay involved,
             share your ideas, and help shape our community&apos;s future.
           </p>
 
