@@ -9,17 +9,17 @@ export const metadata = {
     'Doug Charles\' vision for Prosper Town Council Place 5: A 20-year resident and former P&Z Commissioner committed to listening, planning, and protecting.',
   alternates: { canonical: '/why' },
   openGraph: {
-    title: 'My Vision - Doug Charles for Prosper Town Council',
+    title: 'My Vision - Doug Charles — Prosper Town Council, Place 5',
     description: 'A 20-year Prosper resident committed to listening, planning, and protecting our community. Common Sense leadership for ALL of Prosper.',
     url: 'https://www.dougcharles.com/why',
     siteName: 'Doug Charles — Prosper Town Council, Place 5',
     locale: 'en_US',
     type: 'website',
-    images: [{ url: 'https://www.dougcharles.com/campaign-preview.webp', width: 1200, height: 630, alt: 'Doug Charles - My Vision for Prosper Town Council' }],
+    images: [{ url: 'https://www.dougcharles.com/campaign-preview.webp', width: 1200, height: 630, alt: 'Doug Charles - My Vision for Prosper Town Council, Place 5' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'My Vision - Doug Charles for Prosper Town Council',
+    title: 'My Vision - Doug Charles — Prosper Town Council, Place 5',
     description: 'A 20-year resident committed to listening, planning, and protecting our community.',
     images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
@@ -198,7 +198,7 @@ export default function WhyPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Link href="/about" className="card text-center hover:shadow-navy-lg transition-shadow">
               <h3 className="text-xl font-bold text-navy mb-2">About Doug</h3>
-              <p className="text-gray-600 text-sm">20 years in Prosper, ready to serve</p>
+              <p className="text-gray-600 text-sm">20 years in Prosper, preparing to serve</p>
             </Link>
             <Link
               href="/priorities"

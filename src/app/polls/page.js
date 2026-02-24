@@ -13,27 +13,27 @@ const breadcrumbJsonLd = {
 };
 
 export const metadata = {
-  title: 'Community Polls - Doug Charles for Prosper Town Council',
+  title: 'Community Polls - Doug Charles, Prosper Town Council Place 5',
   description:
     'Share your voice on issues that matter to Prosper. Vote on community polls and see real-time results from your neighbors.',
   alternates: { canonical: '/polls' },
   openGraph: {
-    title: 'Community Polls - Doug Charles for Prosper Town Council',
+    title: 'Community Polls - Doug Charles, Prosper Town Council Place 5',
     description: 'Share your voice on issues that matter to Prosper. Vote on community polls and see real-time results from your neighbors.',
     url: 'https://www.dougcharles.com/polls',
-    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    siteName: 'Doug Charles — Prosper Town Council, Place 5',
     locale: 'en_US',
     type: 'website',
     images: [{
       url: 'https://www.dougcharles.com/campaign-preview.webp',
       width: 1200,
       height: 630,
-      alt: 'Community Polls - Doug Charles Campaign'
+      alt: 'Community Polls - Doug Charles, Prosper Town Council'
     }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Community Polls - Doug Charles for Prosper Town Council',
+    title: 'Community Polls - Doug Charles, Prosper Town Council Place 5',
     description: 'Share your voice on issues that matter to Prosper.',
     images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
@@ -140,7 +140,7 @@ export default async function PollsPage() {
   const pollsJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'Community Polls - Doug Charles Campaign',
+    name: 'Community Polls - Doug Charles, Prosper Town Council Place 5',
     description:
       'Community polls on issues that matter to Prosper residents. Share your voice and help shape local priorities.',
     url: 'https://www.dougcharles.com/polls',

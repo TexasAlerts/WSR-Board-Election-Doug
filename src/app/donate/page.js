@@ -40,8 +40,8 @@ const breadcrumbJsonLd = {
 };
 
 const SHARE_MESSAGE =
-  "Check out Doug Charles' vision for Prosper Town Council Place 5! Common Sense leadership for ALL of Prosper at www.dougcharles.com";
-const SHARE_SUBJECT = 'Check out Doug Charles for Prosper Town Council';
+  "Doug Charles — Prosper Town Council, Place 5! Common Sense leadership for ALL of Prosper at www.dougcharles.com";
+const SHARE_SUBJECT = 'Doug Charles — Prosper Town Council, Place 5';
 
 export default function DonatePage() {
   return (
@@ -89,9 +89,9 @@ export default function DonatePage() {
               <div className="icon-container">
                 <span className="text-2xl">🏠</span>
               </div>
-              <h3 className="text-xl font-bold text-navy mb-3">Yard Signs</h3>
+              <h3 className="text-xl font-bold text-navy mb-3">Community Visibility</h3>
               <p className="text-gray-600">
-                Help <strong className="text-navy">spread the message</strong> across{' '}
+                Help <strong className="text-navy">spread the message</strong> of Common Sense leadership across{' '}
                 <strong className="text-prosper-red">Prosper neighborhoods</strong>.
               </p>
             </div>
@@ -129,8 +129,8 @@ export default function DonatePage() {
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-navy mb-2">Spread the Word</h2>
               <p className="text-gray-600">
-                Can't donate right now? Help us{' '}
-                <strong className="text-navy">reach more Prosper residents</strong> by sharing with
+                Can't contribute right now? Help{' '}
+                <strong className="text-navy">connect more Prosper residents</strong> by sharing with
                 friends and neighbors!
               </p>
             </div>
