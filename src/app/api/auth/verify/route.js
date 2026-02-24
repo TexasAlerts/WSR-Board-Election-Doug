@@ -10,6 +10,7 @@ import {
 import { sendVerificationSMS } from '../../../../lib/smsService';
 import { validatePhoneNumber } from '../../../../lib/phoneValidation';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { sendWelcomeEmail } from '../../../../lib/emailService';
 import { rateLimit } from '../../../../lib/rateLimit';
 
 // GET: Check if token is valid
@@ -153,6 +154,7 @@ export async function POST(request) {
         .from('supporters')
         .update({ status: 'approved' })
         .eq('id', supporter.id);
+      await sendWelcomeEmail(supporter.email, supporter.first_name);
     }
 
     // Log event
