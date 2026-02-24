@@ -160,9 +160,9 @@ export default function WhyPage() {
             <div className="card h-full">
               <h3 className="text-xl font-bold text-navy mb-3">Be Accessible</h3>
               <p className="text-gray-600">
-                Your council members should be <strong className="text-navy">easy to reach</strong>.
+                Your council member should be <strong className="text-navy">easy to reach</strong>.
                 I'll be available to residents{' '}
-                <strong className="text-prosper-red">throughout my term</strong>—your council member should always be easy to reach.
+                <strong className="text-prosper-red">throughout my term</strong>—not just during election season.
               </p>
             </div>
           </div>
