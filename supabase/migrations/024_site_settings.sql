@@ -20,8 +20,8 @@ CREATE POLICY "Anyone can read site_settings"
   ON site_settings FOR SELECT
   USING (true);
 
--- Only service role can update (admin APIs use service role key)
-CREATE POLICY "Service role can update site_settings"
+-- No direct updates via anon/authenticated roles (service role bypasses RLS)
+CREATE POLICY "No public updates to site_settings"
   ON site_settings FOR UPDATE
-  USING (true)
-  WITH CHECK (true);
+  USING (false)
+  WITH CHECK (false);
