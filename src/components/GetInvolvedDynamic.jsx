@@ -10,8 +10,8 @@ import ActionCards from './ActionCards';
 import GetInvolvedForm from './GetInvolvedForm';
 
 const SHARE_MESSAGE =
-  "Check out Doug Charles' vision for Prosper Town Council Place 5! Common Sense leadership for ALL of Prosper at www.dougcharles.com";
-const SHARE_SUBJECT = 'Check out Doug Charles for Prosper Town Council';
+  "Check out Doug Charles — Prosper Town Council, Place 5! Common Sense leadership for ALL of Prosper at www.dougcharles.com";
+const SHARE_SUBJECT = 'Check out Doug Charles — Prosper Town Council, Place 5';
 
 function GetInvolvedDynamicContent() {
   const { getToken, isReady } = useRecaptcha();
@@ -199,7 +199,7 @@ function GetInvolvedDynamicContent() {
                 <a
                   href={`mailto:?subject=${encodeURIComponent(SHARE_SUBJECT)}&body=${encodeURIComponent(SHARE_MESSAGE)}`}
                   className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-navy text-white font-semibold rounded-xl hover:bg-navy/90 active:scale-[0.98] transition-all min-h-[56px] shadow-md"
-                  aria-label="Share campaign via email - opens your email app"
+                  aria-label="Share via email - opens your email app"
                 >
                   <Mail className="w-5 h-5" aria-hidden="true" />
                   Share via Email
@@ -214,7 +214,7 @@ function GetInvolvedDynamicContent() {
                 <a
                   href={`sms:?&body=${encodeURIComponent(SHARE_MESSAGE)}`}
                   className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 bg-prosper-red text-white font-semibold rounded-xl hover:bg-prosper-red/90 active:scale-[0.98] transition-all min-h-[56px] shadow-md"
-                  aria-label="Share campaign via text message - opens your messaging app"
+                  aria-label="Share via text message - opens your messaging app"
                 >
                   <MessageCircle className="w-5 h-5" aria-hidden="true" />
                   Share via Text
@@ -226,7 +226,7 @@ function GetInvolvedDynamicContent() {
             </div>
 
             <p className="text-center text-xs text-gray-700 mt-6">
-              Personal recommendations are the most powerful way to reach voters!
+              Personal recommendations are the most powerful way to reach neighbors!
             </p>
           </div>
         </div>

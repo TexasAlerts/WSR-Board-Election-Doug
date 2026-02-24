@@ -3,7 +3,7 @@ import Script from 'next/script';
 export const metadata = {
   title: 'Terms of Use - Doug Charles — Prosper Town Council, Place 5',
   description:
-    'Terms of use for the Doug Charles personal campaign website, including content moderation, user submissions, SMS terms, and political advertising compliance.',
+    'Terms of use for the Doug Charles personal website, including content moderation, user submissions, SMS terms, and political advertising compliance.',
   alternates: { canonical: '/terms' },
 };
 
@@ -31,7 +31,7 @@ export default function TermsOfUse() {
       <section className="space-y-4">
         <h2 className="text-xl font-bold text-navy">Introduction</h2>
         <p>
-          Welcome to the official campaign website for Doug Charles for Town of Prosper Town Council Place 5 ("the
+          Welcome to the personal website for Doug Charles, Prosper Town Council Place 5 ("the
           Campaign," "we," "us," or "our"). By accessing or using this website at dougcharles.com
           (the "Site"), you agree to be bound by these Terms of Use. If you do not agree with these
           terms, please do not use this Site.
@@ -102,7 +102,7 @@ export default function TermsOfUse() {
           <li>Submission of content does not guarantee publication or display on the Site.</li>
           <li>
             The Campaign may moderate content based on any criteria we deem appropriate, including
-            but not limited to relevance, tone, and alignment with campaign messaging.
+            but not limited to relevance, tone, and alignment with the website's messaging.
           </li>
         </ul>
         <p className="mt-4">
@@ -118,7 +118,7 @@ export default function TermsOfUse() {
           <li>Any content that violates applicable law</li>
         </ul>
         <p className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-          <strong>Important:</strong> As a private campaign forum, we are not required to publish
+          <strong>Important:</strong> As a private forum, we are not required to publish
           content critical of the Campaign or its positions. Content moderation decisions are within
           our sole discretion and are not subject to appeal.
         </p>
@@ -133,8 +133,8 @@ export default function TermsOfUse() {
         <ul className="list-disc pl-6 space-y-2">
           <li>
             Grant the Campaign a non-exclusive, royalty-free, perpetual, worldwide license to use,
-            display, reproduce, modify, and distribute your submission in connection with campaign
-            activities
+            display, reproduce, modify, and distribute your submission in connection with website
+            activities and community engagement
           </li>
           <li>
             Represent that your submission is original, accurate, and does not violate any
@@ -159,12 +159,12 @@ export default function TermsOfUse() {
             <strong>Program name:</strong> Doug Charles for Town of Prosper Town Council Place 5
           </li>
           <li>
-            <strong>Product description:</strong> Campaign updates, alerts, event notifications,
-            donation solicitations, and verification codes related to the Doug Charles for Prosper
-            Town Council Place 5 campaign
+            <strong>Product description:</strong> Community updates, alerts, event notifications,
+            donation solicitations, and verification codes related to Doug Charles, Prosper
+            Town Council Place 5
           </li>
           <li>
-            <strong>Message frequency:</strong> May vary based on campaign activity
+            <strong>Message frequency:</strong> May vary based on activity
           </li>
           <li>
             <strong>Message and data rates:</strong> Standard message and data rates may apply
@@ -188,9 +188,8 @@ export default function TermsOfUse() {
             purchase or registration
           </li>
           <li>
-            <strong>Donations:</strong> Donation solicitations will be included in campaign
-            messages. Donations are secured through the campaign&apos;s designated payment
-            processor.
+            <strong>Donations:</strong> Donation solicitations may be included in messages.
+            Donations are secured through the designated payment processor.
           </li>
           <li>
             <strong>Privacy:</strong> Your mobile information will not be sold or shared with third

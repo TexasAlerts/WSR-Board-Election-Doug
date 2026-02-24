@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
+import ConditionalDonateLink from '../../components/ConditionalDonateLink';
 
 // Breadcrumb JSON-LD structured data
 const breadcrumbJsonLd = {
@@ -31,14 +32,14 @@ export const metadata = {
     title: 'About Doug Charles - Prosper Town Council Place 5',
     description: '20-year Prosper resident, former Planning & Zoning Commissioner, and community leader committed to Common Sense leadership for ALL of Prosper.',
     url: 'https://www.dougcharles.com/about',
-    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    siteName: 'Doug Charles — Prosper Town Council, Place 5',
     locale: 'en_US',
     type: 'website',
     images: [{
       url: 'https://www.dougcharles.com/campaign-preview.png',
       width: 1200,
       height: 630,
-      alt: 'Doug Charles for Prosper Town Council - About'
+      alt: 'About Doug Charles — Prosper Town Council, Place 5'
     }],
   },
   twitter: {
@@ -359,7 +360,7 @@ export default function AboutPage() {
               </ul>
 
               <p className="text-xl font-semibold text-navy text-center mt-8">
-                That&apos;s the leadership I&apos;m ready to bring to Town Council.
+                That&apos;s the leadership I&apos;m bringing to Town Council.
               </p>
             </div>
           </div>
@@ -372,8 +373,8 @@ export default function AboutPage() {
           <h2 className="section-title text-center mb-8">Learn More</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Link href="/why" className="card text-center hover:shadow-navy-lg transition-shadow">
-              <h3 className="text-xl font-bold text-navy mb-2">Why I'm Running</h3>
-              <p className="text-gray-600 text-sm">My motivation and what I'll do differently</p>
+              <h3 className="text-xl font-bold text-navy mb-2">My Vision</h3>
+              <p className="text-gray-600 text-sm">My vision and what I'll do differently</p>
             </Link>
             <Link
               href="/priorities"
@@ -399,11 +400,11 @@ export default function AboutPage() {
           <h2 className="text-2xl sm:text-3xl font-bold mb-6">Ready to Get Involved?</h2>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/get-involved" className="btn-white">
-              Join the Campaign
+              Get Involved
             </Link>
-            <Link href="/donate" className="btn-secondary">
+            <ConditionalDonateLink className="btn-secondary">
               Donate
-            </Link>
+            </ConditionalDonateLink>
           </div>
         </div>
       </section>

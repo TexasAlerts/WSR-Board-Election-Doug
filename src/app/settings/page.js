@@ -32,7 +32,7 @@ const NOTIFICATION_TYPES = [
     linkedEmailKeys: ['email_on_new_reply', 'email_on_comment_moderation'],
   },
   { label: 'New Ideas', emailKey: 'email_on_weekly_digest', smsKey: 'sms_on_new_idea' },
-  { label: 'Campaign Broadcasts', emailKey: 'email_on_broadcast', smsKey: 'sms_on_broadcast' },
+  { label: 'Community Broadcasts', emailKey: 'email_on_broadcast', smsKey: 'sms_on_broadcast' },
   { label: 'System Messages', emailKey: 'email_on_system', smsKey: 'sms_on_system' },
 ];
 
@@ -579,7 +579,7 @@ export default function SettingsPage() {
               </p>
               <p className="text-xs text-gray-700 mt-2">
                 By updating your phone number, you consent to receive SMS verification codes,
-                campaign updates, and donation solicitations from Doug Charles for Prosper Town
+                community updates, and donation solicitations from Doug Charles, Prosper Town
                 Council. Message frequency may vary. Msg &amp; data rates may apply. Reply STOP to
                 opt out. Reply HELP for help. Consent is not a condition of purchase or
                 registration.{' '}

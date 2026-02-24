@@ -14,7 +14,7 @@ const AUTO_RESPONSES = {
     'You have been unsubscribed from Doug Charles for Prosper Town Council SMS messages. No further messages will be sent. Reply START to re-subscribe.',
   optIn:
     'Thank you for opting in to Doug Charles for Prosper Town Council SMS updates! Msg freq may vary. Std msg & data rates apply. Donations may be solicited. Reply STOP to opt out, HELP for help.',
-  help: 'Doug Charles for Prosper Town Council SMS Program. Campaign updates, alerts & donation solicitations. Msg freq varies. Msg & data rates apply. Reply STOP to opt out. Contact: doug@dougcharles.com Website: https://www.dougcharles.com',
+  help: 'Doug Charles for Prosper Town Council SMS Program. Community updates, alerts & donation solicitations. Msg freq varies. Msg & data rates apply. Reply STOP to opt out. Contact: doug@dougcharles.com Website: https://www.dougcharles.com',
 };
 
 /**

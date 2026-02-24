@@ -163,7 +163,7 @@ export default function RootLayout({ children }) {
                   },
                   "contactPoint": {
                     "@type": "ContactPoint",
-                    "contactType": "Campaign Inquiries",
+                    "contactType": "General Inquiries",
                     "email": "doug@dougcharles.com"
                   },
                   "foundingDate": "2025",

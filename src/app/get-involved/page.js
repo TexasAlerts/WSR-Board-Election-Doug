@@ -3,28 +3,28 @@ import Script from 'next/script';
 import GetInvolvedDynamic from '../../components/GetInvolvedDynamic';
 
 export const metadata = {
-  title: 'Get Involved - Doug Charles for Prosper',
+  title: 'Get Involved - Doug Charles, Prosper Town Council Place 5',
   description:
-    'Get involved: Volunteer, host an event, request a yard sign, or endorse Doug Charles for Prosper Town Council Place 5. Every action makes a real difference.',
+    'Get involved: Volunteer, attend an event, or connect with Doug Charles, your incoming Prosper Town Council Place 5 member. Every action makes a real difference.',
   alternates: { canonical: '/get-involved' },
   openGraph: {
-    title: 'Get Involved - Doug Charles for Prosper Town Council',
-    description: 'Volunteer, host an event, request a yard sign, or endorse Doug Charles. Every action makes a difference in bringing Common Sense leadership to Prosper.',
+    title: 'Get Involved - Doug Charles, Prosper Town Council Place 5',
+    description: 'Connect with Doug Charles, your incoming Town Council member. Every action makes a difference in bringing Common Sense leadership to Prosper.',
     url: 'https://www.dougcharles.com/get-involved',
-    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    siteName: 'Doug Charles — Prosper Town Council, Place 5',
     locale: 'en_US',
     type: 'website',
     images: [{
       url: 'https://www.dougcharles.com/campaign-preview.webp',
       width: 1200,
       height: 630,
-      alt: 'Get Involved with Doug Charles Campaign'
+      alt: 'Get Involved with Doug Charles — Prosper Town Council'
     }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Get Involved - Doug Charles for Prosper',
-    description: 'Volunteer, host an event, request a yard sign, or endorse Doug Charles for Town Council.',
+    title: 'Get Involved - Doug Charles, Prosper Town Council Place 5',
+    description: 'Connect with Doug Charles, your incoming Prosper Town Council Place 5 member.',
     images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
 };
@@ -62,7 +62,7 @@ export default function GetInvolvedPage() {
             Get Involved
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Join the movement for <strong className="text-navy">Common Sense</strong> leadership for{' '}
+            Building <strong className="text-navy">Common Sense</strong> leadership for{' '}
             <strong className="text-prosper-red">ALL</strong> of Prosper
           </p>
         </div>

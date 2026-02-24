@@ -120,7 +120,7 @@ export async function sendSMS(to, message, skipTimeCheck = false) {
  * @param {string} code - 6-digit verification code
  */
 export async function sendVerificationSMS(phone, code) {
-  const message = `Your Doug Charles campaign verification code is: ${code}. Valid for 10 minutes. Msg&data rates may apply. Reply STOP to end, HELP for help.`;
+  const message = `Your DougCharles.com verification code is: ${code}. Valid for 10 minutes. Msg & data rates may apply. Reply STOP to end, HELP for help.`;
   // Skip time check for verification codes (transactional, not promotional)
   return sendSMS(phone, message, true);
 }

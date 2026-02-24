@@ -3,7 +3,7 @@ import Script from 'next/script';
 export const metadata = {
   title: 'Privacy Policy - Doug Charles — Prosper Town Council, Place 5',
   description:
-    'Comprehensive privacy policy for the Doug Charles campaign website, covering data collection, cookies, SMS messaging, and your rights under the Texas Data Privacy and Security Act.',
+    'Comprehensive privacy policy for the Doug Charles personal website, covering data collection, cookies, SMS messaging, and your rights under the Texas Data Privacy and Security Act.',
   alternates: { canonical: '/privacy' },
 };
 
@@ -54,12 +54,12 @@ export default function PrivacyPolicy() {
         <h3 className="text-lg font-semibold text-navy">Information You Provide Voluntarily</h3>
         <p>We collect information that you voluntarily provide when you:</p>
         <ul className="list-disc pl-6 space-y-2">
-          <li>Sign up for campaign updates or our email list</li>
+          <li>Sign up for community updates or our email list</li>
           <li>Request a yard sign</li>
           <li>Submit a volunteer interest form</li>
           <li>Submit an endorsement</li>
           <li>Ask a question through our Q&A form</li>
-          <li>Make a contribution to the campaign</li>
+          <li>Make a contribution</li>
           <li>Contact us via email</li>
         </ul>
         <p>
@@ -113,15 +113,15 @@ export default function PrivacyPolicy() {
         <p>We use the information we collect to:</p>
         <ul className="list-disc pl-6 space-y-2">
           <li>
-            Communicate with you about the campaign, including sending updates, event invitations,
+            Communicate with you about community matters, including sending updates, event invitations,
             and volunteer opportunities
           </li>
           <li>Fulfill yard sign requests and coordinate deliveries</li>
           <li>Respond to your questions and inquiries</li>
           <li>Display approved endorsements on our website (with your consent)</li>
-          <li>Process and acknowledge campaign contributions</li>
+          <li>Process and acknowledge contributions</li>
           <li>Comply with Texas campaign finance reporting requirements</li>
-          <li>Improve our website and campaign operations</li>
+          <li>Improve our website and operations</li>
         </ul>
       </section>
 
@@ -129,15 +129,15 @@ export default function PrivacyPolicy() {
         <h2 className="text-xl font-bold text-navy">SMS/Text Messaging</h2>
         <p>
           If you provide your phone number and opt in to receive text messages, you agree to receive
-          SMS campaign updates, alerts, verification codes, and donation solicitations from Doug
-          Charles for Prosper Town Council at the phone number you provided.
+          SMS community updates, alerts, verification codes, and donation solicitations from Doug
+          Charles, Prosper Town Council at the phone number you provided.
         </p>
         <ul className="list-disc pl-6 space-y-2">
           <li>
             <strong>Program name:</strong> Doug Charles for Town of Prosper Town Council Place 5
           </li>
           <li>
-            <strong>Message frequency:</strong> May vary based on campaign activity
+            <strong>Message frequency:</strong> May vary based on activity
           </li>
           <li>
             <strong>Message and data rates:</strong> Standard message and data rates may apply
@@ -203,8 +203,8 @@ export default function PrivacyPolicy() {
         </ul>
         <h3 className="text-lg font-semibold text-navy">SMS Opt-In Data</h3>
         <p>
-          We will not share your opt-in to an SMS campaign with any third party for purposes
-          unrelated to providing you with the services of that campaign. We may share your Personal
+          We will not share your opt-in to our SMS program with any third party for purposes
+          unrelated to providing you with the services of that program. We may share your Personal
           Data, including your SMS opt-in or consent status, with third parties that help us provide
           our messaging services, including but not limited to platform providers, phone companies,
           and any other vendors who assist us in the delivery of text messages.

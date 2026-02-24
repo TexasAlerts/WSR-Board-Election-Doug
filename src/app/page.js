@@ -10,10 +10,10 @@ export default function Home() {
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Doug Charles for Town of Prosper Town Council Place 5',
+    name: 'Doug Charles — Prosper Town Council, Place 5',
     url: 'https://www.dougcharles.com',
     logo: 'https://www.dougcharles.com/campaign-logo.webp',
-    description: 'Doug Charles for Prosper Town Council Place 5',
+    description: 'Doug Charles, Prosper Town Council Place 5. Preparing to serve with Common Sense leadership.',
     foundingDate: '2025',
     sameAs: [],
   };
@@ -28,7 +28,7 @@ export default function Home() {
     description: '20-year Prosper resident, former Planning & Zoning Commissioner',
     affiliation: {
       '@type': 'Organization',
-      name: 'Doug Charles for Town of Prosper Town Council Place 5',
+      name: 'Doug Charles — Prosper Town Council, Place 5',
     },
   };
 
