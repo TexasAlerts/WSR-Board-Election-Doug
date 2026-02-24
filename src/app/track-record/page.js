@@ -182,7 +182,7 @@ export default function TrackRecordPage() {
                   dateTime="2021-09"
                   className="text-sm font-bold text-navy whitespace-nowrap bg-navy/5 px-3 py-1 rounded-full self-start"
                 >
-                  Sept 2021
+                  Sep 2021
                 </time>
                 <div>
                   <h3 className="text-lg font-bold text-navy mb-2">

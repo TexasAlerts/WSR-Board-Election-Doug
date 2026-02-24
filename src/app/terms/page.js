@@ -25,7 +25,7 @@ export default function TermsOfUse() {
         <strong>Effective Date:</strong> January 2026
       </p>
       <p className="text-charcoal">
-        <strong>Last Updated:</strong> February 2026
+        <strong>Last Updated:</strong> February 24, 2026
       </p>
 
       <section className="space-y-4">
@@ -59,7 +59,7 @@ export default function TermsOfUse() {
       <section className="space-y-4">
         <h2 className="text-xl font-bold text-navy">Official Government Disclaimer</h2>
         <p>
-          Doug Charles is a member of the Prosper Town Council, Place 5 (sworn in May 2026).
+          Doug Charles is the incoming member of the Prosper Town Council, Place 5 (to be sworn in May 2026).
           This website is maintained by Doug Charles in his personal capacity and through his
           campaign committee. It is <strong>NOT</strong> an official website of the Town of Prosper.
         </p>
