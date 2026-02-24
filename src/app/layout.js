@@ -34,15 +34,45 @@ const oswald = Oswald({
 
 export const metadata = {
   metadataBase: new URL('https://www.dougcharles.com'),
+  applicationName: 'Doug Charles',
+  authors: [{ name: 'Doug Charles', url: 'https://www.dougcharles.com' }],
+  creator: 'Doug Charles',
+  publisher: 'Doug Charles for Prosper Town Council Place 5',
+  keywords: [
+    'Doug Charles',
+    'Prosper Town Council',
+    'Place 5',
+    'Prosper Texas',
+    'Town Council',
+    'local government',
+    'Prosper TX',
+    'Common Sense leadership',
+    'Planning and Zoning',
+    'Windsong Ranch',
+  ],
+  formatDetection: {
+    telephone: false,
+    email: false,
+    address: false,
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Doug Charles',
+  },
   alternates: {
     canonical: '/',
+    languages: {
+      'en-US': 'https://www.dougcharles.com',
+    },
   },
   title: 'Doug Charles — Prosper Town Council, Place 5',
   description:
-    'Doug Charles, Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Preparing to serve with Common Sense leadership. Listen. Plan. Protect.',
+    'Doug Charles, Prosper Town Council Place 5. 20-year resident, former P&Z Commissioner. Common Sense leadership. Listen. Plan. Protect.',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
       { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
       { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
@@ -69,6 +99,13 @@ export const metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   twitter: {
     card: 'summary_large_image',

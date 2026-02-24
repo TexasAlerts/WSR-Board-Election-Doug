@@ -36,7 +36,7 @@ export const metadata = {
     locale: 'en_US',
     type: 'website',
     images: [{
-      url: 'https://www.dougcharles.com/campaign-preview.png',
+      url: 'https://www.dougcharles.com/campaign-preview.webp',
       width: 1200,
       height: 630,
       alt: 'About Doug Charles — Prosper Town Council, Place 5'
@@ -46,7 +46,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'About Doug Charles - Prosper Town Council Place 5',
     description: '20-year Prosper resident, former Planning & Zoning Commissioner, and community leader.',
-    images: ['https://www.dougcharles.com/campaign-preview.png'],
+    images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
 };
 
