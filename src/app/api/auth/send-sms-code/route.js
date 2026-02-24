@@ -6,6 +6,7 @@ import { createSMSVerification } from '../../../../lib/auth';
 import { sendVerificationSMS } from '../../../../lib/smsService';
 import { validatePhoneNumber } from '../../../../lib/phoneValidation';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { sendWelcomeEmail } from '../../../../lib/emailService';
 import { withCSRF } from '../../../../lib/withCSRF';
 
 const sendCodeSchema = z.object({
@@ -81,7 +82,7 @@ async function postHandler(request) {
     // Get supporter
     const { data: supporter, error: fetchError } = await supabase
       .from('supporters')
-      .select('id, phone, status, first_name')
+      .select('id, email, phone, status, first_name')
       .eq('id', supporterId)
       .single();
 
@@ -110,6 +111,8 @@ async function postHandler(request) {
         request,
         responseStatus: 200,
       });
+
+      await sendWelcomeEmail(supporter.email, supporter.first_name);
 
       return NextResponse.json({
         ok: true,

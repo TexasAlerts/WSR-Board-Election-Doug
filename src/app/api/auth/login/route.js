@@ -37,6 +37,7 @@ import { getSupabase } from '../../../../lib/supabase';
 import { rateLimit } from '../../../../lib/rateLimit';
 import { getSupporterByEmail, verifyPassword, createSession } from '../../../../lib/auth';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
+import { sendWelcomeEmail } from '../../../../lib/emailService';
 
 const loginSchema = z.object({
   email: z.string().email('Valid email is required'),
@@ -110,6 +111,7 @@ export async function POST(request) {
           .update({ status: 'approved' })
           .eq('id', supporter.id);
         supporter.status = 'approved';
+        await sendWelcomeEmail(supporter.email, supporter.first_name);
       } else {
         return NextResponse.json(
           {
