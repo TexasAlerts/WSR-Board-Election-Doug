@@ -73,7 +73,7 @@ async function postHandler(request) {
             results.errors.push(`voter ${voter.email}: ${emailResult.error}`);
           }
         }
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 600));
       } catch (err) {
         results.votersFailed++;
         results.errors.push(`voter ${voter.email}: ${err.message}`);
@@ -112,7 +112,7 @@ async function postHandler(request) {
             results.errors.push(`supporter ${supporter.email}: ${emailResult.error}`);
           }
         }
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 600));
       } catch (err) {
         results.supportersFailed++;
         results.errors.push(`supporter ${supporter.email}: ${err.message}`);
