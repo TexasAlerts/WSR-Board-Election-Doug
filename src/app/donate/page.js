@@ -4,15 +4,15 @@ import { Mail, MessageCircle } from 'lucide-react';
 import DonateDynamic from '../../components/DonateDynamic';
 
 export const metadata = {
-  title: 'Support the Campaign - Doug Charles for Prosper',
+  title: 'Support Doug Charles — Prosper Town Council, Place 5',
   description:
-    'Support Doug Charles for Town of Prosper Town Council Place 5. Your contribution helps bring Common Sense leadership and real change to ALL of Prosper.',
+    'Support Doug Charles for Prosper Town Council Place 5. Your contribution helps bring Common Sense leadership and community engagement to ALL of Prosper.',
   alternates: { canonical: '/donate' },
   openGraph: {
-    title: 'Support the Campaign - Doug Charles for Prosper',
-    description: 'Your contribution helps us reach every voter in Prosper with a message of Common Sense leadership for ALL of Prosper.',
+    title: 'Support Doug Charles — Prosper Town Council, Place 5',
+    description: 'Your contribution supports community engagement and Common Sense leadership for ALL of Prosper.',
     url: 'https://www.dougcharles.com/donate',
-    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    siteName: 'Doug Charles — Prosper Town Council, Place 5',
     locale: 'en_US',
     type: 'website',
     images: [{
@@ -24,8 +24,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Support the Campaign - Doug Charles for Prosper',
-    description: 'Your contribution helps bring Common Sense leadership to ALL of Prosper.',
+    title: 'Support Doug Charles — Prosper Town Council, Place 5',
+    description: 'Your contribution supports community engagement and Common Sense leadership for ALL of Prosper.',
     images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
 };
@@ -40,8 +40,8 @@ const breadcrumbJsonLd = {
 };
 
 const SHARE_MESSAGE =
-  "I'm supporting Doug Charles for Town of Prosper Town Council Place 5! Learn more about his Common Sense leadership for ALL of Prosper at www.dougcharles.com";
-const SHARE_SUBJECT = 'Check out Doug Charles for Town of Prosper Town Council Place 5';
+  "Check out Doug Charles' vision for Prosper Town Council Place 5! Common Sense leadership for ALL of Prosper at www.dougcharles.com";
+const SHARE_SUBJECT = 'Check out Doug Charles for Prosper Town Council';
 
 export default function DonatePage() {
   return (
@@ -63,9 +63,9 @@ export default function DonatePage() {
           className="absolute top-4 right-4 w-20 sm:w-28 md:w-32 lg:w-36 h-auto opacity-80 pointer-events-none"
         />
         <div className="relative z-10">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-6">Support the Campaign</h1>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-6">Support Doug Charles</h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Your contribution helps us reach every voter in Prosper with a message of{' '}
+            Your contribution supports community engagement and{' '}
             <strong className="text-navy">Common Sense</strong> leadership for <strong className="text-prosper-red">ALL</strong> of Prosper.
           </p>
         </div>
@@ -81,7 +81,7 @@ export default function DonatePage() {
         <div className="max-w-4xl mx-auto">
           <h2 className="section-title text-center mb-4">Your Support Makes a Difference</h2>
           <p className="section-subtitle text-center">
-            Every dollar helps build a stronger campaign
+            Every dollar helps strengthen community engagement
           </p>
 
           <div className="grid gap-6 md:grid-cols-3 mt-12">
@@ -100,11 +100,11 @@ export default function DonatePage() {
               <div className="icon-container">
                 <span className="text-2xl">📬</span>
               </div>
-              <h3 className="text-xl font-bold text-navy mb-3">Voter Outreach</h3>
+              <h3 className="text-xl font-bold text-navy mb-3">Community Outreach</h3>
               <p className="text-gray-600">
-                Reach every voter with the message that Prosper deserves{' '}
+                Reach every resident with the message that Prosper deserves{' '}
                 <strong className="text-navy">visionary, fiscally responsible leadership</strong>—through
-                mailers, door-to-door canvassing, and digital campaigns.
+                mailers, community outreach, and digital engagement.
               </p>
             </div>
 
@@ -166,7 +166,7 @@ export default function DonatePage() {
             </div>
 
             <p className="text-center text-xs text-gray-700 mt-6">
-              Personal recommendations are the most powerful way to reach voters!
+              Personal recommendations are the most powerful way to reach residents!
             </p>
           </div>
         </div>
@@ -180,6 +180,11 @@ export default function DonatePage() {
               Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.
               <br />
               Robert Bye, Campaign Treasurer
+              <br />
+              <br />
+              Contributions to Doug Charles for Prosper Town Council Place 5 are separate from
+              Doug&apos;s official duties as a Town Council member. Contributions support campaign
+              operations and constituent outreach in Doug&apos;s personal capacity.
               <br />
               <br />
               Under Texas law, contributions from corporations and labor organizations are

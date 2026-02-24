@@ -1,13 +1,14 @@
 'use client';
 
 import Link from 'next/link';
+import { useSiteConfig } from '../context/SiteConfigContext';
 
 const actionCards = [
   {
     id: 'updates',
     icon: '📬',
     title: 'Stay Informed',
-    description: 'Get campaign news and updates delivered to your inbox',
+    description: 'Get community news and updates delivered to your inbox',
   },
   {
     id: 'yard_sign',
@@ -19,7 +20,7 @@ const actionCards = [
     id: 'volunteer',
     icon: '🤝',
     title: 'Volunteer Your Time',
-    description: 'Help with door-knocking, calls, and events',
+    description: 'Help with community outreach and events',
   },
   {
     id: 'host_event',
@@ -37,16 +38,22 @@ const actionCards = [
     id: 'donate',
     icon: '💪',
     title: 'Make a Donation',
-    description: 'Help us reach more voters',
+    description: 'Support community engagement efforts',
     isLink: true,
     href: '/donate',
   },
 ];
 
 export default function ActionCards({ selectedAction, onCardClick }) {
+  const { donationsEnabled } = useSiteConfig();
+
+  const visibleCards = actionCards.filter(
+    (card) => card.id !== 'donate' || donationsEnabled
+  );
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-      {actionCards.map((card) =>
+      {visibleCards.map((card) =>
         card.isLink ? (
           <Link
             key={card.id}

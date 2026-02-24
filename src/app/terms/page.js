@@ -1,9 +1,9 @@
 import Script from 'next/script';
 
 export const metadata = {
-  title: 'Terms of Use - Doug Charles for Town of Prosper Town Council Place 5',
+  title: 'Terms of Use - Doug Charles — Prosper Town Council, Place 5',
   description:
-    'Terms of use for the Doug Charles campaign website, including content moderation, user submissions, SMS terms, and political contribution compliance.',
+    'Terms of use for the Doug Charles personal campaign website, including content moderation, user submissions, SMS terms, and political advertising compliance.',
   alternates: { canonical: '/terms' },
 };
 
@@ -25,7 +25,7 @@ export default function TermsOfUse() {
         <strong>Effective Date:</strong> January 2026
       </p>
       <p className="text-charcoal">
-        <strong>Last Updated:</strong> January 2026
+        <strong>Last Updated:</strong> February 2026
       </p>
 
       <section className="space-y-4">
@@ -42,16 +42,48 @@ export default function TermsOfUse() {
         <h2 className="text-xl font-bold text-navy">Nature of This Website</h2>
         <p>
           <strong>
-            This is a private campaign communication platform, not a government public forum.
+            This is a personal communication platform operated by Doug Charles and his campaign
+            committee, not a government public forum.
           </strong>{' '}
-          This Site is operated by the Doug Charles for Town of Prosper Town Council Place 5 campaign as a private
-          entity for the purpose of political speech and campaign activities. The Campaign reserves
+          Doug Charles serves as a member of the Prosper Town Council. This website is separate from
+          and not affiliated with the Town of Prosper government. The Campaign reserves
           all rights afforded to private speakers under the First Amendment.
         </p>
         <p>
           Nothing on this Site constitutes official government communication. Any views, positions,
-          or statements expressed are those of the Campaign and do not represent the Town of Prosper
-          or any government entity.
+          or statements expressed are those of Doug Charles personally and do not represent the
+          Town of Prosper or any government entity.
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-bold text-navy">Official Government Disclaimer</h2>
+        <p>
+          Doug Charles is a member of the Prosper Town Council, Place 5 (sworn in May 2026).
+          This website is maintained by Doug Charles in his personal capacity and through his
+          campaign committee. It is <strong>NOT</strong> an official website of the Town of Prosper.
+        </p>
+        <p>
+          All content, views, positions, and opinions expressed on this website are those of
+          Doug Charles personally and do not represent:
+        </p>
+        <ul className="list-disc pl-6 space-y-1">
+          <li>The Town of Prosper</li>
+          <li>The Prosper Town Council</li>
+          <li>Any official government policy, position, or decision</li>
+          <li>The State of Texas or any state agency</li>
+        </ul>
+        <p>
+          Official Town of Prosper communications are published at{' '}
+          <a href="https://www.prospertx.gov" target="_blank" rel="noopener noreferrer" className="text-navy underline hover:text-prosper-red">
+            www.prospertx.gov
+          </a>. All official council agendas, minutes, and actions are available through the
+          Town&apos;s official channels.
+        </p>
+        <p>
+          This website operates under Texas Election Code Chapter 255 as political advertising.
+          Campaign finance reports are filed with the Town of Prosper Town Secretary&apos;s Office
+          as required by Texas law. Campaign Treasurer: Robert Bye.
         </p>
       </section>
 

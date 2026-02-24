@@ -1,24 +1,25 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
+import ConditionalDonateLink from '../../components/ConditionalDonateLink';
 
 export const metadata = {
-  title: 'Why I\'m Running - Doug Charles for Town of Prosper Town Council Place 5',
+  title: 'My Vision - Doug Charles — Prosper Town Council, Place 5',
   description:
-    'Why Doug Charles is running for Prosper Town Council Place 5: A 20-year resident and former P&Z Commissioner committed to listening, planning, and protecting.',
+    'Doug Charles\' vision for Prosper Town Council Place 5: A 20-year resident and former P&Z Commissioner committed to listening, planning, and protecting.',
   alternates: { canonical: '/why' },
   openGraph: {
-    title: 'Why I\'m Running - Doug Charles for Prosper Town Council',
+    title: 'My Vision - Doug Charles for Prosper Town Council',
     description: 'A 20-year Prosper resident committed to listening, planning, and protecting our community. Common Sense leadership for ALL of Prosper.',
     url: 'https://www.dougcharles.com/why',
-    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    siteName: 'Doug Charles — Prosper Town Council, Place 5',
     locale: 'en_US',
     type: 'website',
-    images: [{ url: 'https://www.dougcharles.com/campaign-preview.webp', width: 1200, height: 630, alt: 'Doug Charles - Why I\'m Running for Prosper Town Council' }],
+    images: [{ url: 'https://www.dougcharles.com/campaign-preview.webp', width: 1200, height: 630, alt: 'Doug Charles - My Vision for Prosper Town Council' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Why I\'m Running - Doug Charles for Prosper Town Council',
+    title: 'My Vision - Doug Charles for Prosper Town Council',
     description: 'A 20-year resident committed to listening, planning, and protecting our community.',
     images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
@@ -29,7 +30,7 @@ const breadcrumbJsonLd = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.dougcharles.com' },
-    { '@type': 'ListItem', position: 2, name: 'Why I\'m Running', item: 'https://www.dougcharles.com/why' },
+    { '@type': 'ListItem', position: 2, name: 'My Vision', item: 'https://www.dougcharles.com/why' },
   ],
 };
 
@@ -54,7 +55,7 @@ export default function WhyPage() {
         />
         <div className="relative z-10">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-4">
-            Why I'm Running
+            My Vision for Prosper
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
             <strong className="text-navy">Common Sense</strong> leadership for{' '}
@@ -160,8 +161,8 @@ export default function WhyPage() {
               <h3 className="text-xl font-bold text-navy mb-3">Be Accessible</h3>
               <p className="text-gray-600">
                 Your council members should be <strong className="text-navy">easy to reach</strong>.
-                I'll be available to residents—not just during campaign season, but{' '}
-                <strong className="text-prosper-red">throughout my term</strong>.
+                I'll be available to residents{' '}
+                <strong className="text-prosper-red">throughout my term</strong>—your council member should always be easy to reach.
               </p>
             </div>
           </div>
@@ -223,11 +224,11 @@ export default function WhyPage() {
           <h2 className="text-2xl sm:text-3xl font-bold mb-6">Ready to Get Involved?</h2>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/get-involved" className="btn-white">
-              Join the Campaign
+              Share Your Ideas
             </Link>
-            <Link href="/donate" className="btn-secondary">
+            <ConditionalDonateLink className="btn-secondary">
               Donate
-            </Link>
+            </ConditionalDonateLink>
           </div>
         </div>
       </section>

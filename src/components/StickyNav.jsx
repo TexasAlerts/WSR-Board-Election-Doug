@@ -4,6 +4,7 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
+import { useSiteConfig } from '../context/SiteConfigContext';
 import { Menu, X, Home as HomeIcon, User, LogOut, Settings, ChevronDown } from 'lucide-react';
 
 export default function StickyNav() {
@@ -15,6 +16,7 @@ export default function StickyNav() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [aboutMenuOpen, setAboutMenuOpen] = useState(false);
   const { supporter, isAuthenticated, isAdmin, logout, loading } = useAuth();
+  const { donationsEnabled } = useSiteConfig();
   const pathname = usePathname();
 
   // Helper to check if a path is current
@@ -163,7 +165,7 @@ export default function StickyNav() {
                   className={`flex items-center px-4 py-3 min-h-[44px] hover:bg-gray-50 ${isCurrentPage('/why') ? 'text-navy font-semibold bg-navy/5' : 'text-gray-700'}`}
                   onClick={() => setAboutMenuOpen(false)}
                 >
-                  Why I'm Running
+                  My Vision
                 </Link>
                 <Link
                   href="/priorities"
@@ -299,12 +301,14 @@ export default function StickyNav() {
               </Link>
             ))}
 
-          <Link
-            href="/donate"
-            className="bg-prosper-red text-white px-5 py-2 rounded-lg font-semibold hover:bg-red-dark transition-colors"
-          >
-            Donate
-          </Link>
+          {donationsEnabled && (
+            <Link
+              href="/donate"
+              className="bg-prosper-red text-white px-5 py-2 rounded-lg font-semibold hover:bg-red-dark transition-colors"
+            >
+              Donate
+            </Link>
+          )}
         </div>
         {/* Mobile nav dropdown */}
         <div
@@ -331,7 +335,7 @@ export default function StickyNav() {
             className={`py-3.5 px-4 hover:bg-navy/5 active:bg-navy/10 rounded-xl font-medium flex items-center min-h-[48px] ${isCurrentPage('/why') ? 'text-navy bg-navy/5 font-semibold' : 'text-gray-700'}`}
             onClick={() => setOpen(false)}
           >
-            Why I'm Running
+            My Vision
           </Link>
           <Link
             href="/priorities"
@@ -447,13 +451,15 @@ export default function StickyNav() {
                   </Link>
                 </div>
               ))}
-            <Link
-              href="/donate"
-              className="block py-3.5 bg-prosper-red text-white text-center rounded-xl font-semibold min-h-[48px] flex items-center justify-center active:bg-prosper-red-dark shadow-md"
-              onClick={() => setOpen(false)}
-            >
-              Donate to the Campaign
-            </Link>
+            {donationsEnabled && (
+              <Link
+                href="/donate"
+                className="block py-3.5 bg-prosper-red text-white text-center rounded-xl font-semibold min-h-[48px] flex items-center justify-center active:bg-prosper-red-dark shadow-md"
+                onClick={() => setOpen(false)}
+              >
+                Donate
+              </Link>
+            )}
           </div>
         </div>
       </div>

@@ -371,7 +371,7 @@ export default function EndorsementsDynamic() {
                         className="mt-0.5 h-5 w-5 min-w-[20px] rounded border-gray-300 text-navy focus:ring-navy focus:ring-2"
                       />
                       <span className="text-sm text-gray-600">
-                        I agree to receive campaign updates via email. You can unsubscribe at any
+                        I agree to receive updates via email from dougcharles.com. You can unsubscribe at any
                         time.
                       </span>
                     </label>
@@ -384,7 +384,7 @@ export default function EndorsementsDynamic() {
                         className="mt-0.5 h-5 w-5 min-w-[20px] rounded border-gray-300 text-navy focus:ring-navy focus:ring-2"
                       />
                       <span className="text-sm text-gray-600">
-                        I agree to receive campaign updates via text message. Msg & data rates may
+                        I agree to receive updates via text from dougcharles.com. Msg & data rates may
                         apply. Reply STOP to opt out.
                       </span>
                     </label>

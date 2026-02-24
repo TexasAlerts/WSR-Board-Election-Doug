@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import { Ear, ClipboardList, ShieldCheck } from 'lucide-react';
 import HomeServer from '../components/HomeServer';
+import ConditionalDonateLink from '../components/ConditionalDonateLink';
 
 export default function Home() {
   // Organization Schema
@@ -12,7 +13,7 @@ export default function Home() {
     name: 'Doug Charles for Town of Prosper Town Council Place 5',
     url: 'https://www.dougcharles.com',
     logo: 'https://www.dougcharles.com/campaign-logo.webp',
-    description: 'Campaign for Doug Charles running for Prosper Town Council Place 5',
+    description: 'Doug Charles for Prosper Town Council Place 5',
     foundingDate: '2025',
     sameAs: [],
   };
@@ -23,7 +24,7 @@ export default function Home() {
     '@type': 'Person',
     name: 'Doug Charles',
     url: 'https://www.dougcharles.com/about',
-    jobTitle: 'Candidate for Prosper Town Council Place 5',
+    jobTitle: 'Prosper Town Council Member, Place 5',
     description: '20-year Prosper resident, former Planning & Zoning Commissioner',
     affiliation: {
       '@type': 'Organization',
@@ -31,26 +32,6 @@ export default function Home() {
     },
   };
 
-  // Election Event Schema
-  const electionEventSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Event',
-    name: 'Prosper Town Council Place 5 Election',
-    startDate: '2026-05-02',
-    eventStatus: 'https://schema.org/EventScheduled',
-    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-    location: {
-      '@type': 'Place',
-      name: 'Town of Prosper',
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: 'Prosper',
-        addressRegion: 'TX',
-        addressCountry: 'US',
-      },
-    },
-    description: 'Town Council Place 5 election for the Town of Prosper, Texas',
-  };
 
   return (
     <div className="space-y-0">
@@ -65,17 +46,12 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
       />
-      <Script
-        id="election-event-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(electionEventSchema) }}
-      />
 
       {/* Hero Section */}
       <section className="hero-gradient text-center py-10 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-2 sm:px-4 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div>
-            <h1 className="sr-only">Doug Charles for Town of Prosper Town Council Place 5</h1>
+            <h1 className="sr-only">Doug Charles — Prosper Town Council, Place 5</h1>
             <Image
               src="/campaign-logo.webp"
               alt=""
@@ -359,7 +335,7 @@ export default function Home() {
                 <strong className="text-prosper-red">
                   Whether you&apos;ve been here 20 years or 2 months, you deserve a voice.
                 </strong>{' '}
-                That&apos;s why I&apos;m running.
+                That&apos;s why I ran—and why I&apos;m committed to serving.
               </p>
               <div className="pt-2">
                 <Link href="/about" className="btn-outline">
@@ -377,11 +353,11 @@ export default function Home() {
       {/* CTA Section - Enhanced */}
       <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20">
         <div className="max-w-3xl mx-auto text-center relative z-10">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">Join the Campaign</h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">Stay Connected</h2>
 
           <p className="text-xl text-white/90 mb-10 leading-relaxed">
-            Local races are decided by a few hundred votes. Your support—and your voice—can make the
-            difference.
+            I&apos;m honored to serve Prosper on the Town Council. Your voice matters—stay involved,
+            share your ideas, and help shape our community&apos;s future.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4 sm:px-0">
@@ -391,12 +367,11 @@ export default function Home() {
             >
               Get Involved
             </Link>
-            <Link
-              href="/donate"
+            <ConditionalDonateLink
               className="btn-secondary text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto text-center"
             >
               Donate
-            </Link>
+            </ConditionalDonateLink>
           </div>
         </div>
       </section>

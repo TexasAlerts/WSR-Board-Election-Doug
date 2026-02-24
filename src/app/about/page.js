@@ -23,7 +23,7 @@ const breadcrumbJsonLd = {
 };
 
 export const metadata = {
-  title: 'About Doug Charles - Prosper Town Council Place 5 Candidate',
+  title: 'About Doug Charles — Prosper Town Council, Place 5',
   description:
     '20-year Prosper resident, former Planning & Zoning Commissioner, and community leader. Learn about Doug Charles and his vision for Prosper.',
   alternates: { canonical: '/about' },
@@ -118,7 +118,7 @@ export default function AboutPage() {
                   <strong className="text-navy">Friday night football</strong> was the center of
                   town, and <strong className="text-prosper-red">&apos;Small Town, Big Heart&apos;</strong>{' '}
                   wasn&apos;t just a slogan—it was how we lived. We&apos;ve grown fast, and with
-                  that growth comes important choices about our future. I&apos;m running to ensure
+                  that growth comes important choices about our future. I&apos;m committed to ensuring
                   Prosper remains a place where families thrive, local businesses flourish, and the
                   values that brought us all here—<strong className="text-navy">great schools</strong>
                   , <strong className="text-navy">safe neighborhoods</strong>, and{' '}

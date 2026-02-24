@@ -8,6 +8,8 @@ import RecaptchaProvider from '../components/RecaptchaProvider';
 import Link from 'next/link';
 import Script from 'next/script';
 import { AuthProvider } from '../context/AuthContext';
+import { SiteConfigProvider } from '../context/SiteConfigContext';
+import ConditionalDonateLink from '../components/ConditionalDonateLink';
 import { Open_Sans, Oswald } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -35,9 +37,9 @@ export const metadata = {
   alternates: {
     canonical: '/',
   },
-  title: 'Doug Charles for Town of Prosper Town Council Place 5',
+  title: 'Doug Charles — Prosper Town Council, Place 5',
   description:
-    'Doug Charles for Town of Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. May 2, 2026 Election.',
+    'Doug Charles, Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Preparing to serve with Common Sense leadership. Listen. Plan. Protect.',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '32x32' },
@@ -48,11 +50,11 @@ export const metadata = {
     apple: '/apple-touch-icon.png',
   },
   openGraph: {
-    title: 'Doug Charles for Town of Prosper Town Council Place 5',
+    title: 'Doug Charles — Prosper Town Council, Place 5',
     description:
-      'Doug Charles for Town of Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Listen. Plan. Protect. May 2, 2026 Election.',
+      'Doug Charles, Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Preparing to serve with Common Sense leadership. Listen. Plan. Protect.',
     url: 'https://www.dougcharles.com',
-    siteName: 'Doug Charles for Town of Prosper Town Council Place 5',
+    siteName: 'Doug Charles — Prosper Town Council, Place 5',
     locale: 'en_US',
     type: 'website',
     images: [
@@ -60,7 +62,7 @@ export const metadata = {
         url: 'https://www.dougcharles.com/campaign-preview.webp',
         width: 1200,
         height: 630,
-        alt: 'Doug Charles for Town of Prosper Town Council Place 5 - A Common Sense Leader for ALL of Prosper',
+        alt: 'Doug Charles — Prosper Town Council, Place 5 — A Common Sense Leader for ALL of Prosper',
       },
     ],
   },
@@ -70,7 +72,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Doug Charles for Town of Prosper Town Council Place 5',
+    title: 'Doug Charles — Prosper Town Council, Place 5',
     description: 'A Common Sense Leader for ALL of Prosper',
     images: ['https://www.dougcharles.com/campaign-preview.webp'],
   },
@@ -84,10 +86,7 @@ export const viewport = {
   themeColor: '#1B3A5D',
 };
 
-const KEY_DATES = [
-  { label: 'Early Voting', date: 'Apr 20-28, 2026' },
-  { label: 'Election Day', date: 'May 2, 2026' },
-];
+const BANNER_MESSAGE = 'Preparing to Serve — Prosper Town Council, Place 5';
 
 export default function RootLayout({ children }) {
   return (
@@ -111,6 +110,7 @@ export default function RootLayout({ children }) {
       <body>
         <RecaptchaProvider>
           <AuthProvider>
+          <SiteConfigProvider>
             <ScrollToTop />
             {/* Skip to main content - Accessibility */}
             <a
@@ -119,25 +119,13 @@ export default function RootLayout({ children }) {
             >
               Skip to main content
             </a>
-            {/* Key dates banner */}
+            {/* Status banner */}
             <header
-              aria-label="Election dates"
+              aria-label="Town Council status"
               className="bg-navy text-white text-sm py-2 px-3 sm:px-4 sticky top-0 z-50 shadow-md"
             >
-              <div className="flex items-center justify-between gap-2 max-w-6xl mx-auto">
-                {/* Mobile: Compact single line | Desktop: Full dates */}
-                <div className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm min-w-0">
-                  {KEY_DATES.map((item, idx) => (
-                    <div key={idx} className="whitespace-nowrap flex items-center gap-1">
-                      <span className="font-bold">{item.label}</span>
-                      <span className="hidden xs:inline">–</span>
-                      <span className="text-white/90">{item.date}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="whitespace-nowrap font-bold text-prosper-red bg-white px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm shrink-0">
-                  Place 5
-                </div>
+              <div className="flex items-center justify-center gap-3 max-w-6xl mx-auto">
+                <span className="text-xs sm:text-sm font-medium text-white/90">{BANNER_MESSAGE}</span>
               </div>
             </header>
             {/* Navigation */}
@@ -150,9 +138,9 @@ export default function RootLayout({ children }) {
               "@graph": [
                 {
                   "@type": "WebSite",
-                  "name": "Doug Charles for Town of Prosper Town Council Place 5",
+                  "name": "Doug Charles — Prosper Town Council, Place 5",
                   "url": "https://www.dougcharles.com",
-                  "description": "Official campaign site for Doug Charles, candidate for Prosper Town Council Place 5. A Common Sense Leader for ALL of Prosper.",
+                  "description": "Personal website for Doug Charles, Prosper Town Council Member, Place 5. A Common Sense Leader for ALL of Prosper.",
                   "publisher": {
                     "@id": "https://www.dougcharles.com/#organization"
                   }
@@ -160,10 +148,10 @@ export default function RootLayout({ children }) {
                 {
                   "@type": "Organization",
                   "@id": "https://www.dougcharles.com/#organization",
-                  "name": "Doug Charles for Town of Prosper Town Council Place 5",
+                  "name": "Doug Charles for Prosper Town Council Place 5",
                   "url": "https://www.dougcharles.com",
                   "logo": "https://www.dougcharles.com/campaign-logo.webp",
-                  "description": "Official campaign committee for Doug Charles, candidate for Prosper Town Council Place 5. Campaign Treasurer: Robert Bye.",
+                  "description": "Campaign committee for Doug Charles, Prosper Town Council Place 5. Campaign Treasurer: Robert Bye.",
                   "sameAs": ["https://www.facebook.com/profile.php?id=61587237416382"],
                   "address": {
                     "@type": "PostalAddress",
@@ -197,8 +185,8 @@ export default function RootLayout({ children }) {
                   "@type": "Person",
                   "@id": "https://www.dougcharles.com/#person",
                   "name": "Doug Charles",
-                  "jobTitle": "Candidate for Prosper Town Council Place 5",
-                  "description": "20-year Prosper resident, former Planning & Zoning Commissioner (2021-2023), 2020 Bond Election Committee member, PISD annexation lead petitioner. Candidate for Prosper Town Council Place 5.",
+                  "jobTitle": "Prosper Town Council Member, Place 5",
+                  "description": "20-year Prosper resident, former Planning & Zoning Commissioner (2021-2023), 2020 Bond Election Committee member, PISD annexation lead petitioner. Prosper Town Council Member, Place 5.",
                   "address": {
                     "@type": "PostalAddress",
                     "streetAddress": "4360 Mill Branch Drive",
@@ -210,29 +198,6 @@ export default function RootLayout({ children }) {
                   "email": "doug@dougcharles.com",
                   "url": "https://www.dougcharles.com",
                   "image": "https://www.dougcharles.com/headshot.webp"
-                },
-                {
-                  "@type": "Event",
-                  "name": "Prosper Town Council Election - Place 5",
-                  "startDate": "2026-05-02",
-                  "endDate": "2026-05-02",
-                  "eventStatus": "https://schema.org/EventScheduled",
-                  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-                  "location": {
-                    "@type": "Place",
-                    "name": "Town of Prosper",
-                    "address": {
-                      "@type": "PostalAddress",
-                      "addressLocality": "Prosper",
-                      "addressRegion": "TX",
-                      "addressCountry": "US"
-                    }
-                  },
-                  "description": "Election Day for Prosper Town Council Place 5. Early voting: April 20-28, 2026.",
-                  "organizer": {
-                    "@type": "Organization",
-                    "name": "Town of Prosper"
-                  }
                 }
               ]
             }
@@ -255,6 +220,19 @@ export default function RootLayout({ children }) {
                   Political advertising paid for by Doug Charles for Town of Prosper Town Council Place 5.
                   <br />
                   Robert Bye, Campaign Treasurer
+                </p>
+                <p className="text-white/70 text-xs leading-relaxed max-w-lg mx-auto">
+                  This is a personal website. It does not represent the Town of Prosper,
+                  the Prosper Town Council, or any official government position.
+                  For official Town of Prosper information, visit{' '}
+                  <a
+                    href="https://www.prospertx.gov"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white/80 underline hover:text-white"
+                  >
+                    prospertx.gov
+                  </a>.
                 </p>
                 <p>
                   Questions? Email{' '}
@@ -281,9 +259,9 @@ export default function RootLayout({ children }) {
                   >
                     Get Involved
                   </Link>
-                  <Link href="/donate" className="text-white hover:text-gray-300 hover:underline">
+                  <ConditionalDonateLink className="text-white hover:text-gray-300 hover:underline">
                     Donate
-                  </Link>
+                  </ConditionalDonateLink>
                 </nav>
                 {/* Social Media Links */}
                 <div className="flex justify-center gap-4 pt-3" aria-label="Social media links">
@@ -292,7 +270,7 @@ export default function RootLayout({ children }) {
                   </a>
                 </div>
                 <p>
-                  © {new Date().getFullYear()} Doug Charles for Prosper Town Council
+                  © {new Date().getFullYear()} Doug Charles — Prosper Town Council, Place 5
                   {' | '}
                   <Link href="/privacy" className="text-white underline hover:text-gray-300">
                     Privacy Policy
@@ -317,14 +295,14 @@ export default function RootLayout({ children }) {
                 >
                   Get Involved
                 </Link>
-                <Link
-                  href="/donate"
+                <ConditionalDonateLink
                   className="bg-prosper-red text-white px-5 py-3.5 rounded-full text-base font-bold shadow-lg min-h-[48px] flex items-center justify-center active:scale-[0.98] transition-transform"
                 >
                   Donate
-                </Link>
+                </ConditionalDonateLink>
               </div>
             </div>
+          </SiteConfigProvider>
           </AuthProvider>
         </RecaptchaProvider>
         <CookieConsent />
