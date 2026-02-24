@@ -146,6 +146,7 @@ export async function GET(request) {
       results: {
         voters: { sent: results.votersSent, failed: results.votersFailed },
         supporters: { sent: results.supportersSent, failed: results.supportersFailed },
+        errors: results.errors,
       },
     });
   } catch (err) {
