@@ -76,7 +76,7 @@ const nextConfig = {
         ],
       },
       {
-        source: '/((?!api|_next/static|_next/image|favicon).*)',
+        source: '/((?!api|_next|favicon|.*\\.(?:png|jpg|jpeg|webp|svg|ico|gif|css|js|woff|woff2)).*)',
         headers: [
           {
             key: 'Cache-Control',
