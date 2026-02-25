@@ -46,7 +46,7 @@ export default function EndorsementsPage() {
       <section className="hero-pattern hero-gradient text-center py-16 md:py-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         {/* Logo accent */}
         <Image
-          src="/campaign-logo.webp"
+          src="/dc-logo.webp"
           alt=""
           aria-hidden="true"
           width={96}

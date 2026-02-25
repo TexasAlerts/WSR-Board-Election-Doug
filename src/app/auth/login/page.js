@@ -65,7 +65,7 @@ export default function LoginPage() {
         </div>
         {/* Logo accent */}
         <Image
-          src="/campaign-logo.webp"
+          src="/dc-logo.webp"
           alt=""
           aria-hidden="true"
           width={96}

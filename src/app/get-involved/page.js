@@ -49,7 +49,7 @@ export default function GetInvolvedPage() {
           <div className="absolute bottom-10 left-20 w-48 h-48 bg-prosper-red/5 rounded-full blur-3xl"></div>
         </div>
         <Image
-          src="/campaign-logo.webp"
+          src="/dc-logo.webp"
           alt=""
           aria-hidden="true"
           width={96}
