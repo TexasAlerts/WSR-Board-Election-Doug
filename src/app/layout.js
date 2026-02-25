@@ -138,7 +138,7 @@ export default function RootLayout({ children }) {
         {/* Preload hero image for LCP optimization */}
         <link
           rel="preload"
-          href="/campaign-logo.webp"
+          href="/dc-logo.webp"
           as="image"
           type="image/webp"
           fetchPriority="high"
@@ -187,7 +187,7 @@ export default function RootLayout({ children }) {
                   "@id": "https://www.dougcharles.com/#organization",
                   "name": "Doug Charles for Prosper Town Council Place 5",
                   "url": "https://www.dougcharles.com",
-                  "logo": "https://www.dougcharles.com/campaign-logo.webp",
+                  "logo": "https://www.dougcharles.com/dc-logo.webp",
                   "description": "Committee for Doug Charles, incoming Prosper Town Council Member, Place 5. Treasurer: Robert Bye.",
                   "sameAs": ["https://www.facebook.com/profile.php?id=61587237416382"],
                   "address": {

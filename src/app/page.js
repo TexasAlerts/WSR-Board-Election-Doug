@@ -12,7 +12,7 @@ export default function Home() {
     '@type': 'Organization',
     name: 'Doug Charles — Prosper Town Council, Place 5',
     url: 'https://www.dougcharles.com',
-    logo: 'https://www.dougcharles.com/campaign-logo.webp',
+    logo: 'https://www.dougcharles.com/dc-logo.webp',
     description: 'Doug Charles, Prosper Town Council Place 5. Preparing to serve with Common Sense leadership.',
     foundingDate: '2025',
     sameAs: [],
@@ -53,7 +53,7 @@ export default function Home() {
           <div>
             <h1 className="sr-only">Doug Charles — Prosper Town Council, Place 5</h1>
             <Image
-              src="/campaign-logo.webp"
+              src="/dc-logo.webp"
               alt=""
               aria-hidden="true"
               width={1200}

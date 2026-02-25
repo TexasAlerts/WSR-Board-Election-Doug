@@ -115,7 +115,7 @@ export default async function QnAPage() {
         </div>
         {/* Logo accent */}
         <Image
-          src="/campaign-logo.webp"
+          src="/dc-logo.webp"
           alt=""
           aria-hidden="true"
           width={96}
