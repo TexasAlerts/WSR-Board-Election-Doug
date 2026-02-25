@@ -13,7 +13,7 @@ export const metadata = {
     locale: 'en_US',
     images: [
       {
-        url: 'https://www.dougcharles.com/campaign-preview.webp',
+        url: 'https://www.dougcharles.com/dc-preview.webp',
         width: 1200,
         height: 630,
         alt: 'My Vision - Doug Charles — Prosper Town Council, Place 5',
@@ -25,7 +25,7 @@ export const metadata = {
     title: 'My Vision - Doug Charles — Prosper Town Council, Place 5',
     description:
       'Experienced, accessible leadership focused on results—not politics.',
-    images: ['https://www.dougcharles.com/campaign-preview.webp'],
+    images: ['https://www.dougcharles.com/dc-preview.webp'],
   },
 };
 
