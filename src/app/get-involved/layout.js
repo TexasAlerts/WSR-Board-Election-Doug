@@ -13,7 +13,7 @@ export const metadata = {
     locale: 'en_US',
     images: [
       {
-        url: 'https://www.dougcharles.com/campaign-preview.webp',
+        url: 'https://www.dougcharles.com/dc-preview.webp',
         width: 1200,
         height: 630,
         alt: 'Get Involved - Doug Charles, Prosper Town Council Place 5',
@@ -25,7 +25,7 @@ export const metadata = {
     title: 'Get Involved - Doug Charles, Prosper Town Council Place 5',
     description:
       'Volunteer, attend an event, or connect with Doug Charles, your incoming Prosper Town Council Place 5 member.',
-    images: ['https://www.dougcharles.com/campaign-preview.webp'],
+    images: ['https://www.dougcharles.com/dc-preview.webp'],
   },
 };
 

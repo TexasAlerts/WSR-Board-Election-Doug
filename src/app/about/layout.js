@@ -13,7 +13,7 @@ export const metadata = {
     locale: 'en_US',
     images: [
       {
-        url: 'https://www.dougcharles.com/campaign-preview.webp',
+        url: 'https://www.dougcharles.com/dc-preview.webp',
         width: 1200,
         height: 630,
         alt: 'About Doug Charles — Prosper Town Council, Place 5',
@@ -25,7 +25,7 @@ export const metadata = {
     title: 'About Doug Charles — Prosper Town Council, Place 5',
     description:
       '20-year Prosper resident, former P&Z Commissioner. Common Sense leadership for ALL of Prosper.',
-    images: ['https://www.dougcharles.com/campaign-preview.webp'],
+    images: ['https://www.dougcharles.com/dc-preview.webp'],
   },
 };
 

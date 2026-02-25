@@ -13,7 +13,7 @@ export const metadata = {
     locale: 'en_US',
     images: [
       {
-        url: 'https://www.dougcharles.com/campaign-preview.webp',
+        url: 'https://www.dougcharles.com/dc-preview.webp',
         width: 1200,
         height: 630,
         alt: 'Track Record - Doug Charles — Prosper Town Council, Place 5',
@@ -25,7 +25,7 @@ export const metadata = {
     title: 'Track Record - Doug Charles — Prosper Town Council, Place 5',
     description:
       'Proven results: P&Z Commissioner, $210M bond committee, PISD annexation victory. Results, not just promises.',
-    images: ['https://www.dougcharles.com/campaign-preview.webp'],
+    images: ['https://www.dougcharles.com/dc-preview.webp'],
   },
 };
 

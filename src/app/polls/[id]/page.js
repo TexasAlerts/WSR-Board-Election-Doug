@@ -82,7 +82,7 @@ export async function generateMetadata({ params }) {
         publishedTime: poll.published_at || poll.created_at,
         images: [
           {
-            url: `${SITE_URL}/campaign-preview.webp`,
+            url: `${SITE_URL}/dc-preview.webp`,
             width: 1200,
             height: 630,
             alt: title,
@@ -93,7 +93,7 @@ export async function generateMetadata({ params }) {
         card: 'summary_large_image',
         title,
         description,
-        images: [`${SITE_URL}/campaign-preview.webp`],
+        images: [`${SITE_URL}/dc-preview.webp`],
       },
     };
   } catch (error) {
