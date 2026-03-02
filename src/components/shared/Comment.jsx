@@ -259,7 +259,7 @@ export default function Comment({
   const organizedComments = organizeComments(comments);
 
   return (
-    <section className="card" aria-labelledby="comments-heading">
+    <section id="comments" className="card scroll-mt-4" aria-labelledby="comments-heading">
       <h2 id="comments-heading" className="text-2xl font-bold text-navy mb-6">
         Comments {comments.length > 0 && `(${comments.length})`}
       </h2>

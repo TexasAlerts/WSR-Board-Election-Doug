@@ -158,7 +158,7 @@ function GetInvolvedDynamicContent() {
   return (
     <>
       {/* Action Cards */}
-      <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+      <section id="meeting" className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 scroll-mt-4">
         <div className="max-w-4xl mx-auto">
           <h2 className="section-title text-center mb-4">Choose How You'd Like to Help</h2>
           <p className="section-subtitle text-center mb-12">Every action makes a difference</p>

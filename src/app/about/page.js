@@ -23,32 +23,6 @@ const breadcrumbJsonLd = {
   ],
 };
 
-export const metadata = {
-  title: 'About Doug Charles — Prosper Town Council, Place 5',
-  description:
-    '20-year Prosper resident, former Planning & Zoning Commissioner, and community leader. Learn about Doug Charles and his vision for Prosper.',
-  alternates: { canonical: '/about' },
-  openGraph: {
-    title: 'About Doug Charles - Prosper Town Council Place 5',
-    description: '20-year Prosper resident, former Planning & Zoning Commissioner, and community leader committed to Common Sense leadership for ALL of Prosper.',
-    url: 'https://www.dougcharles.com/about',
-    siteName: 'Doug Charles — Prosper Town Council, Place 5',
-    locale: 'en_US',
-    type: 'website',
-    images: [{
-      url: 'https://www.dougcharles.com/dc-preview.webp',
-      width: 1200,
-      height: 630,
-      alt: 'About Doug Charles — Prosper Town Council, Place 5'
-    }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'About Doug Charles - Prosper Town Council Place 5',
-    description: '20-year Prosper resident, former Planning & Zoning Commissioner, and community leader.',
-    images: ['https://www.dougcharles.com/dc-preview.webp'],
-  },
-};
 
 export default function AboutPage() {
   return (

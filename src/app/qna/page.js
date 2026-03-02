@@ -12,33 +12,6 @@ const breadcrumbJsonLd = {
   ],
 };
 
-export const metadata = {
-  title: 'Q&A with Doug - Doug Charles, Prosper Town Council Place 5',
-  description:
-    'Ask Doug Charles questions about his positions, priorities, and vision for Prosper\'s future. Get direct, honest answers from your incoming Place 5 Town Council member.',
-  alternates: { canonical: '/qna' },
-  openGraph: {
-    title: 'Q&A with Doug - Doug Charles, Prosper Town Council Place 5',
-    description: 'Ask Doug Charles questions about his positions, priorities, and vision for Prosper\'s future. Get direct, honest answers from your incoming Place 5 Town Council member.',
-    url: 'https://www.dougcharles.com/qna',
-    siteName: 'Doug Charles — Prosper Town Council, Place 5',
-    locale: 'en_US',
-    type: 'website',
-    images: [{
-      url: 'https://www.dougcharles.com/dc-preview.webp',
-      width: 1200,
-      height: 630,
-      alt: 'Q&A with Doug Charles — Prosper Town Council'
-    }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Q&A with Doug - Doug Charles, Prosper Town Council Place 5',
-    description: 'Ask Doug Charles questions about his positions, priorities, and vision for Prosper\'s future.',
-    images: ['https://www.dougcharles.com/dc-preview.webp'],
-  },
-};
-
 // Enable ISR with 60 second revalidation for fresh Q&A data
 export const revalidate = 60;
 

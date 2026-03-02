@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import IdeaDetailClient from './IdeaDetailClient';
 
 const SITE_URL = 'https://www.dougcharles.com';
@@ -88,6 +89,26 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default function IdeaDetailPage() {
+async function getIdeaExists(id) {
+  try {
+    const res = await fetch(`${SITE_URL}/api/ideas/${id}`, {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return false;
+    const data = await res.json();
+    return data.ok && data.data;
+  } catch {
+    return false;
+  }
+}
+
+export default async function IdeaDetailPage({ params }) {
+  const { id } = await params;
+  const exists = await getIdeaExists(id);
+
+  if (!exists) {
+    notFound();
+  }
+
   return <IdeaDetailClient />;
 }

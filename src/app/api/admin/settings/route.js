@@ -79,11 +79,11 @@ export const PUT = withCSRF(async (request) => {
     }
 
     await logAudit({
-      eventType: 'settings_updated',
-      userId: supporter.id,
-      userEmail: supporter.email,
+      eventType: AuditEvents.SETTINGS_UPDATED,
+      supporterId: supporter.id,
       details: { setting_key, setting_value },
       request,
+      responseStatus: 200,
     });
 
     return NextResponse.json({ ok: true });
