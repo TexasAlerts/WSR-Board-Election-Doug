@@ -2,33 +2,6 @@ import Image from 'next/image';
 import Script from 'next/script';
 import GetInvolvedDynamic from '../../components/GetInvolvedDynamic';
 
-export const metadata = {
-  title: 'Get Involved - Doug Charles, Prosper Town Council Place 5',
-  description:
-    'Get involved: Volunteer, attend an event, or connect with Doug Charles, your incoming Prosper Town Council Place 5 member. Every action makes a real difference.',
-  alternates: { canonical: '/get-involved' },
-  openGraph: {
-    title: 'Get Involved - Doug Charles, Prosper Town Council Place 5',
-    description: 'Connect with Doug Charles, your incoming Town Council member. Every action makes a difference in bringing Common Sense leadership to Prosper.',
-    url: 'https://www.dougcharles.com/get-involved',
-    siteName: 'Doug Charles — Prosper Town Council, Place 5',
-    locale: 'en_US',
-    type: 'website',
-    images: [{
-      url: 'https://www.dougcharles.com/dc-preview.webp',
-      width: 1200,
-      height: 630,
-      alt: 'Get Involved with Doug Charles — Prosper Town Council'
-    }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Get Involved - Doug Charles, Prosper Town Council Place 5',
-    description: 'Connect with Doug Charles, your incoming Prosper Town Council Place 5 member.',
-    images: ['https://www.dougcharles.com/dc-preview.webp'],
-  },
-};
-
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',

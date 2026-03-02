@@ -3,27 +3,6 @@ import Link from 'next/link';
 import Script from 'next/script';
 import ConditionalDonateLink from '../../components/ConditionalDonateLink';
 
-export const metadata = {
-  title: 'Track Record - Doug Charles — Prosper Town Council, Place 5',
-  description:
-    'Doug Charles proven track record of community service: Planning & Zoning Commission, Windsong Ranch Board Member, and years of civic leadership in Prosper.',
-  alternates: { canonical: '/track-record' },
-  openGraph: {
-    title: 'Track Record - Doug Charles — Prosper Town Council, Place 5',
-    description: 'Proven results: Planning & Zoning Commission, Windsong Ranch Board Member, and years of civic leadership in Prosper.',
-    url: 'https://www.dougcharles.com/track-record',
-    siteName: 'Doug Charles — Prosper Town Council, Place 5',
-    locale: 'en_US',
-    type: 'website',
-    images: [{ url: 'https://www.dougcharles.com/dc-preview.webp', width: 1200, height: 630, alt: 'Track Record - Doug Charles — Prosper Town Council, Place 5' }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Track Record - Doug Charles — Prosper Town Council, Place 5',
-    description: 'Proven results: Planning & Zoning Commission, Bond Committee, and civic leadership.',
-    images: ['https://www.dougcharles.com/dc-preview.webp'],
-  },
-};
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',

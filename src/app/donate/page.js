@@ -3,32 +3,6 @@ import Script from 'next/script';
 import { Mail, MessageCircle } from 'lucide-react';
 import DonateDynamic from '../../components/DonateDynamic';
 
-export const metadata = {
-  title: 'Support Doug Charles — Prosper Town Council, Place 5',
-  description:
-    'Support Doug Charles, Prosper Town Council Place 5. Your contribution helps bring Common Sense leadership and community engagement to ALL of Prosper.',
-  alternates: { canonical: '/donate' },
-  openGraph: {
-    title: 'Support Doug Charles — Prosper Town Council, Place 5',
-    description: 'Your contribution supports community engagement and Common Sense leadership for ALL of Prosper.',
-    url: 'https://www.dougcharles.com/donate',
-    siteName: 'Doug Charles — Prosper Town Council, Place 5',
-    locale: 'en_US',
-    type: 'website',
-    images: [{
-      url: 'https://www.dougcharles.com/dc-preview.webp',
-      width: 1200,
-      height: 630,
-      alt: 'Support Doug Charles — Prosper Town Council, Place 5'
-    }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Support Doug Charles — Prosper Town Council, Place 5',
-    description: 'Your contribution supports community engagement and Common Sense leadership for ALL of Prosper.',
-    images: ['https://www.dougcharles.com/dc-preview.webp'],
-  },
-};
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',

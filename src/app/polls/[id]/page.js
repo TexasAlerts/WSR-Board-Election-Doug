@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import PollDetailClient from './PollDetailClient';
 
 const SITE_URL = 'https://www.dougcharles.com';
@@ -108,10 +109,14 @@ export default async function PollDetailPage({ params }) {
   const { id } = await params;
   const initialPoll = await getPollData(id);
 
+  if (!initialPoll) {
+    notFound();
+  }
+
   return (
     <>
       {/* Server-rendered H1 for SEO - visible until client hydrates */}
-      <h1 className="sr-only">{initialPoll?.title || 'Community Poll'}</h1>
+      <h1 className="sr-only">{initialPoll.title}</h1>
       <PollDetailClient initialPoll={initialPoll} />
     </>
   );

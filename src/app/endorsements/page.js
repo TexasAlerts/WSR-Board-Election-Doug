@@ -2,33 +2,6 @@ import Image from 'next/image';
 import Script from 'next/script';
 import EndorsementsDynamic from '../../components/EndorsementsDynamic';
 
-export const metadata = {
-  title: 'Endorsements - Doug Charles, Prosper Town Council Place 5',
-  description:
-    'See who supports Doug Charles, Prosper Town Council Place 5. Add your endorsement, show your support for Common Sense leadership.',
-  alternates: { canonical: '/endorsements' },
-  openGraph: {
-    title: 'Endorsements - Doug Charles, Prosper Town Council Place 5',
-    description: 'See who supports Doug Charles, Prosper Town Council Place 5. Add your endorsement, show your support for Common Sense leadership.',
-    url: 'https://www.dougcharles.com/endorsements',
-    siteName: 'Doug Charles — Prosper Town Council, Place 5',
-    locale: 'en_US',
-    type: 'website',
-    images: [{
-      url: 'https://www.dougcharles.com/dc-preview.webp',
-      width: 1200,
-      height: 630,
-      alt: 'Endorsements - Doug Charles, Prosper Town Council'
-    }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Endorsements - Doug Charles, Prosper Town Council Place 5',
-    description: 'See who supports Doug Charles. Show your support for Common Sense leadership.',
-    images: ['https://www.dougcharles.com/dc-preview.webp'],
-  },
-};
-
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',

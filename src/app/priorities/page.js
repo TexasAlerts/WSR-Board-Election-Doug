@@ -3,27 +3,6 @@ import Link from 'next/link';
 import Script from 'next/script';
 import { Ear, ClipboardList, ShieldCheck } from 'lucide-react';
 
-export const metadata = {
-  title: 'Priorities - Doug Charles — Prosper Town Council, Place 5',
-  description:
-    'Doug Charles priorities for Prosper: Listen. Plan. Protect. Responsible growth, infrastructure, public safety, fiscal accountability, and transparent governance.',
-  alternates: { canonical: '/priorities' },
-  openGraph: {
-    title: 'Priorities - Doug Charles — Prosper Town Council, Place 5',
-    description: 'Listen. Plan. Protect. Doug Charles priorities for responsible growth, fiscal accountability, and transparent governance.',
-    url: 'https://www.dougcharles.com/priorities',
-    siteName: 'Doug Charles — Prosper Town Council, Place 5',
-    locale: 'en_US',
-    type: 'website',
-    images: [{ url: 'https://www.dougcharles.com/dc-preview.webp', width: 1200, height: 630, alt: 'Priorities - Doug Charles — Prosper Town Council, Place 5' }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Priorities - Doug Charles — Prosper Town Council, Place 5',
-    description: 'Listen. Plan. Protect. Responsible growth, fiscal accountability, and transparent governance.',
-    images: ['https://www.dougcharles.com/dc-preview.webp'],
-  },
-};
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',

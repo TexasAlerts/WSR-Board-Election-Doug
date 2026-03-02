@@ -3,27 +3,6 @@ import Link from 'next/link';
 import Script from 'next/script';
 import ConditionalDonateLink from '../../components/ConditionalDonateLink';
 
-export const metadata = {
-  title: 'My Vision - Doug Charles — Prosper Town Council, Place 5',
-  description:
-    'Doug Charles\' vision for Prosper Town Council Place 5: A 20-year resident and former P&Z Commissioner committed to listening, planning, and protecting.',
-  alternates: { canonical: '/why' },
-  openGraph: {
-    title: 'My Vision - Doug Charles — Prosper Town Council, Place 5',
-    description: 'A 20-year Prosper resident committed to listening, planning, and protecting our community. Common Sense leadership for ALL of Prosper.',
-    url: 'https://www.dougcharles.com/why',
-    siteName: 'Doug Charles — Prosper Town Council, Place 5',
-    locale: 'en_US',
-    type: 'website',
-    images: [{ url: 'https://www.dougcharles.com/dc-preview.webp', width: 1200, height: 630, alt: 'Doug Charles - My Vision for Prosper Town Council, Place 5' }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'My Vision - Doug Charles — Prosper Town Council, Place 5',
-    description: 'A 20-year resident committed to listening, planning, and protecting our community.',
-    images: ['https://www.dougcharles.com/dc-preview.webp'],
-  },
-};
 
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',

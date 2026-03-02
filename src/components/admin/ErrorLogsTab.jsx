@@ -20,7 +20,7 @@ export default function ErrorLogsTab({
             onClick={() => setFilter(s)}
             aria-pressed={filter === s}
             className={`px-3 py-1 rounded-full text-sm font-medium ${
-              filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              filter === s ? 'bg-navy text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
             {s.replace('_', ' ')}
