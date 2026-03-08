@@ -182,5 +182,6 @@ export async function sendErrorAlertSMS(phone, error) {
   const truncatedMessage = (error.errorMessage || 'Unknown error').slice(0, 80);
   const message = `[DougCharles.com Alert] ${error.errorType}: ${truncatedMessage}`;
 
-  return sendSMS(phone, message);
+  // Skip TCPA time check — admin error alerts are transactional, not promotional
+  return sendSMS(phone, message, true);
 }

@@ -76,6 +76,7 @@ export default function GlobalErrorHandler() {
         'Extension context', // Browser extension errors
         'message channel closed', // Browser extension errors
         'Tab not found', // Browser extension errors
+        'webkit.messageHandlers', // Safari/Facebook in-app browser WebView
       ];
 
       if (ignoredPatterns.some((pattern) => errorMessage.includes(pattern))) {
@@ -122,6 +123,18 @@ export default function GlobalErrorHandler() {
      */
     const handleError = (event) => {
       const { message, filename, lineno, colno, error } = event;
+
+      // Filter out known third-party/browser errors
+      const ignoredErrorPatterns = [
+        'webkit.messageHandlers', // Safari/Facebook in-app browser WebView
+        'ResizeObserver', // Chrome layout bug
+        'Script error', // Cross-origin script errors
+      ];
+
+      if (ignoredErrorPatterns.some((pattern) => (message || '').includes(pattern))) {
+        event.preventDefault();
+        return;
+      }
 
       fetch('/api/errors', {
         method: 'POST',
