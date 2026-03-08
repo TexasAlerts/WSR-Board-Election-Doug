@@ -1,15 +1,21 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
-import { createEmailVerification } from '../../../../lib/auth';
+import { createEmailVerification, getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { sendVerificationEmail } from '../../../../lib/emailService';
 import { sendEmail } from '../../../../lib/sendEmail';
 import { logError, ErrorTypes } from '../../../../lib/logging';
+import { withCSRF } from '../../../../lib/withCSRF';
 
 /**
  * Admin endpoint to migrate existing endorsements to supporters
  * Creates supporter records and sends verification emails
  */
-export async function POST(req) {
+async function postHandler(req) {
+  const supporter = await getCurrentSupporter();
+  if (!supporter || !isAdmin(supporter)) {
+    return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
+  }
+
   const supabase = getSupabase();
 
   try {
@@ -177,3 +183,5 @@ export async function POST(req) {
     );
   }
 }
+
+export const POST = withCSRF(postHandler);

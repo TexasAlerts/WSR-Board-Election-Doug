@@ -1,52 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import Script from 'next/script';
 import { Ear, ClipboardList, ShieldCheck } from 'lucide-react';
 import HomeServer from '../components/HomeServer';
 import ConditionalDonateLink from '../components/ConditionalDonateLink';
 
 export default function Home() {
-  // Organization Schema
-  const organizationSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Doug Charles — Prosper Town Council, Place 5',
-    url: 'https://www.dougcharles.com',
-    logo: 'https://www.dougcharles.com/dc-logo.webp',
-    description: 'Doug Charles, Prosper Town Council Place 5. Preparing to serve with Common Sense leadership.',
-    foundingDate: '2025',
-    sameAs: [],
-  };
-
-  // Person Schema
-  const personSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'Doug Charles',
-    url: 'https://www.dougcharles.com/about',
-    jobTitle: 'Incoming Prosper Town Council Member, Place 5',
-    description: '20-year Prosper resident, former Planning & Zoning Commissioner',
-    affiliation: {
-      '@type': 'Organization',
-      name: 'Doug Charles — Prosper Town Council, Place 5',
-    },
-  };
-
-
   return (
     <div className="space-y-0">
-      {/* JSON-LD Structured Data */}
-      <Script
-        id="organization-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-      />
-      <Script
-        id="person-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-      />
-
       {/* Hero Section */}
       <section className="hero-gradient text-center py-10 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-2 sm:px-4 lg:px-8">
         <div className="max-w-6xl mx-auto">
@@ -316,6 +276,7 @@ export default function Home() {
                   height={500}
                   loading="lazy"
                   className="relative rounded-xl shadow-navy-lg mx-auto w-full max-w-[320px]"
+                  sizes="(max-width: 640px) 280px, (max-width: 1024px) 320px, 400px"
                 />
               </div>
             </div>

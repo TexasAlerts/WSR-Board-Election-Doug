@@ -30,7 +30,7 @@ export async function generateMetadata({ params }) {
 
     if (!res.ok) {
       return {
-        title: 'Idea Not Found | Doug Charles — Prosper Town Council, Place 5',
+        title: 'Idea Not Found — Doug Charles — Prosper Town Council, Place 5',
         description: 'This idea could not be found.',
         robots: 'noindex',
       };
@@ -40,14 +40,14 @@ export async function generateMetadata({ params }) {
 
     if (!data.ok || !data.data) {
       return {
-        title: 'Idea Not Found | Doug Charles — Prosper Town Council, Place 5',
+        title: 'Idea Not Found — Doug Charles — Prosper Town Council, Place 5',
         description: 'This idea could not be found.',
         robots: 'noindex',
       };
     }
 
     const idea = data.data;
-    const title = `${idea.title} | Community Ideas | Doug Charles — Prosper Town Council, Place 5`;
+    const title = `${idea.title} — Community Ideas — Doug Charles — Prosper Town Council, Place 5`;
     const description =
       idea.content.length > 160 ? idea.content.slice(0, 160) + '...' : idea.content;
     const canonical = `${SITE_URL}/ideas/${id}`;
@@ -63,8 +63,8 @@ export async function generateMetadata({ params }) {
         description,
         url: canonical,
         siteName: 'Doug Charles — Prosper Town Council, Place 5',
-        type: 'article',
-        publishedTime: idea.created_at,
+        locale: 'en_US',
+        type: 'website',
         images: [
           {
             url: `${SITE_URL}/dc-preview.webp`,
@@ -83,32 +83,37 @@ export async function generateMetadata({ params }) {
     };
   } catch (error) {
     return {
-      title: 'Community Idea | Doug Charles — Prosper Town Council, Place 5',
+      title: 'Community Idea — Doug Charles — Prosper Town Council, Place 5',
       description: 'View community ideas for making Prosper better.',
     };
   }
 }
 
-async function getIdeaExists(id) {
+async function getIdeaData(id) {
   try {
     const res = await fetch(`${SITE_URL}/api/ideas/${id}`, {
       next: { revalidate: 60 },
     });
-    if (!res.ok) return false;
+    if (!res.ok) return null;
     const data = await res.json();
-    return data.ok && data.data;
+    return data.ok && data.data ? data.data : null;
   } catch {
-    return false;
+    return null;
   }
 }
 
 export default async function IdeaDetailPage({ params }) {
   const { id } = await params;
-  const exists = await getIdeaExists(id);
+  const idea = await getIdeaData(id);
 
-  if (!exists) {
+  if (!idea) {
     notFound();
   }
 
-  return <IdeaDetailClient />;
+  return (
+    <>
+      <h1 className="sr-only">{idea.title}</h1>
+      <IdeaDetailClient />
+    </>
+  );
 }

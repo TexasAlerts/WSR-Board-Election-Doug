@@ -1,7 +1,7 @@
 import Script from 'next/script';
 
 export const metadata = {
-  title: 'Terms of Use - Doug Charles — Prosper Town Council, Place 5',
+  title: 'Terms of Use — Doug Charles — Prosper Town Council, Place 5',
   description:
     'Terms of use for the Doug Charles personal website, including content moderation, user submissions, SMS terms, and political advertising compliance.',
   alternates: { canonical: '/terms' },
