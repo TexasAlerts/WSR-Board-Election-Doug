@@ -733,6 +733,7 @@ export function setupGlobalErrorHandlers() {
       'message channel closed', // Browser extension errors
       'Tab not found', // Browser extension errors
       'feature named', // Vercel Speed Insights missing features
+      'webkit.messageHandlers', // Safari/Facebook in-app browser WebView
     ];
 
     if (ignoredPatterns.some((pattern) => errorMessage.includes(pattern))) {
