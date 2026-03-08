@@ -26,6 +26,7 @@ export default function CookieConsent() {
   const handleAccept = () => {
     localStorage.setItem('cookieConsent', 'accepted');
     localStorage.setItem('cookieConsentDate', new Date().toISOString());
+    window.dispatchEvent(new CustomEvent('cookieConsentChanged', { detail: 'accepted' }));
     setShowBanner(false);
   };
 
@@ -33,6 +34,7 @@ export default function CookieConsent() {
   const handleDecline = () => {
     localStorage.setItem('cookieConsent', 'declined');
     localStorage.setItem('cookieConsentDate', new Date().toISOString());
+    window.dispatchEvent(new CustomEvent('cookieConsentChanged', { detail: 'declined' }));
     setShowBanner(false);
   };
 

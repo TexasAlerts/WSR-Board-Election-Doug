@@ -4,6 +4,7 @@ import ErrorBoundary from '../components/ErrorBoundary';
 import GlobalErrorHandler from '../components/GlobalErrorHandler';
 import ScrollToTop from '../components/ScrollToTop';
 import CookieConsent from '../components/CookieConsent';
+import FacebookPixel from '../components/FacebookPixel';
 import RecaptchaProvider from '../components/RecaptchaProvider';
 import Link from 'next/link';
 import Script from 'next/script';
@@ -112,6 +113,9 @@ export const metadata = {
     title: 'Doug Charles — Prosper Town Council, Place 5',
     description: 'A Common Sense Leader for ALL of Prosper',
     images: ['https://www.dougcharles.com/dc-preview.webp'],
+  },
+  other: {
+    'facebook-domain-verification': 'nuadj9w5mfwlzj6t37sb0l44k7fuwy',
   },
 };
 
@@ -358,30 +362,8 @@ export default function RootLayout({ children }) {
             }
           `}
         </Script>
-        {/* Facebook Pixel */}
-        <Script id="facebook-pixel" strategy="afterInteractive">
-          {`
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '101306642490599');
-            fbq('track', 'PageView');
-          `}
-        </Script>
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=101306642490599&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
+        {/* Facebook Pixel — consent-gated with SPA route tracking */}
+        <FacebookPixel />
         <Analytics />
         <SpeedInsights />
       </body>
