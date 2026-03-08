@@ -204,7 +204,9 @@ describe('Production Fixes - Runtime Verification', () => {
 
     it('layout.js uses afterInteractive strategy for JSON-LD', () => {
       expect(layoutCode).toContain('strategy="afterInteractive"');
-      expect(layoutCode).not.toContain('strategy="beforeInteractive"');
+      // beforeInteractive is allowed for the webkit polyfill but not for JSON-LD
+      expect(layoutCode).toContain('id="webkit-polyfill" strategy="beforeInteractive"');
+      expect(layoutCode).not.toContain('id="structured-data" strategy="beforeInteractive"');
     });
 
     it('HomeServer uses correct question status (approved, NOT answered)', () => {
