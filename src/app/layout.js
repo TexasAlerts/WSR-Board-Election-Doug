@@ -344,6 +344,14 @@ export default function RootLayout({ children }) {
         </RecaptchaProvider>
         <CookieConsent />
         <GlobalErrorHandler />
+        {/* Polyfill for Safari/Facebook in-app browser WebView */}
+        <Script id="webkit-polyfill" strategy="beforeInteractive">
+          {`
+            if(window.webkit&&!window.webkit.messageHandlers){
+              window.webkit.messageHandlers={};
+            }
+          `}
+        </Script>
         {/* Facebook Pixel */}
         <Script id="facebook-pixel" strategy="afterInteractive">
           {`
