@@ -26,7 +26,7 @@ export default function TermsOfUse() {
         <strong>Effective Date:</strong> January 2026
       </p>
       <p className="text-charcoal">
-        <strong>Last Updated:</strong> February 24, 2026
+        <strong>Last Updated:</strong> March 8, 2026
       </p>
 
       <section className="space-y-4">
@@ -204,6 +204,39 @@ export default function TermsOfUse() {
         <p>
           Supported carriers include major US carriers. Service may not be available on all
           carriers.
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-bold text-navy">Cookies and Analytics</h2>
+        <p>
+          This Site uses cookies and analytics tools to improve your experience and measure the
+          effectiveness of our outreach. When you first visit the Site, a consent banner allows you
+          to accept or decline non-essential cookies.
+        </p>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>
+            <strong>Essential cookies</strong> are required for core functionality (authentication,
+            session management, voting verification) and cannot be disabled.
+          </li>
+          <li>
+            <strong>Facebook Pixel</strong> is used to measure site traffic and outreach effectiveness.
+            It is <strong>only activated after you accept cookies</strong>. If you decline, no Facebook
+            tracking occurs.
+          </li>
+          <li>
+            <strong>Vercel Analytics</strong> collects anonymized, aggregated performance data and does
+            not use cookies or track individual users.
+          </li>
+          <li>
+            <strong>Google reCAPTCHA v3</strong> is used on forms to prevent spam and abuse.
+          </li>
+        </ul>
+        <p>
+          For full details on data collection, see our{' '}
+          <Link href="/privacy" className="text-navy underline">
+            Privacy Policy
+          </Link>.
         </p>
       </section>
 

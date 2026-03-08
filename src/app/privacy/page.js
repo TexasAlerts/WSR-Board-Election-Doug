@@ -25,7 +25,7 @@ export default function PrivacyPolicy() {
         <strong>Effective Date:</strong> January 2026
       </p>
       <p className="text-charcoal">
-        <strong>Last Updated:</strong> February 23, 2026
+        <strong>Last Updated:</strong> March 8, 2026
       </p>
 
       <p className="text-charcoal text-sm bg-gray-50 border border-gray-200 rounded-lg p-4">
@@ -103,7 +103,21 @@ export default function PrivacyPolicy() {
             <strong>Essential Cookies:</strong> We use cookies to maintain your session, remember your preferences, and provide core functionality such as authentication and voting verification. These cookies do not store personally identifiable information in client-accessible storage.
           </li>
           <li>
-            <strong>Cookie Consent:</strong> When you first visit our Site, you will see a cookie consent banner. You may accept or decline non-essential cookies. Essential cookies required for Site functionality cannot be disabled.
+            <strong>Facebook Pixel:</strong> With your consent, we use the Meta (Facebook) Pixel to measure the effectiveness of our outreach and understand how visitors interact with our Site. The Pixel collects anonymized data such as pages visited, referral source, and general demographic information. <strong>The Pixel is only activated after you accept cookies via our consent banner.</strong> If you decline cookies, no Facebook tracking data is collected. You can learn more about how Meta uses data at the{' '}
+            <a
+              href="https://www.facebook.com/privacy/policy/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-navy underline"
+            >
+              Meta Privacy Policy
+            </a>.
+          </li>
+          <li>
+            <strong>Vercel Analytics:</strong> We use Vercel Analytics and Speed Insights to monitor site performance and page views. These services collect anonymized, aggregated data and do not use cookies or track individual users.
+          </li>
+          <li>
+            <strong>Cookie Consent:</strong> When you first visit our Site, you will see a cookie consent banner. You may accept or decline non-essential cookies. If you decline, third-party tracking tools such as the Facebook Pixel will not be activated. Essential cookies required for Site functionality cannot be disabled.
           </li>
         </ul>
       </section>
