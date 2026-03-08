@@ -120,7 +120,7 @@ export default function GetInvolvedForm({
     <div className="card">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <span className="text-2xl">{getFormIcon()}</span>
+          <span className="text-2xl" aria-hidden="true">{getFormIcon()}</span>
           {getFormTitle() && <h2 className="text-xl font-bold text-navy">{getFormTitle()}</h2>}
         </div>
         <button
