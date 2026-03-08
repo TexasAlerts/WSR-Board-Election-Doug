@@ -31,6 +31,28 @@ export async function POST(request) {
   const since = oneWeekAgo.toISOString();
 
   try {
+    // Dedup guard: skip if a digest was already sent in the last 6 days (cron only)
+    if (isCronAuth) {
+      const sixDaysAgo = new Date();
+      sixDaysAgo.setDate(sixDaysAgo.getDate() - 6);
+      const { data: recentDigest } = await supabase
+        .from('audit_logs')
+        .select('id')
+        .eq('event_type', AuditEvents.BROADCAST_SENT)
+        .gt('created_at', sixDaysAgo.toISOString())
+        .contains('details', { type: 'weekly_digest' })
+        .limit(1);
+
+      if (recentDigest && recentDigest.length > 0) {
+        return NextResponse.json({
+          ok: true,
+          message: 'Digest already sent this week',
+          sent: 0,
+          skipped: true,
+        });
+      }
+    }
+
     // Get all emails that have weekly digest enabled
     const { data: prefs } = await supabase
       .from('notification_preferences')
