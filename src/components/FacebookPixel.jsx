@@ -19,6 +19,7 @@ export default function FacebookPixel() {
   const pathname = usePathname();
   const initialized = useRef(false);
   const consented = useRef(false);
+  const initialPageTracked = useRef(false);
 
   // Initialize pixel script once (consent revoked by default)
   useEffect(() => {
@@ -26,28 +27,29 @@ export default function FacebookPixel() {
     initialized.current = true;
 
     // Load fbevents.js (Meta's standard snippet)
+    const n = (window.fbq = window.fbq || function () {
+      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    });
+    if (!window._fbq) window._fbq = n;
+    n.push = n;
+    n.loaded = true;
+    n.version = '2.0';
+    n.queue = n.queue || [];
+
     const script = document.createElement('script');
     script.async = true;
     script.src = 'https://connect.facebook.net/en_US/fbevents.js';
     document.head.appendChild(script);
 
-    window.fbq = window.fbq || function () {
-      (window.fbq.q = window.fbq.q || []).push(arguments);
-    };
-    window._fbq = window._fbq || window.fbq;
-    window.fbq.push = window.fbq;
-    window.fbq.loaded = true;
-    window.fbq.version = '2.0';
-    window.fbq.queue = window.fbq.queue || [];
-
     window.fbq('consent', 'revoke');
     window.fbq('init', FB_PIXEL_ID);
 
-    // Check if user already consented
+    // Check if user already consented from a previous visit
     if (localStorage.getItem('cookieConsent') === 'accepted') {
       window.fbq('consent', 'grant');
       window.fbq('track', 'PageView');
       consented.current = true;
+      initialPageTracked.current = true;
     }
   }, []);
 
@@ -60,6 +62,7 @@ export default function FacebookPixel() {
         window.fbq('consent', 'grant');
         window.fbq('track', 'PageView');
         consented.current = true;
+        initialPageTracked.current = true;
       } else {
         window.fbq('consent', 'revoke');
         consented.current = false;
@@ -70,9 +73,13 @@ export default function FacebookPixel() {
     return () => window.removeEventListener('cookieConsentChanged', handleConsentChange);
   }, []);
 
-  // Track PageView on SPA route changes
+  // Track PageView on SPA route changes (skip initial render — already tracked above)
   useEffect(() => {
     if (!consented.current || !window.fbq) return;
+    if (!initialPageTracked.current) {
+      initialPageTracked.current = true;
+      return;
+    }
     window.fbq('track', 'PageView');
   }, [pathname]);
 
