@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
+import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
 import { sendWeeklyDigestEmail } from '../../../../lib/emailService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 
@@ -9,10 +10,18 @@ import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/log
  * Sends digest of poll/idea activity to participants who opted in.
  */
 export async function POST(request) {
-  // Verify cron secret or admin auth
+  // Verify cron secret OR admin session
   const authHeader = request.headers.get('authorization');
   const cronSecret = process.env.CRON_SECRET;
-  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
+  const isCronAuth = cronSecret && authHeader === `Bearer ${cronSecret}`;
+
+  let isAdminAuth = false;
+  if (!isCronAuth) {
+    const supporter = await getCurrentSupporter();
+    isAdminAuth = !!(supporter && isAdmin(supporter));
+  }
+
+  if (!isCronAuth && !isAdminAuth) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
