@@ -30,7 +30,11 @@ const nextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+            value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()',
+          },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin',
           },
           {
             key: 'Strict-Transport-Security',
@@ -50,9 +54,11 @@ const nextConfig = {
               "img-src 'self' data: https: https://www.facebook.com",
               "connect-src 'self' https://*.supabase.co https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://vitals.vercel-insights.com https://va.vercel-scripts.com https://www.facebook.com",
               "frame-src https://www.google.com https://www.recaptcha.net",
+              "object-src 'none'",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",
+              "upgrade-insecure-requests",
             ].join('; '),
           },
         ],
