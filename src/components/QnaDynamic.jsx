@@ -20,19 +20,24 @@ export default function QnaDynamic({ initialQuestions = [] }) {
       return;
     }
 
+    const controller = new AbortController();
     async function loadQuestions() {
       try {
         setLoading(true);
-        const res = await fetch('/api/questions');
+        const res = await fetch('/api/questions', { signal: controller.signal });
         const data = await res.json();
-        setQuestions(Array.isArray(data.data) ? data.data : []);
+        if (!controller.signal.aborted) {
+          setQuestions(Array.isArray(data.data) ? data.data : []);
+        }
       } catch (err) {
+        if (err.name === 'AbortError') return;
         await logApiError('/api/questions', 'GET', err.status || 500, err.message, { context: 'loadQuestions' });
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     }
     loadQuestions();
+    return () => controller.abort();
   }, [initialQuestions]);
 
   async function handleSubmit(e) {
