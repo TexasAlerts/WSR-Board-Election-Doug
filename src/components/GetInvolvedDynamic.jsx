@@ -6,6 +6,7 @@ import { Mail, MessageCircle } from 'lucide-react';
 import { validatePhoneNumber } from '../lib/phoneValidation';
 import { useRecaptcha } from '../hooks/useRecaptcha';
 import { logApiError } from '@/lib/clientErrorLogger';
+import { trackFbEvent } from './TrackingUtils';
 import ActionCards from './ActionCards';
 import GetInvolvedForm from './GetInvolvedForm';
 
@@ -129,6 +130,7 @@ function GetInvolvedDynamicContent() {
           }
         }
 
+        trackFbEvent('Lead', { content_name: selectedAction });
         setSubmitMsg(message);
         setForm({
           name: '',
