@@ -27,7 +27,7 @@ async function postHandler(req) {
 
     if (endorsementsError) {
       return NextResponse.json(
-        { ok: false, error: 'Failed to fetch endorsements', details: endorsementsError.message },
+        { ok: false, error: 'Failed to fetch endorsements' },
         { status: 500 }
       );
     }
@@ -178,7 +178,7 @@ async function postHandler(req) {
     });
 
     return NextResponse.json(
-      { ok: false, error: 'Migration failed', details: err.message },
+      { ok: false, error: 'Migration failed' },
       { status: 500 }
     );
   }

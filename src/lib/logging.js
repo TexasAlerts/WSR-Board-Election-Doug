@@ -610,6 +610,8 @@ export const AuditEvents = {
   PASSWORD_CREATED: 'PASSWORD_CREATED',
   PASSWORD_RESET: 'PASSWORD_RESET',
 
+  ADMIN_LOGOUT: 'ADMIN_LOGOUT',
+
   // Admin events
   SUPPORTER_APPROVED: 'SUPPORTER_APPROVED',
   SUPPORTER_SUSPENDED: 'SUPPORTER_SUSPENDED',
@@ -666,6 +668,7 @@ export const ErrorTypes = {
   EXTERNAL_SERVICE: 'external_service',
   PERFORMANCE: 'performance',
   TIMEOUT: 'timeout',
+  EMAIL_DELIVERY: 'email_delivery',
 };
 
 /**

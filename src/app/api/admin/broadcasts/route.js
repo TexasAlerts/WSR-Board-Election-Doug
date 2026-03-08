@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '../../../../lib/supabase';
 import { getCurrentSupporter, isAdmin } from '../../../../lib/auth';
-import { sendEmail } from '../../../../lib/sendEmail';
+import { sendBroadcastEmail } from '../../../../lib/emailService';
 import { logAudit, logError, AuditEvents, ErrorTypes } from '../../../../lib/logging';
 import { rateLimit } from '../../../../lib/rateLimit';
 import { withCSRF } from '../../../../lib/withCSRF';
@@ -109,28 +109,14 @@ async function postHandler(request) {
       smsRecipients = smsSupporters || [];
     }
 
-    // Send emails in parallel with Promise.allSettled
+    // Send emails via broadcast service (includes List-Unsubscribe, HTML formatting, disclosure)
     let emailsSent = 0;
     let emailsFailed = 0;
     if (emailRecipients.length > 0) {
-      const emailPromises = emailRecipients.map((recipient) =>
-        sendEmail(
-          recipient.email,
-          subject,
-          `Hi ${recipient.first_name},\n\n${message}\n\n--\nDoug Charles\nProsper Town Council, Place 5\n\nTo unsubscribe, reply with STOP.`
-        )
-          .then(() => ({ success: true, email: recipient.email }))
-          .catch((err) => ({ success: false, email: recipient.email, error: err.message }))
-      );
-
-      const results = await Promise.allSettled(emailPromises);
-      results.forEach((result) => {
-        if (result.status === 'fulfilled' && result.value.success) {
-          emailsSent++;
-        } else {
-          emailsFailed++;
-        }
-      });
+      const htmlBody = `<p>${message.replace(/\n/g, '</p><p>')}</p>`;
+      const broadcastResult = await sendBroadcastEmail(subject, htmlBody, emailRecipients);
+      emailsSent = broadcastResult.sent;
+      emailsFailed = broadcastResult.failed;
     }
 
     // SMS broadcasts not yet configured
@@ -151,7 +137,14 @@ async function postHandler(request) {
       .single();
 
     if (dbError) {
-      console.error('[broadcasts] Failed to save broadcast record:', dbError.message);
+      await logError({
+        errorType: ErrorTypes.DATABASE_ERROR,
+        errorMessage: `Failed to save broadcast record: ${dbError.message}`,
+        endpoint: '/api/admin/broadcasts',
+        method: 'POST',
+        userId: supporter.id,
+        request,
+      });
     }
 
     // Log to audit trail

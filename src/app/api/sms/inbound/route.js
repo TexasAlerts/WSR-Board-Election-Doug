@@ -27,7 +27,7 @@ function validateTelnyxWebhook(rawBody, request) {
   // If no public key configured, log warning but allow in development
   if (!publicKey) {
     if (process.env.NODE_ENV === 'production') {
-      return NextResponse.json({ error: 'Webhook public key not configured' }, { status: 500 });
+      return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }
     // In development, skip signature verification but still validate structure
     console.warn('TELNYX_PUBLIC_KEY not configured - skipping signature verification');

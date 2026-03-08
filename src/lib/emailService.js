@@ -250,6 +250,10 @@ export async function sendWelcomeEmail(email, name) {
           </p>
         </div>
       `,
+      headers: {
+        'List-Unsubscribe': `<${SITE_URL}/auth/unsubscribe?email=${encodeURIComponent(email)}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
     });
 
     if (error) return { success: false, error: error.message };
@@ -399,6 +403,10 @@ export async function sendPhoneUpdateReminderEmail(email, name) {
           </p>
         </div>
       `,
+      headers: {
+        'List-Unsubscribe': `<${SITE_URL}/auth/unsubscribe?email=${encodeURIComponent(email)}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
     });
 
     if (error) return { success: false, error: error.message };
@@ -1037,6 +1045,7 @@ export async function sendQuestionAnsweredEmail(email, name, question, answer, q
       `,
       headers: {
         'List-Unsubscribe': `<${unsubscribeUrl}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
       },
     });
 
@@ -1109,6 +1118,7 @@ export async function sendInterestFollowUpEmail(email, name, interestType, messa
       `,
       headers: {
         'List-Unsubscribe': `<${unsubscribeUrl}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
       },
     });
 

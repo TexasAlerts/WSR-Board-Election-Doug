@@ -52,6 +52,7 @@ export default function ForgotPasswordPage() {
           width={96}
           height={64}
           className="absolute top-4 right-4 w-20 sm:w-28 md:w-32 lg:w-36 h-auto opacity-80 pointer-events-none"
+          sizes="(max-width: 640px) 80px, (max-width: 768px) 112px, (max-width: 1024px) 128px, 144px"
         />
         <div className="relative z-10">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy mb-4 animate-fade-in-down">

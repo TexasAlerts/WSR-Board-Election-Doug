@@ -175,6 +175,7 @@ export default function RootLayout({ children }) {
               "@graph": [
                 {
                   "@type": "WebSite",
+                  "@id": "https://www.dougcharles.com/#website",
                   "name": "Doug Charles — Prosper Town Council, Place 5",
                   "url": "https://www.dougcharles.com",
                   "description": "Personal website for Doug Charles, incoming Prosper Town Council Member, Place 5. Preparing to serve with Common Sense leadership for ALL of Prosper.",
@@ -187,7 +188,12 @@ export default function RootLayout({ children }) {
                   "@id": "https://www.dougcharles.com/#organization",
                   "name": "Doug Charles for Prosper Town Council Place 5",
                   "url": "https://www.dougcharles.com",
-                  "logo": "https://www.dougcharles.com/dc-logo.webp",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.dougcharles.com/dc-logo.webp",
+                    "width": 512,
+                    "height": 512
+                  },
                   "description": "Committee for Doug Charles, incoming Prosper Town Council Member, Place 5. Treasurer: Robert Bye.",
                   "sameAs": ["https://www.facebook.com/profile.php?id=61587237416382"],
                   "address": {
@@ -258,7 +264,7 @@ export default function RootLayout({ children }) {
                   <br />
                   Robert Bye, Campaign Treasurer
                 </p>
-                <p className="text-white/70 text-xs leading-relaxed max-w-lg mx-auto">
+                <p className="text-white/90 text-xs leading-relaxed max-w-lg mx-auto">
                   This is a personal website. It does not represent the Town of Prosper,
                   the Prosper Town Council, or any official government position.
                   For official Town of Prosper information, visit{' '}
@@ -266,7 +272,7 @@ export default function RootLayout({ children }) {
                     href="https://www.prospertx.gov"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white/80 underline hover:text-white"
+                    className="text-white underline hover:text-gray-300"
                   >
                     prospertx.gov
                   </a>.
@@ -281,27 +287,27 @@ export default function RootLayout({ children }) {
                   </a>
                 </p>
                 <nav aria-label="Footer navigation" className="flex flex-wrap justify-center gap-x-4 gap-y-1 pt-2">
-                  <Link href="/about" className="text-white hover:text-gray-300 hover:underline">
+                  <Link href="/about" className="text-white hover:text-gray-300 hover:underline py-2">
                     About
                   </Link>
                   <Link
                     href="/priorities"
-                    className="text-white hover:text-gray-300 hover:underline"
+                    className="text-white hover:text-gray-300 hover:underline py-2"
                   >
                     Priorities
                   </Link>
                   <Link
                     href="/get-involved"
-                    className="text-white hover:text-gray-300 hover:underline"
+                    className="text-white hover:text-gray-300 hover:underline py-2"
                   >
                     Get Involved
                   </Link>
-                  <ConditionalDonateLink className="text-white hover:text-gray-300 hover:underline">
+                  <ConditionalDonateLink className="text-white hover:text-gray-300 hover:underline py-2">
                     Donate
                   </ConditionalDonateLink>
                 </nav>
                 {/* Social Media Links */}
-                <div className="flex justify-center gap-4 pt-3" aria-label="Social media links">
+                <div className="flex justify-center gap-4 pt-3" role="group" aria-label="Social media links">
                   <a href="https://www.facebook.com/profile.php?id=61587237416382" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Follow on Facebook">
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
                   </a>
@@ -345,7 +351,7 @@ export default function RootLayout({ children }) {
         <CookieConsent />
         <GlobalErrorHandler />
         {/* Polyfill for Safari/Facebook in-app browser WebView */}
-        <Script id="webkit-polyfill" strategy="beforeInteractive">
+        <Script id="webkit-polyfill" strategy="afterInteractive">
           {`
             if(window.webkit&&!window.webkit.messageHandlers){
               window.webkit.messageHandlers={};
