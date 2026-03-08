@@ -53,6 +53,8 @@ export default function PollsDynamic({ initialPolls = [] }) {
   } = usePollVoting();
 
   useEffect(() => {
+    const controller = new AbortController();
+
     // Only fetch if we need fresh data (e.g., after voting)
     async function loadPolls() {
       // If we have initial polls and aren't authenticated, skip the fetch
@@ -62,16 +64,17 @@ export default function PollsDynamic({ initialPolls = [] }) {
 
       try {
         setLoading(true);
-        const res = await fetch('/api/polls');
+        const res = await fetch('/api/polls', { signal: controller.signal });
         const data = await res.json();
-        if (data.ok) {
+        if (!controller.signal.aborted && data.ok) {
           setPolls(data.data || []);
           setIsAuthenticated(data.isAuthenticated || false);
         }
       } catch (err) {
+        if (err.name === 'AbortError') return;
         await logApiError('/api/polls', 'GET', err.status || 500, err.message, { context: 'loadPolls' });
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     }
 
@@ -83,8 +86,9 @@ export default function PollsDynamic({ initialPolls = [] }) {
     // Check for authenticated supporter
     async function checkAuth() {
       try {
-        const res = await fetch('/api/supporter/me');
+        const res = await fetch('/api/supporter/me', { signal: controller.signal });
         const data = await res.json();
+        if (controller.signal.aborted) return;
         if (data.ok && data.data) {
           setIsAuthenticated(true);
           setAuthenticatedSupporter(data.data);
@@ -96,20 +100,22 @@ export default function PollsDynamic({ initialPolls = [] }) {
           return; // Stop here if authenticated
         }
       } catch (err) {
+        if (err.name === 'AbortError') return;
         // Not authenticated, that's expected - no need to log
       }
 
       // If not authenticated, check for verified voter cookie
       try {
-        const voterRes = await fetch('/api/verified-voters/me');
+        const voterRes = await fetch('/api/verified-voters/me', { signal: controller.signal });
         const voterData = await voterRes.json();
-        if (voterData.ok && voterData.data) {
+        if (!controller.signal.aborted && voterData.ok && voterData.data) {
           setVerifiedVoter({
             email: voterData.data.email,
             name: voterData.data.name,
           });
         }
       } catch (err) {
+        if (err.name === 'AbortError') return;
         // Not a verified voter either, that's expected - no need to log
       }
     }
@@ -118,12 +124,13 @@ export default function PollsDynamic({ initialPolls = [] }) {
     // Fetch voted polls from API instead of localStorage
     async function loadVotedPolls() {
       try {
-        const res = await fetch('/api/polls/my-votes');
+        const res = await fetch('/api/polls/my-votes', { signal: controller.signal });
         const data = await res.json();
-        if (data.ok) {
+        if (!controller.signal.aborted && data.ok) {
           setHasVoted(data.data || {});
         }
       } catch (err) {
+        if (err.name === 'AbortError') return;
         await logApiError('/api/polls/my-votes', 'GET', err.status || 500, err.message, { context: 'loadVotedPolls' });
         setHasVoted({});
       }
@@ -139,6 +146,7 @@ export default function PollsDynamic({ initialPolls = [] }) {
     window.addEventListener('focus', handleFocus);
 
     return () => {
+      controller.abort();
       window.removeEventListener('focus', handleFocus);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

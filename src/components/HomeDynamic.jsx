@@ -11,12 +11,14 @@ export default function HomeDynamic() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const controller = new AbortController();
     async function loadData() {
       try {
         const [endorseRes, qnaRes] = await Promise.allSettled([
-          fetch('/api/endorsements', { cache: 'no-store' }).then((r) => r.json()),
-          fetch('/api/questions', { cache: 'no-store' }).then((r) => r.json()),
+          fetch('/api/endorsements', { cache: 'no-store', signal: controller.signal }).then((r) => r.json()),
+          fetch('/api/questions', { cache: 'no-store', signal: controller.signal }).then((r) => r.json()),
         ]);
+        if (controller.signal.aborted) return;
         if (endorseRes.status === 'fulfilled') {
           setEndorsements(Array.isArray(endorseRes.value?.data) ? endorseRes.value.data : []);
         }
@@ -26,10 +28,11 @@ export default function HomeDynamic() {
       } catch {
         // Silent fail - page still renders without dynamic content
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     }
     loadData();
+    return () => controller.abort();
   }, []);
 
   // Show skeleton while loading
@@ -102,7 +105,7 @@ export default function HomeDynamic() {
                   </div>
                   <p className="font-semibold text-navy flex items-center gap-3">
                     <span className="w-10 h-10 bg-gradient-to-br from-navy to-navy-light rounded-full flex items-center justify-center text-sm text-white font-bold shadow-sm">
-                      {e.name.charAt(0)}
+                      {(e.name || 'A').charAt(0)}
                     </span>
                     {e.name}
                   </p>

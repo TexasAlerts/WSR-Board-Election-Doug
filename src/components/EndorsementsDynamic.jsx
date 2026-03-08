@@ -13,6 +13,7 @@ export default function EndorsementsDynamic() {
   const [isOffline, setIsOffline] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [showForm, setShowForm] = useState(false);
+  const mountedRef = useRef(true);
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -80,6 +81,7 @@ export default function EndorsementsDynamic() {
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
+      if (!mountedRef.current) return;
       setEndorsements(Array.isArray(data.data) ? data.data : []);
       setRetryCount(0);
     } catch (err) {
@@ -106,7 +108,9 @@ export default function EndorsementsDynamic() {
   }
 
   useEffect(() => {
+    mountedRef.current = true;
     loadEndorsements();
+    return () => { mountedRef.current = false; };
   }, []);
 
   function handleEndorseClick() {

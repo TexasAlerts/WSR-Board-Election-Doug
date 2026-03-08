@@ -51,10 +51,11 @@ export default function IdeasClient({ initialIdeas = [] }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authenticatedSupporter, setAuthenticatedSupporter] = useState(null);
 
-  // Escape key and focus trap for modals
+  // Escape key, focus trap, and scroll lock for modals
   useEffect(() => {
     const isOpen = showSubmitForm || showSupportModal;
     if (!isOpen) return;
+    document.body.style.overflow = 'hidden';
     const modalRef = showSubmitForm ? submitModalRef : supportModalRef;
     function handleKeyDown(e) {
       if (e.key === 'Escape') {
@@ -79,7 +80,10 @@ export default function IdeasClient({ initialIdeas = [] }) {
     }
     document.addEventListener('keydown', handleKeyDown);
     modalRef.current?.focus();
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, [showSubmitForm, showSupportModal]);
 
   const loadIdeas = useCallback(async () => {
@@ -99,6 +103,8 @@ export default function IdeasClient({ initialIdeas = [] }) {
   }, [category]);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     // Only load if filtering by category (not 'all' with initial data)
     if (category !== 'all' || initialIdeas.length === 0) {
       loadIdeas();
@@ -110,8 +116,9 @@ export default function IdeasClient({ initialIdeas = [] }) {
     // Check for authenticated supporter
     async function checkAuth() {
       try {
-        const res = await fetch('/api/supporter/me');
+        const res = await fetch('/api/supporter/me', { signal: controller.signal });
         const data = await res.json();
+        if (controller.signal.aborted) return;
         if (data.ok && data.data) {
           setIsAuthenticated(true);
           setAuthenticatedSupporter(data.data);
@@ -125,17 +132,19 @@ export default function IdeasClient({ initialIdeas = [] }) {
           return;
         }
       } catch (err) {
+        if (err.name === 'AbortError') return;
         // Not authenticated - expected for guests, no logging needed
       }
 
       // If not authenticated, check for verified voter cookie (for pre-filling support email)
       try {
-        const voterRes = await fetch('/api/verified-voters/me');
+        const voterRes = await fetch('/api/verified-voters/me', { signal: controller.signal });
         const voterData = await voterRes.json();
-        if (voterData.ok && voterData.data) {
+        if (!controller.signal.aborted && voterData.ok && voterData.data) {
           setSupportEmail(voterData.data.email);
         }
       } catch (err) {
+        if (err.name === 'AbortError') return;
         // Not a verified voter - expected for guests, no logging needed
       }
     }
@@ -144,12 +153,13 @@ export default function IdeasClient({ initialIdeas = [] }) {
     // Fetch supported ideas from API instead of localStorage
     async function loadSupportedIdeas() {
       try {
-        const res = await fetch('/api/ideas/my-support');
+        const res = await fetch('/api/ideas/my-support', { signal: controller.signal });
         const data = await res.json();
-        if (data.ok) {
+        if (!controller.signal.aborted && data.ok) {
           setSupportedIdeas(data.data || {});
         }
       } catch (err) {
+        if (err.name === 'AbortError') return;
         await logApiError('/api/ideas/my-support', 'GET', err.status || 500, err.message, { context: 'loadSupportedIdeas' });
         setSupportedIdeas({});
       }
@@ -164,6 +174,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
     window.addEventListener('focus', handleFocus);
 
     return () => {
+      controller.abort();
       window.removeEventListener('focus', handleFocus);
     };
   }, [loadIdeas, category, initialIdeas]);

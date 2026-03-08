@@ -45,8 +45,9 @@ export default function LoginPage() {
       // Refresh auth context to update nav
       await refreshAuth();
 
-      // Redirect to polls or previous page
-      const returnUrl = new URLSearchParams(window.location.search).get('return') || '/polls';
+      // Redirect to polls or previous page (validate to prevent open redirect)
+      const rawReturn = new URLSearchParams(window.location.search).get('return') || '/polls';
+      const returnUrl = rawReturn.startsWith('/') && !rawReturn.startsWith('//') ? rawReturn : '/polls';
       router.push(returnUrl);
     } catch (err) {
       setError(err.message);
