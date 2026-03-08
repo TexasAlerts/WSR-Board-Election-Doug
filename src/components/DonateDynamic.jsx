@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { AlertCircle, CheckCircle } from 'lucide-react';
 import { useCSRF } from '../hooks/useCSRF';
 import { useSiteConfig } from '../context/SiteConfigContext';
+import { trackFbEvent } from './TrackingUtils';
 
 const DONATION_AMOUNTS = [25, 50, 100, 250, 500, 1000];
 
@@ -87,6 +88,8 @@ export default function DonateDynamic() {
       isCustomAmount: !selectedAmount,
       anedotRedirectUrl: redirectUrl,
     });
+
+    trackFbEvent('InitiateCheckout', { value: amount, currency: 'USD' });
 
     // Redirect to Anedot with pre-selected amount
     window.open(redirectUrl, '_blank');

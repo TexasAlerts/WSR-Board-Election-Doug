@@ -5,6 +5,7 @@ import { Ear, ClipboardList, ShieldCheck } from 'lucide-react';
 import HomeServer from '../components/HomeServer';
 import { HomeSkeleton } from '../components/shared/Skeleton';
 import ConditionalDonateLink from '../components/ConditionalDonateLink';
+import HomepageSignup from '../components/HomepageSignup';
 
 export default function Home() {
   return (
@@ -325,7 +326,9 @@ export default function Home() {
             share your ideas, and help shape our community&apos;s future.
           </p>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4 sm:px-0">
+          <HomepageSignup />
+
+          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4 sm:px-0 mt-8">
             <Link
               href="/get-involved"
               className="btn-white text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto text-center"

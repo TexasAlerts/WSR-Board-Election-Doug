@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import './globals.css';
 import StickyNav from '../components/StickyNav';
 import ErrorBoundary from '../components/ErrorBoundary';
@@ -5,6 +6,7 @@ import GlobalErrorHandler from '../components/GlobalErrorHandler';
 import ScrollToTop from '../components/ScrollToTop';
 import CookieConsent from '../components/CookieConsent';
 import FacebookPixel from '../components/FacebookPixel';
+import TrackingUtils from '../components/TrackingUtils';
 import RecaptchaProvider from '../components/RecaptchaProvider';
 import Link from 'next/link';
 import Script from 'next/script';
@@ -364,6 +366,10 @@ export default function RootLayout({ children }) {
         </Script>
         {/* Facebook Pixel — consent-gated with SPA route tracking */}
         <FacebookPixel />
+        {/* UTM + fbclid capture to sessionStorage */}
+        <Suspense fallback={null}>
+          <TrackingUtils />
+        </Suspense>
         <Analytics />
         <SpeedInsights />
       </body>
