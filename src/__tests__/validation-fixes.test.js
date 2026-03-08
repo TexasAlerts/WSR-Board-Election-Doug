@@ -202,10 +202,10 @@ describe('Production Fixes - Runtime Verification', () => {
       expect(homeServerCode).toContain('During build time, Supabase might not be available');
     });
 
-    it('layout.js uses afterInteractive strategy for JSON-LD', () => {
+    it('layout.js uses afterInteractive strategy for scripts', () => {
       expect(layoutCode).toContain('strategy="afterInteractive"');
-      // beforeInteractive is allowed for the webkit polyfill but not for JSON-LD
-      expect(layoutCode).toContain('id="webkit-polyfill" strategy="beforeInteractive"');
+      // Both webkit polyfill and JSON-LD should use afterInteractive
+      expect(layoutCode).toContain('id="webkit-polyfill" strategy="afterInteractive"');
       expect(layoutCode).not.toContain('id="structured-data" strategy="beforeInteractive"');
     });
 

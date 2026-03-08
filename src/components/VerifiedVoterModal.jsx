@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import { logApiError } from '@/lib/clientErrorLogger';
 
 export default function VerifiedVoterModal({ onClose, onVerified }) {
@@ -89,6 +90,7 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
       className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 px-4"
       role="dialog"
       aria-modal="true"
+      aria-label="Voter verification"
       aria-labelledby="voter-modal-title"
     >
       <div
@@ -149,9 +151,9 @@ export default function VerifiedVoterModal({ onClose, onVerified }) {
             </form>
             <p className="text-xs text-gray-700 mt-3 text-center">
               Already a registered supporter?{' '}
-              <a href="/auth/login" className="text-navy underline">
+              <Link href="/auth/login" className="text-navy underline">
                 Sign in
-              </a>
+              </Link>
             </p>
           </>
         )}

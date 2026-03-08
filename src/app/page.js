@@ -1,7 +1,9 @@
+import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Ear, ClipboardList, ShieldCheck } from 'lucide-react';
 import HomeServer from '../components/HomeServer';
+import { HomeSkeleton } from '../components/shared/Skeleton';
 import ConditionalDonateLink from '../components/ConditionalDonateLink';
 
 export default function Home() {
@@ -309,7 +311,9 @@ export default function Home() {
       </section>
 
       {/* Server-rendered sections (endorsements + Q&A for better LCP) */}
-      <HomeServer />
+      <Suspense fallback={<HomeSkeleton />}>
+        <HomeServer />
+      </Suspense>
 
       {/* CTA Section - Enhanced */}
       <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20">

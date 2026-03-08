@@ -1,4 +1,5 @@
 import Script from 'next/script';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Terms of Use — Doug Charles — Prosper Town Council, Place 5',
@@ -194,9 +195,9 @@ export default function TermsOfUse() {
           <li>
             <strong>Privacy:</strong> Your mobile information will not be sold or shared with third
             parties for promotional or marketing purposes. See our{' '}
-            <a href="/privacy" className="text-navy underline">
+            <Link href="/privacy" className="text-navy underline">
               Privacy Policy
-            </a>
+            </Link>
             .
           </li>
         </ul>
