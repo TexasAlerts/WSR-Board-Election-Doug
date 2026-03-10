@@ -45,7 +45,7 @@ export async function generateMetadata({ params }) {
 
     if (!res.ok) {
       return {
-        title: 'Poll Not Found — Doug Charles — Prosper Town Council, Place 5',
+        title: 'Poll Not Found — Doug Charles — Prosper, Texas Town Council, Place 5',
         description: 'This poll could not be found.',
         robots: 'noindex',
       };
@@ -55,14 +55,14 @@ export async function generateMetadata({ params }) {
 
     if (!data.ok || !data.data) {
       return {
-        title: 'Poll Not Found — Doug Charles — Prosper Town Council, Place 5',
+        title: 'Poll Not Found — Doug Charles — Prosper, Texas Town Council, Place 5',
         description: 'This poll could not be found.',
         robots: 'noindex',
       };
     }
 
     const poll = data.data;
-    const title = `${poll.title} — Polls — Doug Charles — Prosper Town Council, Place 5`;
+    const title = `${poll.title} — Polls — Doug Charles — Prosper, Texas Town Council, Place 5`;
     const description = poll.description
       ? poll.description.slice(0, 160)
       : `Vote on ${poll.title}. ${poll.total_votes} vote${poll.total_votes !== 1 ? 's' : ''} so far.`;
@@ -78,7 +78,7 @@ export async function generateMetadata({ params }) {
         title,
         description,
         url: canonical,
-        siteName: 'Doug Charles — Prosper Town Council, Place 5',
+        siteName: 'Doug Charles — Prosper, Texas Town Council, Place 5',
         locale: 'en_US',
         type: 'website',
         images: [
@@ -99,7 +99,7 @@ export async function generateMetadata({ params }) {
     };
   } catch (error) {
     return {
-      title: 'Poll — Doug Charles — Prosper Town Council, Place 5',
+      title: 'Poll — Doug Charles — Prosper, Texas Town Council, Place 5',
       description: 'View poll results and share your opinion.',
     };
   }

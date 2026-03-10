@@ -14,7 +14,9 @@ export default function Home() {
       <section className="hero-gradient text-center py-10 md:py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-2 sm:px-4 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div>
-            <h1 className="sr-only">Doug Charles — Prosper Town Council, Place 5</h1>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy mb-6">
+              Doug Charles — Prosper, Texas Town Council, Place 5
+            </h1>
             <Image
               src="/dc-logo.webp"
               alt=""

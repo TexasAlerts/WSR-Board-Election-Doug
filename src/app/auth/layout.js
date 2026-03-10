@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Account — Doug Charles — Prosper Town Council, Place 5',
+  title: 'Account — Doug Charles — Prosper, Texas Town Council, Place 5',
   description:
     'Sign in or register to engage with Doug Charles, Prosper Town Council Place 5.',
   alternates: {

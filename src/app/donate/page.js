@@ -14,8 +14,8 @@ const breadcrumbJsonLd = {
 };
 
 const SHARE_MESSAGE =
-  "Doug Charles — Prosper Town Council, Place 5! Common Sense leadership for ALL of Prosper at www.dougcharles.com";
-const SHARE_SUBJECT = 'Doug Charles — Prosper Town Council, Place 5';
+  "Doug Charles — Prosper, Texas Town Council, Place 5! Common Sense leadership for ALL of Prosper at www.dougcharles.com";
+const SHARE_SUBJECT = 'Doug Charles — Prosper, Texas Town Council, Place 5';
 
 export default function DonatePage() {
   return (

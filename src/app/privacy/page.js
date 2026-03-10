@@ -1,7 +1,7 @@
 import Script from 'next/script';
 
 export const metadata = {
-  title: 'Privacy Policy — Doug Charles — Prosper Town Council, Place 5',
+  title: 'Privacy Policy — Doug Charles — Prosper, Texas Town Council, Place 5',
   description:
     'Privacy policy for dougcharles.com covering data collection, cookies, SMS messaging, and your rights under the Texas Data Privacy and Security Act.',
   alternates: { canonical: '/privacy' },

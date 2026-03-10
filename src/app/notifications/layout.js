@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Notifications — Doug Charles — Prosper Town Council, Place 5',
+  title: 'Notifications — Doug Charles — Prosper, Texas Town Council, Place 5',
   description: 'Manage your notification preferences for dougcharles.com.',
   robots: {
     index: false,
