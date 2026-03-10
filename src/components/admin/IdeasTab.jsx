@@ -62,58 +62,69 @@ export default function IdeasTab({
                 </div>
               )}
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-700">{formatDate(idea.created_at)}</span>
-                {idea.status === 'pending' && (
-                  <div className="flex gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-700">{formatDate(idea.created_at)}</span>
+                  {idea.is_public === false && (
+                    <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-700 text-xs font-medium">
+                      Not visible
+                    </span>
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  {(idea.status === 'pending' || (idea.status === 'published' && idea.is_public === false)) && (
+                    <>
+                      <button
+                        onClick={async () => {
+                          const response = await showPrompt(
+                            idea.status === 'published' ? 'Re-publish Idea' : 'Publish Idea',
+                            'Your response (optional):'
+                          );
+                          handleIdeaAction(idea.id, 'publish', response);
+                        }}
+                        className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
+                      >
+                        <CheckCircle className="w-4 h-4" />
+                        {idea.status === 'published' ? 'Re-publish' : 'Publish'}
+                      </button>
+                      {idea.status === 'pending' && (
+                        <button
+                          onClick={async () => {
+                            const reason = await showPrompt(
+                              'Decline Idea',
+                              'Rejection reason (will be sent to user):'
+                            );
+                            if (reason) {
+                              handleIdeaAction(idea.id, 'reject', null, reason);
+                            }
+                          }}
+                          className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
+                        >
+                          <XCircle className="w-4 h-4" />
+                          Decline
+                        </button>
+                      )}
+                    </>
+                  )}
+                  {idea.status !== 'pending' && idea.status !== 'declined' && (
                     <button
                       onClick={async () => {
                         const response = await showPrompt(
-                          'Publish Idea',
-                          'Your response (optional):'
+                          'Respond to Idea',
+                          'Add/update response:',
+                          idea.admin_response || '',
+                          true
                         );
-                        handleIdeaAction(idea.id, 'publish', response);
-                      }}
-                      className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
-                    >
-                      <CheckCircle className="w-4 h-4" />
-                      Publish
-                    </button>
-                    <button
-                      onClick={async () => {
-                        const reason = await showPrompt(
-                          'Decline Idea',
-                          'Rejection reason (will be sent to user):'
-                        );
-                        if (reason) {
-                          handleIdeaAction(idea.id, 'reject', null, reason);
+                        if (response) {
+                          handleIdeaAction(idea.id, 'respond', response);
                         }
                       }}
-                      className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
+                      className="flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200"
                     >
-                      <XCircle className="w-4 h-4" />
-                      Decline
+                      <MessageSquare className="w-4 h-4" />
+                      Respond
                     </button>
-                  </div>
-                )}
-                {idea.status !== 'pending' && idea.status !== 'declined' && (
-                  <button
-                    onClick={async () => {
-                      const response = await showPrompt(
-                        'Respond to Idea',
-                        'Add/update response:',
-                        idea.admin_response || '',
-                        true
-                      );
-                      if (response) {
-                        handleIdeaAction(idea.id, 'respond', response);
-                      }
-                    }}
-                    className="flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200"
-                  >
-                    <MessageSquare className="w-4 h-4" />
-                    Respond
-                  </button>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           ))}
