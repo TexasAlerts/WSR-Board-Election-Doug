@@ -123,7 +123,7 @@ export default function IdeasTab({
                       </button>
                     </div>
                   )}
-                  {idea.status === 'published' && idea.is_public === true && (
+                  {idea.status === 'published' && (
                     <button
                       onClick={() => handleIdeaAction(idea.id, 'unpublish')}
                       className="flex items-center gap-1 px-3 py-1 bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200"
