@@ -154,13 +154,20 @@ export default function IdeasClient({ initialIdeas = [] }) {
     async function loadSupportedIdeas() {
       try {
         const res = await fetch('/api/ideas/my-support', { signal: controller.signal });
+        if (!res.ok) {
+          throw Object.assign(new Error(`HTTP ${res.status}`), { status: res.status });
+        }
         const data = await res.json();
         if (!controller.signal.aborted && data.ok) {
           setSupportedIdeas(data.data || {});
         }
       } catch (err) {
         if (err.name === 'AbortError') return;
-        await logApiError('/api/ideas/my-support', 'GET', err.status || 500, err.message, { context: 'loadSupportedIdeas' });
+        // Network failures on focus events are expected (e.g., tab restore, private relay)
+        // Only log server errors, not transient network issues
+        if (err.status && err.status >= 500) {
+          await logApiError('/api/ideas/my-support', 'GET', err.status, err.message, { context: 'loadSupportedIdeas' });
+        }
         setSupportedIdeas({});
       }
     }
