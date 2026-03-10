@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle, XCircle, MessageSquare, Loader2 } from 'lucide-react';
+import { CheckCircle, XCircle, MessageSquare, Loader2, EyeOff } from 'lucide-react';
 
 export default function IdeasTab({
   ideas,
@@ -64,19 +64,19 @@ export default function IdeasTab({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-700">{formatDate(idea.created_at)}</span>
-                  {idea.is_public !== true && (
+                  {idea.is_public !== true && idea.status !== 'pending' && (
                     <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-700 text-xs font-medium">
-                      Not visible
+                      Not visible — user chose private
                     </span>
                   )}
                 </div>
                 <div className="flex gap-2">
-                  {(idea.status === 'pending' || (idea.status === 'published' && idea.is_public !== true)) && (
+                  {idea.status === 'pending' && idea.is_public === true && (
                     <>
                       <button
                         onClick={async () => {
                           const response = await showPrompt(
-                            idea.status === 'published' ? 'Re-publish Idea' : 'Publish Idea',
+                            'Publish Idea',
                             'Your response (optional):'
                           );
                           handleIdeaAction(idea.id, 'publish', response);
@@ -84,26 +84,53 @@ export default function IdeasTab({
                         className="flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
                       >
                         <CheckCircle className="w-4 h-4" />
-                        {idea.status === 'published' ? 'Re-publish' : 'Publish'}
+                        Publish
                       </button>
-                      {idea.status === 'pending' && (
-                        <button
-                          onClick={async () => {
-                            const reason = await showPrompt(
-                              'Decline Idea',
-                              'Rejection reason (will be sent to user):'
-                            );
-                            if (reason) {
-                              handleIdeaAction(idea.id, 'reject', null, reason);
-                            }
-                          }}
-                          className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
-                        >
-                          <XCircle className="w-4 h-4" />
-                          Decline
-                        </button>
-                      )}
+                      <button
+                        onClick={async () => {
+                          const reason = await showPrompt(
+                            'Decline Idea',
+                            'Rejection reason (will be sent to user):'
+                          );
+                          if (reason) {
+                            handleIdeaAction(idea.id, 'reject', null, reason);
+                          }
+                        }}
+                        className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
+                      >
+                        <XCircle className="w-4 h-4" />
+                        Decline
+                      </button>
                     </>
+                  )}
+                  {idea.status === 'pending' && idea.is_public !== true && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-amber-600">User chose private — cannot publish</span>
+                      <button
+                        onClick={async () => {
+                          const reason = await showPrompt(
+                            'Decline Idea',
+                            'Rejection reason (will be sent to user):'
+                          );
+                          if (reason) {
+                            handleIdeaAction(idea.id, 'reject', null, reason);
+                          }
+                        }}
+                        className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
+                      >
+                        <XCircle className="w-4 h-4" />
+                        Decline
+                      </button>
+                    </div>
+                  )}
+                  {idea.status === 'published' && idea.is_public === true && (
+                    <button
+                      onClick={() => handleIdeaAction(idea.id, 'unpublish')}
+                      className="flex items-center gap-1 px-3 py-1 bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200"
+                    >
+                      <EyeOff className="w-4 h-4" />
+                      Unpublish
+                    </button>
                   )}
                   {idea.status !== 'pending' && idea.status !== 'declined' && (
                     <button

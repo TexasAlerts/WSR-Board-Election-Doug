@@ -91,7 +91,7 @@ async function postHandler(request) {
     if (action === 'publish') {
       const { data, error } = await supabase
         .from('ideas')
-        .update({ status: 'published', is_public: true, admin_response: admin_response || null })
+        .update({ status: 'published', admin_response: admin_response || null })
         .eq('id', id)
         .select('email, name, title')
         .single();
@@ -142,6 +142,34 @@ async function postHandler(request) {
           });
         });
       }
+    } else if (action === 'unpublish') {
+      const { data, error } = await supabase
+        .from('ideas')
+        .update({ is_public: false })
+        .eq('id', id)
+        .select('email, name, title')
+        .single();
+
+      if (error) {
+        return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
+      }
+
+      await logAudit({
+        eventType: 'IDEA_UNPUBLISHED',
+        supporterId: supporter.id,
+        targetId: id,
+        targetType: 'idea',
+        oldValues: { is_public: true },
+        newValues: { is_public: false },
+        details: {
+          ideaTitle: data?.title,
+          submitterName: data?.name,
+          unpublishedBy: `${supporter.first_name} ${supporter.last_name}`,
+        },
+        request,
+        requestBody: body,
+        responseStatus: 200,
+      });
     } else if (action === 'reject') {
       const { data, error } = await supabase
         .from('ideas')
