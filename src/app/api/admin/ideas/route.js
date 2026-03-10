@@ -91,7 +91,7 @@ async function postHandler(request) {
     if (action === 'publish') {
       const { data, error } = await supabase
         .from('ideas')
-        .update({ status: 'published', admin_response: admin_response || null })
+        .update({ status: 'published', is_public: true, admin_response: admin_response || null })
         .eq('id', id)
         .select('email, name, title')
         .single();

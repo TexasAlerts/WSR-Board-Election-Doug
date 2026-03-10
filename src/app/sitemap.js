@@ -2,27 +2,28 @@ import { getSupabase } from '../lib/supabase';
 
 export default async function sitemap() {
   const baseUrl = 'https://www.dougcharles.com';
+  const today = new Date();
 
-  // Routes with their last modification dates
+  // Routes with their priorities and change frequencies
   const routes = [
-    { path: '/', priority: 1.0, changeFrequency: 'weekly', lastMod: '2026-02-24' },
-    { path: '/about', priority: 0.9, changeFrequency: 'monthly', lastMod: '2026-02-24' },
-    { path: '/why', priority: 0.8, changeFrequency: 'monthly', lastMod: '2026-02-24' },
-    { path: '/priorities', priority: 0.9, changeFrequency: 'monthly', lastMod: '2026-02-24' },
-    { path: '/track-record', priority: 0.8, changeFrequency: 'monthly', lastMod: '2026-02-24' },
-    { path: '/endorsements', priority: 0.8, changeFrequency: 'weekly', lastMod: '2026-02-24' },
-    { path: '/qna', priority: 0.8, changeFrequency: 'weekly', lastMod: '2026-02-24' },
-    { path: '/polls', priority: 0.7, changeFrequency: 'weekly', lastMod: '2026-02-24' },
-    { path: '/ideas', priority: 0.7, changeFrequency: 'weekly', lastMod: '2026-02-24' },
-    { path: '/get-involved', priority: 0.9, changeFrequency: 'monthly', lastMod: '2026-02-24' },
-    { path: '/donate', priority: 0.8, changeFrequency: 'monthly', lastMod: '2026-02-24' },
-    { path: '/privacy', priority: 0.3, changeFrequency: 'yearly', lastMod: '2026-02-24' },
-    { path: '/terms', priority: 0.3, changeFrequency: 'yearly', lastMod: '2026-02-24' },
+    { path: '/', priority: 1.0, changeFrequency: 'weekly' },
+    { path: '/about', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/why', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/priorities', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/track-record', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/endorsements', priority: 0.8, changeFrequency: 'weekly' },
+    { path: '/qna', priority: 0.8, changeFrequency: 'weekly' },
+    { path: '/polls', priority: 0.7, changeFrequency: 'weekly' },
+    { path: '/ideas', priority: 0.7, changeFrequency: 'weekly' },
+    { path: '/get-involved', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/donate', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/privacy', priority: 0.3, changeFrequency: 'yearly' },
+    { path: '/terms', priority: 0.3, changeFrequency: 'yearly' },
   ];
 
-  const staticRoutes = routes.map(({ path, priority, changeFrequency, lastMod }) => ({
+  const staticRoutes = routes.map(({ path, priority, changeFrequency }) => ({
     url: `${baseUrl}${path}`,
-    lastModified: new Date(lastMod),
+    lastModified: today,
     changeFrequency,
     priority,
   }));

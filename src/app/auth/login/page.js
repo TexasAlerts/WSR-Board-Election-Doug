@@ -12,7 +12,7 @@ export default function LoginPage() {
   const { refreshAuth } = useAuth();
 
   useEffect(() => {
-    document.title = 'Sign In | Doug Charles — Prosper Town Council, Place 5';
+    document.title = 'Sign In | Doug Charles — Prosper, Texas Town Council, Place 5';
   }, []);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

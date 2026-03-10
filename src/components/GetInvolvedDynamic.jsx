@@ -11,8 +11,8 @@ import ActionCards from './ActionCards';
 import GetInvolvedForm from './GetInvolvedForm';
 
 const SHARE_MESSAGE =
-  "Check out Doug Charles — Prosper Town Council, Place 5! Common Sense leadership for ALL of Prosper at www.dougcharles.com";
-const SHARE_SUBJECT = 'Check out Doug Charles — Prosper Town Council, Place 5';
+  "Check out Doug Charles — Prosper, Texas Town Council, Place 5! Common Sense leadership for ALL of Prosper at www.dougcharles.com";
+const SHARE_SUBJECT = 'Check out Doug Charles — Prosper, Texas Town Council, Place 5';
 
 function GetInvolvedDynamicContent() {
   const { getToken, isReady } = useRecaptcha();

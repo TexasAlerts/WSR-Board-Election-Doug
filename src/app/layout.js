@@ -69,7 +69,7 @@ export const metadata = {
       'en-US': 'https://www.dougcharles.com',
     },
   },
-  title: 'Doug Charles — Prosper Town Council, Place 5',
+  title: 'Doug Charles — Prosper, Texas Town Council, Place 5',
   description:
     'Doug Charles, Prosper Town Council Place 5. 20-year resident, former P&Z Commissioner. Common Sense leadership. Listen. Plan. Protect.',
   icons: {
@@ -82,11 +82,11 @@ export const metadata = {
     apple: '/apple-touch-icon.png',
   },
   openGraph: {
-    title: 'Doug Charles — Prosper Town Council, Place 5',
+    title: 'Doug Charles — Prosper, Texas Town Council, Place 5',
     description:
       'Doug Charles, Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Preparing to serve with Common Sense leadership. Listen. Plan. Protect.',
     url: 'https://www.dougcharles.com',
-    siteName: 'Doug Charles — Prosper Town Council, Place 5',
+    siteName: 'Doug Charles — Prosper, Texas Town Council, Place 5',
     locale: 'en_US',
     type: 'website',
     images: [
@@ -94,7 +94,7 @@ export const metadata = {
         url: 'https://www.dougcharles.com/dc-preview.webp',
         width: 1200,
         height: 630,
-        alt: 'Doug Charles — Prosper Town Council, Place 5 — A Common Sense Leader for ALL of Prosper',
+        alt: 'Doug Charles — Prosper, Texas Town Council, Place 5 — A Common Sense Leader for ALL of Prosper',
       },
     ],
   },
@@ -111,7 +111,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Doug Charles — Prosper Town Council, Place 5',
+    title: 'Doug Charles — Prosper, Texas Town Council, Place 5',
     description: 'A Common Sense Leader for ALL of Prosper',
     images: ['https://www.dougcharles.com/dc-preview.webp'],
   },
@@ -181,7 +181,7 @@ export default function RootLayout({ children }) {
                 {
                   "@type": "WebSite",
                   "@id": "https://www.dougcharles.com/#website",
-                  "name": "Doug Charles — Prosper Town Council, Place 5",
+                  "name": "Doug Charles — Prosper, Texas Town Council, Place 5",
                   "url": "https://www.dougcharles.com",
                   "description": "Personal website for Doug Charles, incoming Prosper Town Council Member, Place 5. Preparing to serve with Common Sense leadership for ALL of Prosper.",
                   "publisher": {
@@ -318,7 +318,7 @@ export default function RootLayout({ children }) {
                   </a>
                 </div>
                 <p>
-                  © {new Date().getFullYear()} Doug Charles — Prosper Town Council, Place 5
+                  © {new Date().getFullYear()} Doug Charles — Prosper, Texas Town Council, Place 5
                   {' | '}
                   <Link href="/privacy" className="text-white underline hover:text-gray-300">
                     Privacy Policy

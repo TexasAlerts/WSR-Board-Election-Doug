@@ -7,7 +7,7 @@ import { validatePhoneNumber } from '../../../lib/phoneValidation';
 
 export default function RegisterPage() {
   useEffect(() => {
-    document.title = 'Register — Doug Charles — Prosper Town Council, Place 5';
+    document.title = 'Register — Doug Charles — Prosper, Texas Town Council, Place 5';
   }, []);
 
   const [formData, setFormData] = useState({
