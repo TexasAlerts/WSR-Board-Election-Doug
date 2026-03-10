@@ -32,7 +32,7 @@ export default function HomepageSignup() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: 'updates',
-          name: '',
+          name: 'Newsletter Subscriber',
           email: email.trim(),
           phone: null,
           message: '',
