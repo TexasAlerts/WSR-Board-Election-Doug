@@ -24,6 +24,9 @@ async function patchHandler(request, { params }) {
 
   try {
     const supabase = getSupabase();
+    if (!supabase) {
+      return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+    }
 
     // Get voter info for logging
     const { data: voter } = await supabase
@@ -87,6 +90,9 @@ async function deleteHandler(request, { params }) {
 
   try {
     const supabase = getSupabase();
+    if (!supabase) {
+      return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+    }
 
     // Get voter info for logging
     const { data: voter } = await supabase

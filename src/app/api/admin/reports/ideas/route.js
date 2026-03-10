@@ -11,6 +11,9 @@ export async function GET(request) {
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const { searchParams } = new URL(request.url);
   const category = searchParams.get('category');
   const status = searchParams.get('status');

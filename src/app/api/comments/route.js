@@ -56,6 +56,9 @@ import { withCSRF } from '../../../lib/withCSRF';
 // GET: Fetch comments for a poll or idea
 export async function GET(request) {
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const { searchParams } = new URL(request.url);
   const pollId = searchParams.get('poll_id');
   const ideaId = searchParams.get('idea_id');
@@ -151,6 +154,9 @@ export async function GET(request) {
 // POST: Create a new comment (supporters only)
 async function postHandler(request) {
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   if (!rateLimit(`comment-${ip}`, 10, 60000)) {

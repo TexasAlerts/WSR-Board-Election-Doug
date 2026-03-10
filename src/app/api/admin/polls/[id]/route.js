@@ -14,6 +14,9 @@ export async function GET(request, { params }) {
 
   const { id } = await params;
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
 
   try {
     const { data: poll, error } = await supabase
@@ -104,6 +107,9 @@ async function putHandler(request, { params }) {
 
   const { id } = await params;
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
 
   try {
     const schema = z.object({
@@ -250,6 +256,9 @@ async function deleteHandler(request, { params }) {
 
   const { id } = await params;
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
 
   try {
     // Get poll for logging

@@ -13,6 +13,9 @@ export const revalidate = 0;
 
 export async function GET(request) {
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const supporter = await getCurrentSupporter();
   const isAuthenticated = !!supporter;
   const verifiedVoter = await getVerifiedVoter();

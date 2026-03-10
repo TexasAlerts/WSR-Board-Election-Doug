@@ -43,6 +43,9 @@ function rateLimitBySupporterId(supporterId) {
 
 async function postHandler(request) {
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   // Rate limit: 3 SMS per IP per 10 minutes

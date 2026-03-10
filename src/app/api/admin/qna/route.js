@@ -12,6 +12,9 @@ export async function GET(req) {
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const { searchParams } = new URL(req.url);
   const status = searchParams.get('status') || 'pending';
 
@@ -61,6 +64,9 @@ async function postHandler(req) {
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
 
   try {
     const body = await req.json();

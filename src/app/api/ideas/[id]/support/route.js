@@ -10,6 +10,9 @@ const idSchema = z.string().uuid('Invalid idea ID format');
 
 async function postHandler(request, { params }) {
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const { id } = await params;
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
@@ -104,6 +107,9 @@ async function postHandler(request, { params }) {
 
 async function deleteHandler(request, { params }) {
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const { id } = await params;
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 

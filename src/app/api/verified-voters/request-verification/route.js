@@ -38,6 +38,9 @@ export async function POST(request) {
     const { email, name } = parsed.data;
     const normalizedEmail = email.toLowerCase().trim();
     const supabase = getSupabase();
+    if (!supabase) {
+      return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+    }
 
     // Check if already a registered supporter with verified email
     const { data: supporter } = await supabase

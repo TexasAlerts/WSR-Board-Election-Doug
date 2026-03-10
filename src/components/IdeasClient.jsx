@@ -91,12 +91,15 @@ export default function IdeasClient({ initialIdeas = [] }) {
     try {
       const url = category === 'all' ? '/api/ideas' : `/api/ideas?category=${category}`;
       const res = await fetch(url);
+      if (!res.ok) throw Object.assign(new Error(`HTTP ${res.status}`), { status: res.status });
       const data = await res.json();
       if (data.ok) {
         setIdeas(data.data || []);
       }
     } catch (err) {
-      await logApiError('/api/ideas', 'GET', err.status || 500, err.message, { context: 'loadIdeas', category });
+      if (err.status && err.status >= 500) {
+        await logApiError('/api/ideas', 'GET', err.status, err.message, { context: 'loadIdeas', category });
+      }
     } finally {
       setLoading(false);
     }
@@ -117,6 +120,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
     async function checkAuth() {
       try {
         const res = await fetch('/api/supporter/me', { signal: controller.signal });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         if (controller.signal.aborted) return;
         if (data.ok && data.data) {
@@ -139,6 +143,7 @@ export default function IdeasClient({ initialIdeas = [] }) {
       // If not authenticated, check for verified voter cookie (for pre-filling support email)
       try {
         const voterRes = await fetch('/api/verified-voters/me', { signal: controller.signal });
+        if (!voterRes.ok) throw new Error(`HTTP ${voterRes.status}`);
         const voterData = await voterRes.json();
         if (!controller.signal.aborted && voterData.ok && voterData.data) {
           setSupportEmail(voterData.data.email);

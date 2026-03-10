@@ -36,6 +36,7 @@ export function useCommentThread(ideaId) {
           }),
         });
 
+        if (!res.ok) throw Object.assign(new Error(`HTTP ${res.status}`), { status: res.status });
         const result = await res.json();
 
         if (result.ok) {
@@ -44,6 +45,7 @@ export function useCommentThread(ideaId) {
           setCommentForm({ content: '' });
 
           const ideaRes = await fetch(`/api/ideas/${ideaId}`);
+          if (!ideaRes.ok) throw Object.assign(new Error(`HTTP ${ideaRes.status}`), { status: ideaRes.status });
           const ideaData = await ideaRes.json();
           if (ideaData.ok) {
             return { ok: true, idea: ideaData.data };

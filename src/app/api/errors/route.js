@@ -75,6 +75,9 @@ export async function POST(request) {
       const sessionCookie = cookieStore.get('session_token');
       if (sessionCookie?.value) {
         const supabase = getSupabase();
+        if (!supabase) {
+          return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+        }
         const { data: session } = await supabase
           .from('sessions')
           .select('supporter_id')

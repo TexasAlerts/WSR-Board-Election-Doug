@@ -27,6 +27,9 @@ const DEFAULTS = Object.fromEntries(ALL_PREF_FIELDS.map((f) => [f, true]));
 
 export async function GET() {
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const supporter = await getCurrentSupporter();
   const voter = !supporter ? await getVerifiedVoter() : null;
 
@@ -61,6 +64,9 @@ async function patchHandler(request) {
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const supporter = await getCurrentSupporter();
   const voter = !supporter ? await getVerifiedVoter() : null;
 
