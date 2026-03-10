@@ -65,6 +65,9 @@ import { ensureVerifiedVoter, getVerifiedVoterByEmail } from '../../../lib/verif
 
 export async function POST(req) {
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
   if (!rateLimit(ip)) {
     return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });

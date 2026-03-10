@@ -12,6 +12,7 @@ export function SiteConfigProvider({ children }) {
     async function fetchSettings() {
       try {
         const res = await fetch('/api/settings');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         if (data.ok && data.settings) {
           const val = data.settings.donations_enabled;
@@ -29,6 +30,7 @@ export function SiteConfigProvider({ children }) {
   const refreshConfig = async () => {
     try {
       const res = await fetch('/api/settings');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       if (data.ok && data.settings) {
         const val = data.settings.donations_enabled;

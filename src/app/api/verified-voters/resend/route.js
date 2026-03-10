@@ -25,6 +25,9 @@ export async function POST(request) {
 
     const normalizedEmail = parsed.data.email.toLowerCase().trim();
     const supabase = getSupabase();
+    if (!supabase) {
+      return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+    }
 
     const { data: voter } = await supabase
       .from('verified_voters')

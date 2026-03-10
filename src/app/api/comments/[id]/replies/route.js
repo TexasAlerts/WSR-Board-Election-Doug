@@ -6,6 +6,9 @@ import { logError, ErrorTypes } from '../../../../../lib/logging';
 // GET: Fetch replies for a comment (recursive threading)
 export async function GET(request, { params }) {
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const { id: parentId } = await params;
   const supporter = await getCurrentSupporter();
 

@@ -17,6 +17,9 @@ async function postHandler(req) {
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
 
   try {
     // Get all endorsements that don't have a corresponding supporter

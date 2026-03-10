@@ -66,6 +66,9 @@ const registerSchema = z.object({
 
 export async function POST(request) {
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   // Rate limit: 5 registrations per IP per hour

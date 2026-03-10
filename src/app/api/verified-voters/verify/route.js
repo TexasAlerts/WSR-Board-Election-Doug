@@ -29,6 +29,9 @@ export async function POST(request) {
 
     const { token } = parsed.data;
     const supabase = getSupabase();
+    if (!supabase) {
+      return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+    }
 
     const { data: voter, error } = await supabase
       .from('verified_voters')

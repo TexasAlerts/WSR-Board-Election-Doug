@@ -17,6 +17,7 @@ export default function SettingsTab({ csrfToken }) {
     setLoading(true);
     try {
       const res = await fetch('/api/admin/settings');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       if (data.ok) {
         setSettings(data.data || []);
@@ -47,6 +48,7 @@ export default function SettingsTab({ csrfToken }) {
         }),
       });
 
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       if (data.ok) {
         setMessage('Setting updated successfully');

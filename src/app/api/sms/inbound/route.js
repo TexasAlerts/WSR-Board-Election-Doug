@@ -84,6 +84,9 @@ export async function POST(request) {
   }
 
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   try {
     // Get raw body for signature verification
     const rawBody = await request.text();

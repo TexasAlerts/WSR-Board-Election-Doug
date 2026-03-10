@@ -5,6 +5,9 @@ import { logError, ErrorTypes } from '../../../../lib/logging';
 
 export async function GET(request) {
   const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
+  }
   try {
     const supporter = await getCurrentSupporter();
     if (!supporter) {
