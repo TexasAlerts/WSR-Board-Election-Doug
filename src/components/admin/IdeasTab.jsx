@@ -64,14 +64,14 @@ export default function IdeasTab({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-700">{formatDate(idea.created_at)}</span>
-                  {idea.is_public === false && (
+                  {idea.is_public !== true && (
                     <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-700 text-xs font-medium">
                       Not visible
                     </span>
                   )}
                 </div>
                 <div className="flex gap-2">
-                  {(idea.status === 'pending' || (idea.status === 'published' && idea.is_public === false)) && (
+                  {(idea.status === 'pending' || (idea.status === 'published' && idea.is_public !== true)) && (
                     <>
                       <button
                         onClick={async () => {
