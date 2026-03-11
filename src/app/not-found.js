@@ -45,7 +45,7 @@ export default function NotFound() {
           About Doug
         </Link>
         <Link href="/get-involved" className="btn-outline">
-          Get Involved
+          Engage
         </Link>
       </div>
     </div>

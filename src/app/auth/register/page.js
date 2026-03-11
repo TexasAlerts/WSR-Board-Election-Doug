@@ -7,7 +7,7 @@ import { validatePhoneNumber } from '../../../lib/phoneValidation';
 
 export default function RegisterPage() {
   useEffect(() => {
-    document.title = 'Register — Doug Charles — Prosper, Texas Town Council, Place 5';
+    document.title = 'Create an Account — Doug Charles — Prosper, Texas Town Council, Place 5';
   }, []);
 
   const [formData, setFormData] = useState({
@@ -21,6 +21,11 @@ export default function RegisterPage() {
     zipCode: '',
     emailConsent: true,
     smsConsent: true,
+    engagementPreferences: {
+      updates: true,
+      host_event: false,
+      volunteer: false,
+    },
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -154,9 +159,9 @@ export default function RegisterPage() {
   return (
     <div className="max-w-lg mx-auto">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-navy mb-2">Become a Supporter</h1>
+        <h1 className="text-3xl font-bold text-navy mb-2">Create an Account</h1>
         <p className="text-gray-600">
-          Join our community to vote on polls, share ideas, and stay informed.
+          Join to participate in polls, share ideas, and stay connected with your councilmember.
         </p>
       </div>
 
@@ -406,6 +411,62 @@ export default function RegisterPage() {
               </Link>
               .
             </span>
+          </label>
+        </fieldset>
+
+        {/* Engagement Preferences */}
+        <fieldset className="space-y-3 pt-4 border-t">
+          <legend className="text-sm font-medium text-gray-700">How would you like to engage?</legend>
+          <label className="flex items-start gap-3 cursor-pointer min-h-[44px]">
+            <input
+              type="checkbox"
+              checked={formData.engagementPreferences.updates}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  engagementPreferences: { ...prev.engagementPreferences, updates: e.target.checked },
+                }))
+              }
+              className="mt-0.5 w-5 h-5 min-w-[20px] text-navy rounded focus:ring-navy focus:ring-2"
+            />
+            <div>
+              <span className="text-sm font-medium text-gray-700">Community Updates</span>
+              <p className="text-xs text-gray-500">Get news and updates via email</p>
+            </div>
+          </label>
+          <label className="flex items-start gap-3 cursor-pointer min-h-[44px]">
+            <input
+              type="checkbox"
+              checked={formData.engagementPreferences.host_event}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  engagementPreferences: { ...prev.engagementPreferences, host_event: e.target.checked },
+                }))
+              }
+              className="mt-0.5 w-5 h-5 min-w-[20px] text-navy rounded focus:ring-navy focus:ring-2"
+            />
+            <div>
+              <span className="text-sm font-medium text-gray-700">Meet Your Councilmember</span>
+              <p className="text-xs text-gray-500">Request a conversation about community issues</p>
+            </div>
+          </label>
+          <label className="flex items-start gap-3 cursor-pointer min-h-[44px]">
+            <input
+              type="checkbox"
+              checked={formData.engagementPreferences.volunteer}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  engagementPreferences: { ...prev.engagementPreferences, volunteer: e.target.checked },
+                }))
+              }
+              className="mt-0.5 w-5 h-5 min-w-[20px] text-navy rounded focus:ring-navy focus:ring-2"
+            />
+            <div>
+              <span className="text-sm font-medium text-gray-700">Community Involvement</span>
+              <p className="text-xs text-gray-500">Help with community events and outreach</p>
+            </div>
           </label>
         </fieldset>
 

@@ -1,32 +1,21 @@
 'use client';
 
 import Link from 'next/link';
-import { useSiteConfig } from '../context/SiteConfigContext';
 
 const actionCards = [
   {
     id: 'updates',
     icon: '📬',
-    title: 'Stay Informed',
-    description: 'Get community news and updates delivered to your inbox',
+    title: 'Community Updates',
+    description: 'Get news and updates delivered to your inbox',
   },
   {
-    id: 'yard_sign',
-    icon: '🏠',
-    title: 'Request a Yard Sign',
-    description: 'Show your support in your neighborhood',
-  },
-  {
-    id: 'volunteer',
-    icon: '🤝',
-    title: 'Volunteer Your Time',
-    description: 'Help with community outreach and events',
-  },
-  {
-    id: 'host_event',
-    icon: '☕',
-    title: 'Meet with Doug',
-    description: "Schedule a conversation about Prosper's future",
+    id: 'register',
+    icon: '👤',
+    title: 'Create an Account',
+    description: 'Participate in polls, share ideas, and stay connected',
+    isLink: true,
+    href: '/auth/register',
   },
   {
     id: 'endorsement',
@@ -35,25 +24,23 @@ const actionCards = [
     description: 'Add your name to the list of supporters',
   },
   {
-    id: 'donate',
-    icon: '💪',
-    title: 'Make a Donation',
-    description: 'Support community engagement efforts',
-    isLink: true,
-    href: '/donate',
+    id: 'host_event',
+    icon: '☕',
+    title: 'Meet Your Councilmember',
+    description: 'Schedule a conversation about community issues',
+  },
+  {
+    id: 'volunteer',
+    icon: '🤝',
+    title: 'Community Involvement',
+    description: 'Help with community events and outreach',
   },
 ];
 
 export default function ActionCards({ selectedAction, onCardClick }) {
-  const { donationsEnabled } = useSiteConfig();
-
-  const visibleCards = actionCards.filter(
-    (card) => card.id !== 'donate' || donationsEnabled
-  );
-
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-      {visibleCards.map((card) =>
+      {actionCards.map((card) =>
         card.isLink ? (
           <Link
             key={card.id}

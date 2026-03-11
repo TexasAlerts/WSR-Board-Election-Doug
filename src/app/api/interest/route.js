@@ -8,7 +8,7 @@
  *
  * Request Body:
  * - type: string (optional, default 'updates') - Interest type
- *   Values: 'volunteer', 'yard_sign', 'host_event', 'donate', 'updates'
+ *   Values: 'volunteer', 'host_event', 'donate', 'updates'
  * - name: string (1-200 chars) - Full name
  * - email: string (valid email, max 200 chars)
  * - phone: string (optional, max 200 chars)
@@ -75,7 +75,7 @@ export async function POST(req) {
   try {
     const schema = z.object({
       type: z
-        .enum(['updates', 'volunteer', 'donate', 'other', 'yard_sign', 'host_event'])
+        .enum(['updates', 'volunteer', 'donate', 'other', 'host_event'])
         .optional()
         .default('updates'),
       name: z.string().min(1, 'Name is required').max(200),

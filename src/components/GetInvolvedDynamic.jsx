@@ -11,8 +11,8 @@ import ActionCards from './ActionCards';
 import GetInvolvedForm from './GetInvolvedForm';
 
 const SHARE_MESSAGE =
-  "Check out Doug Charles — Prosper, Texas Town Council, Place 5! Common Sense leadership for ALL of Prosper at www.dougcharles.com";
-const SHARE_SUBJECT = 'Check out Doug Charles — Prosper, Texas Town Council, Place 5';
+  "Stay connected with Doug Charles, Prosper Town Council Place 5. Share your ideas and help shape our community's future at www.dougcharles.com";
+const SHARE_SUBJECT = 'Doug Charles — Prosper Town Council, Place 5';
 
 function GetInvolvedDynamicContent() {
   const { getToken, isReady } = useRecaptcha();
@@ -162,8 +162,8 @@ function GetInvolvedDynamicContent() {
       {/* Action Cards */}
       <section id="meeting" className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 scroll-mt-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="section-title text-center mb-4">Choose How You'd Like to Help</h2>
-          <p className="section-subtitle text-center mb-12">Every action makes a difference</p>
+          <h2 className="section-title text-center mb-4">Choose How You&apos;d Like to Engage</h2>
+          <p className="section-subtitle text-center mb-12">Stay informed and connected with your community</p>
 
           <ActionCards selectedAction={selectedAction} onCardClick={handleCardClick} />
         </div>
@@ -173,7 +173,7 @@ function GetInvolvedDynamicContent() {
       <section className="py-12 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-navy mb-4">
-            Why Your Support Matters
+            Why Your Voice Matters
           </h2>
           <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
             Your voice shapes Prosper&apos;s future. Stay connected, share your ideas, and help build

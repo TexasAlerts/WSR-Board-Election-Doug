@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
-import ConditionalDonateLink from '../../components/ConditionalDonateLink';
+
 
 
 const breadcrumbJsonLd = {
@@ -437,14 +437,14 @@ export default function TrackRecordPage() {
       {/* CTA */}
       <section className="cta-gradient text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-6">Ready to Get Involved?</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6">Ready to Engage?</h2>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/get-involved" className="btn-white">
-              Get Involved
+              Engage
             </Link>
-            <ConditionalDonateLink className="btn-secondary">
-              Donate
-            </ConditionalDonateLink>
+            <Link href="/auth/register" className="btn-secondary">
+              Create an Account
+            </Link>
           </div>
         </div>
       </section>

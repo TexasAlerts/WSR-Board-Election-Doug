@@ -113,7 +113,7 @@ export async function sendVerificationEmail(email, name, token) {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #1e3a5f;">Welcome, ${escapeHtml(name)}!</h2>
-          <p>Thank you for signing up as a supporter. Please verify your email address to continue.</p>
+          <p>Thank you for joining the community. Please verify your email address to continue.</p>
           <p style="margin: 30px 0;">
             <a href="${verifyUrl}" style="background-color: #c41e3a; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
               Verify Email & Create Password
@@ -218,10 +218,10 @@ export async function sendWelcomeEmail(email, name) {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #1e3a5f;">Welcome, ${escapeHtml(name)}!</h2>
-          <p>Your account has been verified and you're now an official supporter!</p>
-          <p>As a supporter, you can:</p>
+          <p>Your account has been verified and your account is active!</p>
+          <p>As a member, you can:</p>
           <ul>
-            <li>Vote on all polls (public and supporter-only)</li>
+            <li>Vote on all polls (public and member-only)</li>
             <li>Comment on polls and ideas</li>
             <li>Submit and vote on community ideas</li>
             <li>Receive updates from dougcharles.com</li>
@@ -428,10 +428,10 @@ export async function sendAdminNewRegistrationEmail(supporter) {
     const { data, error } = await client.emails.send({
       from: FROM_EMAIL,
       to: adminEmail,
-      subject: `New Supporter: ${escapeHtml(supporter.first_name)} ${escapeHtml(supporter.last_name)}`,
+      subject: `New Member: ${escapeHtml(supporter.first_name)} ${escapeHtml(supporter.last_name)}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1e3a5f;">New Supporter Registration</h2>
+          <h2 style="color: #1e3a5f;">New Member Registration</h2>
           <p><strong>Name:</strong> ${escapeHtml(supporter.first_name)} ${escapeHtml(supporter.last_name)}</p>
           <p><strong>Email:</strong> ${escapeHtml(supporter.email)}</p>
           <p><strong>Phone:</strong> ${escapeHtml(supporter.phone)}</p>
