@@ -48,7 +48,7 @@ export async function POST(request) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   // Rate limit: 10 attempts per IP per 15 minutes
-  if (!rateLimit(`login-${ip}`, 10, 900000)) {
+  if (!(await rateLimit(`login-${ip}`, 10, 900000))) {
     return NextResponse.json(
       { ok: false, error: 'Too many login attempts. Please try again later.' },
       { status: 429 }

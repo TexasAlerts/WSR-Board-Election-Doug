@@ -44,7 +44,7 @@ export async function POST(req) {
     return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
   }
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
-  if (!rateLimit(ip)) {
+  if (!(await rateLimit(ip))) {
     return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });
   }
   try {
@@ -252,7 +252,7 @@ export async function POST(req) {
       sendNotificationEmail(
         'New endorsement submitted',
         `Name: ${fullName}\nEmail: ${normalizedEmail}\nPhone: ${formattedPhone}\nAddress: ${streetAddress}, ${zipCode}\nMessage: ${message || ''}\nSupporter ID: ${supporterId || 'Not created'}\n${supporterId ? 'Verification email sent: YES' : 'Verification email sent: NO'}`
-      ).catch(() => {}),
+      ).catch((err) => console.error('Background task failed:', err.message)),
     ]);
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {

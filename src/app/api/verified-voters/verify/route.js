@@ -13,7 +13,7 @@ export async function POST(request) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   // Rate limit: 10 attempts per minute per IP to prevent token enumeration
-  if (!rateLimit(ip, 10, 60000)) {
+  if (!(await rateLimit(ip, 10, 60000))) {
     return NextResponse.json(
       { ok: false, error: 'Too many verification attempts. Please wait a minute.' },
       { status: 429 }
@@ -54,10 +54,13 @@ export async function POST(request) {
 
     // Mark as verified
     const now = new Date().toISOString();
-    await supabase.from('verified_voters').update({ verified_at: now }).eq('id', voter.id);
+    const { error: updateError } = await supabase.from('verified_voters').update({ verified_at: now }).eq('id', voter.id);
+    if (updateError) {
+      throw new Error(`Failed to mark voter verified: ${updateError.message}`);
+    }
 
     // Create default notification preferences
-    await supabase.from('notification_preferences').upsert(
+    const { error: upsertError } = await supabase.from('notification_preferences').upsert(
       {
         email: voter.email,
         email_on_comment_moderation: true,
@@ -67,6 +70,9 @@ export async function POST(request) {
       },
       { onConflict: 'email' }
     );
+    if (upsertError) {
+      console.error('Failed to create notification preferences:', upsertError.message);
+    }
 
     // Link all pending submissions to this verified voter
     const linkedCounts = await linkPendingSubmissions(voter.id, voter.email);

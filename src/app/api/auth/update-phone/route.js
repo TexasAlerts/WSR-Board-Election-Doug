@@ -15,7 +15,7 @@ const updatePhoneSchema = z.object({
 async function postHandler(request) {
   // Rate limit: 5 requests per 10 minutes per IP
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
-  if (!rateLimit(`update-phone:${ip}`, 5, 10 * 60 * 1000)) {
+  if (!(await rateLimit(`update-phone:${ip}`, 5, 10 * 60 * 1000))) {
     return NextResponse.json(
       { ok: false, error: 'Too many requests. Please try again later.' },
       { status: 429 }

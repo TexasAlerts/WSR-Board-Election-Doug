@@ -63,7 +63,7 @@ async function postHandler(request) {
 
   // Rate limit: 5 broadcasts per hour per admin
   const rateLimitKey = `broadcast-${supporter.id}`;
-  if (!rateLimit(rateLimitKey, 5, 3600000)) {
+  if (!(await rateLimit(rateLimitKey, 5, 3600000))) {
     return NextResponse.json(
       { ok: false, error: 'Too many broadcasts. Maximum 5 per hour.' },
       { status: 429 }

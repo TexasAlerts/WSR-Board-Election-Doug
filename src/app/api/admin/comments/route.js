@@ -206,11 +206,11 @@ async function putHandler(request) {
         oldComment.content.substring(0, 200),
         contextTitle || 'a discussion',
         contextUrl
-      ).catch(() => {});
+      ).catch((err) => console.error('Background task failed:', err.message));
 
       // Notify other participants
       const fullComment = { ...oldComment, id, display_name: oldComment.name };
-      notifyParticipantsOfNewComment(fullComment).catch(() => {});
+      notifyParticipantsOfNewComment(fullComment).catch((err) => console.error('Background task failed:', err.message));
 
       // If it's a reply, notify parent author
       const { data: commentWithParent } = await supabase

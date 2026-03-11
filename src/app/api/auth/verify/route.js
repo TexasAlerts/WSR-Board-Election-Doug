@@ -18,7 +18,7 @@ export async function GET(request) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   // Rate limit: 10 token validations per minute per IP
-  if (!rateLimit(ip, 10, 60000)) {
+  if (!(await rateLimit(ip, 10, 60000))) {
     return NextResponse.json(
       { ok: false, error: 'Too many verification attempts. Please wait.' },
       { status: 429 }

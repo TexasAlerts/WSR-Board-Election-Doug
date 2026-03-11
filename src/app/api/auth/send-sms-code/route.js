@@ -49,7 +49,7 @@ async function postHandler(request) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   // Rate limit: 3 SMS per IP per 10 minutes
-  if (!rateLimit(`sms-${ip}`, 3, 600000)) {
+  if (!(await rateLimit(`sms-${ip}`, 3, 600000))) {
     return NextResponse.json(
       { ok: false, error: 'Too many requests. Please wait before requesting another code.' },
       { status: 429 }

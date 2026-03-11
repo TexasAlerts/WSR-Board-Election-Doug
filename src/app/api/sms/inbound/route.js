@@ -79,7 +79,7 @@ export async function POST(request) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   // Rate limit: 100 requests per minute per IP to prevent webhook flooding
-  if (!rateLimit(ip, 100, 60000)) {
+  if (!(await rateLimit(ip, 100, 60000))) {
     return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
   }
 
@@ -203,7 +203,7 @@ export async function POST(request) {
       endpoint: '/api/sms/inbound',
       method: 'POST',
       request,
-    }).catch(() => {});
+    }).catch((err) => console.error('Background task failed:', err.message));
     return NextResponse.json({ ok: true });
   }
 }
