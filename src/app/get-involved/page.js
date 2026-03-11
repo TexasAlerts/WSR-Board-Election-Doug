@@ -7,7 +7,7 @@ const breadcrumbJsonLd = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.dougcharles.com' },
-    { '@type': 'ListItem', position: 2, name: 'Get Involved', item: 'https://www.dougcharles.com/get-involved' },
+    { '@type': 'ListItem', position: 2, name: 'Engage', item: 'https://www.dougcharles.com/get-involved' },
   ],
 };
 
@@ -32,11 +32,11 @@ export default function GetInvolvedPage() {
         />
         <div className="relative z-10">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy mb-4">
-            Get Involved
+            Engage
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Building <strong className="text-navy">Common Sense</strong> leadership for{' '}
-            <strong className="text-prosper-red">ALL</strong> of Prosper
+            Stay connected and help shape Prosper&apos;s future with{' '}
+            <strong className="text-navy">Common Sense</strong> leadership
           </p>
         </div>
       </section>

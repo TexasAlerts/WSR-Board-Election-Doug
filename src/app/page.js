@@ -4,8 +4,6 @@ import Link from 'next/link';
 import { Ear, ClipboardList, ShieldCheck } from 'lucide-react';
 import HomeServer from '../components/HomeServer';
 import { HomeSkeleton } from '../components/shared/Skeleton';
-import ConditionalDonateLink from '../components/ConditionalDonateLink';
-import HomepageSignup from '../components/HomepageSignup';
 
 export default function Home() {
   return (
@@ -54,7 +52,7 @@ export default function Home() {
                 href="/get-involved"
                 className="btn-primary text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto text-center"
               >
-                Get Involved
+                Engage
               </Link>
               <Link
                 href="/about"
@@ -301,7 +299,7 @@ export default function Home() {
                 <strong className="text-prosper-red">
                   Whether you&apos;ve been here 20 years or 2 months, you deserve a voice.
                 </strong>{' '}
-                That&apos;s why I ran—and why I&apos;m preparing to serve.
+                That&apos;s why I ran—and why I&apos;m honored to serve.
               </p>
               <div className="pt-2">
                 <Link href="/about" className="btn-outline">
@@ -324,24 +322,23 @@ export default function Home() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">Stay Connected</h2>
 
           <p className="text-xl text-white/90 mb-10 leading-relaxed">
-            I&apos;m honored to have been elected to serve Prosper on the Town Council. Your voice matters—stay involved,
+            I&apos;m honored to serve Prosper on the Town Council. Your voice matters—stay involved,
             share your ideas, and help shape our community&apos;s future.
           </p>
 
-          <HomepageSignup />
-
-          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4 sm:px-0 mt-8">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4 sm:px-0">
             <Link
-              href="/get-involved"
+              href="/auth/register"
               className="btn-white text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto text-center"
             >
-              Get Involved
+              Create an Account
             </Link>
-            <ConditionalDonateLink
+            <Link
+              href="/get-involved"
               className="btn-secondary text-base sm:text-lg px-8 sm:px-10 py-4 w-full sm:w-auto text-center"
             >
-              Donate
-            </ConditionalDonateLink>
+              Engage
+            </Link>
           </div>
         </div>
       </section>

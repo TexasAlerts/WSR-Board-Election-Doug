@@ -85,10 +85,9 @@ export default function GetInvolvedForm({
 
   const getFormTitle = () => {
     const actionTitles = {
-      updates: 'Stay Informed',
-      yard_sign: 'Request a Yard Sign',
-      volunteer: 'Volunteer Your Time',
-      host_event: 'Meet with Doug',
+      updates: 'Community Updates',
+      volunteer: 'Community Involvement',
+      host_event: 'Meet Your Councilmember',
       endorsement: 'Endorse Doug',
     };
     return actionTitles[selectedAction] || '';
@@ -97,7 +96,6 @@ export default function GetInvolvedForm({
   const getFormIcon = () => {
     const actionIcons = {
       updates: '📬',
-      yard_sign: '🏠',
       volunteer: '🤝',
       host_event: '☕',
       endorsement: '✓',
@@ -108,7 +106,6 @@ export default function GetInvolvedForm({
   const getSubmitLabel = () => {
     const labels = {
       updates: 'Subscribe',
-      yard_sign: 'Request Sign',
       volunteer: 'Sign Up',
       host_event: 'Request Meeting',
       endorsement: 'Submit Endorsement',
@@ -354,25 +351,6 @@ export default function GetInvolvedForm({
                 )}
               </div>
             </>
-          )}
-
-          {selectedAction === 'yard_sign' && (
-            <div>
-              <label htmlFor="address" className="form-label">
-                Delivery Address *
-              </label>
-              <input
-                id="address"
-                type="text"
-                required
-                aria-required="true"
-                value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
-                className="form-input"
-                placeholder="Street address in Prosper"
-                autoComplete="street-address"
-              />
-            </div>
           )}
 
           {selectedAction === 'endorsement' && (

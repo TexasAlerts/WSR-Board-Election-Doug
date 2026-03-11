@@ -62,6 +62,13 @@ const registerSchema = z.object({
   zipCode: z.string().min(5, 'ZIP code is required').max(10),
   emailConsent: z.boolean().default(true),
   smsConsent: z.boolean().default(true),
+  engagementPreferences: z
+    .object({
+      updates: z.boolean().default(true),
+      host_event: z.boolean().default(false),
+      volunteer: z.boolean().default(false),
+    })
+    .optional(),
 });
 
 export async function POST(request) {
@@ -99,6 +106,7 @@ export async function POST(request) {
       zipCode,
       emailConsent,
       smsConsent,
+      engagementPreferences,
     } = parsed.data;
 
     // Check if email already exists
@@ -195,6 +203,24 @@ export async function POST(request) {
 
     if (!emailResult.success) {
       // Don't fail registration, just log the error
+    }
+
+    // Insert engagement preference interest rows
+    if (engagementPreferences) {
+      const interestRows = Object.entries(engagementPreferences)
+        .filter(([, checked]) => checked)
+        .map(([type]) => ({
+          type,
+          name: `${firstName.trim()} ${lastName.trim()}`,
+          email: email.toLowerCase().trim(),
+          phone: phoneFormatted,
+          consent_email: emailConsent,
+          consent_sms: smsConsent,
+        }));
+
+      if (interestRows.length > 0) {
+        await supabase.from('interest_submissions').insert(interestRows);
+      }
     }
 
     // Log successful registration
