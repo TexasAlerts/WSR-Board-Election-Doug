@@ -219,7 +219,7 @@ export async function POST(request) {
         }));
 
       if (interestRows.length > 0) {
-        await supabase.from('interest_submissions').insert(interestRows);
+        await supabase.from('interest').insert(interestRows);
       }
     }
 
