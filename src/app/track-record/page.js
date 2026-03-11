@@ -189,7 +189,7 @@ export default function TrackRecordPage() {
             <div className="card">
               <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
                 <time
-                  dateTime="2021/2023"
+                  dateTime="2021-2023"
                   className="text-sm font-bold text-navy whitespace-nowrap bg-navy/5 px-3 py-1 rounded-full self-start"
                 >
                   2021-2023

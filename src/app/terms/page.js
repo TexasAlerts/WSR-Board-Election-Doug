@@ -46,7 +46,7 @@ export default function TermsOfUse() {
             This is a personal communication platform operated by Doug Charles and his campaign
             committee, not a government public forum.
           </strong>{' '}
-          Doug Charles is the incoming member of the Prosper Town Council, Place 5. This website is separate from
+          Doug Charles is the member-elect of the Prosper Town Council, Place 5. This website is separate from
           and not affiliated with the Town of Prosper government. The Campaign reserves
           all rights afforded to private speakers under the First Amendment.
         </p>
@@ -60,7 +60,7 @@ export default function TermsOfUse() {
       <section className="space-y-4">
         <h2 className="text-xl font-bold text-navy">Official Government Disclaimer</h2>
         <p>
-          Doug Charles is the incoming member of the Prosper Town Council, Place 5 (to be sworn in May 2026).
+          Doug Charles is the member-elect of the Prosper Town Council, Place 5 (to be sworn in May 2026).
           This website is maintained by Doug Charles in his personal capacity and through his
           campaign committee. It is <strong>NOT</strong> an official website of the Town of Prosper.
         </p>

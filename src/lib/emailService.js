@@ -218,7 +218,7 @@ export async function sendWelcomeEmail(email, name) {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #1e3a5f;">Welcome, ${escapeHtml(name)}!</h2>
-          <p>Your account has been verified and your account is active!</p>
+          <p>Your email has been verified and your account is active!</p>
           <p>As a member, you can:</p>
           <ul>
             <li>Vote on all polls (public and member-only)</li>
