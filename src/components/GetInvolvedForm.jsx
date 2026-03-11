@@ -87,7 +87,7 @@ export default function GetInvolvedForm({
     const actionTitles = {
       updates: 'Community Updates',
       volunteer: 'Community Involvement',
-      host_event: 'Meet Your Councilmember',
+      host_event: 'Meet Your Councilmember-Elect',
       endorsement: 'Endorse Doug',
     };
     return actionTitles[selectedAction] || '';

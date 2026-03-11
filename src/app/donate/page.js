@@ -15,7 +15,7 @@ export default function DonatePage() {
             </p>
             <p className="text-gray-600 mb-8">
               Want to stay connected? Create an account to participate in polls,
-              share ideas, and engage with your councilmember.
+              share ideas, and engage with your councilmember-elect.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link href="/auth/register" className="btn-primary">

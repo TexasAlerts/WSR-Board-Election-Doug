@@ -2,7 +2,7 @@ export const metadata = {
   alternates: { canonical: '/about' },
   title: 'About Doug Charles — Prosper, Texas Town Council, Place 5',
   description:
-    'Meet Doug Charles: 20-year Prosper resident, former P&Z Commissioner, 2020 Bond Committee member. Incoming Prosper Town Council member, Place 5.',
+    'Meet Doug Charles: 20-year Prosper resident, former P&Z Commissioner, 2020 Bond Committee member. Prosper Town Council Member-Elect, Place 5.',
   openGraph: {
     title: 'About Doug Charles — Prosper, Texas Town Council, Place 5',
     description:

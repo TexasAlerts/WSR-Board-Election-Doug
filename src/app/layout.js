@@ -84,7 +84,7 @@ export const metadata = {
   openGraph: {
     title: 'Doug Charles — Prosper, Texas Town Council, Place 5',
     description:
-      'Doug Charles, Prosper Town Council Place 5. 20-year resident, former Planning & Zoning Commissioner. Serving with Common Sense leadership. Listen. Plan. Protect.',
+      'Doug Charles, Prosper Town Council Member-Elect, Place 5. 20-year resident, former Planning & Zoning Commissioner. Preparing to serve with Common Sense leadership. Listen. Plan. Protect.',
     url: 'https://www.dougcharles.com',
     siteName: 'Doug Charles — Prosper, Texas Town Council, Place 5',
     locale: 'en_US',
@@ -128,7 +128,7 @@ export const viewport = {
   themeColor: '#1B3A5D',
 };
 
-const BANNER_MESSAGE = 'Serving Prosper — Town Council, Place 5';
+const BANNER_MESSAGE = 'Preparing to Serve Prosper — Councilmember-Elect, Place 5';
 
 export default function RootLayout({ children }) {
   return (
@@ -183,7 +183,7 @@ export default function RootLayout({ children }) {
                   "@id": "https://www.dougcharles.com/#website",
                   "name": "Doug Charles — Prosper, Texas Town Council, Place 5",
                   "url": "https://www.dougcharles.com",
-                  "description": "Personal website for Doug Charles, Prosper Town Council Member, Place 5. Serving with Common Sense leadership for ALL of Prosper.",
+                  "description": "Personal website for Doug Charles, Prosper Town Council Member-Elect, Place 5. Preparing to serve with Common Sense leadership for ALL of Prosper.",
                   "publisher": {
                     "@id": "https://www.dougcharles.com/#organization"
                   }
@@ -199,7 +199,7 @@ export default function RootLayout({ children }) {
                     "width": 512,
                     "height": 512
                   },
-                  "description": "Committee for Doug Charles, Prosper Town Council Member, Place 5. Treasurer: Robert Bye.",
+                  "description": "Committee for Doug Charles, Prosper Town Council Member-Elect, Place 5. Treasurer: Robert Bye.",
                   "sameAs": ["https://www.facebook.com/profile.php?id=61587237416382"],
                   "address": {
                     "@type": "PostalAddress",
@@ -233,8 +233,8 @@ export default function RootLayout({ children }) {
                   "@type": "Person",
                   "@id": "https://www.dougcharles.com/#person",
                   "name": "Doug Charles",
-                  "jobTitle": "Prosper Town Council Member, Place 5",
-                  "description": "20-year Prosper resident, former Planning & Zoning Commissioner (2021-2023), 2020 Bond Election Committee member, PISD annexation lead petitioner. Prosper Town Council Member, Place 5.",
+                  "jobTitle": "Prosper Town Council Member-Elect, Place 5",
+                  "description": "20-year Prosper resident, former Planning & Zoning Commissioner (2021-2023), 2020 Bond Election Committee member, PISD annexation lead petitioner. Prosper Town Council Member-Elect, Place 5.",
                   "address": {
                     "@type": "PostalAddress",
                     "streetAddress": "4360 Mill Branch Drive",

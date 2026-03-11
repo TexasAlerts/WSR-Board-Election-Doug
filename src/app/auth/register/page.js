@@ -161,7 +161,7 @@ export default function RegisterPage() {
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-navy mb-2">Create an Account</h1>
         <p className="text-gray-600">
-          Join to participate in polls, share ideas, and stay connected with your councilmember.
+          Join to participate in polls, share ideas, and stay connected with your councilmember-elect.
         </p>
       </div>
 
@@ -447,7 +447,7 @@ export default function RegisterPage() {
               className="mt-0.5 w-5 h-5 min-w-[20px] text-navy rounded focus:ring-navy focus:ring-2"
             />
             <div>
-              <span className="text-sm font-medium text-gray-700">Meet Your Councilmember</span>
+              <span className="text-sm font-medium text-gray-700">Meet Your Councilmember-Elect</span>
               <p className="text-xs text-gray-500">Request a conversation about community issues</p>
             </div>
           </label>
