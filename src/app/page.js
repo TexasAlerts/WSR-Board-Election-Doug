@@ -296,7 +296,7 @@ export default function Home() {
                 <strong className="text-prosper-red">
                   Whether you&apos;ve been here 20 years or 2 months, you deserve a voice.
                 </strong>{' '}
-                That&apos;s why I ran—and why I&apos;m honored to serve.
+                That&apos;s why I ran—and why I&apos;m ready to serve.
               </p>
               <div className="pt-2">
                 <Link href="/about" className="btn-outline">
@@ -319,8 +319,8 @@ export default function Home() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">Stay Connected</h2>
 
           <p className="text-xl text-white/90 mb-10 leading-relaxed">
-            I&apos;m honored to serve Prosper on the Town Council. Your voice matters—stay involved,
-            share your ideas, and help shape our community&apos;s future.
+            As your councilmember-elect, I&apos;m preparing to serve Prosper on the Town Council.
+            Your voice matters—stay involved, share your ideas, and help shape our community&apos;s future.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4 sm:px-0">

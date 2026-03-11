@@ -26,7 +26,7 @@ const actionCards = [
   {
     id: 'host_event',
     icon: '☕',
-    title: 'Meet Your Councilmember',
+    title: 'Meet Your Councilmember-Elect',
     description: 'Schedule a conversation about community issues',
   },
   {

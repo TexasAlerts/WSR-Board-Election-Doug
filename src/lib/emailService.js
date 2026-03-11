@@ -232,7 +232,7 @@ export async function sendWelcomeEmail(email, name) {
             </a>
           </p>
           <p>Thank you for your support!</p>
-          <p><strong>Doug Charles</strong><br>Incoming Prosper Town Council Member, Place 5</p>
+          <p><strong>Doug Charles</strong><br>Prosper Town Council Member-Elect, Place 5</p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           <p style="color: #999; font-size: 12px;">
             Doug Charles for Prosper Town Council Place 5<br>

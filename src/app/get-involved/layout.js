@@ -24,7 +24,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Engage — Doug Charles — Prosper, Texas Town Council, Place 5',
     description:
-      'Stay connected and engage with Doug Charles, your Prosper Town Council Place 5 member.',
+      'Stay connected and engage with Doug Charles, your Prosper Town Council Place 5 councilmember-elect.',
     images: ['https://www.dougcharles.com/dc-preview.webp'],
   },
 };
