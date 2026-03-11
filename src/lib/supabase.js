@@ -67,6 +67,9 @@ export function getSupabase() {
   if (!supabaseServiceClient) {
     const url = process.env.SUPABASE_URL;
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE;
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY && process.env.SUPABASE_SERVICE_ROLE) {
+      console.warn('SUPABASE_SERVICE_ROLE is deprecated. Rename to SUPABASE_SERVICE_ROLE_KEY.');
+    }
 
     // Return null during build time when env vars aren't available
     // Pages using ISR will fetch real data on first request

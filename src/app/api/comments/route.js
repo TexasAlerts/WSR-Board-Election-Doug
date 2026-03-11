@@ -159,7 +159,7 @@ async function postHandler(request) {
   }
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
-  if (!rateLimit(`comment-${ip}`, 10, 60000)) {
+  if (!(await rateLimit(`comment-${ip}`, 10, 60000))) {
     return NextResponse.json(
       { ok: false, error: 'Too many comments. Please wait.' },
       { status: 429 }
@@ -281,7 +281,7 @@ async function postHandler(request) {
     sendNotificationEmail(
       `New ${parent_id ? 'reply' : 'comment'} pending approval`,
       `From: ${supporter.first_name} ${supporter.last_name} (${supporter.email})\nOn: ${targetType}\nContent: ${content.trim()}`
-    ).catch(() => {});
+    ).catch((err) => console.error('Background task failed:', err.message));
 
     return NextResponse.json(
       {

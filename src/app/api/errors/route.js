@@ -29,7 +29,7 @@ import { getVisitorSessionId } from '../../../lib/sessionTracking';
 export async function POST(request) {
   // Rate limit: 20 error reports per minute per IP (increased for performance logging)
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-  if (!rateLimit(`errors:${ip}`, 20, 60000)) {
+  if (!(await rateLimit(`errors:${ip}`, 20, 60000))) {
     return NextResponse.json({ ok: false, error: 'Too many error reports' }, { status: 429 });
   }
 

@@ -15,7 +15,7 @@ export async function GET(request) {
   }
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
-  if (!rateLimit(ip)) {
+  if (!(await rateLimit(ip))) {
     return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });
   }
 

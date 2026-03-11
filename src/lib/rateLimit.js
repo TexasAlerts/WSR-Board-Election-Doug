@@ -1,62 +1,59 @@
-const requests = new Map();
+import { getSupabase } from './supabase';
 
-// Cleanup stale entries every 5 minutes to prevent memory leaks
-const CLEANUP_INTERVAL = 5 * 60 * 1000; // 5 minutes
-const MAX_ENTRY_AGE = 60 * 60 * 1000; // 1 hour
+/**
+ * Supabase-backed rate limiter for serverless environments.
+ * Uses the check_rate_limit() RPC function for atomic check-and-increment.
+ * Falls open (allows request) on Supabase errors to avoid blocking users.
+ */
 
-let cleanupTimer = null;
-
-function cleanupStaleEntries() {
-  const now = Date.now();
-  for (const [ip, entry] of requests.entries()) {
-    if (now - entry.startTime > MAX_ENTRY_AGE) {
-      requests.delete(ip);
+/**
+ * Rate limit with retry-after support.
+ * @param {string} key - Rate limit key (typically IP or "prefix:IP")
+ * @param {number} limit - Max requests per window
+ * @param {number} windowMs - Window size in milliseconds
+ * @returns {Promise<{ allowed: boolean, retryAfter: number }>}
+ */
+export async function rateLimitWithRetry(key, limit = 5, windowMs = 60_000) {
+  try {
+    const supabase = getSupabase();
+    if (!supabase) {
+      return { allowed: true, retryAfter: 0 };
     }
-  }
-}
 
-// Start cleanup timer if not already running
-if (typeof cleanupTimer !== 'number') {
-  cleanupTimer = setInterval(cleanupStaleEntries, CLEANUP_INTERVAL);
-  // Prevent timer from keeping Node.js process alive
-  if (cleanupTimer.unref) {
-    cleanupTimer.unref();
+    const { data, error } = await supabase.rpc('check_rate_limit', {
+      p_key: key,
+      p_limit: limit,
+      p_window_ms: windowMs,
+    });
+
+    if (error) {
+      console.error('Rate limit check failed:', error.message);
+      return { allowed: true, retryAfter: 0 };
+    }
+
+    const row = data?.[0];
+    if (!row) {
+      return { allowed: true, retryAfter: 0 };
+    }
+
+    return {
+      allowed: row.allowed,
+      retryAfter: row.allowed ? 0 : Math.max(1, row.retry_after),
+    };
+  } catch (err) {
+    console.error('Rate limit error:', err.message);
+    return { allowed: true, retryAfter: 0 };
   }
 }
 
 /**
- * Basic in-memory IP rate limiter with retry-after support.
- * @param {string} ip - Client IP address
- * @param {number} limit - Number of allowed requests per window
+ * Rate limit check (simple boolean).
+ * @param {string} key - Rate limit key (typically IP or "prefix:IP")
+ * @param {number} limit - Max requests per window
  * @param {number} windowMs - Window size in milliseconds
- * @returns {{ allowed: boolean, retryAfter: number }} - Whether allowed and seconds until reset
+ * @returns {Promise<boolean>} true if within limit, false if rate limited
  */
-export function rateLimitWithRetry(ip, limit = 5, windowMs = 60_000) {
-  const now = Date.now();
-  const entry = requests.get(ip) || { count: 0, startTime: now };
-
-  if (now - entry.startTime > windowMs) {
-    entry.count = 1;
-    entry.startTime = now;
-  } else {
-    entry.count += 1;
-  }
-
-  requests.set(ip, entry);
-
-  const allowed = entry.count <= limit;
-  const retryAfter = allowed ? 0 : Math.ceil((entry.startTime + windowMs - now) / 1000);
-
-  return { allowed, retryAfter };
-}
-
-/**
- * Basic in-memory IP rate limiter (backward compatible).
- * @param {string} ip - Client IP address
- * @param {number} limit - Number of allowed requests per window
- * @param {number} windowMs - Window size in milliseconds
- * @returns {boolean} - true if within limit, false otherwise
- */
-export function rateLimit(ip, limit = 5, windowMs = 60_000) {
-  return rateLimitWithRetry(ip, limit, windowMs).allowed;
+export async function rateLimit(key, limit = 5, windowMs = 60_000) {
+  const result = await rateLimitWithRetry(key, limit, windowMs);
+  return result.allowed;
 }

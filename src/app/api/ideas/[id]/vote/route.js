@@ -15,7 +15,7 @@ async function postHandler(request, { params }) {
   const { id: ideaId } = await params;
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
-  if (!rateLimit(`idea-vote-${ip}`, 30, 60000)) {
+  if (!(await rateLimit(`idea-vote-${ip}`, 30, 60000))) {
     return NextResponse.json({ ok: false, error: 'Too many votes. Please wait.' }, { status: 429 });
   }
 

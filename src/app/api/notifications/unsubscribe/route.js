@@ -58,7 +58,10 @@ export async function GET(request) {
     updates[type] = false;
   }
 
-  await supabase.from('notification_preferences').update(updates).eq('id', prefs.id);
+  const { error: updateError } = await supabase.from('notification_preferences').update(updates).eq('id', prefs.id);
+  if (updateError) {
+    return NextResponse.json({ ok: false, error: 'Failed to update preferences' }, { status: 500 });
+  }
 
   // Redirect to unsubscribe confirmation page
   const redirectUrl = new URL('/notifications/unsubscribe', request.url);

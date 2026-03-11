@@ -69,7 +69,7 @@ export async function POST(req) {
     return NextResponse.json({ ok: false, error: 'Database connection unavailable' }, { status: 503 });
   }
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
-  if (!rateLimit(ip)) {
+  if (!(await rateLimit(ip))) {
     return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });
   }
   try {
@@ -220,11 +220,11 @@ export async function POST(req) {
           normalizedEmail,
           'Thanks for getting involved',
           `Hi ${name},\n\nThanks for your interest in ${type}.\n${message ? `Message: ${message}\n\n` : ''}We will be in touch and you can check back for updates.\n\n--\nDoug Charles`
-        ).catch(() => {}),
+        ).catch((err) => console.error('Background task failed:', err.message)),
         sendNotificationEmail(
           'New interest submission',
           `Type: ${type}\nName: ${name}\nEmail: ${normalizedEmail}\nPhone: ${phone || ''}\nMessage: ${message || ''}`
-        ).catch(() => {}),
+        ).catch((err) => console.error('Background task failed:', err.message)),
       ]);
 
       return NextResponse.json({
@@ -253,7 +253,7 @@ export async function POST(req) {
       await sendNotificationEmail(
         'New interest submission (pending verification)',
         `Type: ${type}\nName: ${name}\nEmail: ${normalizedEmail}\nPhone: ${phone || ''}\nMessage: ${message || ''}\nStatus: Awaiting email verification`
-      ).catch(() => {});
+      ).catch((err) => console.error('Background task failed:', err.message));
 
       return NextResponse.json({
         ok: true,

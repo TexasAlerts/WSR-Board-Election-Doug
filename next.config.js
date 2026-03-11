@@ -46,6 +46,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
+            // 'unsafe-inline' required by Next.js for hydration scripts and CSS-in-JS
             value: [
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://va.vercel-scripts.com https://connect.facebook.net",

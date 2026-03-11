@@ -120,7 +120,7 @@ async function postHandler(request) {
   }
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
-  if (!rateLimit(ip)) {
+  if (!(await rateLimit(ip))) {
     return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });
   }
 
@@ -259,7 +259,7 @@ async function postHandler(request) {
       sendNotificationEmail(
         'New idea submitted',
         `Name: ${name}\nEmail: ${email}\nCategory: ${category}\nTitle: ${title}\nContent: ${content}`
-      ).catch(() => {}),
+      ).catch((err) => console.error('Background task failed:', err.message)),
     ]);
 
     return NextResponse.json({ ok: true }, { status: 201 });

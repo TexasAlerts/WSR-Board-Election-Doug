@@ -9,7 +9,7 @@ export async function POST(req) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
   // Stricter rate limit for password reset: 3 requests per hour
-  if (!rateLimit(ip, 3, 3600000)) {
+  if (!(await rateLimit(ip, 3, 3600000))) {
     return NextResponse.json(
       { ok: false, error: 'Too many requests. Please try again later.' },
       { status: 429 }

@@ -22,7 +22,7 @@ async function postHandler(request, { params }) {
     return NextResponse.json({ ok: false, error: 'Invalid idea ID' }, { status: 400 });
   }
 
-  if (!rateLimit(ip)) {
+  if (!(await rateLimit(ip))) {
     return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });
   }
 
@@ -119,7 +119,7 @@ async function deleteHandler(request, { params }) {
     return NextResponse.json({ ok: false, error: 'Invalid idea ID' }, { status: 400 });
   }
 
-  if (!rateLimit(ip)) {
+  if (!(await rateLimit(ip))) {
     return NextResponse.json({ ok: false, error: 'Too many requests' }, { status: 429 });
   }
 
