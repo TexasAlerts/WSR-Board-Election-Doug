@@ -7,6 +7,20 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ['image/avif', 'image/webp'],
   },
+  async redirects() {
+    return [
+      {
+        source: '/poll',
+        destination: '/polls',
+        permanent: true,
+      },
+      {
+        source: '/poll/:path*',
+        destination: '/polls/:path*',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
