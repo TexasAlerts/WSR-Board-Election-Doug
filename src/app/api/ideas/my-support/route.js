@@ -41,6 +41,13 @@ export async function GET(request) {
       .eq('supporter_email', userEmail);
 
     if (error) {
+      await logError({
+        errorType: ErrorTypes.DATABASE_ERROR,
+        errorMessage: error.message,
+        endpoint: '/api/ideas/my-support',
+        method: 'GET',
+        request,
+      });
       return NextResponse.json(
         { ok: false, error: 'Failed to fetch supported ideas' },
         { status: 500 }

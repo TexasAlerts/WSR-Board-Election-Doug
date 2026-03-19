@@ -64,6 +64,13 @@ function GetInvolvedDynamicContent() {
     setSubmitMsg('');
     setIsSubmitting(true);
 
+    // Validate name for non-endorsement forms
+    if (selectedAction !== 'endorsement' && !form.name.trim()) {
+      setSubmitMsg('Name is required.');
+      setIsSubmitting(false);
+      return;
+    }
+
     let validatedPhone = form.phone;
     if (form.phone && form.phone.trim()) {
       const { valid, formatted, error } = validatePhoneNumber(form.phone);
