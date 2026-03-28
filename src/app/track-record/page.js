@@ -236,7 +236,7 @@ export default function TrackRecordPage() {
                       href="https://texasscorecard.com/local/prosper-isd-passes-3-bonds-totaling-2-7-billion-stadium-bond-fails/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-navy hover:underline"
+                      className="text-navy underline hover:text-navy/80"
                     >
                       Texas Scorecard
                     </a>
@@ -275,7 +275,7 @@ export default function TrackRecordPage() {
                       href="https://www.dallasnews.com/news/elections/2025/04/29/state-ethics-panel-to-review-allegations-of-dark-money-in-prosper-isd-trustee-race/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-navy hover:underline"
+                      className="text-navy underline hover:text-navy/80"
                     >
                       Dallas Morning News
                     </a>
@@ -348,7 +348,7 @@ export default function TrackRecordPage() {
                       href="https://www.dallasnews.com/opinion/commentary/2025/11/12/damm-far-north-suburbs-try-to-balance-growth-taxes/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-navy hover:underline"
+                      className="text-navy underline hover:text-navy/80"
                     >
                       Dallas Morning News
                     </a>

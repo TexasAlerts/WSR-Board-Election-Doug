@@ -222,9 +222,24 @@ export default function PollsDynamic({ initialPolls = [] }) {
       <section className="py-16 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-12 gap-3" role="status" aria-live="polite">
-              <Loader2 className="w-8 h-8 animate-spin text-navy" aria-hidden="true" />
-              <span className="text-gray-700">Loading polls...</span>
+            <div className="space-y-6" role="status" aria-live="polite" aria-label="Loading polls">
+              {/* Skeleton cards for loading state - reduces LCP */}
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="card animate-pulse">
+                  <div className="h-6 bg-gray-200 rounded w-3/4 mb-4" />
+                  <div className="h-4 bg-gray-200 rounded w-full mb-2" />
+                  <div className="h-4 bg-gray-200 rounded w-2/3 mb-6" />
+                  <div className="space-y-3">
+                    <div className="h-12 bg-gray-200 rounded" />
+                    <div className="h-12 bg-gray-200 rounded" />
+                    <div className="h-12 bg-gray-200 rounded" />
+                  </div>
+                  <div className="flex justify-between items-center mt-6">
+                    <div className="h-4 bg-gray-200 rounded w-24" />
+                    <div className="h-10 bg-gray-200 rounded w-32" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : polls.length === 0 ? (
             <div className="card text-center py-12">
